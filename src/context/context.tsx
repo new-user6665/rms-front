@@ -4,7 +4,7 @@
 import { createContext, useContext, Dispatch, SetStateAction, useState } from "react";
 
 type DataType = {
-    firstName: string
+    username : string,
 }
 
 interface ContextProps {
