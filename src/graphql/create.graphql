@@ -1,8 +1,0 @@
-mutation CreateTodo($text:String! , $status : Boolean!){
-    addTodo(text:$text , completed : $status){
-        text
-        completed
-        _id
-    }
-
-}
