@@ -1,8 +1,11 @@
 "use client"
+import { useGlobalContext } from "@/context/context";
 import { useRouter } from "next/navigation"
 
 
 export default function Navbar() {
+
+  const { data , setData } = useGlobalContext();
 
   const router = useRouter()
 
@@ -39,7 +42,10 @@ export default function Navbar() {
                 </ul>
               </details>
             </li>
-            <li><a onClick={()=>router.push('/login')}>Login</a></li>
+            {
+              data.admin ? <li><a onClick={()=>router.push('/admin')}>Dashoard</a></li> :  <li><a onClick={()=>router.push('/login')}>Login</a></li>
+            }
+           
           </ul>
         </div>
       </div>

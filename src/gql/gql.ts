@@ -13,7 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "mutation LoginUser($username: String!, $password: String!) {\n  login(username: $username, password: $password) {\n    admin {\n      username\n      id\n      roles\n      categories {\n        id\n        name\n      }\n      team {\n        id\n        name\n      }\n    }\n    token\n  }\n}": types.LoginUserDocument,
+    "mutation LoginUser($username: String!, $password: String!) {\n  login(username: $username, password: $password) {\n    admin {\n      username\n      id\n      roles\n      categories {\n        id\n        name\n      }\n      team {\n        id\n        name\n      }\n    }\n    token\n  }\n}\n\nquery CheckLoggedIn {\n  checkLoggedIn {\n    username\n    id\n    roles\n    categories {\n      id\n      name\n    }\n    team {\n      id\n      name\n    }\n  }\n}": types.LoginUserDocument,
 };
 
 /**
@@ -33,7 +33,7 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "mutation LoginUser($username: String!, $password: String!) {\n  login(username: $username, password: $password) {\n    admin {\n      username\n      id\n      roles\n      categories {\n        id\n        name\n      }\n      team {\n        id\n        name\n      }\n    }\n    token\n  }\n}"): (typeof documents)["mutation LoginUser($username: String!, $password: String!) {\n  login(username: $username, password: $password) {\n    admin {\n      username\n      id\n      roles\n      categories {\n        id\n        name\n      }\n      team {\n        id\n        name\n      }\n    }\n    token\n  }\n}"];
+export function graphql(source: "mutation LoginUser($username: String!, $password: String!) {\n  login(username: $username, password: $password) {\n    admin {\n      username\n      id\n      roles\n      categories {\n        id\n        name\n      }\n      team {\n        id\n        name\n      }\n    }\n    token\n  }\n}\n\nquery CheckLoggedIn {\n  checkLoggedIn {\n    username\n    id\n    roles\n    categories {\n      id\n      name\n    }\n    team {\n      id\n      name\n    }\n  }\n}"): (typeof documents)["mutation LoginUser($username: String!, $password: String!) {\n  login(username: $username, password: $password) {\n    admin {\n      username\n      id\n      roles\n      categories {\n        id\n        name\n      }\n      team {\n        id\n        name\n      }\n    }\n    token\n  }\n}\n\nquery CheckLoggedIn {\n  checkLoggedIn {\n    username\n    id\n    roles\n    categories {\n      id\n      name\n    }\n    team {\n      id\n      name\n    }\n  }\n}"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

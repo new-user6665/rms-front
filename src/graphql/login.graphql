@@ -16,3 +16,19 @@ mutation LoginUser($username: String!, $password: String!) {
     token
   }
 }
+
+query CheckLoggedIn {
+  checkLoggedIn {
+    username
+    id
+    roles
+    categories {
+      id
+      name
+    }
+    team {
+      id
+      name
+    }
+  }
+}

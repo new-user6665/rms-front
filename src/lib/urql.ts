@@ -5,7 +5,7 @@ let _client: Client | null = null;
 export const getUrqlClient = () => {
   if (!_client) {
     _client = createClient({
-      url: process.env.SERVER_URL as string,
+      url: 'https://result-dusky.vercel.app/graphql' || process.env.SERVER_URL as string,
       requestPolicy: "cache-first",
       exchanges: [fetchExchange , cacheExchange],
       fetchOptions : {

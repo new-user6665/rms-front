@@ -5,12 +5,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Login, loginSchema } from "@/types/login";
 import { login } from "@/app/(user)/login/api";
 import { useRouter } from "next/navigation";
+import { useGlobalContext } from "@/context/context";
 
 const LoginPage = () => {
 
     const router = useRouter();
 
     const [error , setError ] = useState('');
+    const { data , setData} = useGlobalContext();
+
+    useEffect(() => {
+      if(data?.admin){
+        router.push('/admin');
+      }
+    });
 
   const {
     register,
@@ -45,12 +53,17 @@ const LoginPage = () => {
               className="space-y-4 md:space-y-6"
               onSubmit={handleSubmit(async (data) => {
                 console.log(data);
-                const datas = await login(data);
-                if(!datas){
+                const datas : any = await login(data);
+                if(!datas.admin){
                     setError('Invalid username or password');
                  }else{
                     setError('');
-                    router.push('/admin');
+                    setData({
+                      admin : {
+                        ...datas.admin
+                      },
+                      token : datas.token
+                    });
                  }
                 reset();
               })}

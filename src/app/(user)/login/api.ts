@@ -8,7 +8,6 @@ import {
 } from "@/gql/graphql";
 import { getUrqlClient } from "@/lib/urql";
 import { Login } from "@/types/login";
-import { revalidatePath } from "next/cache";
 import { OperationResult } from "urql";
 import { cookies } from "next/headers";
 
@@ -33,19 +32,32 @@ export const login = async (data: Login) => {
         },
       }
     );
-    const token = result.data?.login?.token;
+    const token_1 = result.data?.login?.token;
 
-    if (token) {
+    if (token_1) {  
       cookies().set({
         name: "__user",
-        value: token,
+        value: token_1,
         httpOnly: true,
-        expires: new Date(new Date().getTime() + 1000 * 60 * 60),
+        expires: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 30),
         path: "/",
       });
+      cookies().set({
+        name: "_adm_",
+        value: token_1,
+        httpOnly: false,
+        expires: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 28),
+        path: "/",
+      });
+
+      return result.data?.login;
+    } else {
+      return {
+        status: 400,
+        message: "Bad Request",
+      };
     }
 
-    return result.data?.login;
   } else {
     return {
       status: 400,

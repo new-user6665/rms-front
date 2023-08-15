@@ -13,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className='flex px-[1vw] py-[1vh] '>
+      <body className='flex px-[1vw] py-[1vh] w-screen h-screen overflow-hidden'>
         <SideBar/>
         {children}
         </body>
