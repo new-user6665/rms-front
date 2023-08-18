@@ -34,6 +34,9 @@ export const login = async (data: Login) => {
     );
     const token_1 = result.data?.login?.token;
 
+    console.log(result);
+    
+
     if (token_1) {  
       cookies().set({
         name: "__user",

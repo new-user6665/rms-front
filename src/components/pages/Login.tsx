@@ -13,12 +13,8 @@ const LoginPage = () => {
 
     const [error , setError ] = useState('');
     const { data , setData} = useGlobalContext();
-
-    useEffect(() => {
-      if(data?.admin){
-        router.push('/admin');
-      }
-    });
+  
+  
 
   const {
     register,

@@ -1,6 +1,7 @@
 import { GlobalContextProvider } from '@/context/context'
 import './globals.css'
 import type { Metadata } from 'next'
+import { UrqlContextProvider } from '@/context/urql'
 
 export const metadata: Metadata = {
   title: 'RMS Front',

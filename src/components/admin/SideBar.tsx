@@ -7,11 +7,10 @@ import {
   Category,
   Credential,
   Dashoard,
-  Section,
+  SectionIcon,
 } from "@/icons/navs";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
-
 
 const AdminNavs = [
   {
@@ -20,10 +19,10 @@ const AdminNavs = [
   },
   {
     name: "Section",
-    icon: <Section className="w-8 h-8" />,
+    icon: <SectionIcon className="w-8 h-8" />,
   },
   {
-    name: "Credential",
+    name: "Credentials",
     icon: <Credential className="w-8 h-8" />,
   },
   {
@@ -65,8 +64,7 @@ const TeamManagerNavs = [
   },
 ];
 
-
-const Navs = (ROLE : Roles) => {
+const Navs = (ROLE: Roles) => {
   switch (ROLE) {
     case Roles.Admin:
       return AdminNavs;
@@ -79,22 +77,14 @@ const Navs = (ROLE : Roles) => {
     default:
       return [];
   }
-}
-
+};
 
 const SideBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data, setData } = useGlobalContext();
   const navs = Navs(data.admin?.roles as Roles);
+
   const router = useRouter();
-
-  useEffect(() => {
-    if (!data?.admin) {
-      router.push("/login");
-    }
-  });
-
-  
 
   return (
     <div
@@ -123,7 +113,7 @@ const SideBar = () => {
         } transition-all`}
       >
         {/* Sidebar content here */}
-        <li className="p-0 w-1">
+        <li className="p-0 w-1" onClick={()=> router.push('/admin')}>
           <p
             className={` px-0 flex ${
               isOpen ? "w-40" : "w-12 items-center justify-center"
@@ -140,25 +130,24 @@ const SideBar = () => {
           </p>
         </li>
 
-        {
-          navs.map((nav, index) => (
-            <li key={index} className="p-0 w-1">
-              <p
-                className={` px-0 flex ${
-                  isOpen ? "w-40" : "w-12 items-center justify-center"
+        {navs.map((nav, index) => (
+          <li key={index} className="p-0 w-1" onClick={()=> router.push(`/admin/${nav.name.toLowerCase()}`)}>
+            <p
+              className={` px-0 flex ${
+                isOpen ? "w-40" : "w-12 items-center justify-center"
+              }`}
+            >
+              {nav.icon}
+              <span
+                className={` text-base text-center font-bold ${
+                  isOpen ? "flex" : "hidden "
                 }`}
               >
-                {nav.icon}
-                <span
-                  className={` text-base text-center font-bold ${
-                    isOpen ? "flex" : "hidden "
-                  }`}
-                >
-                  {nav.name}
-                </span>
-              </p>
-            </li>
-          ))}
+                {nav.name}
+              </span>
+            </p>
+          </li>
+        ))}
       </ul>
     </div>
   );

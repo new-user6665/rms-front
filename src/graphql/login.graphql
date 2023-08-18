@@ -32,3 +32,10 @@ query CheckLoggedIn {
     }
   }
 }
+
+query GetAdmins {
+  sections{
+    id
+    name
+  }
+}

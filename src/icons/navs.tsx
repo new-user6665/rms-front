@@ -3,7 +3,7 @@ interface Props {
     className: string;
 }
 
-export function Section(props : Props) {
+export function SectionIcon(props : Props) {
     return (
       <svg
         viewBox="0 0 21 21"
