@@ -1,0 +1,6 @@
+query GetAllSection{
+    sections{
+        id
+        name
+    }
+}

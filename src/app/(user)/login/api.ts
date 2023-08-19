@@ -28,10 +28,11 @@ export const login = async (data: Login) => {
       },
       {
         fetchOptions: {
-          credentials: "include" as const,
+          credentials: "include"
         },
       }
     );
+
     const token_1 = result.data?.login?.token;
 
     console.log(result);

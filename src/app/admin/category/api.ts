@@ -1,6 +1,6 @@
 "use server";
 
-import { AddCategoryDocument, AddCategoryMutation, AddCategoryMutationVariables, CreateCategoryInput, EditCategoryDocument, EditCategoryMutation, EditCategoryMutationVariables, Exact, UpdateCategoryInput } from "@/gql/graphql";
+import { AddCategoryDocument, AddCategoryMutation, AddCategoryMutationVariables, CreateCategoryInput, DeleteCategoryMutation, DeleteCategoryMutationVariables, EditCategoryDocument, EditCategoryMutation, EditCategoryMutationVariables, Exact, MutationRemoveCategoryArgs, UpdateCategoryInput } from "@/gql/graphql";
 import { getUrqlClient } from "@/lib/urql";
 import { OperationResult } from "urql";
 
@@ -8,8 +8,6 @@ export async function UpdateCategory(data: UpdateCategoryInput ) {
     const name = data.name;
     const section = data.section;
     const id = data.id;
-
-    console.log(name, section, id);
     
 
     if (name && section && id) {
@@ -26,12 +24,15 @@ export async function UpdateCategory(data: UpdateCategoryInput ) {
           },
           {
             fetchOptions: {
-              credentials: "include" as const,
+              credentials: "include",
             },
           }
+        
         );
 
-        console.log(result);
+        // console.log(result);
+        
+        console.log("Updating........");
         
 
         }
@@ -55,6 +56,30 @@ export async function AddCategory(data: CreateCategoryInput) {
           {
             fetchOptions: {
               credentials: "include",
+            },
+          }
+        );
+
+        console.log(result);
+        
+
+        }
+}
+
+export async function DeleteCategory(id: number) {
+    if (id) {
+        const { client } = getUrqlClient();
+        const result: OperationResult<
+          DeleteCategoryMutation,
+          Exact<MutationRemoveCategoryArgs>
+        > = await client.mutation<DeleteCategoryMutation, DeleteCategoryMutationVariables>(
+          EditCategoryDocument,
+          {
+            id,
+          },
+          {
+            fetchOptions: {
+              credentials: "include" as const,
             },
           }
         );

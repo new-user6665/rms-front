@@ -22,11 +22,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex px-[1vw] py-[1vh] w-screen h-screen overflow-hidden">
-        {!cookie ? (
+      {/* !cookie ? (
           <div className="flex flex-col items-center justify-center w-full h-full">
             <h1 className="text-3xl font-bold">Login</h1>
           </div>
-        ) : (
+        ) : */}
+        { (
           <>
             <SideBar />
             {children}

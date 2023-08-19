@@ -5,28 +5,23 @@ import {
   GetOneCategoryQuery,
   GetOneCategoryQueryVariables,
 } from "@/gql/graphql";
-import { loginSchema } from "@/types/login";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { useQuery } from "urql";
 import EditCategory from "./EditCategory";
+import CreateCategory from "./CreateCategory";
 
 interface Props {
   id: number;
   name: string;
+  isCreate: boolean;
   setIsCreate: React.Dispatch<React.SetStateAction<boolean>>;
+  isEdit: boolean;
+  setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const OneCategory = (props: Props) => {
   const [error, setError] = useState<string>("");
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [isEdit, setIsEdit] = useState<boolean>(false);
-
-  useEffect(() => {
-    setIsEdit(false);
-    props.setIsCreate(false);
-  }, [props.id]);
 
   const [{ fetching, data }] = useQuery<
     GetOneCategoryQuery,
@@ -42,14 +37,16 @@ const OneCategory = (props: Props) => {
 
   return (
     <div>
-      {isEdit ? (
+      {props.isEdit ? (
         <EditCategory
-          setIsEdit={setIsEdit}
-          isEdit={isEdit}
+          setIsEdit={props.setIsEdit}
+          isEdit={props.isEdit}
           name={category?.name as string}
           section={category?.section?.name as string}
           id={category?.id as number}
         />
+      ) : props.isCreate ? (
+        <CreateCategory key={2} />
       ) : (
         <div>
           {fetching ? (
@@ -61,7 +58,13 @@ const OneCategory = (props: Props) => {
               <p>{category?.section?.name}</p>
               <p>{category?.id}</p>
 
-              <button className="bg-blue-500" onClick={() => setIsEdit(true)}>
+              <button
+                className="bg-blue-500"
+                onClick={() => {
+                  props.setIsEdit(true);
+                  props.setIsCreate(false);
+                }}
+              >
                 Edit
               </button>
               <button className="bg-red-600" onClick={() => setModalOpen(true)}>

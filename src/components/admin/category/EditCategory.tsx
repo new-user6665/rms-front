@@ -1,3 +1,4 @@
+'use client';
 import { UpdateCategory } from "@/app/admin/category/api";
 import { editCategorySchema } from "@/types/category";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,15 +14,18 @@ interface Props {
 }
 
 const EditCategory = (props: Props) => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { isSubmitting },
-  } = useForm({
-    shouldUseNativeValidation: true,
-    resolver: zodResolver(editCategorySchema),
-  });
+
+  const [name, setName] = React.useState<string>(props.name);
+  const [section, setSection] = React.useState<string>(props.section);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
+  const handleSubmit = async (data: any) => {
+    setIsLoading(true);
+    const datas: any = await UpdateCategory({ ...data, id: props.id });
+    // console.log(datas);
+    setIsLoading(false);
+    props.setIsEdit(false);
+  };
 
   return (
     <div>
@@ -31,27 +35,26 @@ const EditCategory = (props: Props) => {
       <h1>Edit Category</h1>
 
       <form
-        onSubmit={handleSubmit(async (data) => {
-          console.log(data);
-          const datas: any = await UpdateCategory({ ...data, id: props.id });
-        })}
+        onSubmit={(e)=> {
+          e.preventDefault();
+          handleSubmit({name, section})
+        }}
       >
         <input
           type="text"
-          placeholder={props.name as string}
-          {...register("name")}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
         <input
           type="text"
-          placeholder={props.section as string}
-          {...register("section")}
+          value={section}
+          onChange={(e) => setSection(e.target.value)}
         />
         <button
           className="bg-fuchsia-600"
           type="submit"
-          disabled={isSubmitting}
         >
-          Submit
+          {isLoading ? "Loading..." : "Submit"}
         </button>
       </form>
     </div>

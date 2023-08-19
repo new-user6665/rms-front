@@ -29,8 +29,8 @@ const CreateCategory = (props: Props) => {
           });
         })}
       >
-        <input type="text" {...register("name")} placeholder="name"/>
-        <input type="text" {...register("section")} placeholder="section"/>
+        <input type="text" {...register("name")} placeholder="name" />
+        <input type="text" {...register("section")} placeholder="section" />
         <button
           className="bg-fuchsia-600"
           type="submit"

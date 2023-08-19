@@ -12,6 +12,7 @@ export const getUrqlClient = () => {
       exchanges: [fetchExchange , cacheExchange],
       fetchOptions : {
         cache : "no-cache",
+        credentials : "include",
       }
     });
   }
