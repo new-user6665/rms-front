@@ -7,7 +7,8 @@ import { withUrqlClient } from "next-urql";
 import React, { useEffect, useState } from "react";
 import { cacheExchange, fetchExchange } from "urql";
 import CreateCategory from "./CreateCategory";
-import { Category } from "@/gql/graphql";
+import { Category, CheckLoggedInDocument } from "@/gql/graphql";
+import Axios from "@/lib/Axios";
 
 interface Props {
   data: {
@@ -24,6 +25,7 @@ const Category = (props: Props) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [data, setData] = useState<Category[]>(props.result);
+
 
   return (
     <>
@@ -55,6 +57,7 @@ const Category = (props: Props) => {
                   className="bg-green-600"
                   onClick={() => {
                     setIsCreate(true);
+                    setIsEdit(false);
                     setIsRightSideBarOpen(true);
                   }}
                 >
@@ -63,11 +66,15 @@ const Category = (props: Props) => {
               </div>
             </div>
           </div>
-          {data.map((item: any, index: number) => {
+
+          <div className="flex">
+
+       <div className="grid grid-cols-4 gap-4 w-full">
+          {data?.map((item: any, index: number) => {
             return (
               <div
                 key={index}
-                className="w-1/2 h-10 bg-base-100 rounded-lg mt-[1%] cursor-pointer"
+                className="w-full h-full bg-base-100 rounded-lg mt-[1%] cursor-pointer "
                 onClick={() => {
                   setIsRightSideBarOpen(true);
                   setSelectedCategory(item);
@@ -75,18 +82,24 @@ const Category = (props: Props) => {
                   setIsCreate(false);
                 }}
               >
-                <div className="w-1/3 h-full float-left">
+                <div className="w-1/3">
                   <p className="text-base-content">{item.name}</p>
                 </div>
-                <div className="w-1/3 h-full float-left">
+                <div className="w-1/3 ">
                   <p className="text-base-content">{item.id}</p>
                 </div>
-                <div className="w-1/3 h-full float-left">
+                <div className="w-1/3">
                   <p className="text-base-content">{item.updatedAt}</p>
                 </div>
               </div>
             );
           })}
+
+
+          </div>
+
+           
+      </div>    
         </div>
       </div>
       <RightSideBar
@@ -102,6 +115,8 @@ const Category = (props: Props) => {
           setIsEdit={setIsEdit}
           isCreate={isCreate}
           setIsCreate={setIsCreate}
+          data={data}
+          setData={setData}
         />
       </RightSideBar>
     </>
@@ -113,5 +128,6 @@ export default withUrqlClient(() => ({
   exchanges: [fetchExchange, cacheExchange],
   fetchOptions: {
     cache: "no-cache",
+    credentials: "include",
   },
 }))(Category);

@@ -13,7 +13,7 @@ const RightSideBar = (props: Props) => {
     <div
       className={`${
         props.isOpen ? "w-52 opacity-100" : "w-0 opacity-0"
-      } h-full bg-base-200 ms-3 rounded-lg hidden md:flex flex-col transition-all duration-500 overflow-hidden`}
+      } h-full bg-base-300 ms-3 rounded-lg hidden md:flex flex-col transition-all duration-500 overflow-hidden`}
     >
 
         <ArrowRightSquare

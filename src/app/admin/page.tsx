@@ -1,7 +1,7 @@
 // "use client";
 import InfoBar from "@/components/admin/InfoBar";
 import RightSideBar from "@/components/admin/RightSideBar";
-import DashBoard from "@/components/pages/admin/DashBoard";
+import DashBoard from "@/components/admin/DashBoard";
 import { withUrqlClient } from "next-urql";
 import { cacheExchange, fetchExchange } from "urql";
 

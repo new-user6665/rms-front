@@ -1,5 +1,6 @@
 'use client';
 import { UpdateCategory } from "@/app/admin/category/api";
+import { Category } from "@/gql/graphql";
 import { editCategorySchema } from "@/types/category";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
@@ -11,6 +12,8 @@ interface Props {
   section: string;
   isEdit: boolean;
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  data : Category[]
+  setData : React.Dispatch<React.SetStateAction<Category[]>>
 }
 
 const EditCategory = (props: Props) => {

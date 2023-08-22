@@ -36,7 +36,7 @@ const page = async () => {
   ];
  const h = data[0]
   return (
-    <main className="ms-3 w-full h-full flex ">
+    <main className="w-full h-full flex ">
       <Category key={1} data={data} result={result.data?.categories} pageProps={1}/>
     </main>
   );

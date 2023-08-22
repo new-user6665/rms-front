@@ -6,15 +6,28 @@ import { Login, loginSchema } from "@/types/login";
 import { login } from "@/app/(user)/login/api";
 import { useRouter } from "next/navigation";
 import { useGlobalContext } from "@/context/context";
+import { SERVER_URL } from "@/lib/urql";
+import {
+  OperationResult,
+  cacheExchange,
+  fetchExchange,
+  useMutation,
+  useQuery,
+} from "urql";
+import { withUrqlClient } from "next-urql";
+import {
+  LoginUserDocument,
+  LoginUserMutation,
+  LoginUserMutationVariables,
+} from "@/gql/graphql";
 
 const LoginPage = () => {
+  const router = useRouter();
 
-    const router = useRouter();
+  const [error, setError] = useState("");
+  const { data, setData } = useGlobalContext();
 
-    const [error , setError ] = useState('');
-    const { data , setData} = useGlobalContext();
-  
-  
+  const [state, LoginMutaion] = useMutation(LoginUserDocument);
 
   const {
     register,
@@ -25,6 +38,27 @@ const LoginPage = () => {
     shouldUseNativeValidation: true,
     resolver: zodResolver(loginSchema),
   });
+
+  const HandleLogin = async (data: Login) => {
+    const datas: OperationResult<
+      LoginUserMutation,
+      LoginUserMutationVariables
+    > = await LoginMutaion(data);
+    await login(datas.data?.login.token as string);
+    if (!datas.data?.login) {
+      setError("Invalid username or password");
+    } else {
+      setError("");
+      setData({
+        admin: {
+          ...datas.data?.login.admin,
+        },
+        token: datas.data?.login.token,
+      });
+      router.push("/admin");
+    }
+    reset();
+  };
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900 transition-all">
@@ -48,20 +82,7 @@ const LoginPage = () => {
             <form
               className="space-y-4 md:space-y-6"
               onSubmit={handleSubmit(async (data) => {
-                console.log(data);
-                const datas : any = await login(data);
-                if(!datas.admin){
-                    setError('Invalid username or password');
-                 }else{
-                    setError('');
-                    setData({
-                      admin : {
-                        ...datas.admin
-                      },
-                      token : datas.token
-                    });
-                 }
-                reset();
+                await HandleLogin(data);
               })}
             >
               <div>
@@ -112,4 +133,11 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default withUrqlClient(() => ({
+  url: SERVER_URL,
+  exchanges: [fetchExchange, cacheExchange],
+  fetchOptions: {
+    cache: "no-cache",
+    credentials: "include",
+  },
+}))(LoginPage);

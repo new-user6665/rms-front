@@ -9,10 +9,16 @@ export const getUrqlClient = () => {
     _client = createClient({
       url: SERVER_URL || process.env.SERVER_URL as string,
       requestPolicy: "cache-first",
-      exchanges: [fetchExchange , cacheExchange],
+      exchanges: [fetchExchange , cacheExchange ],
       fetchOptions : {
         cache : "no-cache",
         credentials : "include",
+        headers : {
+          "Access-Control-Allow-Origin" : "*",
+          "Access-Control-Allow-Methods" : "GET, POST, PUT, DELETE, OPTIONS",
+          "Access-Control-Allow-Headers" : "Origin, Content-Type, Accept, Authorization, X-Request-With",
+          "Access-Control-Allow-Credentials" : "true"
+        }
       }
     });
   }

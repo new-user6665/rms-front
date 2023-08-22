@@ -1,11 +1,15 @@
 "use client";
 import Modal from "@/components/Modal";
 import {
+  Category,
+  CheckLoggedInDocument,
+  CheckLoggedInQuery,
+  CheckLoggedInQueryVariables,
   GetOneCategoryDocument,
   GetOneCategoryQuery,
   GetOneCategoryQueryVariables,
 } from "@/gql/graphql";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "urql";
 import EditCategory from "./EditCategory";
 import CreateCategory from "./CreateCategory";
@@ -17,10 +21,12 @@ interface Props {
   setIsCreate: React.Dispatch<React.SetStateAction<boolean>>;
   isEdit: boolean;
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  data: Category[];
+  setData: React.Dispatch<React.SetStateAction<Category[]>>;
 }
 
 const OneCategory = (props: Props) => {
-  const [error, setError] = useState<string>("");
+  const [Iserror, setError] = useState<string>("");
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const [{ fetching, data }] = useQuery<
@@ -35,6 +41,8 @@ const OneCategory = (props: Props) => {
 
   const category = data?.category;
 
+  console.log(category);
+
   return (
     <div>
       {props.isEdit ? (
@@ -44,9 +52,11 @@ const OneCategory = (props: Props) => {
           name={category?.name as string}
           section={category?.section?.name as string}
           id={category?.id as number}
+          data={props.data}
+          setData={props.setData}
         />
       ) : props.isCreate ? (
-        <CreateCategory key={2} />
+        <CreateCategory key={2} data={props.data} setData={props.setData} />
       ) : (
         <div>
           {fetching ? (
