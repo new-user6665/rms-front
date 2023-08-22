@@ -1,10 +1,11 @@
 'use client';
 import { UpdateCategory } from "@/app/admin/category/api";
-import { Category } from "@/gql/graphql";
+import { Category, EditCategoryDocument, EditCategoryMutation, EditCategoryMutationVariables } from "@/gql/graphql";
 import { editCategorySchema } from "@/types/category";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { OperationResult, useMutation } from "urql";
 
 interface Props {
   name: string;
@@ -22,13 +23,27 @@ const EditCategory = (props: Props) => {
   const [section, setSection] = React.useState<string>(props.section);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-  const handleSubmit = async (data: any) => {
+  const [state, UpdateCategoryExecute] = useMutation(EditCategoryDocument);
+
+
+  const HandleSubmit = async (data: any) => {
     setIsLoading(true);
-    const datas: any = await UpdateCategory({ ...data, id: props.id });
-    // console.log(datas);
+    const datas: OperationResult<EditCategoryMutation,EditCategoryMutationVariables> = await UpdateCategoryExecute({
+      id: props.id,
+      name: data.name,
+      section: data.section,
+    });
+
+    if (datas.data?.updateCategory) {
+      alert("Category Added");
+    props.setData([...props.data, datas.data?.updateCategory as Category]);
+    } else {
+      alert("Category Not Added");
+    }
     setIsLoading(false);
     props.setIsEdit(false);
   };
+
 
   return (
     <div>
@@ -40,7 +55,7 @@ const EditCategory = (props: Props) => {
       <form
         onSubmit={(e)=> {
           e.preventDefault();
-          handleSubmit({name, section})
+          HandleSubmit({name, section})
         }}
       >
         <input

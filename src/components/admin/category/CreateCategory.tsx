@@ -14,7 +14,7 @@ interface Props {
 
 const CreateCategory = (props: Props) => {
 
-  const [state, CreateCategoryExicute] = useMutation(AddCategoryDocument);
+  const [state, CreateCategoryExecute] = useMutation(AddCategoryDocument);
 
   const {
     register,
@@ -27,7 +27,7 @@ const CreateCategory = (props: Props) => {
   });
 
   const HandleSubmit = async (data: any) => {
-    const datas: OperationResult<AddCategoryMutation,AddCategoryMutationVariables> = await CreateCategoryExicute({
+    const datas: OperationResult<AddCategoryMutation,AddCategoryMutationVariables> = await CreateCategoryExecute({
       name: data.name,
       section: data.section,
     });

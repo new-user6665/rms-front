@@ -1,15 +1,14 @@
-"use client";
 import Modal from "@/components/Modal";
 import {
-  Category,
-  GetOneCategoryDocument,
-  GetOneCategoryQuery,
-  GetOneCategoryQueryVariables,
+  GetOneSectionDocument,
+  GetOneSectionQuery,
+  GetOneSectionQueryVariables,
+  Section,
 } from "@/gql/graphql";
-import {  useState } from "react";
+import React, { useState } from "react";
 import { useQuery } from "urql";
-import EditCategory from "./EditCategory";
-import CreateCategory from "./CreateCategory";
+import EditSection from "./EditSection";
+import CreateSection from "./CreateSection";
 
 interface Props {
   id: number;
@@ -18,52 +17,50 @@ interface Props {
   setIsCreate: React.Dispatch<React.SetStateAction<boolean>>;
   isEdit: boolean;
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
-  data: Category[];
-  setData: React.Dispatch<React.SetStateAction<Category[]>>;
+  data: Section[];
+  setData: React.Dispatch<React.SetStateAction<Section[]>>;
 }
 
-const OneCategory = (props: Props) => {
+const SingleSection = (props: Props) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const [{ fetching, data }] = useQuery<
-    GetOneCategoryQuery,
-    GetOneCategoryQueryVariables
+    GetOneSectionQuery,
+    GetOneSectionQueryVariables
   >({
-    query: GetOneCategoryDocument,
+    query: GetOneSectionDocument,
     variables: {
       id: props.id,
     },
   });
 
-  const category = data?.category;
+  const section = data?.section;
 
-  console.log(category);
+  console.log(section);
 
   return (
     <div>
       {props.isEdit ? (
-        <EditCategory
+        <EditSection
           key={1}
           setIsEdit={props.setIsEdit}
           isEdit={props.isEdit}
-          name={category?.name as string}
-          section={category?.section?.name as string}
-          id={category?.id as number}
+          name={section?.name as string}
+          id={section?.id as number}
           data={props.data}
           setData={props.setData}
         />
       ) : props.isCreate ? (
-        <CreateCategory key={2} data={props.data} setData={props.setData} />
+        <CreateSection key={2} data={props.data} setData={props.setData} />
       ) : (
         <div>
           {fetching ? (
             <p> loading... </p>
           ) : (
             <div>
-              <p>{category?.name}</p>
-              <p>{category?.updatedAt}</p>
-              <p>{category?.section?.name}</p>
-              <p>{category?.id}</p>
+              <p>{section?.name}</p>
+              <p>{section?.updatedAt}</p>
+              <p>{section?.id}</p>
 
               <button
                 className="bg-blue-500"
@@ -82,7 +79,7 @@ const OneCategory = (props: Props) => {
         </div>
       )}
 
-      <Modal modalOpen={modalOpen} setModalOpen={setModalOpen} key={3}>
+      <Modal modalOpen={modalOpen} setModalOpen={setModalOpen} key={1}>
         <p>Are you sure Do you want to Delete ?</p>
         <button className="bg-red-600">Delete</button>
         <button className="bg-blue-500" onClick={() => setModalOpen(false)}>
@@ -93,4 +90,4 @@ const OneCategory = (props: Props) => {
   );
 };
 
-export default OneCategory;
+export default SingleSection;

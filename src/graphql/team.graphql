@@ -1,0 +1,66 @@
+query GetAllTeams {
+  teams {
+    id
+    name
+    updatedAt
+  }
+}
+
+query GetOneTeam($id: Int!) {
+  team(id: $id) {
+    id
+    name
+    description
+    shortName
+    totalPoint
+    updatedAt
+  }
+}
+
+mutation AddTeam(
+  $name: String!
+  $description: String!
+  $shortName: String!
+  $color: String!
+) {
+  createTeam(
+    createTeamInput: {
+      name: $name
+      description: $description
+      shortName: $shortName
+      color: $color
+    }
+  ) {
+    id
+    name
+    updatedAt
+  }
+}
+
+mutation EditTeam(
+  $id: Int!
+  $name: String!
+  $description: String!
+  $shortName: String!
+  $color: String!
+) {
+  updateTeam(
+    updateTeamInput: {
+      id: $id
+      name: $name
+      description: $description
+      shortName: $shortName
+      color: $color
+    }
+  ) {
+    id
+    name
+    updatedAt
+  }
+}
+
+mutation DeleteTeam($id: Int!) {
+  removeTeam(id: $id) {
+    __typename
+  }
+}

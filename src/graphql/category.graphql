@@ -23,11 +23,9 @@ mutation AddCategory($name:String! , $section:String!) {
       name: $name
       section:$section
     }) {
-      id
+       id
       name
-      section{
-        name
-      }
+     updatedAt 
     }
   }
 
@@ -37,18 +35,15 @@ mutation EditCategory($id:Int!, $name:String! , $section:String!) {
       name: $name
       section:$section
     }) {
-      id
+       id
       name
-      section{
-        name
-      }
+     updatedAt
     }
   }
 
 mutation DeleteCategory($id:Int!) {
     removeCategory(id: $id) {
-      id
-      name
+      __typename
     }
   }  
 
