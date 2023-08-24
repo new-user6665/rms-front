@@ -1,19 +1,19 @@
 "use client";
-import { AddSectionDocument, AddSectionMutation, AddSectionMutationVariables, Section } from "@/gql/graphql";
-import { addSectionSchema } from "@/types/section"
+import { AddGradeDocument, AddGradeMutation, AddGradeMutationVariables, Grade } from "@/gql/graphql";
+import { addGradeSchema } from "@/types/grades"
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { OperationResult, useMutation } from "urql";
 
 interface Props {
-  data : Section[]
-  setData : React.Dispatch<React.SetStateAction<Section[]>>
+  data : Grade[]
+  setData : React.Dispatch<React.SetStateAction<Grade[]>>
 }
 
-const CreateSection = (props: Props) => {
+const CreateGrade = (props: Props) => {
 
-  const [state, CreateSectionExecute] = useMutation(AddSectionDocument);
+  const [state, CreateGradeExecute] = useMutation(AddGradeDocument);
 
   const {
     register,
@@ -22,26 +22,30 @@ const CreateSection = (props: Props) => {
     formState: { isSubmitting },
   } = useForm({
     shouldUseNativeValidation: true,
-    resolver: zodResolver(addSectionSchema),
+    resolver: zodResolver(addGradeSchema),
   });
 
   const HandleSubmit = async (data: any) => {
-    const datas: OperationResult<AddSectionMutation,AddSectionMutationVariables> = await CreateSectionExecute({
-      name: data.name
+    const datas: OperationResult<AddGradeMutation,AddGradeMutationVariables> = await CreateGradeExecute({
+      name: data.name,
+      percentage: data.percentage,
+      pointGroup: data.pointGroup,
+      pointHouse: data.pointHouse,
+      pointSingle : data.pointSingle
     });
 
-    if (datas.data?.createSection) {
-      alert("Section Added");
-    props.setData([...props.data, datas.data?.createSection as Section]);
+    if (datas.data?.createGrade) {
+      alert("Grade Added");
+    props.setData([...props.data, datas.data?.createGrade as Grade]);
     } else {
-      alert("Section Not Added");
+      alert("Grade Not Added");
     }
     reset();
   };
 
   return (
     <div>
-      <h1>Create Section</h1>
+      <h1>Create Grade</h1>
 
       <form
         onSubmit={handleSubmit(async (data) => {
@@ -61,4 +65,4 @@ const CreateSection = (props: Props) => {
   );
 };
 
-export default CreateSection;
+export default CreateGrade;

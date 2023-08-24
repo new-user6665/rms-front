@@ -19,6 +19,8 @@ export default function RootLayout({
     console.log("cookie", cookie);
   }
 
+  
+
   return (
       <div className="flex px-[1vw] py-[1vh] w-screen h-screen overflow-hidden">
      { !cookie ? (

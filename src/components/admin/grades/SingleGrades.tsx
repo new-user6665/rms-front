@@ -1,18 +1,18 @@
 "use client";
 import Modal from "@/components/Modal";
 import {
-  Section,
-  DeleteSectionDocument,
-  DeleteSectionMutation,
-  DeleteSectionMutationVariables,
-  GetOneSectionDocument,
-  GetOneSectionQuery,
-  GetOneSectionQueryVariables,
+  Grade,
+  DeleteGradeDocument,
+  DeleteGradeMutation,
+  DeleteGradeMutationVariables,
+  GetOneGradeDocument,
+  GetOneGradeQuery,
+  GetOneGradeQueryVariables,
 } from "@/gql/graphql";
 import {  useState } from "react";
 import { OperationResult, useMutation, useQuery } from "urql";
-import EditSection from "./EditGrades";
-import CreateSection from "./CreateGrades";
+import EditGrade from "./EditGrades";
+import CreateGrade from "./CreateGrades";
 
 interface Props {
   id: number;
@@ -21,35 +21,35 @@ interface Props {
   setIsCreate: React.Dispatch<React.SetStateAction<boolean>>;
   isEdit: boolean;
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
-  data: Section[];
-  setData: React.Dispatch<React.SetStateAction<Section[]>>;
+  data: Grade[];
+  setData: React.Dispatch<React.SetStateAction<Grade[]>>;
   isOpen : boolean;
   setIsOpen : React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const OneSection = (props: Props) => {
+const OneGrade = (props: Props) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const [{ fetching, data }] = useQuery<
-    GetOneSectionQuery,
-    GetOneSectionQueryVariables
+    GetOneGradeQuery,
+    GetOneGradeQueryVariables
   >({
-    query: GetOneSectionDocument,
+    query: GetOneGradeDocument,
     variables: {
       id: props.id,
     },
   });
 
-  const [state, DeleteSectionExecute] = useMutation(DeleteSectionDocument);
+  const [state, DeleteGradeExecute] = useMutation(DeleteGradeDocument);
 
 
   const HandleDelete =async ()=>{
     
-    const deletedData : OperationResult<DeleteSectionMutation,DeleteSectionMutationVariables> = await DeleteSectionExecute({
+    const deletedData : OperationResult<DeleteGradeMutation,DeleteGradeMutationVariables> = await DeleteGradeExecute({
       id: props.id
     });
     
-    if(deletedData.data?.removeSection?.__typename){
+    if(deletedData.data?.removeGrade?.__typename){
       const deleted = props.data.filter((value , index)=>{
         return value.id !== props.id;
       })
@@ -60,30 +60,30 @@ const OneSection = (props: Props) => {
     setModalOpen(false)
 }
 
-  const Section = data?.section;
+  const Grade = data?.grade;
 
   return (
     <div>
       {props.isEdit ? (
-        <EditSection
+        <EditGrade
           key={1}
           setIsEdit={props.setIsEdit}
           isEdit={props.isEdit}
-          name={Section?.name as string}
-          id={Section?.id as number}
+          name={Grade?.name as string}
+          id={Grade?.id as number}
           data={props.data}
           setData={props.setData}
         />
       ) : props.isCreate ? (
-        <CreateSection key={2} data={props.data} setData={props.setData} />
+        <CreateGrade key={2} data={props.data} setData={props.setData} />
       ) : (
         <div>
           {fetching ? (
             <p> loading... </p>
           ) : (
             <div>
-              <p>{Section?.name}</p>
-              <p>{Section?.id}</p>
+              <p>{Grade?.name}</p>
+              <p>{Grade?.id}</p>
               <button
                 className="bg-blue-500"
                 onClick={() => {
@@ -112,4 +112,4 @@ const OneSection = (props: Props) => {
   );
 };
 
-export default OneSection;
+export default OneGrade;

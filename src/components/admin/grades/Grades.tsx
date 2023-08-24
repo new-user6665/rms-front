@@ -1,12 +1,12 @@
 "use client";
 import InfoBar from "@/components/admin/InfoBar";
-import SingleSection from "@/components/admin/section/SingleSection";
+import SingleGrade from "@/components/admin/grades/SingleGrades";
 import RightSideBar from "@/components/admin/RightSideBar";
 import { SERVER_URL } from "@/lib/urql";
 import { withUrqlClient } from "next-urql";
 import React, { useEffect, useState } from "react";
 import { cacheExchange, fetchExchange } from "urql";
-import { Section } from "@/gql/graphql";
+import { Grade } from "@/gql/graphql";
 import Axios from "@/lib/Axios";
 
 interface Props {
@@ -14,16 +14,16 @@ interface Props {
     title: string;
     icon: any;
   }[];
-  result: Section[];
+  result: Grade[];
 }
 
-const Section = (props: Props) => {
+const Grade = (props: Props) => {
   const [IsRightSideBarOpen, setIsRightSideBarOpen] = useState(false);
-  const [SelectedSection, setSelectedSection] = useState({ id: 0, name: "" });
+  const [SelectedGrade, setSelectedGrade] = useState({ id: 0, name: "" });
   const [isCreate, setIsCreate] = useState(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
-  const [data, setData] = useState<Section[]>(props.result);
+  const [data, setData] = useState<Grade[]>(props.result);
 
   return (
     <>
@@ -74,7 +74,7 @@ const Section = (props: Props) => {
                     className="w-full h-full bg-base-100 rounded-lg mt-[1%] cursor-pointer "
                     onClick={() => {
                       setIsRightSideBarOpen(true);
-                      setSelectedSection(item);
+                      setSelectedGrade(item);
                       setIsEdit(false);
                       setIsCreate(false);
                     }}
@@ -97,12 +97,12 @@ const Section = (props: Props) => {
         isOpen={IsRightSideBarOpen}
         setIsOpen={setIsRightSideBarOpen}
       >
-        <SingleSection
+        <SingleGrade
           isOpen={IsRightSideBarOpen}
           setIsOpen={setIsRightSideBarOpen}
           key={3}
-          name={SelectedSection.name}
-          id={SelectedSection.id}
+          name={SelectedGrade.name}
+          id={SelectedGrade.id}
           isEdit={isEdit}
           setIsEdit={setIsEdit}
           isCreate={isCreate}
@@ -122,4 +122,4 @@ export default withUrqlClient(() => ({
     cache: "no-cache",
     credentials: "include",
   },
-}))(Section);
+}))(Grade);

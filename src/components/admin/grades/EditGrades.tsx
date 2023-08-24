@@ -1,4 +1,4 @@
-import {  EditSectionDocument, EditSectionMutation, EditSectionMutationVariables, Section } from '@/gql/graphql';
+import {  EditGradeDocument, EditGradeMutation, EditGradeMutationVariables, Grade } from '@/gql/graphql';
 import React from 'react'
 import { OperationResult, useMutation } from 'urql';
 
@@ -7,41 +7,45 @@ interface Props {
     id: number;
     isEdit: boolean;
     setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
-    data : Section[]
-    setData : React.Dispatch<React.SetStateAction<Section[]>>
+    data : Grade[]
+    setData : React.Dispatch<React.SetStateAction<Grade[]>>
     }
 
-const EditSection = (props : Props) => {
+const EditGrade = (props : Props) => {
     const [name, setName] = React.useState<string>(props.name);
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
   
-    const [state, UpdateSectionExecute] = useMutation(EditSectionDocument);
+    const [state, UpdateGradeExecute] = useMutation(EditGradeDocument);
   
   
     const HandleSubmit = async (data: any) => {
       setIsLoading(true);
-      const updatedData : OperationResult<EditSectionMutation,EditSectionMutationVariables> = await UpdateSectionExecute({
+      const updatedData : OperationResult<EditGradeMutation,EditGradeMutationVariables> = await UpdateGradeExecute({
         id: props.id,
-        name: data.name
+        name: data.name,
+        percentage: data.percentage,
+        pointGroup: data.pointGroup,
+        pointHouse  : data.pointHouse,
+        pointSingle : data.pointSingle
       });
   
-      if (updatedData.data?.updateSection) {
-        alert("Section Added");  
+      if (updatedData.data?.updateGrade) {
+        alert("Grade Added");  
         const updatedDates = props.data.map((value , index)=>{
-          if(value.id == updatedData.data?.updateSection?.id){
-          return  value = updatedData.data?.updateSection as Section
+          if(value.id == updatedData.data?.updateGrade?.id){
+          return  value = updatedData.data?.updateGrade as Grade
           }else{
             return value
           }
         })
   console.log(updatedDates);
   
-      props.setData(updatedDates as Section[]);
+      props.setData(updatedDates as Grade[]);
       } else if(updatedData.error?.message) {
         alert(updatedData.error?.message.split(']')[1]);
       }
       else {
-          alert("Section Not Added");
+          alert("Grade Not Added");
         }
       setIsLoading(false);
       props.setIsEdit(false);
@@ -53,7 +57,7 @@ const EditSection = (props : Props) => {
         <button className="bg-green-500" onClick={() => props.setIsEdit(false)}>
           Back
         </button>
-        <h1>Edit Section</h1>
+        <h1>Edit Grade</h1>
   
         <form
           onSubmit={(e)=> {
@@ -77,4 +81,4 @@ const EditSection = (props : Props) => {
     );
 }
 
-export default EditSection
+export default EditGrade

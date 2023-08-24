@@ -14,53 +14,122 @@ import React, { useContext, useEffect, useState } from "react";
 
 const AdminNavs = [
   {
+    name: "Settings",
+    nav : 'settings',
+    icon: <Dashoard className="w-8 h-8" />,
+  },
+  {
     name: "Category",
-    
+    nav : 'category',
     icon: <Category className="w-8 h-8" />,
   },
   {
     name: "Section",
+    nav : 'section',
     icon: <SectionIcon className="w-8 h-8" />,
   },
   {
     name: "Credentials",
+    nav : 'credentials',
     icon: <Credential className="w-8 h-8" />,
   },
   {
     name: "Skill",
+    nav : 'skill',
     icon: <Dashoard className="w-8 h-8" />,
   },
+  {
+    name: "Grade",
+    nav : 'grades',
+    icon: <Dashoard className="w-8 h-8" />,
+  },
+   {  
+    name: "Position",
+    nav : 'position',
+    icon: <Dashoard className="w-8 h-8" />,
+  }, 
+  {
+    name: "Team",
+    nav : 'team',
+    icon: <Dashoard className="w-8 h-8" />,
+  }
 ];
 
 const ControllerNavs = [
   {
+    name: "Rules",
+    nav : 'rules',
+    icon: <Dashoard className="w-8 h-8" />,
+  },
+  {
     name: "Candidates",
+    nav : 'candidates',
     icon: <Candidates className="w-8 h-8" />,
   },
   {
-    name: "Skill",
+    name: "Programs",
+    nav : 'programs',
+    icon: <Candidates className="w-8 h-8" />,
+  },
+  {
+    name: "Judges",
+    nav : 'judges',
+    icon: <Dashoard className="w-8 h-8" />,
+  },
+  {
+    name: "Substitute",
+    nav : 'substitute',
+    icon: <Dashoard className="w-8 h-8" />,
+  },
+  {
+    name: "Results",
+    nav : 'results',
     icon: <Dashoard className="w-8 h-8" />,
   },
 ];
 
 const MediaNavs = [
   {
-    name: "Candidates",
+    name: "Feeds",
+    nav : 'feeds',
     icon: <Candidates className="w-8 h-8" />,
   },
   {
-    name: "Skill",
+    name: "Gallery",
+    nav : 'gallery',
     icon: <Dashoard className="w-8 h-8" />,
   },
+  {
+    name: "Certificate",
+    nav : 'cartificate',
+    icon: <Dashoard className="w-8 h-8" />,
+  },
+  {
+    name: "Tags",
+    nav : 'tags',
+    icon: <Dashoard className="w-8 h-8" />,
+  }
 ];
 
 const TeamManagerNavs = [
   {
     name: "Candidates",
+    nav : 'team-candidates',
     icon: <Candidates className="w-8 h-8" />,
   },
   {
-    name: "Skill",
+    name: "Programs",
+    nav : 'team-programs',  
+    icon: <Dashoard className="w-8 h-8" />,
+  },
+  {
+    name: "List",
+    nav : 'team-list',  
+    icon: <Dashoard className="w-8 h-8" />,
+  },
+  {
+    name: "Results",
+    nav : 'team-results',
     icon: <Dashoard className="w-8 h-8" />,
   },
 ];
@@ -131,8 +200,9 @@ const SideBar = () => {
           </p>
         </li>
 
-        {navs.map((nav, index) => (
-          <li key={index} className="p-0 w-1" onClick={()=> router.push(`/admin/${nav.name.toLowerCase()}`)}>
+        {
+        navs.map((nav, index) => (
+          <li key={index} className="p-0 w-1" onClick={()=> router.push(`/admin/${nav.nav}`)}>
             <p
               className={` px-0 flex ${
                 isOpen ? "w-40" : "w-12 items-center justify-center"
@@ -148,7 +218,8 @@ const SideBar = () => {
               </span>
             </p>
           </li>
-        ))}
+        ))
+        }
       </ul>
     </div>
   );

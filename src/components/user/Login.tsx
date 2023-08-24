@@ -81,9 +81,10 @@ const LoginPage = () => {
             </p>
             <form
               className="space-y-4 md:space-y-6"
-              onSubmit={handleSubmit(async (data) => {
-                await HandleLogin(data);
-              })}
+              onSubmit={(e)=>{
+                e.preventDefault()
+                handleSubmit(HandleLogin)()
+              }}
             >
               <div>
                 <label
