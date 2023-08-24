@@ -5,22 +5,6 @@ import { useEffect } from 'react';
 
 export default async function User() {
 
-  // check logged in query from urql
-
-  const { client } = getUrqlClient();
-  const result = await client.query<
-    CheckLoggedInQuery,
-    CheckLoggedInQueryVariables
-  >(CheckLoggedInDocument, {} , {
-    fetchOptions:{
-      credentials: 'include'
-    }
-  });
-
-
-
-  console.log(result);
-  
 
   return (
    <main>

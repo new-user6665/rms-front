@@ -88,9 +88,6 @@ const Category = (props: Props) => {
                 <div className="w-1/3 ">
                   <p className="text-base-content">{item.id}</p>
                 </div>
-                <div className="w-1/3">
-                  <p className="text-base-content">{item.updatedAt}</p>
-                </div>
               </div>
             );
           })}
@@ -117,6 +114,8 @@ const Category = (props: Props) => {
           setIsCreate={setIsCreate}
           data={data}
           setData={setData}
+          isOpen={IsRightSideBarOpen}
+          setIsOpen={setIsRightSideBarOpen}
         />
       </RightSideBar>
     </>

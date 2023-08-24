@@ -15,6 +15,7 @@ import React, { useContext, useEffect, useState } from "react";
 const AdminNavs = [
   {
     name: "Category",
+    
     icon: <Category className="w-8 h-8" />,
   },
   {

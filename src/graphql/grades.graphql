@@ -2,7 +2,6 @@ query GetAllGrades {
   grades {
     id
     name
-    updatedAt
   }
 }
 
@@ -10,7 +9,6 @@ query GetOneGrade($id: Int!) {
   grade(id: $id) {
     id
     name
-    updatedAt
   }
 }
 
@@ -32,7 +30,6 @@ mutation AddGrade(
   ) {
     id
     name
-    updatedAt
   }
 }
 
@@ -56,7 +53,6 @@ mutation EditGrade(
   ) {
     id
     name
-    updatedAt
   }
 }
 

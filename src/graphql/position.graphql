@@ -2,7 +2,6 @@ query GetAllPositions {
   positions {
     id
     name
-    updatedAt
   }
 }
 
@@ -14,7 +13,6 @@ query GetOnePosition($id: Int!) {
     pointGroup
     pointSingle
     pointHouse
-    updatedAt
   }
 }
 
@@ -36,7 +34,6 @@ mutation AddPosition(
   ) {
     id
     name
-    updatedAt
   }
 }
 
@@ -60,7 +57,6 @@ mutation EditPosition(
   ) {
     id
     name
-    updatedAt
   }
 }
 

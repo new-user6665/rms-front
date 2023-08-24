@@ -2,7 +2,6 @@ query GetAllTeams {
   teams {
     id
     name
-    updatedAt
   }
 }
 
@@ -13,7 +12,6 @@ query GetOneTeam($id: Int!) {
     description
     shortName
     totalPoint
-    updatedAt
   }
 }
 
@@ -33,7 +31,6 @@ mutation AddTeam(
   ) {
     id
     name
-    updatedAt
   }
 }
 
@@ -55,7 +52,6 @@ mutation EditTeam(
   ) {
     id
     name
-    updatedAt
   }
 }
 

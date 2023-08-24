@@ -1,49 +1,39 @@
 query GetAllCategories {
-    categories {
+  categories {
+    id
+    name
+  }
+}
+
+query GetOneCategory($id: Int!) {
+  category(id: $id) {
+    id
+    name
+    section {
       id
       name
-     updatedAt    
     }
   }
+}
 
-query GetOneCategory($id:Int!) {
-    category(id: $id) {
-      id
-      name
-      section{
-        id
-        name
-      }
-      updatedAt
-    }
-  }  
-
-mutation AddCategory($name:String! , $section:String!) {
-    createCategory(createCategoryInput: {
-      name: $name
-      section:$section
-    }) {
-       id
-      name
-     updatedAt 
-    }
+mutation AddCategory($name: String!, $section: String!) {
+  createCategory(createCategoryInput: { name: $name, section: $section }) {
+    id
+    name
   }
+}
 
-mutation EditCategory($id:Int!, $name:String! , $section:String!) {
-    updateCategory(updateCategoryInput: {
-      id: $id
-      name: $name
-      section:$section
-    }) {
-       id
-      name
-     updatedAt
-    }
+mutation EditCategory($id: Int!, $name: String!, $section: String!) {
+  updateCategory(
+    updateCategoryInput: { id: $id, name: $name, section: $section }
+  ) {
+    id
+    name
   }
+}
 
-mutation DeleteCategory($id:Int!) {
-    removeCategory(id: $id) {
-      __typename
-    }
-  }  
-
+mutation DeleteCategory($id: Int!) {
+  removeCategory(id: $id) {
+    __typename
+  }
+}

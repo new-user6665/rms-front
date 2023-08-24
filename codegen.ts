@@ -3,7 +3,7 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema:  'https://result-dusky.vercel.app/graphql',
+  schema:  'https://rms-omega-six.vercel.app/graphql',
   documents: "src/graphql/**/*.graphql",
   generates: {
     "src/gql/": {

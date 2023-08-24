@@ -28,17 +28,27 @@ const EditCategory = (props: Props) => {
 
   const HandleSubmit = async (data: any) => {
     setIsLoading(true);
-    const datas: OperationResult<EditCategoryMutation,EditCategoryMutationVariables> = await UpdateCategoryExecute({
+    const updatedData : OperationResult<EditCategoryMutation,EditCategoryMutationVariables> = await UpdateCategoryExecute({
       id: props.id,
       name: data.name,
       section: data.section,
     });
 
-    if (datas.data?.updateCategory) {
-      alert("Category Added");
-    props.setData([...props.data, datas.data?.updateCategory as Category]);
-    } else {
-      alert("Category Not Added");
+    if (updatedData.data?.updateCategory) {
+      alert("Category Updated");
+
+      const updatedDates = props.data.map((value , index)=>{
+        if(value.id == updatedData.data?.updateCategory?.id){
+        return  value = updatedData.data?.updateCategory as Category
+        }else{
+          return value
+        }
+      })
+console.log(updatedDates);
+
+    props.setData(updatedDates as Category[]);
+    } else if(updatedData.error?.message) {
+      alert(updatedData.error?.message.split(']')[1]);
     }
     setIsLoading(false);
     props.setIsEdit(false);

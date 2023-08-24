@@ -11,8 +11,8 @@ import {
 } from "@/gql/graphql";
 import {  useState } from "react";
 import { OperationResult, useMutation, useQuery } from "urql";
-import EditSection from "./EditSection";
-import CreateSection from "./CreateSection";
+import EditSection from "./EditTeam";
+import CreateSection from "./CreateTeam";
 
 interface Props {
   id: number;

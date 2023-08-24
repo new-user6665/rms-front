@@ -2,12 +2,15 @@
 import Modal from "@/components/Modal";
 import {
   Category,
+  DeleteCategoryDocument,
+  DeleteCategoryMutation,
+  DeleteCategoryMutationVariables,
   GetOneCategoryDocument,
   GetOneCategoryQuery,
   GetOneCategoryQueryVariables,
 } from "@/gql/graphql";
 import {  useState } from "react";
-import { useQuery } from "urql";
+import { OperationResult, useMutation, useQuery } from "urql";
 import EditCategory from "./EditCategory";
 import CreateCategory from "./CreateCategory";
 
@@ -20,6 +23,8 @@ interface Props {
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
   data: Category[];
   setData: React.Dispatch<React.SetStateAction<Category[]>>;
+  isOpen : boolean;
+  setIsOpen : React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const OneCategory = (props: Props) => {
@@ -35,9 +40,27 @@ const OneCategory = (props: Props) => {
     },
   });
 
-  const category = data?.category;
+  const [state, DeleteCategoryExecute] = useMutation(DeleteCategoryDocument);
 
-  console.log(category);
+
+  const HandleDelete =async ()=>{
+    
+    const deletedData : OperationResult<DeleteCategoryMutation,DeleteCategoryMutationVariables> = await DeleteCategoryExecute({
+      id: props.id
+    });
+    
+    if(deletedData.data?.removeCategory?.__typename){
+      const deleted = props.data.filter((value , index)=>{
+        return value.id !== props.id;
+      })
+
+      props.setData(deleted)
+      props.setIsOpen(false)
+    }
+    setModalOpen(false)
+}
+
+  const category = data?.category;
 
   return (
     <div>
@@ -61,7 +84,6 @@ const OneCategory = (props: Props) => {
           ) : (
             <div>
               <p>{category?.name}</p>
-              <p>{category?.updatedAt}</p>
               <p>{category?.section?.name}</p>
               <p>{category?.id}</p>
 
@@ -84,7 +106,7 @@ const OneCategory = (props: Props) => {
 
       <Modal modalOpen={modalOpen} setModalOpen={setModalOpen} key={3}>
         <p>Are you sure Do you want to Delete ?</p>
-        <button className="bg-red-600">Delete</button>
+        <button className="bg-red-600" onClick={HandleDelete}>Delete</button>
         <button className="bg-blue-500" onClick={() => setModalOpen(false)}>
           Cancel
         </button>
