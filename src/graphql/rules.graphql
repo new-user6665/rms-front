@@ -1,52 +1,175 @@
-query GetAllRules {
-  categories{
-    settings{
-        minProgram
-        maxProgram
-        minGroup
-        maxGroup
-        minStage
-        maxStage
-        minNonStage
-        maxNonStage
-        minOutDoor
-        maxOutDoor
-        minSports
-        maxSports
-        minSportsSingle
-        maxSportsSingle
-        minSportsGroup
-        maxSportsGroup
-        isProgrammeListUpdatable
-        minSingle
-        maxSingle
+query GetRules($id: Int!) {
+  category(id: $id) {
+    id
+    name
+    settings {
+      id
+      minProgram
+      maxProgram
+      minGroup
+      maxGroup
+      minStage
+      maxStage
+      minNonStage
+      maxNonStage
+      minOutDoor
+      maxOutDoor
+      minSports
+      maxSports
+      minSportsSingle
+      maxSportsSingle
+      minSportsGroup
+      maxSportsGroup
+      isProgrammeListUpdatable
+      minSingle
+      maxSingle
     }
   }
 }
 
-query GetOneRules($id: Int!) {
-  section(id: $id) {
+mutation AddRules(
+  $category: String!
+  $minProgram: Int!
+  $maxProgram: Int!
+  $minGroup: Int!
+  $maxGroup: Int!
+  $minStage: Int!
+  $maxStage: Int!
+  $minNonStage: Int!
+  $maxNonStage: Int!
+  $minOutDoor: Int!
+  $maxOutDoor: Int!
+  $minSports: Int!
+  $maxSports: Int!
+  $minSportsSingle: Int!
+  $maxSportsSingle: Int!
+  $minSportsGroup: Int!
+  $maxSportsGroup: Int!
+  $minSingle: Int!
+  $maxSingle: Int!
+) {
+  createCategorySetting(
+    createCategorySettingInput: {
+      category: $category
+      minProgram: $minProgram
+      maxProgram: $maxProgram
+      minGroup: $minGroup
+      maxGroup: $maxGroup
+      minStage: $minStage
+      maxStage: $maxStage
+      minNonStage: $minNonStage
+      maxNonStage: $maxNonStage
+      minOutDoor: $minOutDoor
+      maxOutDoor: $maxOutDoor
+      minSports: $minSports
+      maxSports: $maxSports
+      minSportsSingle: $minSportsSingle
+      maxSportsSingle: $maxSportsSingle
+      minSportsGroup: $minSportsGroup
+      maxSportsGroup: $maxSportsGroup
+      minSingle: $minSingle
+      maxSingle: $maxSingle
+    }
+  ) {
     id
-    name
+    minProgram
+    maxProgram
+    minGroup
+    maxGroup
+    minStage
+    maxStage
+    minNonStage
+    maxNonStage
+    minOutDoor
+    maxOutDoor
+    minSports
+    maxSports
+    minSportsSingle
+    maxSportsSingle
+    minSportsGroup
+    maxSportsGroup
+    minSingle
+    maxSingle
   }
 }
 
-mutation AddJudge($name: String!) {
-  createSection(createSectionInput: { name: $name }) {
+mutation EditRules(
+  $id: Int!
+  $category: String!
+  $minProgram: Int!
+  $maxProgram: Int!
+  $minGroup: Int!
+  $maxGroup: Int!
+  $minStage: Int!
+  $maxStage: Int!
+  $minNonStage: Int!
+  $maxNonStage: Int!
+  $minOutDoor: Int!
+  $maxOutDoor: Int!
+  $minSports: Int!
+  $maxSports: Int!
+  $minSportsSingle: Int!
+  $maxSportsSingle: Int!
+  $minSportsGroup: Int!
+  $maxSportsGroup: Int!
+  $minSingle: Int!
+  $maxSingle: Int!
+) {
+  updateCategorySetting(
+    updateCategorySettingInput: {
+      id: $id
+      category: $category
+      minProgram: $minProgram
+      maxProgram: $maxProgram
+      minGroup: $minGroup
+      maxGroup: $maxGroup
+      minStage: $minStage
+      maxStage: $maxStage
+      minNonStage: $minNonStage
+      maxNonStage: $maxNonStage
+      minOutDoor: $minOutDoor
+      maxOutDoor: $maxOutDoor
+      minSports: $minSports
+      maxSports: $maxSports
+      minSportsSingle: $minSportsSingle
+      maxSportsSingle: $maxSportsSingle
+      minSportsGroup: $minSportsGroup
+      maxSportsGroup: $maxSportsGroup
+      minSingle: $minSingle
+      maxSingle: $maxSingle
+    }
+  ) {
     id
-    name
+    minProgram
+    maxProgram
+    minGroup
+    maxGroup
+    minStage
+    maxStage
+    minNonStage
+    maxNonStage
+    minOutDoor
+    maxOutDoor
+    minSports
+    maxSports
+    minSportsSingle
+    maxSportsSingle
+    minSportsGroup
+    maxSportsGroup
+    minSingle
+    maxSingle
   }
 }
 
-mutation EditJudge($id: Int!, $name: String!) {
-  updateSection(updateSectionInput: { id: $id, name: $name }) {
-    id
-    name
-  }
-}
-
-mutation DeleteJudge($id: Int!) {
-  removeSection(id: $id) {
+mutation DeleteRules($id: Int!) {
+  removeCategorySetting(id: $id) {
     __typename
+  }
+}
+
+mutation ChangeRulesStatus($name: String!) {
+  changeProgrammeListUpdatable(name: $name) {
+    id
+    isProgrammeListUpdatable
   }
 }
