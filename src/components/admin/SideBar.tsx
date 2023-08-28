@@ -68,7 +68,7 @@ const ControllerNavs = [
   },
   {
     name: "Programs",
-    nav : 'programs',
+    nav : 'programmes',
     icon: <Candidates className="w-8 h-8" />,
   },
   {

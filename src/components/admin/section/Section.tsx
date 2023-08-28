@@ -25,6 +25,26 @@ const Section = (props: Props) => {
   const [search, setSearch] = useState<string>("");
   const [data, setData] = useState<Section[]>(props.result);
 
+  function downloadExcel() {
+    const data = props.result;
+    const replacer = (key: any, value: any) => (value === null ? "" : value); // specify how you want to handle null values here
+    const header = Object.keys(data[0]);
+    let csv = data.map((row: any) =>
+      header
+        .map((fieldName) => JSON.stringify(row[fieldName], replacer))
+        .join(",")
+    );
+    csv.unshift(header.join(","));
+    let csvArray = csv.join("\r\n");
+
+    var a = document.createElement("a");
+    a.href = "data:attachment/csv," + csvArray;
+    a.target = "_Blank";
+    a.download = "Section.csv";
+    document.body.appendChild(a);
+    a.click();
+  }
+
   return (
     <>
       <div className="w-full h-full">
@@ -49,6 +69,14 @@ const Section = (props: Props) => {
                     );
                   }}
                 />
+              </div>
+              <div className="w-1/3 h-full float-left">
+                <button
+                  className="bg-blue-600"
+                  onClick={downloadExcel}
+                >
+                  Export
+                </button>
               </div>
               <div className="w-1/3 h-full float-left">
                 <button

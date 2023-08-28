@@ -13,17 +13,8 @@ interface Props {
 
 const CreateSection = (props: Props) => {
 
+  const [name, setName] = React.useState<string>('');
   const [state, CreateSectionExecute] = useMutation(AddSectionDocument);
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { isSubmitting },
-  } = useForm({
-    shouldUseNativeValidation: true,
-    resolver: zodResolver(addSectionSchema),
-  });
 
   const HandleSubmit = async (data: any) => {
     const datas: OperationResult<AddSectionMutation,AddSectionMutationVariables> = await CreateSectionExecute({
@@ -36,7 +27,6 @@ const CreateSection = (props: Props) => {
     } else {
       alert("Section Not Added");
     }
-    reset();
   };
 
   return (
@@ -44,17 +34,23 @@ const CreateSection = (props: Props) => {
       <h1>Create Section</h1>
 
       <form
-        onSubmit={handleSubmit(async (data) => {
-          await HandleSubmit(data);
-        })}
+        onSubmit={
+          (e) => {
+            e.preventDefault();
+            HandleSubmit({ name})
+          }
+        }
       >
-        <input type="text" {...register("name")} placeholder="name" />
+        <input type="text" 
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+         placeholder="name" />
         <button
           className="bg-fuchsia-600"
           type="submit"
-          disabled={isSubmitting}
+          disabled={state.fetching}
         >
-          Submit
+          {state.fetching ? "Loading" : "Create"}
         </button>
       </form>
     </div>
