@@ -10,7 +10,7 @@ import {
   GetAllTeamsQuery,
   GetAllTeamsQueryVariables,
 } from "@/gql/graphql";
-import { SectionIcon } from "@/icons/navs";
+import { Candidates } from "@/icons/navs";
 import { getUrqlClient } from "@/lib/urql";
 import React from "react";
 
@@ -34,20 +34,21 @@ const page = async () => {
   const data = [
     {
       title: "Total Users",
-      icon: <SectionIcon className="w-6 h-6 text-teal-600" />,
+      icon: <Candidates className="w-16 h-16 mx-3 text-secondary" />,
     },
     {
       title: "Total Users",
-      icon: <SectionIcon className="w-6 h-6 text-teal-600" />,
+      icon: <Candidates className="w-16 h-16 mx-3 text-secondary" />,
     },
     {
       title: "Total Users",
-      icon: <SectionIcon className="w-6 h-6 text-teal-600" />,
+      icon: <Candidates className="w-16 h-16 mx-3 text-secondary" />,
     },
     {
       title: "Total Users",
-      icon: <SectionIcon className="w-6 h-6 text-teal-600" />,
+      icon: <Candidates className="w-16 h-16 mx-3 text-secondary" />,
     },
+
   ];
   const h = data[0];
   return (

@@ -1,5 +1,5 @@
 "use client";
-import { ArrowRightSquare } from "@/icons/arrows";
+import { CloseIcon } from "@/icons/arrows";
 import React from "react";
 
 interface Props {
@@ -13,14 +13,16 @@ const RightSideBar = (props: Props) => {
     <div
       className={`${
         props.isOpen ? "w-64 opacity-100" : "w-0 opacity-0"
-      } h-full bg-base-300 ms-3 rounded-lg hidden md:flex flex-col transition-all duration-500 overflow-hidden`}
+      } h-[100] bg-[#ECE1FC] ms-3 rounded-2xl hidden md:flex flex-col transition-all duration-500 overflow-hidden`}
     >
-
-        <ArrowRightSquare
+      <div className="flex justify-between">
+        <p> Window Name</p>
+        <CloseIcon
           className="w-8 h-8 cursor-pointer fill-current"
           SetOpen={props.setIsOpen}
           open={props.isOpen}
         />
+      </div>
 
       <div className={`w-full h-full transition-all  duration-500`}>
         {props.children}
