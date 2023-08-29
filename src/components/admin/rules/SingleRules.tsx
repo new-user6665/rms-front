@@ -9,7 +9,6 @@ import {
 import EditRules from "./EditRules";
 import CreateRules from "./CreateRules";
 import { useQuery } from "urql";
-import { useState } from "react";
 
 interface Props {
   id: number;
@@ -26,8 +25,6 @@ interface Props {
 
 const OneRules = (props: Props) => {
 
-  const [rulesState, setRulesState] = useState<CategorySettings | null>(null);
-
   const [{ fetching, data }] = useQuery<
     GetRulesQuery,
     GetRulesQueryVariables
@@ -36,9 +33,11 @@ const OneRules = (props: Props) => {
     variables: {
       id: props.id,
     },
+    pause: props.isEdit && !props.isCreate,
   });
 
   const rules : CategorySettings  = data?.category.settings as CategorySettings
+  const category : Category = data?.category as Category
 
   return (
     <div>
@@ -46,21 +45,59 @@ const OneRules = (props: Props) => {
         <EditRules
           key={1}
           setIsEdit={props.setIsEdit}
-          data={rulesState as CategorySettings}
+          data={rules as CategorySettings}
           id={props.id}
           isEdit={props.isEdit}
+          category={  category.name as string}
         />
       ) : props.isCreate ? (
-        <CreateRules key={2} data={props.data} setData={props.setData} />
+        <CreateRules key={2} category={category.name as string} />
       ) : (
         <div>
           {fetching ? (
-            <p> loading... </p>
+            <p> loading... </p> 
           ) : rules ? (
             <div>
-              <p>{rules?.id}</p>
-              <p>{rules?.maxNonStage}</p>
-              <p>{rules?.id}</p>
+              
+              <p>Group</p>
+              <p>
+                Max: {rules.maxGroup || 0} Min: {rules.minGroup || 0}
+              </p>
+              <p>Single</p>
+              <p>
+                Max: {rules.maxSingle || 0} Min: {rules.minSingle || 0}
+              </p>
+              <p>Stage</p>
+              <p>
+                Max: {rules.maxStage || 0} Min: {rules.minStage|| 0}
+              </p>
+              <p>Non Stage</p>
+              <p>
+                Max: {rules.maxNonStage|| 0} Min: {rules.minNonStage|| 0}
+              </p>
+              <p>Out Door</p>
+              <p>
+                Max: {rules.maxOutDoor|| 0} Min: {rules.minOutDoor|| 0}
+              </p>
+              <p>Program</p>
+              <p>
+                Max: {rules.maxProgram|| 0} Min: {rules.minProgram|| 0}
+              </p>
+              <p>Sports</p>
+              <p>
+                Max: {rules.maxSports|| 0} Min: {rules.minSports|| 0}
+              </p>
+              <p>Sports Group</p>
+              <p>
+                Max: {rules.maxSportsGroup|| 0} Min: {rules.minSportsGroup|| 0}
+              </p>
+              <p>Sports Single</p>
+              <p>
+                Max: {rules.maxSportsSingle|| 0} Min: {rules.minSportsSingle|| 0}
+              </p>
+              <p> Updatable : </p>
+              <p> {rules.isProgrammeListUpdatable ? "true" : "false"} </p>
+
 
               <button
                 className="bg-blue-500"

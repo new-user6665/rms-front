@@ -35,6 +35,7 @@ query GetOneCandidate($id: Int!) {
 query GetDetailedCandidate($id: Int!) {
   candidate(id: $id) {
     id
+    chestNO
     candidateProgrammes {
       id
       programme {
@@ -54,6 +55,7 @@ query GetDetailedCandidate($id: Int!) {
       candidatesOfGroup {
         id
         name
+        chestNO
       }
       point
     }

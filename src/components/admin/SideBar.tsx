@@ -119,7 +119,7 @@ const TeamManagerNavs = [
   },
   {
     name: "Programs",
-    nav : 'team-programs',  
+    nav : 'team-programmes',  
     icon: <Dashoard className="w-8 h-8" />,
   },
   {

@@ -1,14 +1,15 @@
 import Programme from "@/components/admin/programmes/Programme";
+import TeamProgramme from "@/components/admin/team-programmes/TeamProgramme";
 import {
   GetAllCategoriesDocument,
   GetAllCategoriesQuery,
   GetAllCategoriesQueryVariables,
-  GetAllProgrammesDocument,
-  GetAllProgrammesQuery,
-  GetAllProgrammesQueryVariables,
   GetAllSkillsDocument,
   GetAllSkillsQuery,
   GetAllSkillsQueryVariables,
+  GetAllTeamProgrammesDocument,
+  GetAllTeamProgrammesQuery,
+  GetAllTeamProgrammesQueryVariables,
 } from "@/gql/graphql";
 import { SectionIcon } from "@/icons/navs";
 import { getUrqlClient } from "@/lib/urql";
@@ -17,9 +18,9 @@ import React from "react";
 const page = async () => {
   const { client } = getUrqlClient();
   const result = await client.query<
-    GetAllProgrammesQuery,
-    GetAllProgrammesQueryVariables
-  >(GetAllProgrammesDocument, {});
+    GetAllTeamProgrammesQuery,
+    GetAllTeamProgrammesQueryVariables
+  >(GetAllTeamProgrammesDocument, {});
 
   const categories = await client.query<
     GetAllCategoriesQuery,
@@ -52,7 +53,7 @@ const page = async () => {
   const h = data[0];
   return (
     <main className="w-full h-full flex ">
-      <Programme
+      <TeamProgramme
         key={1}
         data={data}
         result={result.data?.programmes}

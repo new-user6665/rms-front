@@ -1,5 +1,5 @@
 query GetAllTeamCandidates {
-  candidates{
+  candidates {
     id
     name
     chestNO
@@ -35,6 +35,7 @@ query GetOneTeamCandidate($id: Int!) {
 query GetDetailedTeamCandidate($id: Int!) {
   candidate(id: $id) {
     id
+    chestNO
     candidateProgrammes {
       id
       programme {
@@ -54,90 +55,9 @@ query GetDetailedTeamCandidate($id: Int!) {
       candidatesOfGroup {
         id
         name
+        chestNO
       }
       point
     }
-  }
-}
-
-mutation AddTeamCandidate(
-  $adno: Int
-  $category: String!
-  $chestNO: String!
-  $class: String
-  $name: String!
-  $team: String!
-) {
-  createCandidate(
-    createCandidateInput: {
-      name: $name
-      category: $category
-      chestNO: $chestNO
-      team: $team
-      class: $class
-      adno: $adno
-    }
-  ) {
-    id
-    name
-    chestNO
-    category {
-      name
-    }
-    team {
-      name
-    }
-  }
-}
-
-mutation AddManyTeamCandidates($inputs: [CreateCandidateInput!]!) {
-  createManyCandidates(createCandidateInput: { inputs: $inputs }) {
-    id
-    name
-    chestNO
-    category {
-      name
-    }
-    team {
-      name
-    }
-  }
-}
-
-mutation EditTeamCandidate(
-  $id: Int!
-  $name: String!
-  $adno: Int
-  $category: String
-  $chestNO: String
-  $team: String
-  $class: String
-) {
-  updateCandidate(
-    updateCandidateInput: {
-      id: $id
-      name: $name
-      adno: $adno
-      category: $category
-      chestNO: $chestNO
-      team: $team
-      class: $class
-    }
-  ) {
-    id
-    name
-    chestNO
-    category {
-      name
-    }
-    team {
-      name
-    }
-  }
-}
-
-mutation DeleteTeamCandidate($id: Int!) {
-  removeCandidate(id: $id) {
-    __typename
   }
 }

@@ -6,8 +6,8 @@ import { withUrqlClient } from "next-urql";
 import React, { useEffect, useState } from "react";
 import { cacheExchange, fetchExchange } from "urql";
 import { Category, Programme, Skill } from "@/gql/graphql";
+import OneProgramme from "./SingleResult";
 import { parseJwt } from "@/lib/cryptr";
-import OneTeamProgramme from "./SingleTeamProgramme";
 
 interface Props {
   data: {
@@ -19,7 +19,7 @@ interface Props {
   skills: Skill[];
 }
 
-const TeamProgramme = (props: Props) => {
+const Result = (props: Props) => {
   const [IsRightSideBarOpen, setIsRightSideBarOpen] = useState(false);
   const [SelectedProgramme, setSelectedProgramme] = useState<Programme>();
   const [isExcelUpload, setIsExcelUpload] = useState<boolean>(false);
@@ -124,9 +124,35 @@ const TeamProgramme = (props: Props) => {
               <div className="m-1 float-left">
                 <button
                   className="bg-blue-600"
+                  onClick={() => {
+                    setIsCreate(false);
+                    setIsEdit(false);
+                    setIsRightSideBarOpen(true);
+                    setIsExcelUpload(true);
+                  }}
+                >
+                  Import
+                </button>
+              </div>
+              <div className="m-1 float-left">
+                <button
+                  className="bg-blue-600"
                   onClick={downloadExcel}
                 >
                   Export
+                </button>
+              </div>
+              <div className="m-1 float-left">
+                <button
+                  className="bg-green-600"
+                  onClick={() => {
+                    setIsCreate(true);
+                    setIsEdit(false);
+                    setIsRightSideBarOpen(true);
+                    setIsExcelUpload(false);
+                  }}
+                >
+                  Create
                 </button>
               </div>
             </div>
@@ -173,7 +199,7 @@ const TeamProgramme = (props: Props) => {
         isOpen={IsRightSideBarOpen}
         setIsOpen={setIsRightSideBarOpen}
       >
-        <OneTeamProgramme
+        <OneProgramme
           isExcelUpload={isExcelUpload}
           setIsExcelUpload={setIsExcelUpload}
           isOpen={IsRightSideBarOpen}
@@ -204,4 +230,4 @@ export default withUrqlClient(() => ({
     cache: "no-cache",
     credentials: "include",
   },
-}))(TeamProgramme);
+}))(Result);

@@ -1,15 +1,17 @@
-import Candidate from "@/components/admin/candidates/Candidate";
-import TeamCandidate from "@/components/admin/team-candidates/TeamCandidate";
+import TeamList from "@/components/admin/team-list/TeamList";
 import {
+  GetAllCandidatesDocument,
+  GetAllCandidatesQuery,
+  GetAllCandidatesQueryVariables,
   GetAllCategoriesDocument,
   GetAllCategoriesQuery,
   GetAllCategoriesQueryVariables,
-  GetAllTeamCandidatesDocument,
-  GetAllTeamCandidatesQuery,
-  GetAllTeamCandidatesQueryVariables,
-  GetAllTeamsDocument,
-  GetAllTeamsQuery,
-  GetAllTeamsQueryVariables,
+  GetAllProgrammesDocument,
+  GetAllProgrammesQuery,
+  GetAllProgrammesQueryVariables,
+  GetAllSkillsDocument,
+  GetAllSkillsQuery,
+  GetAllSkillsQueryVariables,
 } from "@/gql/graphql";
 import { SectionIcon } from "@/icons/navs";
 import { getUrqlClient } from "@/lib/urql";
@@ -17,20 +19,25 @@ import React from "react";
 
 const page = async () => {
   const { client } = getUrqlClient();
-  const result = await client.query<
-    GetAllTeamCandidatesQuery,
-    GetAllTeamCandidatesQueryVariables
-  >(GetAllTeamCandidatesDocument, {});
+  const propgrammes = await client.query<
+    GetAllProgrammesQuery,
+    GetAllProgrammesQueryVariables
+  >(GetAllProgrammesDocument, {});
+
+  const candidates = await client.query<
+  GetAllCandidatesQuery,
+  GetAllCandidatesQueryVariables
+>(GetAllCandidatesDocument, {});
 
   const categories = await client.query<
     GetAllCategoriesQuery,
     GetAllCategoriesQueryVariables
   >(GetAllCategoriesDocument, {});
 
-  const teams = await client.query<GetAllTeamsQuery, GetAllTeamsQueryVariables>(
-    GetAllTeamsDocument,
-    {}
-  );
+  const skills = await client.query<
+    GetAllSkillsQuery,
+    GetAllSkillsQueryVariables
+  >(GetAllSkillsDocument, {});
 
   const data = [
     {
@@ -40,7 +47,7 @@ const page = async () => {
     {
       title: "Total Users",
       icon: <SectionIcon className="w-6 h-6 text-teal-600" />,
-    },
+    }, 
     {
       title: "Total Users",
       icon: <SectionIcon className="w-6 h-6 text-teal-600" />,
@@ -53,13 +60,14 @@ const page = async () => {
   const h = data[0];
   return (
     <main className="w-full h-full flex ">
-      <TeamCandidate
+      <TeamList
         key={1}
         data={data}
-        result={result.data?.candidates}
+        result={propgrammes.data?.programmes}
         pageProps={1}
         categories={categories.data?.categories}
-        teams={teams.data?.teams}
+        skills={skills.data?.skills}
+        candidates={candidates.data?.candidates}
       />
     </main>
   );

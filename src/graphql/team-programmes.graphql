@@ -20,7 +20,6 @@ query GetDetailedTeamProgramme($id: Int!) {
         chestNO
       }
     }
-    resultEntered
     resultPublished
     programCode
     model
@@ -31,12 +30,10 @@ query GetOneTeamProgramme($id: Int!) {
   programme(id: $id) {
     id
     name
-    resultEntered
     resultPublished
     programCode
     model
     duration
-    anyIssue
     candidateCount
     groupCount
     category {
@@ -48,98 +45,5 @@ query GetOneTeamProgramme($id: Int!) {
     type
     mode
     conceptNote
-  }
-}
-
-mutation AddTeamProgramme(
-  $name: String!
-  $candidateCount: Int!
-  $category: String!
-  $duration: Int!
-  $groupCount: Int
-  $model: String!
-  $programCode: String!
-  $type: Type!
-  $mode: Mode!
-  $skill: String!
-  $conceptNote: String!
-) {
-  createProgramme(
-    createProgrammeInput: {
-      name: $name
-      candidateCount: $candidateCount
-      category: $category
-      duration: $duration
-      groupCount: $groupCount
-      model: $model
-      programCode: $programCode
-      type: $type
-      mode: $mode
-      skill: $skill
-      conceptNote: $conceptNote
-    }
-  ) {
-    id
-    name
-    resultEntered
-    resultPublished
-    programCode
-    model
-  }
-}
-
-mutation AddManyTeamProgrammes($inputs: [CreateProgrammeInput!]!) {
-  createManyProgrammes(createProgrammeInput: { inputs: $inputs }) {
-    id
-    name
-    resultEntered
-    resultPublished
-    programCode
-    model
-  }
-}
-
-mutation EditTeamProgramme(
-  $id: Int!
-  $name: String!
-  $candidateCount: Int!
-  $category: String!
-  $duration: Int!
-  $groupCount: Int
-  $model: String!
-  $programCode: String!
-  $type: Type!
-  $mode: Mode!
-  $skill: String!
-  $conceptNote: String!
-) {
-  updateProgramme(
-    updateProgrammeInput: {
-      id: $id
-      name: $name
-      candidateCount: $candidateCount
-      category: $category
-      duration: $duration
-      groupCount: $groupCount
-      model: $model
-      programCode: $programCode
-      type: $type
-      mode: $mode
-      skill: $skill
-      conceptNote: $conceptNote
-    }
-  ) {
-    id
-    name
-    resultEntered
-    resultPublished
-    programCode
-    model
-  }
-}
-
-mutation DeleteTeamProgramme($id: Int!) {
-  removeProgramme(id: $id) {
-    __typename
   }
 }

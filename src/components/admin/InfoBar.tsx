@@ -5,7 +5,7 @@ interface Props {
     title: string;
     icon: any;
   }[];
-}
+} 
 
 const InfoBar = (props: Props) => {
   return (

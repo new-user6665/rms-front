@@ -5,6 +5,7 @@ query GetAllProgrammes {
     programCode
     resultEntered
     resultPublished
+    candidateCount
     category {
       name
     }

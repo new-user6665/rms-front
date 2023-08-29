@@ -10,7 +10,7 @@ interface Props {
   skills : Skill[];
 }
 
-const CreateProgramme = (props: Props) => {
+const CreateResult = (props: Props) => {
   const [name, setName] = React.useState<string>('');
   const [candidateCount, setCandidateCount] = React.useState<number>();
   const [category, setCategory] = React.useState<string>('');
@@ -38,6 +38,7 @@ const CreateProgramme = (props: Props) => {
       programCode: data.programCode,
       skill: data.skill,
       type: data.type
+
     });
 
     console.log(datas);
@@ -144,4 +145,4 @@ const CreateProgramme = (props: Props) => {
   );
 };
 
-export default CreateProgramme;
+export default CreateResult;

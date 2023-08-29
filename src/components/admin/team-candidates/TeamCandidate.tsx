@@ -6,8 +6,8 @@ import { withUrqlClient } from "next-urql";
 import React, { useEffect, useState } from "react";
 import { cacheExchange, fetchExchange } from "urql";
 import { Candidate, Category, Team } from "@/gql/graphql";
-import OneCandidate from "./SingleTeamCandidate";
 import { parseJwt } from "@/lib/cryptr";
+import OneTeamCandidate from "./SingleTeamCandidate";
 
 interface Props {
   data: {
@@ -125,35 +125,9 @@ const TeamCandidate = (props: Props) => {
               <div className="m-1 float-left">
                 <button
                   className="bg-blue-600"
-                  onClick={() => {
-                    setIsCreate(false);
-                    setIsEdit(false);
-                    setExcel(true);
-                    setIsRightSideBarOpen(true);
-                  }}
-                >
-                  Import
-                </button>
-              </div>
-              <div className="m-1 float-left">
-                <button
-                  className="bg-blue-600"
                   onClick={downloadExcel}
                 >
                   Export
-                </button>
-              </div>
-              <div className="m-1 float-left">
-                <button
-                  className="bg-green-600"
-                  onClick={() => {
-                    setIsCreate(true);
-                    setIsEdit(false);
-                    setIsRightSideBarOpen(true);
-                    setExcel(false);
-                  }}
-                >
-                  Create
                 </button>
               </div>
             </div>
@@ -200,7 +174,7 @@ const TeamCandidate = (props: Props) => {
         isOpen={IsRightSideBarOpen}
         setIsOpen={setIsRightSideBarOpen}
       >
-        <OneCandidate
+        <OneTeamCandidate
           isExcelUpload={isExcelUpload}
           setIsExcelUpload={setExcel}
           isOpen={IsRightSideBarOpen}

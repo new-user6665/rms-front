@@ -9,7 +9,7 @@ import { cacheExchange, fetchExchange } from "urql";
 import { Category } from "@/gql/graphql";
 
 interface Props {
-  data: {
+  data: { 
     title: string;
     icon: any;
   }[];

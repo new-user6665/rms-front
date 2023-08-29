@@ -34,7 +34,7 @@ interface Props {
   teams: Team[];
 }
 
-const OneCandidate = (props: Props) => {
+const OneTeamCandidate = (props: Props) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [isViewOpen, setIsViewOpen] = useState<boolean>(false);
 
@@ -92,18 +92,6 @@ const OneCandidate = (props: Props) => {
             <p>individualPoint</p>
             <p className="text-blue-400">{Candidate?.individualPoint}</p>
             <button
-              className="bg-blue-500"
-              onClick={() => {
-                props.setIsEdit(true);
-                props.setIsCreate(false);
-              }}
-            >
-              Edit
-            </button>
-            <button className="bg-red-600" onClick={() => setModalOpen(true)}>
-              Delete
-            </button>
-            <button
               className="bg-green-600"
               onClick={() => setIsViewOpen(true)}
             >
@@ -133,4 +121,4 @@ const OneCandidate = (props: Props) => {
   );
 };
 
-export default OneCandidate;
+export default OneTeamCandidate;

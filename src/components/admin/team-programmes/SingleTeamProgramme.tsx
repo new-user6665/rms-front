@@ -36,7 +36,7 @@ interface Props {
   skills: Skill[];
 }
 
-const OneProgramme = (props: Props) => {
+const OneTeamProgramme = (props: Props) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [isViewOpen, setIsViewOpen] = useState<boolean>(false);
 
@@ -108,18 +108,6 @@ const OneProgramme = (props: Props) => {
             <p>type</p>
             <p className="text-blue-400">{Programme?.type}</p>
             <button
-              className="bg-blue-500"
-              onClick={() => {
-                props.setIsEdit(true);
-                props.setIsCreate(false);
-              }}
-            >
-              Edit
-            </button>
-            <button className="bg-red-600" onClick={() => setModalOpen(true)}>
-              Delete
-            </button>
-            <button
               className="bg-green-600"
               onClick={() => setIsViewOpen(true)}
             >
@@ -150,4 +138,4 @@ const OneProgramme = (props: Props) => {
   );
 };
 
-export default OneProgramme;
+export default OneTeamProgramme;

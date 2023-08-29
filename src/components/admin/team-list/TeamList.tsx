@@ -5,9 +5,11 @@ import { SERVER_URL } from "@/lib/urql";
 import { withUrqlClient } from "next-urql";
 import React, { useEffect, useState } from "react";
 import { cacheExchange, fetchExchange } from "urql";
-import { Category, Programme, Skill } from "@/gql/graphql";
+import { Candidate, Category, Programme, Skill } from "@/gql/graphql";
+import OneProgramme from "./SingleTeamList";
 import { parseJwt } from "@/lib/cryptr";
-import OneTeamProgramme from "./SingleTeamProgramme";
+import BulkUploadTeamList from "./BulkUploadTeamList";
+import NormalUploadTeamList from "./NormalUploadTeamList";
 
 interface Props {
   data: {
@@ -17,9 +19,10 @@ interface Props {
   result: Programme[];
   categories: Category[];
   skills: Skill[];
+  candidates:Candidate[];
 }
 
-const TeamProgramme = (props: Props) => {
+const TeamList = (props: Props) => {
   const [IsRightSideBarOpen, setIsRightSideBarOpen] = useState(false);
   const [SelectedProgramme, setSelectedProgramme] = useState<Programme>();
   const [isExcelUpload, setIsExcelUpload] = useState<boolean>(false);
@@ -28,6 +31,7 @@ const TeamProgramme = (props: Props) => {
   const [search, setSearch] = useState<string>("");
   const [data, setData] = useState<Programme[]>(props.result);
   const [allData , setAllData] = useState<Programme[]>(props.result);
+  const [isBulk , setIsBulk] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   const itemsPerPage = IsRightSideBarOpen ? 12 : 16;
@@ -124,44 +128,63 @@ const TeamProgramme = (props: Props) => {
               <div className="m-1 float-left">
                 <button
                   className="bg-blue-600"
+                  onClick={() => {
+                    setIsCreate(false);
+                    setIsEdit(false);
+                    setIsRightSideBarOpen(true);
+                    setIsExcelUpload(true);
+                  }}
+                >
+                  Import
+                </button>
+              </div>
+              <div className="m-1 float-left">
+                <button
+                  className="bg-blue-600"
                   onClick={downloadExcel}
                 >
                   Export
                 </button>
               </div>
+
+              <div className="m-1 float-left">
+              <input type="checkbox" className="toggle toggle-md" 
+              checked = {isBulk}
+               onChange={(e) => {
+                setIsBulk(e.target.checked);
+               }}
+                />
+              </div>
             </div>
           </div> 
 
-          <div className="flex">
-            <div className={`grid  gap-4 w-full transition-all ${
-                IsRightSideBarOpen ? "grid-cols-3" : "grid-cols-4"
-              }`} >
-              {currentData?.map((item: any, index: number) => {
-                return (
-                  <div
-                    key={index}
-                    className="w-full h-full bg-base-100  transition-all rounded-lg mt-[1%] cursor-pointer "
-                    onClick={() => {
-                      setIsRightSideBarOpen(true);
-                      setSelectedProgramme(item);
-                      setIsEdit(false);
-                      setIsCreate(false);
-                      setIsExcelUpload(false);
-                    }}
-                  >
-                    <div className="w-1/3">
-                      <p className="text-base-content">{item.name}</p>
-                    </div>
-                    <div className="w-1/3 ">
-                      <p className="text-base-content">{item.id}</p>
-                    </div>
-                    <div className="w-1/3 ">
-                      <p className="text-base-content">{item.programCode}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+        
+          <div>
+            {
+              isBulk ?
+              <BulkUploadTeamList
+              IsRightSideBarOpen={IsRightSideBarOpen}
+              setIsRightSideBarOpen={setIsRightSideBarOpen}
+              currentData={currentData}
+              setIsCreate={setIsCreate}
+              setIsEdit={setIsEdit}
+              setIsExcelUpload={setIsExcelUpload}
+              setSelectedProgramme={setSelectedProgramme}
+              key={1}
+              candidates={props.candidates}
+              />
+              :
+              <NormalUploadTeamList 
+              IsRightSideBarOpen={IsRightSideBarOpen}
+              setIsRightSideBarOpen={setIsRightSideBarOpen}
+              currentData={currentData}
+              setIsCreate={setIsCreate}
+              setIsEdit={setIsEdit}
+              setIsExcelUpload={setIsExcelUpload}
+              setSelectedProgramme={setSelectedProgramme}
+              key={1}
+              />
+            }
           </div>
           <div className="w-full flex items-center justify-center">
             {renderPaginationControls()}
@@ -173,7 +196,7 @@ const TeamProgramme = (props: Props) => {
         isOpen={IsRightSideBarOpen}
         setIsOpen={setIsRightSideBarOpen}
       >
-        <OneTeamProgramme
+        <OneProgramme
           isExcelUpload={isExcelUpload}
           setIsExcelUpload={setIsExcelUpload}
           isOpen={IsRightSideBarOpen}
@@ -204,4 +227,4 @@ export default withUrqlClient(() => ({
     cache: "no-cache",
     credentials: "include",
   },
-}))(TeamProgramme);
+}))(TeamList);
