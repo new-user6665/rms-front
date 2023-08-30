@@ -1,13 +1,13 @@
 "use client";
 import InfoBar from "@/components/admin/InfoBar";
 import RightSideBar from "@/components/admin/RightSideBar";
+import { Candidate, Category, Team } from "@/gql/graphql";
+import { parseJwt } from "@/lib/cryptr";
 import { SERVER_URL } from "@/lib/urql";
 import { withUrqlClient } from "next-urql";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { cacheExchange, fetchExchange } from "urql";
-import { Candidate, Category, Team } from "@/gql/graphql";
 import OneCandidate from "./SingleCandidate";
-import { parseJwt } from "@/lib/cryptr";
 
 interface Props {
   data: {

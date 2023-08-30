@@ -1,9 +1,6 @@
 "use client";
 import { AddGradeDocument, AddGradeMutation, AddGradeMutationVariables, Grade } from "@/gql/graphql";
-import { addGradeSchema } from "@/types/grades"
-import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
-import { set, useForm } from "react-hook-form";
 import { OperationResult, useMutation } from "urql";
 
 interface Props {

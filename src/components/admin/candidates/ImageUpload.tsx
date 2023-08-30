@@ -1,4 +1,3 @@
-import { Candidate } from "@/gql/graphql";
 import React from "react";
 
 const ImageUpload = () => {
