@@ -6,7 +6,7 @@ import {
   Candidates,
   Category,
   Credential,
-  Dashoard,
+  Dashboard as Dashoard,
   SectionIcon,
 } from "@/icons/navs";
 import { useRouter } from "next/navigation";

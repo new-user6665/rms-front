@@ -1,5 +1,5 @@
 "use client";
-import { CloseIcon } from "@/icons/arrows";
+import { ArrowRightSquare as CloseIcon } from "@/icons/arrows";
 import React from "react";
 
 interface Props {
