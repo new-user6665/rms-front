@@ -31,7 +31,7 @@ const Candidate = (props: Props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isImageUpload, setIsImageUpload] = useState<boolean>(false);
 
-  const itemsPerPage = IsRightSideBarOpen ? 12 : 16;
+  const itemsPerPage = IsRightSideBarOpen ? 18 : 24 ;
 
   useEffect(() => {
     const cookie = document.cookie;
@@ -238,6 +238,8 @@ const Candidate = (props: Props) => {
             key={1}
             isOpen={IsRightSideBarOpen}
             setIsOpen={setIsRightSideBarOpen}
+            isCreate={isCreate}
+            isEdit={isEdit}
           >
             <OneCandidate
               isExcelUpload={isExcelUpload}

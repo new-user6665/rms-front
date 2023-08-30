@@ -48,6 +48,10 @@ const page = async () => {
       title: "Total Users",
       icon: <Candidates className="w-16 h-16 mx-3 text-secondary" />,
     },
+    {
+      title: "Total Users",
+      icon: <Candidates className="w-16 h-16 mx-3 text-secondary" />,
+    },
 
   ];
   const h = data[0];

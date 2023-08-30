@@ -60,7 +60,7 @@ mutation AddProgramme(
   $category: String!
   $duration: Int!
   $groupCount: Int
-  $model: String!
+  $model: Model!
   $programCode: String!
   $type: Type!
   $mode: Mode!
@@ -109,7 +109,7 @@ mutation EditProgramme(
   $category: String!
   $duration: Int!
   $groupCount: Int
-  $model: String!
+  $model: Model!
   $programCode: String!
   $type: Type!
   $mode: Mode!

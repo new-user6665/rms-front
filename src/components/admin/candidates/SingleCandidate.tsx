@@ -19,6 +19,7 @@ import ViewCandidate from "./ViewCandidate";
 import ExcelUploadCandidate from "./ExcelUploadCandidate";
 import Image from "next/image";
 import ImageUpload from "./ImageUpload";
+import { EditIcon, DeleteIcon } from "@/icons/action";
 
 interface Props {
   id: number;
@@ -79,7 +80,7 @@ const OneCandidate = (props: Props) => {
   const Candidate = data?.candidate;
 
   return (
-    <div>
+    <>
       {props.isEdit ? (
         <EditCandidate
           key={1}
@@ -110,56 +111,79 @@ const OneCandidate = (props: Props) => {
       ) : props.isImageUpload ? (
         <ImageUpload />
       ) : (
-        <div>
+        <>
           {fetching ? (
             <p> loading... </p>
           ) : (
-            <div>
-              {/* image of candidate */}
-              <p>image</p>
-              <Image
-                src={`https://drive.google.com/uc?id=${
-                  Candidate?.imageId
-                    ? Candidate?.imageId
-                    : "1469PGeDEgnK5caEumLfGGUufCI0MY133"
-                }  `}
-                alt={Candidate?.name as string}
-                width={100}
-                height={100}
-              ></Image>
-              <p>name</p>
-              <p className="text-blue-400">{Candidate?.name}</p>
-              <p>id</p>
-              <p className="text-blue-400">{Candidate?.id}</p>
-              <p>adm no</p>
-              <p className="text-blue-400">{Candidate?.adno}</p>
-              <p>groupPoint</p>
-              <p className="text-blue-400">{Candidate?.groupPoint}</p>
-              <p>category</p>
-              <p className="text-blue-400">{props.category}</p>
-              <p>individualPoint</p>
-              <p className="text-blue-400">{Candidate?.individualPoint}</p>
-              <button
-                className="bg-blue-500"
-                onClick={() => {
-                  props.setIsEdit(true);
-                  props.setIsCreate(false);
-                }}
-              >
-                Edit
-              </button>
-              <button className="bg-red-600" onClick={() => setModalOpen(true)}>
-                Delete
-              </button>
-              <button
-                className="bg-green-600"
-                onClick={() => setIsViewOpen(true)}
-              >
-                View More
-              </button>
+            <div className="flex flex-col justify-between h-full">
+              <span></span>
+              <div className="flex flex-col items-center max-h-full overflow-hidden">
+                <div
+                  className="h-36 w-36 rounded-full border-8 border-[#3F127A]"
+                  style={{
+                    backgroundImage: `url('https://drive.google.com/uc?id=${
+                      Candidate?.imageId
+                        ? Candidate?.imageId
+                        : "1469PGeDEgnK5caEumLfGGUufCI0MY133"
+                    }')`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                ></div>
+                <p className="bg-[#3F127A] px-2 text-white font-bold text-2xl -mt-5 rounded-md">
+                  {Candidate?.chestNO}
+                </p>
+                <p className="font-bold text-3xl leading-7 mt-2 text-center">
+                  {Candidate?.name} Muhammed
+                </p>
+                <p className=" font-bold">Team {Candidate?.team?.name}</p>
+                <p className="">{Candidate?.category?.name}</p>
+                <div className="flex justify-center gap-3 mt-3 ">
+                  <div className="flex flex-col items-center justify-center content-center w-20 h-20 rounded-xl  border-2 border-dashed border-[#3F127A]">
+                    <p className="font-bold">Single</p>
+                    <p className="font-bold text-5xl text-[#3F127A]">{Candidate?.individualPoint || 0}</p>
+                  </div>
+                  <div className="flex flex-col items-center justify-center content-center w-20 h-20 rounded-xl  border-2 border-dashed border-[#3F127A]">
+                    <p className="font-bold">Group</p>
+                    <p className="font-bold text-5xl text-[#3F127A]">{Candidate?.groupPoint || 0}</p>
+                  </div>
+
+                </div>
+              </div>
+              <div className="flex w-full justify-center gap-2">
+                <button
+                  className="bg-[#3F127A] border-2 text-white px-3 flex-1 py-2 border-[#3F127A] rounded-xl font-bold"
+                  onClick={() => setIsViewOpen(true)}
+                >
+                  View More
+                </button>
+                <button
+                  className=" border-2 text-white px-3 py-2 border-[#3F127A] rounded-xl font-bold"
+                  onClick={() => {
+                    props.setIsEdit(true);
+                    props.setIsCreate(false);
+                  }}
+                >
+                  <EditIcon
+                    SetOpen={setModalOpen}
+                    open={modalOpen}
+                    className="w-4 h-4 cursor-pointer fill-[#3F127A]  transition-all"
+                  />
+                </button>
+                <button
+                  className=" border-2 text-white px-3 py-2 border-[#3F127A] rounded-xl font-bold"
+                  onClick={() => setModalOpen(true)}
+                >
+                  <DeleteIcon
+                    SetOpen={setModalOpen}
+                    open={modalOpen}
+                    className="w-4 h-4 cursor-pointer fill-[#3F127A]  transition-all"
+                  />
+                </button>
+              </div>
             </div>
           )}
-        </div>
+        </>
       )}
 
       <Modal modalOpen={modalOpen} setModalOpen={setModalOpen} key={3}>
@@ -179,7 +203,7 @@ const OneCandidate = (props: Props) => {
         setModalOpen={setIsViewOpen}
         selectedCandidate={Candidate as Candidate}
       />
-    </div>
+    </>
   );
 };
 

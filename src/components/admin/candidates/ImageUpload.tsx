@@ -1,8 +1,5 @@
-import {
-  Candidate,
-} from "@/gql/graphql";
+import { Candidate } from "@/gql/graphql";
 import React from "react";
-
 
 const ImageUpload = () => {
   const [files, setFiles] = React.useState<File[]>([]);
@@ -75,19 +72,6 @@ const ImageUpload = () => {
       >
         Upload
       </button>
-
-      {/* all selected images here */}
-      <div className=" w-full h-[80vh] overflow-y-scroll">
-        {files.map((file) => (
-          <div key={file.name}>
-            <img
-              src={URL.createObjectURL(file)}
-              alt="image"
-              className="w-24 h-24"
-            />
-          </div>
-        ))}
-      </div>
     </div>
   );
 };

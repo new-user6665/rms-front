@@ -11,7 +11,6 @@ export function ArrowRightSquare(props: Props) {
       viewBox="0 0 16 16"
       height="1em"
       width="1em"
-
       className={props.className}
       onClick={() => props.SetOpen(false)}
     >
@@ -19,6 +18,19 @@ export function ArrowRightSquare(props: Props) {
         fillRule="evenodd"
         d="M15 2a1 1 0 00-1-1H2a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V2zM0 2a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H2a2 2 0 01-2-2V2zm4.5 5.5a.5.5 0 000 1h5.793l-2.147 2.146a.5.5 0 00.708.708l3-3a.5.5 0 000-.708l-3-3a.5.5 0 10-.708.708L10.293 7.5H4.5z"
       />
+    </svg>
+  );
+}
+export function ChevronRight(props: Props) {
+  return (
+    <svg
+      className={props.className}
+      onClick={() => props.SetOpen(false)}
+      xmlns="http://www.w3.org/2000/svg"
+      height="1em"
+      viewBox="0 0 512 512"
+    >
+      <path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM241 377c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l87-87-87-87c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L345 239c9.4 9.4 9.4 24.6 0 33.9L241 377z" />
     </svg>
   );
 }
@@ -30,7 +42,6 @@ export function IconArrowLeftSquare(props: Props) {
       viewBox="0 0 16 16"
       height="1em"
       width="1em"
-
       className={props.className}
       onClick={() => props.SetOpen(true)}
     >
@@ -49,7 +60,6 @@ export function ArrowRightSquareForRight(props: Props) {
       viewBox="0 0 16 16"
       height="1em"
       width="1em"
-
       className={props.className}
       onClick={() => props.SetOpen(!props.open)}
     >
@@ -68,7 +78,6 @@ export function IconArrowLeftSquareForRight(props: Props) {
       viewBox="0 0 16 16"
       height="1em"
       width="1em"
-
       className={props.className}
       onClick={() => props.SetOpen(!props.open)}
     >
