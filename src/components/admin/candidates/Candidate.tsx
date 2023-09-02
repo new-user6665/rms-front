@@ -5,7 +5,7 @@ import { Candidate, Category, Team } from "@/gql/graphql";
 import { parseJwt } from "@/lib/cryptr";
 import { SERVER_URL } from "@/lib/urql";
 import { withUrqlClient } from "next-urql";
-import { useEffect, useState } from "react";
+import { use, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cacheExchange, fetchExchange } from "urql";
 import OneCandidate from "./SingleCandidate";
 
@@ -30,8 +30,9 @@ const Candidate = (props: Props) => {
   const [data, setData] = useState<Candidate[]>(props.result);
   const [currentPage, setCurrentPage] = useState(1);
   const [isImageUpload, setIsImageUpload] = useState<boolean>(false);
+  const [itemsPerPage , setItemsPerPage] = useState<number>(24)
+  const candidateRef = useRef<HTMLDivElement>(null);
 
-  const itemsPerPage = IsRightSideBarOpen ? 18 : 24 ;
 
   useEffect(() => {
     const cookie = document.cookie;
@@ -49,7 +50,22 @@ const Candidate = (props: Props) => {
         ) as Candidate[]
       );
     }
+
   }, []);
+
+  useLayoutEffect(() => {
+      
+    },1100);
+  
+      
+    window.addEventListener('resize', updateSize); // Listen for window resize events
+  
+    return () => {
+      window.removeEventListener('resize', updateSize); // Clean up event listener
+    };
+  }, [IsRightSideBarOpen]);
+  
+
 
   // Calculate the index range for the current page
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -110,7 +126,7 @@ const Candidate = (props: Props) => {
       <div className="w-full h-full">
         <InfoBar data={props.data} />
 
-        <div className="flex mt-[3%]">
+        <div className="flex mt-[3%] h-[43rem]">
           <div className="flex-1">
             <div className="h-10 cursor-pointer flex justify-between mb-4">
               <input
@@ -203,35 +219,42 @@ const Candidate = (props: Props) => {
                 </button>
               </div>
             </div>
-            <div
-              className={`grid gap-4 w-full transition-all ${
-                IsRightSideBarOpen ? "grid-cols-3" : "grid-cols-4"
-              }`}
-            >
-              {currentData?.map((item: Candidate, index: number) => {
-                return (
-                  <div
-                    key={index}
-                    className="transition-all bg-[#EEEEEE] rounded-xl mt-[1%] cursor-pointer flex p-5 gap-3 content-center items-center h-20"
-                    onClick={() => {
-                      setIsRightSideBarOpen(true);
-                      setSelectedCandidate(item);
-                      setIsEdit(false);
-                      setIsCreate(false);
-                      setExcel(false);
-                      setIsImageUpload(false);
-                    }}
-                  >
-                    <div className="text-white font-bold bg-[#3F127A] px-3 py-1 text-xl rounded-xl flex justify-center content-center items-center">
-                      <p> {item.chestNO}</p>
-                    </div>
+            <div className="flex flex-col items-center justify-center w-full ">
+              <div   className="h-[37rem] w-full">
+                <div ref={candidateRef}
+                  className={`grid gap-4 w-full transition-all ${
+                    IsRightSideBarOpen ? "grid-cols-3" : "grid-cols-4"
+                  }`}
+                >
+                  {currentData?.map((item: Candidate, index: number) => {
+                    return (
+                      <div
+                        key={index}
+                        className="transition-all bg-[#EEEEEE] rounded-xl mt-[1%] cursor-pointer flex p-5 gap-3 content-center items-center h-20"
+                        onClick={() => {
+                          setIsRightSideBarOpen(true);
+                          setSelectedCandidate(item);
+                          setIsEdit(false);
+                          setIsCreate(false);
+                          setExcel(false);
+                          setIsImageUpload(false);
+                        }}
+                      >
+                        <div className="text-white font-bold bg-[#3F127A] px-3 py-1 text-xl rounded-xl flex justify-center content-center items-center">
+                          <p> {item.chestNO}</p>
+                        </div>
 
-                    <p className="text-black leading-5 pr-[10%]">
-                      {item.name} Muhammed P
-                    </p>
-                  </div>
-                );
-              })}
+                        <p className="text-black leading-5 pr-[10%]">
+                          {item.name} Muhammed P
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className="w-full flex items-center justify-center">
+                {renderPaginationControls()}
+              </div>
             </div>
           </div>
           <RightSideBar
@@ -262,9 +285,6 @@ const Candidate = (props: Props) => {
               teams={props.teams as Team[]}
             />
           </RightSideBar>
-        </div>
-        <div className="w-full flex items-center justify-center">
-          {renderPaginationControls()}
         </div>
       </div>
     </>

@@ -1,3 +1,4 @@
+import Judges from "@/components/admin/judges/Judges";
 import Programme from "@/components/admin/programmes/Programme";
 import {
   GetAllCategoriesDocument,
@@ -52,7 +53,7 @@ const page = async () => {
   const h = data[0];
   return (
     <main className="w-full h-full flex ">
-      <Programme
+      <Judges 
         key={1}
         data={data}
         result={result.data?.programmes}

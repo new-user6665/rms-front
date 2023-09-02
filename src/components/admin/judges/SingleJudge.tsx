@@ -4,21 +4,20 @@ import {
   Programme,
   DeleteProgrammeDocument,
   DeleteProgrammeMutation,
-  DeleteProgrammeMutationVariables,
-  GetOneProgrammeDocument,
-  GetOneProgrammeQuery,
-  GetOneProgrammeQueryVariables,
-  Mode,
-  Model,
+  DeleteProgrammeMutationVariables, 
   Category,
   Skill,
+  GetJudgesQuery,
+  GetJudgesQueryVariables,
+  GetJudgesDocument,
+  Judge,
 } from "@/gql/graphql";
 import { useState } from "react";
 import { OperationResult, useMutation, useQuery } from "urql";
-import EditProgramme from "./EditProgramme";
-import CreateProgramme from "./CreateProgramme";
-import ViewProgramme from "./ViewProgramme";
-import ExcelUploadProgramme from "./ExcelUploadProgramme";
+import EditProgramme from "./EditJudge";
+import CreateProgramme from "./CreateJudge";
+import ViewProgramme from "./ViewJudge";
+import ExcelUploadProgramme from "./ExcelUploadJudge";
 
 interface Props {
   id: number;
@@ -45,10 +44,10 @@ const OneProgramme = (props: Props) => {
 
 
   const [{ fetching, data }] = useQuery<
-    GetOneProgrammeQuery,
-    GetOneProgrammeQueryVariables
+    GetJudgesQuery,
+    GetJudgesQueryVariables
   >({
-    query: GetOneProgrammeDocument,
+    query: GetJudgesDocument,
     variables: {
       id: props.id,
     },
@@ -77,7 +76,7 @@ const OneProgramme = (props: Props) => {
     setModalOpen(false)
   }
 
-  const Programme = data?.programme;
+  const Judge : Judge[] = data?.programme.judges as Judge[];
 
   return (
     <div>
@@ -85,28 +84,29 @@ const OneProgramme = (props: Props) => {
       { props.isEdit ?
       
        (
-        <EditProgramme
-          key={1}
-          setIsEdit={props.setIsEdit}
-          isEdit={props.isEdit}
-          name={Programme?.name as string}
-          id={Programme?.id as number}
-          data={props.data}
-          setData={props.setData}
-          category={props.category}
-          skill={props.skill}
-          programeCode={Programme?.programCode as string}
-          candiateCount={Programme?.candidateCount as number}
-          groupCount={Programme?.groupCount as number}
-          duration={Programme?.duration as number}
-          conceptNote={Programme?.conceptNote as string}
-          mode={Programme?.mode as unknown as Mode}
-          model={Programme?.model as Model}
-          type={Programme?.type as string}
-          selectedProgramme={Programme as Programme}
-          categories={props.categories}
-          skills={props.skills}
-        />
+        <div></div>
+        // <EditProgramme
+        //   key={1}
+        //   setIsEdit={props.setIsEdit}
+        //   isEdit={props.isEdit}
+        //   name={Programme?.name as string}
+        //   id={Programme?.id as number}
+        //   data={props.data}
+        //   setData={props.setData}
+        //   category={props.category}
+        //   skill={props.skill}
+        //   programeCode={Programme?.programCode as string}
+        //   candiateCount={Programme?.candidateCount as number}
+        //   groupCount={Programme?.groupCount as number}
+        //   duration={Programme?.duration as number}
+        //   conceptNote={Programme?.conceptNote as string}
+        //   mode={Programme?.mode as unknown as Mode}
+        //   model={Programme?.model as Model}
+        //   type={Programme?.type as string}
+        //   selectedProgramme={Programme as Programme}
+        //   categories={props.categories}
+        //   skills={props.skills}
+        // />
       ) : props.isCreate ? (
         <CreateProgramme key={2} data={props.data} setData={props.setData}  categories={props.categories}
         skills={props.skills} />
@@ -127,30 +127,16 @@ const OneProgramme = (props: Props) => {
               <p> loading... </p>
             ) : (
               <div>
-                <p>name</p>
-                <p className="text-blue-400">{Programme?.name}</p>
-                <p>id</p>
-                <p className="text-blue-400">{Programme?.id}</p>
-                <p>programCode</p>
-                <p className="text-blue-400">{Programme?.programCode}</p>
-                <p>candidateCount</p>
-                <p className="text-blue-400">{Programme?.candidateCount}</p>
-                <p>category</p>
-                <p className="text-blue-400">{Programme?.category?.name}</p>
-                <p>conceptNote</p>
-                <p className="text-blue-400">{Programme?.conceptNote}</p>
-                <p>duration</p>
-                <p className="text-blue-400">{Programme?.duration}</p>
-                <p>groupCount</p>
-                <p className="text-blue-400">{Programme?.groupCount}</p>
-                <p>mode</p>
-                <p className="text-blue-400">{Programme?.mode}</p>
-                <p>model</p>
-                <p className="text-blue-400">{Programme?.model}</p>
-                <p>skill</p>
-                <p className="text-blue-400">{Programme?.skill?.name}</p>
-                <p>type</p>
-                <p className="text-blue-400">{Programme?.type}</p>
+                {
+                  Judge?.map((item, index) => {
+                    return (
+                      <div key={index}>
+                        <p>{item?.username}</p>
+                      </div>
+                    )
+                  }
+                  )
+                }
                 <button
                   className="bg-blue-500"
                   onClick={() => {
@@ -179,12 +165,12 @@ const OneProgramme = (props: Props) => {
         </button>
       </Modal>
 
-      <ViewProgramme
+      {/* <ViewProgramme
         data={props.data}
         setData={props.setData}
         modalOpen={isViewOpen} setModalOpen={setIsViewOpen}
         selectedProgramme={Programme as Programme}
-      />
+      /> */}
     </div>
   );
 };

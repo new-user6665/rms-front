@@ -6,7 +6,7 @@ import { withUrqlClient } from "next-urql";
 import React, { useEffect, useState } from "react";
 import { cacheExchange, fetchExchange } from "urql";
 import { Category, Programme, Skill } from "@/gql/graphql";
-import OneProgramme from "./SingleProgramme";
+import OneProgramme from "./SingleJudge";
 import { parseJwt } from "@/lib/cryptr";
 
 interface Props {
@@ -19,7 +19,7 @@ interface Props {
   skills: Skill[];
 }
 
-const Programme = (props: Props) => {
+const Judges = (props: Props) => {
   const [IsRightSideBarOpen, setIsRightSideBarOpen] = useState(false);
   const [SelectedProgramme, setSelectedProgramme] = useState<Programme>();
   const [isExcelUpload, setIsExcelUpload] = useState<boolean>(false);
@@ -230,4 +230,4 @@ export default withUrqlClient(() => ({
     cache: "no-cache",
     credentials: "include",
   },
-}))(Programme);
+}))(Judges);

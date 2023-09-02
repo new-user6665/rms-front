@@ -94,7 +94,7 @@ const EditCandidate = (props: Props) => {
   }
 
   return (
-    <div>
+    <div className="">
       <button className="bg-green-500" onClick={() => props.setIsEdit(false)}>
         Back
       </button>
@@ -127,6 +127,59 @@ const EditCandidate = (props: Props) => {
         )}
 
         <input
+          type="file"
+          onChange={(e) => {
+            if (e.target.files) {
+              const file = e.target.files[0];
+              if (imageVerify(file)) {
+                setImage(file);
+              }
+            }
+          }}
+        />
+        <p>Name</p>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="name"
+        />
+        <p>Category</p>
+        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+          {props.categories.map((value, index) => {
+            return (
+              <option key={index} value={value.name as string}>
+                {value.name}
+              </option>
+            );
+          })}
+        </select>
+        <p>Team</p>
+        <select value={team} onChange={(e) => setTeam(e.target.value)}>
+          {props.teams.map((value, index) => {
+            return (
+              <option key={index} value={value.name as string}>
+                {value.name}
+              </option>
+            );
+          })}
+        </select>
+        <p>Adno</p>
+        <input
+          type="number"
+          value={adno}
+          onChange={(e) => setAdno(parseInt(e.target.value))}
+          placeholder="adno"
+        />
+        <p>Class</p>
+        <input
+          type="text"
+          value={classs}
+          onChange={(e) => setClass(e.target.value)}
+          placeholder="class"
+        />
+
+<input
           type="file"
           onChange={(e) => {
             if (e.target.files) {
