@@ -48,15 +48,11 @@ const page = async () => {
       title: "Total Users",
       icon: <Candidates className="w-16 h-16 mx-3 text-secondary" />,
     },
-    {
-      title: "Total Users",
-      icon: <Candidates className="w-16 h-16 mx-3 text-secondary" />,
-    },
 
   ];
   const h = data[0];
   return (
-    <main className="w-full h-full flex ">
+    <main className="w-full h-full flex overflow-hidden">
       <Candidate
         key={1}
         data={data}

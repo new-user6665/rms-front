@@ -15,7 +15,7 @@ const RightSideBar = (props: Props) => {
     <div
       className={`${
         props.isOpen ? "w-64 opacity-100" : "w-0 opacity-0"
-      } h-[100] bg-[#ECE1FC] ms-3 rounded-2xl hidden content-between justify-between md:flex flex-col ml-6 transition-all duration-500 overflow-hidden`}
+      } bg-[#ECE1FC] ms-3 rounded-2xl hidden content-between justify-between md:flex flex-col ml-6 transition-all duration-500 overflow-hidden`}
     >
       <div className="flex justify-between bg-[#3F127A] h-15 items-center text-white p-5">
         <p className="font-bold w-3/5 leading-5">{props.isEdit ? "Edit" : "Create"}</p>
@@ -26,7 +26,7 @@ const RightSideBar = (props: Props) => {
         />
       </div>
 
-      <div className="p-5 flex-1">
+      <div className="p-5 flex-1 w-full h-min overflow-y-scroll overflow-x-hidden">
 {props.children}
       </div>
     </div>
