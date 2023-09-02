@@ -160,7 +160,7 @@ const SideBar = () => {
     <div
       className={`${
         isOpen ? "w-56" : "w-20"
-      } overflow-hidden transition-all duration-500 text-base-100  bg-primary flex flex-col p-4`}
+      } overflow-hidden transition-all duration-500 text-base-100  bg-primary hidden  lg:flex flex-col p-4`}
     >
       <label className="swap swap-rotate w-12 my-2">
         <input type="checkbox" />

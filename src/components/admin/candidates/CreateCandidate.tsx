@@ -10,7 +10,7 @@ import {
   Category,
   Team,
 } from "@/gql/graphql";
-import { SERVER_URL } from "@/lib/urql";
+import { AddIcon } from "@/icons/action";
 import React from "react";
 import { OperationResult, useMutation } from "urql";
 
@@ -87,66 +87,71 @@ const CreateCandidate = (props: Props) => {
 
   return (
     <div>
-      <h1>Create Candidate</h1>
-
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          HandleSubmit({ name, category, chestNO, team, adno, classs });
+          HandleSubmit({ name, category, chestNO, team, adno, classs  });
         }}
       >
-        {/* image upload */}
-
-        <p>Image</p>
+        <div className="flex w-full justify-center">
+          <div
+            className="h-36 w-36 rounded-full border-8 border-[#3F127A] relative"
+            style={{
+              backgroundImage: `url(${
+                image
+                  ? URL.createObjectURL(image)
+                  : "https://drive.google.com/uc?id=1469PGeDEgnK5caEumLfGGUufCI0MY133"
+              })`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            <label
+              htmlFor="file-upload"
+              className="cursor-pointer bg-[#3F127A] space-x-2 absolute bottom-0 right-0 w-8 h-8  text-white flex items-center justify-center rounded-full"
+            >
+              <AddIcon className="w-6 h-6 fill-white" />
+            </label>
+            <input
+              id="file-upload"
+              className="hidden"
+              type="file"
+              onChange={(e) => {
+                if (e.target.files) {
+                  const file = e.target.files[0];
+                  if (imageVerify(file)) {
+                    setImage(file);
+                  }
+                }
+              }}
+            />
+          </div>
+        </div>
 
         {/* show the uploaded image for verification for user */}
 
-        {image && (
-          <img
-            src={URL.createObjectURL(image)}
-            alt="image"
-            className="w-24 h-24"
-          />
-        )}
-
-        <input
-          type="file"
-          onChange={(e) => {
-            if (e.target.files) {
-              const file = e.target.files[0];
-              if (imageVerify(file)) {
-                setImage(file);
-              }
-            }
-          }}
-        />
-
+        <p>Chest Nom</p>
         <input
           type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="name"
-        />
-        <input
-          type="text"
+          placeholder="Type here"
+          className="input input-bordered input-secondary w-full max-w-xs"
           value={chestNO}
           onChange={(e) => setChestNO(e.target.value)}
-          placeholder="chestNO"
         />
-        <input
-          type="number"
-          value={adno}
-          onChange={(e) => setAdno(parseInt(e.target.value))}
-          placeholder="adno"
-        />
+        <p>Name</p>
         <input
           type="text"
-          value={classs}
-          onChange={(e) => setClass(e.target.value)}
-          placeholder="class"
+          placeholder="Type here"
+          className="input input-bordered input-secondary w-full max-w-xs"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
         <p>Category</p>
-        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="select select-secondary w-full max-w-xs h-8"
+        >
           {props.categories.map((value, index) => {
             return (
               <option key={index} value={value.name as string}>
@@ -156,7 +161,11 @@ const CreateCandidate = (props: Props) => {
           })}
         </select>
         <p>Team</p>
-        <select value={team} onChange={(e) => setTeam(e.target.value)}>
+        <select
+          value={team}
+          onChange={(e) => setTeam(e.target.value)}
+          className="select select-secondary w-full max-w-xs h-8"
+        >
           {props.teams.map((value, index) => {
             return (
               <option key={index} value={value.name as string}>
@@ -165,14 +174,36 @@ const CreateCandidate = (props: Props) => {
             );
           })}
         </select>
+        <p>Adno</p>
+        <input
+          className="input input-bordered input-secondary w-full max-w-xs"
+          type="number"
+          value={adno}
+          onChange={(e) => setAdno(parseInt(e.target.value))}
+          placeholder="adno"
+        />
+        <p>Class</p>
+        <input
+          className="input input-bordered input-secondary w-full max-w-xs"
+          type="text"
+          value={classs}
+          onChange={(e) => setClass(e.target.value)}
+          placeholder="class"
+        />
 
-        <button
-          className="bg-fuchsia-600"
-          type="submit"
-          disabled={state.fetching}
-        >
-          {state.fetching ? "Loading" : "Create"}
-        </button>
+        <div className="w-full  mt-4 flex items-center justify-between">
+          <button
+            type="submit"
+            className="bg-[#3F127A] w-1/2 border-2 text-white px-3 flex-1 py-2 border-[#3F127A] rounded-xl font-bold"
+          >
+            { state.fetching ? "Loading..." : "Submit"}  
+          </button>
+
+          <div
+            className="w-1/2 flex items-center justify-center tooltip"
+            data-tip="Back"
+          ></div>
+        </div>
       </form>
     </div>
   );

@@ -5,7 +5,7 @@ import { Candidate, Category, Team } from "@/gql/graphql";
 import { parseJwt } from "@/lib/cryptr";
 import { SERVER_URL } from "@/lib/urql";
 import { withUrqlClient } from "next-urql";
-import { use, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cacheExchange, fetchExchange } from "urql";
 import OneCandidate from "./SingleCandidate";
 
@@ -30,9 +30,9 @@ const Candidate = (props: Props) => {
   const [data, setData] = useState<Candidate[]>(props.result);
   const [currentPage, setCurrentPage] = useState(1);
   const [isImageUpload, setIsImageUpload] = useState<boolean>(false);
-  const [itemsPerPage , setItemsPerPage] = useState<number>(24)
+  const [itemsPerPage, setItemsPerPage] = useState<number>(7);
+  const [screenHeigh, setScreenHeight] = useState<number>(400);
   const candidateRef = useRef<HTMLDivElement>(null);
-
 
   useEffect(() => {
     const cookie = document.cookie;
@@ -51,21 +51,69 @@ const Candidate = (props: Props) => {
       );
     }
 
+    // window height settings
+    const windowWidth = window.innerWidth;
+
+    if (windowWidth >= 1024) {
+      setItemsPerPage(calculateBreakPoint(window.innerHeight));
+    } else {
+      console.log(calculateBreakPointForSm(window.innerHeight));
+      
+      setItemsPerPage(calculateBreakPointForSm(window.innerHeight));
+    }
+
+    const handleResize = () => {
+      setScreenHeight(window.innerHeight);
+    };
+
+    // Attach the event listener when the component mounts
+    window.addEventListener("resize", handleResize);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
-  useLayoutEffect(() => {
-      
-    },1100);
-  
-      
-    window.addEventListener('resize', updateSize); // Listen for window resize events
-  
-    return () => {
-      window.removeEventListener('resize', updateSize); // Clean up event listener
-    };
+  useEffect(() => {
+    const windowWidth = window.innerWidth;
+    if (IsRightSideBarOpen) {
+      if (windowWidth >= 1024) {
+        setItemsPerPage((calculateBreakPoint(window.innerHeight) / 4) * 3);
+      } else {
+        setItemsPerPage(calculateBreakPointForSm(window.innerHeight));
+      }
+    } else {
+      if (windowWidth >= 1024) {
+        setItemsPerPage(calculateBreakPoint(window.innerHeight));
+      } else {
+        setItemsPerPage(calculateBreakPointForSm(window.innerHeight));
+      }
+      setCurrentPage(1);
+    }
   }, [IsRightSideBarOpen]);
-  
 
+  useEffect(() => {
+    // when screen height changes
+
+    console.log(screenHeigh);
+    setIsRightSideBarOpen(false);
+
+    const shh = calculateBreakPoint(window.innerHeight);
+
+    setItemsPerPage(shh);
+    console.log(shh);
+  }, [screenHeigh]);
+
+  const calculateBreakPoint = (sh: number) => {
+    return Math.floor((sh + 30 - 300) / 100) * 4;
+  };
+
+  const calculateBreakPointForSm = (sh: number) => {
+    console.log(Math.floor((sh + 30 - 100) / 100 - 1));
+    return Math.floor((sh + 30 - 100) / 100 - 1);
+    
+  };
 
   // Calculate the index range for the current page
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -126,13 +174,20 @@ const Candidate = (props: Props) => {
       <div className="w-full h-full">
         <InfoBar data={props.data} />
 
-        <div className="flex mt-[3%] h-[43rem]">
+        <div
+          className={`flex  mt-[3%]`}
+          style={{
+            height: `${
+              (itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6 + 8
+            }rem`,
+          }}
+        >
           <div className="flex-1">
             <div className="h-10 cursor-pointer flex justify-between mb-4">
               <input
                 type="text"
                 placeholder="Search"
-                className="w-1/4 rounded-full bg-[#EEEEEE] px-5 text-xl"
+                className="w-1/3 lg:w-1/4 rounded-full bg-[#EEEEEE] px-5 text-xl border-[#3F127A]"
                 value={search}
                 onChange={(e) => {
                   setSearch(e.target.value);
@@ -161,9 +216,9 @@ const Candidate = (props: Props) => {
                       aria-hidden="true"
                     >
                       <path
-                        fill-rule="evenodd"
+                        fillRule="evenodd"
                         d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                        clip-rule="evenodd"
+                        clipRule="evenodd"
                       />
                     </svg>
                   </label>
@@ -220,10 +275,18 @@ const Candidate = (props: Props) => {
               </div>
             </div>
             <div className="flex flex-col items-center justify-center w-full ">
-              <div   className="h-[37rem] w-full">
-                <div ref={candidateRef}
-                  className={`grid gap-4 w-full transition-all ${
-                    IsRightSideBarOpen ? "grid-cols-3" : "grid-cols-4"
+              <div
+                className={`w-full`}
+                style={{
+                  height: `${
+                    (itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6
+                  }rem`,
+                }}
+              >
+                <div
+                  ref={candidateRef}
+                  className={`grid gap-4 w-full transition-all grid-cols-1 ${
+                    IsRightSideBarOpen ? "lg:grid-cols-3" : "lg:grid-cols-4"
                   }`}
                 >
                   {currentData?.map((item: Candidate, index: number) => {

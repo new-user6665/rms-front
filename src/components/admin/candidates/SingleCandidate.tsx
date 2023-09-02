@@ -133,7 +133,7 @@ const OneCandidate = (props: Props) => {
                 <p className="bg-[#3F127A] px-2 text-white font-bold text-2xl -mt-5 rounded-md">
                   {Candidate?.chestNO}
                 </p>
-                <p className="font-bold text-3xl leading-7 mt-2 text-center">
+                <p className="font-bold text-2xl leading-7 mt-2 text-center">
                   {Candidate?.name} Muhammed
                 </p>
                 <p className=" font-bold">Team {Candidate?.team?.name}</p>
@@ -165,8 +165,6 @@ const OneCandidate = (props: Props) => {
                   }}
                 >
                   <EditIcon
-                    SetOpen={setModalOpen}
-                    open={modalOpen}
                     className="w-4 h-4 cursor-pointer fill-[#3F127A]  transition-all"
                   />
                 </button>
@@ -175,8 +173,6 @@ const OneCandidate = (props: Props) => {
                   onClick={() => setModalOpen(true)}
                 >
                   <DeleteIcon
-                    SetOpen={setModalOpen}
-                    open={modalOpen}
                     className="w-4 h-4 cursor-pointer fill-[#3F127A]  transition-all"
                   />
                 </button>

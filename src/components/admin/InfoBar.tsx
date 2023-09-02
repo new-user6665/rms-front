@@ -13,7 +13,7 @@ const InfoBar = (props: Props) => {
       {props.data.map((item, index) => (
         <div
           key={index}
-          className="rounded-3xl w-1/4 py-3 bg-[#ECE1FC] flex items-center justify-center flex-row "
+          className="rounded-3xl w-1/4 py-3 bg-[#ECE1FC] hidden lg:flex items-center justify-center flex-row "
         >
           <svg
             viewBox={`${item.icon.props.viewBox}`}

@@ -2,13 +2,12 @@ import {
   EditCandidateDocument,
   EditCandidateMutation,
   EditCandidateMutationVariables,
-  Mode,
-  Model,
   Candidate,
-  Type,
   Category,
   Team,
 } from "@/gql/graphql";
+import { EditBoxIcon, EditIcon } from "@/icons/action";
+import { ChevronRight } from "@/icons/arrows";
 import React from "react";
 import { OperationResult, useMutation } from "urql";
 
@@ -37,6 +36,9 @@ const EditCandidate = (props: Props) => {
   );
   const [classs, setClass] = React.useState<string>(
     props.selectedCandidate.class as string
+  );
+  const [chestNO , setChestNO ] =  React.useState<string>(
+    props.selectedCandidate.chestNO as string
   );
   const [image, setImage] = React.useState<File>();
 
@@ -95,57 +97,74 @@ const EditCandidate = (props: Props) => {
 
   return (
     <div className="">
-      <button className="bg-green-500" onClick={() => props.setIsEdit(false)}>
-        Back
-      </button>
-      <h1>Edit Candidate</h1>
-
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          HandleSubmit({ name, category, team, adno, classs });
+          HandleSubmit({ name, category, team, adno, classs , chestNO });
         }}
       >
-        {image ? (
-          <img
-            src={URL.createObjectURL(image)}
-            alt="image"
-            className="w-24 h-24"
-          />
-        ) : props.selectedCandidate?.imageId ? (
-          <img
-            src={`https://drive.google.com/uc?id=${props.selectedCandidate?.imageId}`}
-            alt="image"
-            className="w-24 h-24"
-          />
-        ) : (
-          <img
-            src={`https://drive.google.com/uc?id=1469PGeDEgnK5caEumLfGGUufCI0MY133`}
-            alt="image"
-            className="w-24 h-24"
-          />
-        )}
+        <div className="flex w-full justify-center">
+          <div
+            className="h-36 w-36 rounded-full border-8 border-[#3F127A] relative"
+            style={{
+              backgroundImage: `url(${
+                image
+                  ? URL.createObjectURL(image)
+                  : `https://drive.google.com/uc?id=${
+                      props.selectedCandidate?.imageId
+                        ? props.selectedCandidate?.imageId
+                        : "1469PGeDEgnK5caEumLfGGUufCI0MY133"
+                    } `
+              })`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            <label
+              htmlFor="file-upload"
+              className="cursor-pointer bg-[#3F127A] space-x-2 absolute bottom-0 right-0 w-8 h-8  text-white flex items-center justify-center rounded-full"
+            >
+              <EditIcon className="w-4 h-4 fill-white" />
+            </label>
+            <input
+              id="file-upload"
+              type="file"
+              className="hidden "
+              onChange={(e) => {
+                if (e.target.files) {
+                  const file = e.target.files[0];
+                  if (imageVerify(file)) {
+                    setImage(file);
+                  }
+                }
+              }}
+            />
+          </div>
+        </div>
 
+        <p>Chest Nom</p>
         <input
-          type="file"
-          onChange={(e) => {
-            if (e.target.files) {
-              const file = e.target.files[0];
-              if (imageVerify(file)) {
-                setImage(file);
-              }
-            }
-          }}
+          type="text"
+          placeholder="Type here"
+          className="input input-bordered input-secondary w-full max-w-xs"
+          value={chestNO}
+          onChange={(e) => setChestNO(e.target.value)}
         />
+
         <p>Name</p>
         <input
           type="text"
+          placeholder="Type here"
+          className="input input-bordered input-secondary w-full max-w-xs"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="name"
         />
         <p>Category</p>
-        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="select select-secondary w-full max-w-xs h-8"
+        >
           {props.categories.map((value, index) => {
             return (
               <option key={index} value={value.name as string}>
@@ -155,7 +174,11 @@ const EditCandidate = (props: Props) => {
           })}
         </select>
         <p>Team</p>
-        <select value={team} onChange={(e) => setTeam(e.target.value)}>
+        <select
+          value={team}
+          onChange={(e) => setTeam(e.target.value)}
+          className="select select-secondary w-full max-w-xs h-8"
+        >
           {props.teams.map((value, index) => {
             return (
               <option key={index} value={value.name as string}>
@@ -166,6 +189,7 @@ const EditCandidate = (props: Props) => {
         </select>
         <p>Adno</p>
         <input
+          className="input input-bordered input-secondary w-full max-w-xs"
           type="number"
           value={adno}
           onChange={(e) => setAdno(parseInt(e.target.value))}
@@ -173,68 +197,32 @@ const EditCandidate = (props: Props) => {
         />
         <p>Class</p>
         <input
+          className="input input-bordered input-secondary w-full max-w-xs"
           type="text"
           value={classs}
           onChange={(e) => setClass(e.target.value)}
           placeholder="class"
         />
 
-<input
-          type="file"
-          onChange={(e) => {
-            if (e.target.files) {
-              const file = e.target.files[0];
-              if (imageVerify(file)) {
-                setImage(file);
-              }
-            }
-          }}
-        />
-        <p>Name</p>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="name"
-        />
-        <p>Category</p>
-        <select value={category} onChange={(e) => setCategory(e.target.value)}>
-          {props.categories.map((value, index) => {
-            return (
-              <option key={index} value={value.name as string}>
-                {value.name}
-              </option>
-            );
-          })}
-        </select>
-        <p>Team</p>
-        <select value={team} onChange={(e) => setTeam(e.target.value)}>
-          {props.teams.map((value, index) => {
-            return (
-              <option key={index} value={value.name as string}>
-                {value.name}
-              </option>
-            );
-          })}
-        </select>
-        <p>Adno</p>
-        <input
-          type="number"
-          value={adno}
-          onChange={(e) => setAdno(parseInt(e.target.value))}
-          placeholder="adno"
-        />
-        <p>Class</p>
-        <input
-          type="text"
-          value={classs}
-          onChange={(e) => setClass(e.target.value)}
-          placeholder="class"
-        />
+        <div className="w-full  mt-4 flex items-center justify-between">
+          <button
+            type="submit"
+            className="bg-[#3F127A] w-1/2 border-2 text-white px-3 flex-1 py-2 border-[#3F127A] rounded-xl font-bold"
+          >
+            {isLoading ? "Loading..." : "Submit"}
+          </button>
 
-        <button className="bg-fuchsia-600" type="submit">
-          {isLoading ? "Loading..." : "Submit"}
-        </button>
+          <div
+            className="w-1/2 flex items-center justify-center tooltip"
+            data-tip="Back"
+          >
+            <ChevronRight
+              className="w-7 h-7 cursor-pointer fill-[#3F127A]  transition-all  "
+              SetOpen={props.setIsEdit}
+              open={props.isEdit}
+            />
+          </div>
+        </div>
       </form>
     </div>
   );
