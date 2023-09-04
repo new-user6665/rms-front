@@ -8,6 +8,7 @@ import { withUrqlClient } from "next-urql";
 import { useEffect, useRef, useState } from "react";
 import { cacheExchange, fetchExchange } from "urql";
 import OneCandidate from "./SingleCandidate";
+import { styled } from "styled-components";
 
 interface Props {
   data: {
@@ -18,6 +19,30 @@ interface Props {
   categories: Category[];
   teams: Team[];
 }
+
+// styled components
+
+const ComponentsDiv: any = styled.div<{ height: string }>`
+  width: 100%;
+  overflow: auto;
+  height: 75%;
+
+  @media (min-width: 1024px) {
+    width: 100%;
+    height: ${(props) => (props.height ? props.height : "100%")};
+  }
+`;
+
+const DetailedDiv: any = styled.div<{ height: string }>`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  margin-top: 3%;
+
+  @media (min-width: 1024px) {
+    height: ${(props) => (props.height ? props.height : "75vh")};
+  }
+`;
 
 const Candidate = (props: Props) => {
   const [allData, setAllData] = useState<Candidate[]>(props.result);
@@ -54,13 +79,7 @@ const Candidate = (props: Props) => {
     // window height settings
     const windowWidth = window.innerWidth;
 
-    if (windowWidth >= 1024) {
-      setItemsPerPage(calculateBreakPoint(window.innerHeight));
-    } else {
-      console.log(calculateBreakPointForSm(window.innerHeight));
-      
-      setItemsPerPage(calculateBreakPointForSm(window.innerHeight));
-    }
+    setItemsPerPage(calculateBreakPoint(window.innerHeight));
 
     const handleResize = () => {
       setScreenHeight(window.innerHeight);
@@ -77,18 +96,12 @@ const Candidate = (props: Props) => {
 
   useEffect(() => {
     const windowWidth = window.innerWidth;
+    console.log(windowWidth);
+
     if (IsRightSideBarOpen) {
-      if (windowWidth >= 1024) {
-        setItemsPerPage((calculateBreakPoint(window.innerHeight) / 4) * 3);
-      } else {
-        setItemsPerPage(calculateBreakPointForSm(window.innerHeight));
-      }
+      setItemsPerPage((calculateBreakPoint(window.innerHeight) / 4) * 3);
     } else {
-      if (windowWidth >= 1024) {
-        setItemsPerPage(calculateBreakPoint(window.innerHeight));
-      } else {
-        setItemsPerPage(calculateBreakPointForSm(window.innerHeight));
-      }
+      setItemsPerPage(calculateBreakPoint(window.innerHeight));
       setCurrentPage(1);
     }
   }, [IsRightSideBarOpen]);
@@ -107,12 +120,6 @@ const Candidate = (props: Props) => {
 
   const calculateBreakPoint = (sh: number) => {
     return Math.floor((sh + 30 - 300) / 100) * 4;
-  };
-
-  const calculateBreakPointForSm = (sh: number) => {
-    console.log(Math.floor((sh + 30 - 100) / 100 - 1));
-    return Math.floor((sh + 30 - 100) / 100 - 1);
-    
   };
 
   // Calculate the index range for the current page
@@ -139,7 +146,7 @@ const Candidate = (props: Props) => {
           key={page}
           onClick={() => goToPage(page)}
           className={`${
-            currentPage === page ? "bg-[#3F127A] text-white" : "bg-[#ECE1FC]"
+            currentPage === page ? "bg-secondary text-white" : "bg-[#ECE1FC]"
           }  py-2 px-4 rounded-xl font-bold mx-1 my-5`}
         >
           {page}
@@ -174,20 +181,15 @@ const Candidate = (props: Props) => {
       <div className="w-full h-full">
         <InfoBar data={props.data} />
 
-        <div
-          className={`flex  mt-[3%]`}
-          style={{
-            height: `${
-              (itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6 + 8
-            }rem`,
-          }}
+        <DetailedDiv
+          height={`${(itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6 + 8}rem`}
         >
-          <div className="flex-1">
+          <div className="flex-1 h-full">
             <div className="h-10 cursor-pointer flex justify-between mb-4">
               <input
                 type="text"
                 placeholder="Search"
-                className="w-1/3 lg:w-1/4 rounded-full bg-[#EEEEEE] px-5 text-xl border-[#3F127A]"
+                className="w-1/3 lg:w-1/4 rounded-full bg-[#EEEEEE] px-5 text-xl border-secondary"
                 value={search}
                 onChange={(e) => {
                   setSearch(e.target.value);
@@ -206,7 +208,7 @@ const Candidate = (props: Props) => {
                 <div className="dropdown dropdown-end">
                   <label
                     tabIndex={0}
-                    className="inline-flex bg-[#3F127A] text-white rounded-full px-5 py-2 font-bold"
+                    className="inline-flex bg-secondary text-white rounded-full px-5 py-2 font-bold"
                   >
                     Add
                     <svg
@@ -227,7 +229,7 @@ const Candidate = (props: Props) => {
                     className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40 font-bold"
                   >
                     <button
-                      className="bg-grey-700 block px-2 py-1 text-md rounded-md hover:bg-[#3F127A] hover:text-white"
+                      className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
                       onClick={() => {
                         setIsCreate(true);
                         setIsEdit(false);
@@ -240,7 +242,7 @@ const Candidate = (props: Props) => {
                     </button>
 
                     <button
-                      className="bg-grey-700 block px-2 py-1 text-md rounded-md hover:bg-[#3F127A] hover:text-white"
+                      className="block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
                       onClick={() => {
                         setIsCreate(false);
                         setIsEdit(false);
@@ -253,7 +255,7 @@ const Candidate = (props: Props) => {
                     </button>
 
                     <button
-                      className="bg-grey-700 block px-2 py-1 text-md rounded-md hover:bg-[#3F127A] hover:text-white"
+                      className="block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
                       onClick={() => {
                         setIsCreate(false);
                         setIsEdit(false);
@@ -267,22 +269,20 @@ const Candidate = (props: Props) => {
                   </ul>
                 </div>
                 <button
-                  className="ml-1 bg-[#3F127A] text-white rounded-full px-5 py-2 font-bold"
+                  className="ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
                   onClick={downloadExcel}
                 >
                   Export
                 </button>
               </div>
             </div>
-            <div className="flex flex-col items-center justify-center w-full ">
-              <div
-                className={`w-full`}
-                style={{
-                  height: `${
-                    (itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6
-                  }rem`,
-                }}
+            <div className="flex flex-col items-center lg:justify-center w-full h-full">
+              <ComponentsDiv
+                height={`${
+                  (itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6
+                }rem`}
               >
+
                 <div
                   ref={candidateRef}
                   className={`grid gap-4 w-full transition-all grid-cols-1 ${
@@ -296,25 +296,25 @@ const Candidate = (props: Props) => {
                         className="transition-all bg-[#EEEEEE] rounded-xl mt-[1%] cursor-pointer flex p-5 gap-3 content-center items-center h-20"
                         onClick={() => {
                           setIsRightSideBarOpen(true);
-                          setSelectedCandidate(item);
+                          setSelectedCandidate(item); 
                           setIsEdit(false);
                           setIsCreate(false);
                           setExcel(false);
                           setIsImageUpload(false);
                         }}
                       >
-                        <div className="text-white font-bold bg-[#3F127A] px-3 py-1 text-xl rounded-xl flex justify-center content-center items-center">
+                        <div className="text-white font-bold bg-secondary px-3 py-1 text-xl rounded-xl flex justify-center content-center items-center">
                           <p> {item.chestNO}</p>
                         </div>
 
                         <p className="text-black leading-5 pr-[10%]">
-                          {item.name} Muhammed P
+                          {item.name} Muhammad P
                         </p>
                       </div>
                     );
                   })}
                 </div>
-              </div>
+              </ComponentsDiv>
               <div className="w-full flex items-center justify-center">
                 {renderPaginationControls()}
               </div>
@@ -348,7 +348,8 @@ const Candidate = (props: Props) => {
               teams={props.teams as Team[]}
             />
           </RightSideBar>
-        </div>
+          {/* </div> */}
+        </DetailedDiv>
       </div>
     </>
   );

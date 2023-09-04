@@ -20,7 +20,7 @@ export default function RootLayout({
   }
 
   return (
-    <div className="flex w-screen h-screen overflow-hidden">
+    <div className="flex w-screen  lg:h-screen  overflow-y-scroll  lg:overflow-x-hidden lg:overflow-y-hidden">
       {!cookie ? (
         <div className="flex flex-col items-center justify-center w-full h-full">
           <h1 className="text-3xl font-bold">Login</h1>
@@ -28,7 +28,7 @@ export default function RootLayout({
       ) : (
         <>
           <SideBar />
-          <div className="p-6 flex-1">{children}</div>
+          <div className="px-6 pt-6 flex-1">{children}</div>
         </>
       )}
     </div>

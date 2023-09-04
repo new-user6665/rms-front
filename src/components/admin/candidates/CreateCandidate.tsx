@@ -95,7 +95,7 @@ const CreateCandidate = (props: Props) => {
       >
         <div className="flex w-full justify-center">
           <div
-            className="h-36 w-36 rounded-full border-8 border-[#3F127A] relative"
+            className="h-36 w-36 rounded-full border-8 border-secondary relative"
             style={{
               backgroundImage: `url(${
                 image
@@ -108,7 +108,7 @@ const CreateCandidate = (props: Props) => {
           >
             <label
               htmlFor="file-upload"
-              className="cursor-pointer bg-[#3F127A] space-x-2 absolute bottom-0 right-0 w-8 h-8  text-white flex items-center justify-center rounded-full"
+              className="cursor-pointer bg-secondary space-x-2 absolute bottom-0 right-0 w-8 h-8  text-white flex items-center justify-center rounded-full"
             >
               <AddIcon className="w-6 h-6 fill-white" />
             </label>
@@ -116,7 +116,7 @@ const CreateCandidate = (props: Props) => {
               id="file-upload"
               className="hidden"
               type="file"
-              onChange={(e) => {
+              onChange={(e) => { 
                 if (e.target.files) {
                   const file = e.target.files[0];
                   if (imageVerify(file)) {
@@ -194,7 +194,7 @@ const CreateCandidate = (props: Props) => {
         <div className="w-full  mt-4 flex items-center justify-between">
           <button
             type="submit"
-            className="bg-[#3F127A] w-1/2 border-2 text-white px-3 flex-1 py-2 border-[#3F127A] rounded-xl font-bold"
+            className="bg-secondary w-1/2 border-2 text-white px-3 flex-1 py-2 border-secondary rounded-xl font-bold"
           >
             { state.fetching ? "Loading..." : "Submit"}  
           </button>

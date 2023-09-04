@@ -119,7 +119,7 @@ const OneCandidate = (props: Props) => {
               <span></span>
               <div className="flex flex-col items-center max-h-full overflow-hidden">
                 <div
-                  className="h-36 w-36 rounded-full border-8 border-[#3F127A]"
+                  className="h-36 w-36 rounded-full border-8 border-secondary"
                   style={{
                     backgroundImage: `url('https://drive.google.com/uc?id=${
                       Candidate?.imageId
@@ -130,7 +130,7 @@ const OneCandidate = (props: Props) => {
                     backgroundPosition: "center",
                   }}
                 ></div>
-                <p className="bg-[#3F127A] px-2 text-white font-bold text-2xl -mt-5 rounded-md">
+                <p className="bg-secondary px-2 text-white font-bold text-2xl -mt-5 rounded-md">
                   {Candidate?.chestNO}
                 </p>
                 <p className="font-bold text-2xl leading-7 mt-2 text-center">
@@ -139,41 +139,41 @@ const OneCandidate = (props: Props) => {
                 <p className=" font-bold">Team {Candidate?.team?.name}</p>
                 <p className="">{Candidate?.category?.name}</p>
                 <div className="flex justify-center gap-3 mt-3 ">
-                  <div className="flex flex-col items-center justify-center content-center w-20 h-20 rounded-xl  border-2 border-dashed border-[#3F127A]">
+                  <div className="flex flex-col items-center justify-center content-center w-20 h-20 rounded-xl  border-2 border-dashed border-secondary">
                     <p className="font-bold">Single</p>
-                    <p className="font-bold text-5xl text-[#3F127A]">{Candidate?.individualPoint || 0}</p>
+                    <p className="font-bold text-5xl text-secondary">{Candidate?.individualPoint || 0}</p>
                   </div>
-                  <div className="flex flex-col items-center justify-center content-center w-20 h-20 rounded-xl  border-2 border-dashed border-[#3F127A]">
+                  <div className="flex flex-col items-center justify-center content-center w-20 h-20 rounded-xl  border-2 border-dashed border-secondary">
                     <p className="font-bold">Group</p>
-                    <p className="font-bold text-5xl text-[#3F127A]">{Candidate?.groupPoint || 0}</p>
+                    <p className="font-bold text-5xl text-secondary">{Candidate?.groupPoint || 0}</p>
                   </div>
 
                 </div>
               </div>
               <div className="flex w-full justify-center gap-2">
                 <button
-                  className="bg-[#3F127A] border-2 text-white px-3 flex-1 py-2 border-[#3F127A] rounded-xl font-bold"
+                  className="bg-secondary border-2 text-white px-3 flex-1 py-2 border-secondary rounded-xl font-bold"
                   onClick={() => setIsViewOpen(true)}
                 >
                   View More
                 </button>
                 <button
-                  className=" border-2 text-white px-3 py-2 border-[#3F127A] rounded-xl font-bold"
+                  className=" border-2 text-white px-3 py-2 border-secondary rounded-xl font-bold"
                   onClick={() => {
                     props.setIsEdit(true);
                     props.setIsCreate(false);
                   }}
                 >
                   <EditIcon
-                    className="w-4 h-4 cursor-pointer fill-[#3F127A]  transition-all"
-                  />
+                    className="w-4 h-4 cursor-pointer fill-secondary  transition-all"
+                  /> 
                 </button>
                 <button
-                  className=" border-2 text-white px-3 py-2 border-[#3F127A] rounded-xl font-bold"
+                  className=" border-2 text-white px-3 py-2 border-secondary rounded-xl font-bold"
                   onClick={() => setModalOpen(true)}
                 >
                   <DeleteIcon
-                    className="w-4 h-4 cursor-pointer fill-[#3F127A]  transition-all"
+                    className="w-4 h-4 cursor-pointer fill-secondary  transition-all"
                   />
                 </button>
               </div>

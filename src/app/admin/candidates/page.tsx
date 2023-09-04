@@ -50,7 +50,7 @@ const page = async () => {
     },
 
   ];
-  const h = data[0];
+  const h = data[0]; 
   return (
     <main className="w-full h-full flex overflow-hidden">
       <Candidate
