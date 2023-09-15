@@ -39,6 +39,7 @@ const OneSection = (props: Props) => {
     variables: {
       id: props.id,
     },
+    pause: props.isEdit && !props.isCreate,
   });
 
   const [state, DeleteSectionExecute] = useMutation(DeleteSectionDocument);
@@ -75,6 +76,7 @@ const OneSection = (props: Props) => {
           id={Section?.id as number}
           data={props.data}
           setData={props.setData}
+          
         />
       ) : props.isCreate ? (
         <CreateSection key={2} data={props.data} setData={props.setData} />
@@ -84,9 +86,18 @@ const OneSection = (props: Props) => {
             <p> loading... </p>
           ) : (
             <div className="w-full h-full flex flex-col justify-between">
-              <div>
-                <p className="font-bold text-2xl leading-7 mt-2 text-center"><span className="font-normal">Name:</span>{Section?.name}</p>
+            
+              <div className="relative top-15 flex flex-col items-center justify-center gap-4">
+              
+
+              <div  className="flex flex-col gap-2 w-full">
+              <p className="text-xl items-center justify-center text-center" >Name</p>
+              <span className="border border-gray-500 rounded-lg px-20 py-3  bg-slate-200 w-full">{Section?.name}</span>
               </div>
+             
+          
+             
+            </div>
               <div className="w-full mt-4 flex items-center justify-between">
               <div
             className="w-1/2 flex items-center justify-center tooltip"
@@ -98,6 +109,7 @@ const OneSection = (props: Props) => {
                     onClick={() => {
                       props.setIsEdit(true);
                       props.setIsCreate(false);
+                      
                     }}
                   >
                     <EditIcon className="w-6 h-6 cursor-pointer fill-secondary  transition-all" />

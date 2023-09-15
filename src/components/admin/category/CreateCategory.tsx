@@ -18,6 +18,7 @@ const CreateCategory = (props: Props) => {
     const datas: OperationResult<AddCategoryMutation, AddCategoryMutationVariables> = await CreateCategoryExecute({
       name: data.name,
       section: data.section,
+    
     });
 
     if (datas.data?.createCategory) {
@@ -29,32 +30,43 @@ const CreateCategory = (props: Props) => {
   };
 
   return (
-    <div>
-      <h1>Create Category</h1>
-
+    <div className="h-full w-full">
       <form
-        onSubmit={
-          (e) => {
-            e.preventDefault();
-            HandleSubmit({ name, section })
-          }
-        }
+        className="h-full w-full flex flex-col items-center justify-between "
+        onSubmit={(e) => {
+          e.preventDefault();
+          HandleSubmit({ name ,section });
+        }}
       >
-        <input type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="name" />
-        <input type="text"
+        <div className="mt-4">
+          <p>Name</p>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="name"
+            className="input input-bordered input-secondary w-full max-w-xs mt-1"
+          />
+          <p>Section</p>
+          <input type="text"
+               className="input input-bordered input-secondary w-full max-w-xs mt-1"
           value={section}
           onChange={(e) => setSection(e.target.value)}
           placeholder="section" />
-        <button
-          className="bg-fuchsia-600"
-          type="submit"
-          disabled={state.fetching}
-        >
-          {state.fetching ? "Loading" : "Create"}
-        </button>
+        </div>
+        <div className="w-full mt-4 flex items-center justify-between">
+          <button
+            type="submit"
+            className="bg-secondary w-1/2 border-2 text-white px-3 flex-1 py-2 border-secondary rounded-xl font-bold"
+          >
+            {state.fetching ? "Loading..." : "Submit"}
+          </button>
+
+          <div
+            className="w-1/2 flex items-center justify-center tooltip"
+            data-tip="Back"
+          ></div>
+        </div>
       </form>
     </div>
   );

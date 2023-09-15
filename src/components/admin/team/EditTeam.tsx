@@ -1,4 +1,5 @@
 import { EditTeamDocument, EditTeamMutation, EditTeamMutationVariables, Team } from '@/gql/graphql';
+import { ChevronRight } from '@/icons/arrows';
 import React from 'react'
 import { OperationResult, useMutation } from 'urql';
 
@@ -59,50 +60,68 @@ const EditTeam = (props: Props) => {
 
 
   return (
-    <div>
-      <button className="bg-green-500" onClick={() => props.setIsEdit(false)}>
-        Back
-      </button>
-      <h1>Edit Team</h1>
+    <div className='w-full h-full flex justify-between'>
+        
+  
+    <form
+    className='w-full h-full flex justify-between flex-col'
+    onSubmit={
+      (e) => {
+        e.preventDefault();
+        HandleSubmit({ name , color , description , shortName})
+      }
+    }
+  >
+    <div className="mt-4">
+      <p>Name</p>
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="name"
+        className="input input-bordered input-secondary w-full max-w-xs mt-1"
+      />
+      <p>Color</p>
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          HandleSubmit({ name , color , description , shortName })
-        }}
+      <input type="text"
+        className="input input-bordered input-secondary w-full max-w-xs mt-1"
+        value={color}
+        onChange={(e) => setColor(e.target.value)}
+        placeholder="color" />
+      <p>Description</p>
+      <input type="text"
+        className="input input-bordered input-secondary w-full max-w-xs mt-1"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        placeholder="description" />
+      <p>Short Name</p>
+      <input type="text"
+        className="input input-bordered input-secondary w-full max-w-xs mt-1"
+        value={shortName}
+        onChange={(e) => setShortName(e.target.value)}
+        placeholder="shortName" />
+      </div>
+      <div className="w-full  mt-4 flex items-center justify-between">
+      <button
+        type="submit"
+        className="bg-secondary w-1/2 border-2 text-white px-3 flex-1 py-2 border-secondary rounded-xl font-bold"
       >
-        <p>Name</p>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <p>ShortName</p>
-        <input
-          type="text"
-          value={shortName}
-          onChange={(e) => setShortName(e.target.value)}
-        />
-        <p>Description</p>
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <p>Color</p>
-        <input
-          type="color"
-          value={color}
-          onChange={(e) => setColor(e.target.value)}
-        />
+        {isLoading ? "Loading..." : "Submit"}
+      </button>
 
-        <button
-          className="bg-fuchsia-600"
-          type="submit"
-        >
-          {isLoading ? "Loading..." : "Submit"}
-        </button>
-      </form>
+      <div
+        className="w-1/2 flex items-center justify-center tooltip"
+        data-tip="Back"
+      >
+        <ChevronRight
+          className="w-7 h-7 cursor-pointer fill-secondary  transition-all  "
+          SetOpen={props.setIsEdit}
+          open={props.isEdit}
+        />
+      </div>
     </div>
+    </form>
+  </div>
   );
 }
 
