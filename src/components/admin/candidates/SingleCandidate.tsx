@@ -134,7 +134,7 @@ const OneCandidate = (props: Props) => {
                   {Candidate?.chestNO}
                 </p>
                 <p className="font-bold text-2xl leading-7 mt-2 text-center">
-                  {Candidate?.name} Muhammed
+                  {Candidate?.name}   
                 </p>
                 <p className=" font-bold">Team {Candidate?.team?.name}</p>
                 <p className="">{Candidate?.category?.name}</p>

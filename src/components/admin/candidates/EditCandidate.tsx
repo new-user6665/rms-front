@@ -59,7 +59,7 @@ const EditCandidate = (props: Props) => {
       category: data.category,
       adno: data.adno,
       chestNO: data.chestNO,
-      class: data.class,
+      class: data.classs,
       team: data.team,
     });
 

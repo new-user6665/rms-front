@@ -37,8 +37,10 @@ const Programme = (props: Props) => {
     if (cookie) {
       const token = cookie.split("=")[1];
       const cv = parseJwt(token);
-      setData( props.result.filter((item: any) => cv.categories?.includes(item.category.name)) as Programme[])
-      setAllData( props.result.filter((item: any) => cv.categories?.includes(item.category.name)) as Programme[])
+      console.log(cv);
+      
+      setData( props.result.filter((item: any) =>  cv.categories?.includes(item.category?.name)) as Programme[] )
+      setAllData( props.result.filter((item: any) => cv.categories?.includes(item.category?.name)) as Programme[] )
     }
   },[])
 
@@ -175,13 +177,10 @@ const Programme = (props: Props) => {
                       setIsExcelUpload(false);
                     }}
                   >
-                    <div className="w-1/3">
+                    <div className="">
                       <p className="text-base-content">{item.name}</p>
                     </div>
-                    <div className="w-1/3 ">
-                      <p className="text-base-content">{item.id}</p>
-                    </div>
-                    <div className="w-1/3 ">
+                    <div className=" ">
                       <p className="text-base-content">{item.programCode}</p>
                     </div>
                   </div>
@@ -195,6 +194,8 @@ const Programme = (props: Props) => {
         </div>
       </div>
       <RightSideBar
+        isCreate={isCreate}
+        isEdit={isEdit}
         key={1}
         isOpen={IsRightSideBarOpen}
         setIsOpen={setIsRightSideBarOpen}

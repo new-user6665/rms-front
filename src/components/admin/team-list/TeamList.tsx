@@ -19,7 +19,7 @@ interface Props {
   result: Programme[];
   categories: Category[];
   skills: Skill[];
-  candidates:Candidate[];
+  candidates: Candidate[];
 }
 
 const TeamList = (props: Props) => {
@@ -30,21 +30,29 @@ const TeamList = (props: Props) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [data, setData] = useState<Programme[]>(props.result);
-  const [allData , setAllData] = useState<Programme[]>(props.result);
-  const [isBulk , setIsBulk] = useState<boolean>(false);
+  const [allData, setAllData] = useState<Programme[]>(props.result);
+  const [isBulk, setIsBulk] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   const itemsPerPage = IsRightSideBarOpen ? 12 : 16;
 
-  useEffect(()=>{
+  useEffect(() => {
     const cookie = document.cookie;
     if (cookie) {
       const token = cookie.split("=")[1];
       const cv = parseJwt(token);
-      setData( props.result.filter((item: any) => cv.categories?.includes(item.category.name)) as Programme[])
-      setAllData( props.result.filter((item: any) => cv.categories?.includes(item.category.name)) as Programme[])
+      setData(
+        props.result.filter((item: any) =>
+          cv.categories?.includes(item.category.name)
+        ) as Programme[]
+      );
+      setAllData(
+        props.result.filter((item: any) =>
+          cv.categories?.includes(item.category.name)
+        ) as Programme[]
+      );
     }
-  },[])
+  }, []);
 
   // Calculate the index range for the current page
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -117,9 +125,14 @@ const TeamList = (props: Props) => {
                     setSearch(e.target.value);
                     setCurrentPage(1);
                     setData(
-                      allData.filter((item: Programme) =>
-                        item.name?.toLocaleLowerCase().includes(e.target.value?.toLocaleLowerCase()) 
-                        || item.programCode?.toLocaleLowerCase().includes(e.target.value?.toLocaleLowerCase()) 
+                      allData.filter(
+                        (item: Programme) =>
+                          item.name
+                            ?.toLocaleLowerCase()
+                            .includes(e.target.value?.toLocaleLowerCase()) ||
+                          item.programCode
+                            ?.toLocaleLowerCase()
+                            .includes(e.target.value?.toLocaleLowerCase())
                       )
                     );
                   }}
@@ -139,59 +152,60 @@ const TeamList = (props: Props) => {
                 </button>
               </div>
               <div className="m-1 float-left">
-                <button
-                  className="bg-blue-600"
-                  onClick={downloadExcel}
-                >
+                <button className="bg-blue-600" onClick={downloadExcel}>
                   Export
                 </button>
               </div>
 
               <div className="m-1 float-left">
-              <input type="checkbox" className="toggle toggle-md" 
-              checked = {isBulk}
-               onChange={(e) => {
-                setIsBulk(e.target.checked);
-               }}
+                <input
+                  type="checkbox"
+                  className="toggle toggle-md"
+                  checked={isBulk}
+                  onChange={(e) => {
+                    setIsRightSideBarOpen(false)
+                    setIsBulk(e.target.checked);
+                  }}
                 />
               </div>
             </div>
-          </div> 
+          </div>
 
-        
           <div>
-            {
-              isBulk ?
+            {isBulk ? (
               <BulkUploadTeamList
-              IsRightSideBarOpen={IsRightSideBarOpen}
-              setIsRightSideBarOpen={setIsRightSideBarOpen}
-              currentData={currentData}
-              setIsCreate={setIsCreate}
-              setIsEdit={setIsEdit}
-              setIsExcelUpload={setIsExcelUpload}
-              setSelectedProgramme={setSelectedProgramme}
-              key={1}
-              candidates={props.candidates}
+                IsRightSideBarOpen={IsRightSideBarOpen}
+                setIsRightSideBarOpen={setIsRightSideBarOpen}
+                currentData={currentData}
+                setIsCreate={setIsCreate}
+                setIsEdit={setIsEdit}
+                setIsExcelUpload={setIsExcelUpload}
+                setSelectedProgramme={setSelectedProgramme}
+                key={1}
+                candidates={props.candidates}
               />
-              :
-              <NormalUploadTeamList 
-              IsRightSideBarOpen={IsRightSideBarOpen}
-              setIsRightSideBarOpen={setIsRightSideBarOpen}
-              currentData={currentData}
-              setIsCreate={setIsCreate}
-              setIsEdit={setIsEdit}
-              setIsExcelUpload={setIsExcelUpload}
-              setSelectedProgramme={setSelectedProgramme}
-              key={1}
+            ) : (
+              <NormalUploadTeamList
+                IsRightSideBarOpen={IsRightSideBarOpen}
+                setIsRightSideBarOpen={setIsRightSideBarOpen}
+                currentData={currentData}
+                setIsCreate={setIsCreate}
+                setIsEdit={setIsEdit}
+                setIsExcelUpload={setIsExcelUpload}
+                setSelectedProgramme={setSelectedProgramme}
+                key={1}
               />
-            }
+            )}
           </div>
           <div className="w-full flex items-center justify-center">
             {renderPaginationControls()}
           </div>
         </div>
       </div>
-      <RightSideBar
+ 
+        <RightSideBar
+        isCreate={isCreate}
+        isEdit={isEdit}
         key={1}
         isOpen={IsRightSideBarOpen}
         setIsOpen={setIsRightSideBarOpen}
@@ -216,6 +230,8 @@ const TeamList = (props: Props) => {
           skills={props.skills}
         />
       </RightSideBar>
+
+      
     </>
   );
 };

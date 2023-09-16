@@ -31,13 +31,10 @@ const NormalUploadTeamList = (props:Props) => {
                       props.setIsExcelUpload(false);
                     }}
                   >
-                    <div className="w-1/3">
+                    <div className="">
                       <p className="text-base-content">{item.name}</p>
                     </div>
-                    <div className="w-1/3 ">
-                      <p className="text-base-content">{item.id}</p>
-                    </div>
-                    <div className="w-1/3 ">
+                    <div className=" ">
                       <p className="text-base-content">{item.programCode}</p>
                     </div>
                   </div>

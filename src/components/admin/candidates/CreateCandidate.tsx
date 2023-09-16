@@ -41,7 +41,7 @@ const CreateCandidate = (props: Props) => {
       chestNO: data.chestNO,
       team: data.team,
       adno: data.adno,
-      class: data.class,
+      class: data.classs,
     });
 
     console.log(datas);

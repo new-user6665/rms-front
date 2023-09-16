@@ -9,6 +9,8 @@ import { useEffect, useRef, useState } from "react";
 import { cacheExchange, fetchExchange } from "urql";
 import OneCandidate from "./SingleCandidate";
 import { styled } from "styled-components";
+import { ChevronLeft } from "@/icons/arrows";
+import { PageChevronLeft, PageChevronRight } from "@/icons/pagination";
 
 interface Props {
   data: {
@@ -282,7 +284,6 @@ const Candidate = (props: Props) => {
                   (itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6
                 }rem`}
               >
-
                 <div
                   ref={candidateRef}
                   className={`grid gap-4 w-full transition-all grid-cols-1 ${
@@ -296,7 +297,7 @@ const Candidate = (props: Props) => {
                         className="transition-all bg-[#EEEEEE] rounded-xl mt-[1%] cursor-pointer flex p-5 gap-3 content-center items-center h-20"
                         onClick={() => {
                           setIsRightSideBarOpen(true);
-                          setSelectedCandidate(item); 
+                          setSelectedCandidate(item);
                           setIsEdit(false);
                           setIsCreate(false);
                           setExcel(false);
@@ -308,7 +309,7 @@ const Candidate = (props: Props) => {
                         </div>
 
                         <p className="text-black leading-5 pr-[10%]">
-                          {item.name} Muhammad P
+                          {item.name}
                         </p>
                       </div>
                     );
@@ -316,7 +317,35 @@ const Candidate = (props: Props) => {
                 </div>
               </ComponentsDiv>
               <div className="w-full flex items-center justify-center">
-                {renderPaginationControls()}
+                <button
+                  key={1}
+                  onClick={() => {
+                    currentPage != 1 && goToPage(currentPage - 1)
+                  }}
+                  className={`${"bg-[#ECE1FC]"
+                  }  py-2 px-2  rounded-xl font-bold mx-1 my-5`}
+                >
+                  {
+                    <PageChevronLeft className="w-6 h-6 fill-secondary"/>
+                  }
+                </button>
+                <button
+                  key={1}
+                  className={`${ "bg-secondary text-white"
+                     
+                  }  py-2 px-4 rounded-xl font-bold mx-1 my-5`}
+                >
+                  {currentPage}
+                </button>
+                <button
+                  key={1}
+                  onClick={() => totalPages > currentPage && goToPage(currentPage + 1)}
+                  className={`${
+                     "bg-[#ECE1FC]"
+                  }  py-2 px-2  rounded-xl font-bold mx-1 my-5`}
+                >
+                  <PageChevronRight className="w-6 h-6 fill-secondary"/>
+                </button>
               </div>
             </div>
           </div>

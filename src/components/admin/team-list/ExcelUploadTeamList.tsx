@@ -1,11 +1,6 @@
 import {
   AddManyProgrammesDocument,
-  AddManyProgrammesMutation,
-  AddManyProgrammesMutationVariables,
-  CreateProgrammeInput,
-  Mode,
   Programme,
-  Type,
 } from "@/gql/graphql";
 import React from "react";
 import { OperationResult, useMutation } from "urql";
@@ -19,10 +14,9 @@ interface Props {
 }
 
 const ExcelUploadProgramme = (props: Props) => {
-
   const [file, setFile] = React.useState<any>(null);
-  const [finalizedData, setFinalizedData] = React.useState<CreateProgrammeInput[]>([]);
-  const [error , setError] = React.useState<string>("");
+  const [finalizedData, setFinalizedData] = React.useState<any[]>([]);
+  const [error, setError] = React.useState<string>("");
 
   const [state, UploadManyProgrammeExicute] = useMutation(
     AddManyProgrammesDocument
@@ -44,62 +38,95 @@ const ExcelUploadProgramme = (props: Props) => {
   async function handleFileUpload() {
     // const file = e.target.files[0];
     if (file) {
-      if (finalizedData.length > 0 ) {
-        console.log("file data");
-        const datas : OperationResult<
-          AddManyProgrammesMutation,
-          AddManyProgrammesMutationVariables
-        > = await UploadManyProgrammeExicute({
-          inputs: finalizedData as CreateProgrammeInput[],
-        });
-
-        if (datas.data?.createManyProgrammes) {
-          console.log(datas.data?.createManyProgrammes);
-            
-          alert("Programme Added");
-          // to change finalised data to programme type set category and skill to {name : value}
-
-         const finalData : Programme[] = finalizedData.map((value , index) => {
-            return {
-              ...value as unknown as Programme,
-              id : datas.data?.createManyProgrammes?.[index].id as number,
-              category: {
-                name : value.category as string
-              },
-              skill: {
-                name : value.skill as string
-              }
-            }
-          }
-          )
-
-          console.log(finalData);
-          props.setData([
-            ...props.data as Programme[],
-            ...finalData  as unknown as Programme[],
-          ]);
-        }else{
-          console.log(datas.error);
-          
-          setError("Something went wrong")
-          setTimeout(() => {
-            setError("")
-          }
-          , 3000)
-        }
-      }else{
-        setError("Invalid File Content")
-        setTimeout(() => {
-          setError("")
-        }
-        , 3000)
-      }
-    }else{
-      setError("File not selected")
+      const data = transformData(finalizedData);
+      console.log(finalizedData);
+      console.log(data);
+    } else {
+      setError("File not selected");
       setTimeout(() => {
-        setError("")
-      }, 3000)
+        setError("");
+      }, 3000);
     }
+  }
+
+  // function transformData(excelData : any) {
+  //   console.log(excelData);
+
+  //   const transformedData : any[] = [];
+
+  //   excelData.forEach((row : any) => {
+  //     const { programCode, ...candidates } = row;
+
+  //     // Filter out empty candidate values and create an array of candidate objects
+  //     const candidateObjects = [];
+  //     for (const [key, value] of Object.entries(candidates)) {
+  //       if (value !== "") {
+  //         candidateObjects.push({ chestNo: value });
+  //       }
+  //     }
+
+  //     // Add the program code and candidate objects to the transformed data
+  //     transformedData.push({
+  //       programCode: programCode,
+  //       candidates: candidateObjects,
+  //     });
+  //   });
+
+  //   return transformedData;
+  // }
+  // function transformData(excelData : any) {
+  //   const transformedData : any[] = [];
+
+  //   excelData.forEach((row : any) => {
+  //     const { programCode, ...candidates } = row;
+
+  //     // Iterate through the candidates and add non-empty ones to the transformed data
+  //     for (const [key, value] of Object.entries(candidates)) {
+  //       if (value !== "") {
+  //         transformedData.push({
+  //           programCode: programCode,
+  //           chestNo: value,
+  //         });
+  //       }
+  //     }
+  //   });
+
+  //   return transformedData;
+  // }
+
+  // Function to validate a candidate string
+
+  function isValidCandidate(candidate: string) {
+    return /^[A-Za-z]{1}\d{3}$/.test(candidate);
+  }
+
+  function transformData(excelData: any) {
+    const transformedData: any[] = [];
+
+    excelData.forEach((row: any) => {
+      console.log(row);
+      
+      const { programCode, ...candidates } = row;
+
+      // Loop through candidate properties dynamically
+      for (let i = 1; i <= 3; i++) {
+        const candidateKey = `candidate${i}`;
+        const candidateValue = candidates[candidateKey];
+
+        console.log(candidateValue);
+        console.log(isValidCandidate(candidateValue));
+        
+        
+        if (candidateValue && isValidCandidate(candidateValue)) {
+          transformedData.push({
+            programCode: programCode,
+            chestNo: candidateValue,
+          });
+        }
+      }
+    });
+
+    return transformedData;
   }
 
   function verifyFile(file: any) {
@@ -130,24 +157,12 @@ const ExcelUploadProgramme = (props: Props) => {
       const wsname = wb.SheetNames[0];
       const ws = wb.Sheets[wsname];
       /* Convert array of arrays */
-       fileData = XLSX.utils.sheet_to_json(ws);
+      fileData = XLSX.utils.sheet_to_json(ws);
 
       // checking the file data
 
       // json must include these keys
-      const requiredKeys = [
-        "name",
-        "category",
-        "skill",
-        "mode",
-        "model",
-        "programCode",
-        "candidateCount",
-        "groupCount",
-        "duration",
-        "conceptNote",
-        "type",
-      ];
+      const requiredKeys = ["programCode"];
 
       // checking if the file data has all the required keys
       const hasAllKeys = requiredKeys.every((key) => {
@@ -158,37 +173,27 @@ const ExcelUploadProgramme = (props: Props) => {
         });
       });
 
-      // if the file have more keys than the required keys then it is invalid
-      const hasMoreKeys = fileData.some((line: any) => {
-        return Object.keys(line).length > requiredKeys.length;
-      });
-
-      if (!hasAllKeys || hasMoreKeys) {
+      if (!hasAllKeys) {
         console.log(fileData);
         alert("Invalid File Content");
         return null;
       } else {
-     
-        
         setFinalizedData(fileData);
         console.log("setting");
         return fileData;
       }
     };
 
-   reader.readAsBinaryString(file);
+    reader.readAsBinaryString(file);
 
-   return fileData;
-
+    return fileData;
   }
 
   return (
     <div>
       <p>Upload you Excel File</p>
 
-      {
-        error && <p className="text-red-500">{error}</p>
-      }
+      {error && <p className="text-red-500">{error}</p>}
 
       <br />
       <p>Download sample File</p>
@@ -204,15 +209,14 @@ const ExcelUploadProgramme = (props: Props) => {
       <br />
 
       {/* input field of well designed for upload excel file only */}
-      <form 
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleFileUpload();
-      }
-      } 
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleFileUpload();
+        }}
       >
-      <input
-        className="
+        <input
+          className="
         border-2 border-gray-300
         rounded-md
         p-2
@@ -222,27 +226,24 @@ const ExcelUploadProgramme = (props: Props) => {
         focus:ring-blue-400
         focus:border-transparent
         "
-        type="file"
-        accept=".xlsx"
-        title="Upload Excel File"
-        placeholder="Upload Excel File"
-        onChange={
-          (e) => {
-            const file = e.target.files ?  e.target.files[0] : null;
-            setFile(file)
-            handleExcelChange(e)
-          }
-        }
-      />
-
-      <input 
-      type="submit" value="submit
-      " className="bg-blue-500 text-white rounded-md p-2 cursor-pointer "
+          type="file"
+          accept=".xlsx"
+          title="Upload Excel File"
+          placeholder="Upload Excel File"
+          onChange={(e) => {
+            const file = e.target.files ? e.target.files[0] : null;
+            setFile(file);
+            handleExcelChange(e);
+          }}
         />
 
+        <input
+          type="submit"
+          value="submit
+      "
+          className="bg-blue-500 text-white rounded-md p-2 cursor-pointer "
+        />
       </form>
-
-
     </div>
   );
 };
