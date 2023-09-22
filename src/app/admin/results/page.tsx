@@ -32,30 +32,10 @@ const page = async () => {
     GetAllSkillsQueryVariables
   >(GetAllSkillsDocument, {});
 
-  const data = [
-    {
-      title: "Total Users",
-      icon: <SectionIcon className="w-6 h-6 text-teal-600" />,
-    },
-    {
-      title: "Total Users",
-      icon: <SectionIcon className="w-6 h-6 text-teal-600" />,
-    },
-    {
-      title: "Total Users",
-      icon: <SectionIcon className="w-6 h-6 text-teal-600" />,
-    },
-    {
-      title: "Total Users",
-      icon: <SectionIcon className="w-6 h-6 text-teal-600" />,
-    },
-  ];
-  const h = data[0];
   return (
     <main className="w-full h-full flex ">
       <Result
         key={1}
-        data={data}
         result={result.data?.programmes}
         pageProps={1}
         categories={categories.data?.categories}

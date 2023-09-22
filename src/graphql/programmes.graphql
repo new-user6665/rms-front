@@ -30,6 +30,30 @@ query GetDetailedProgramme($id: Int!) {
   }
 }
 
+query GetAllProgrammesByCandidates {
+  programmes {
+    id
+    name
+    programCode
+    resultEntered
+    resultPublished
+    category {
+      name
+    }
+    skill {
+      name
+    }
+    candidateProgramme{
+      point
+      candidate{
+        team{
+          name
+        }
+      }
+    }
+  }
+}
+
 query GetOneProgramme($id: Int!) {
   programme(id: $id) {
     id

@@ -5,6 +5,15 @@ query GetAllTeams {
   }
 }
 
+query GetAllTeamsByPoint {
+  teams {
+    id
+    name
+    totalPoint
+    color
+  }
+}
+
 query GetOneTeam($id: Int!) {
   team(id: $id) {
     id
