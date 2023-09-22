@@ -8,8 +8,6 @@ import {
   GetOneCredentialDocument,
   GetOneCredentialQuery,
   GetOneCredentialQueryVariables,
-  Roles,
-  Team,
 } from "@/gql/graphql";
 import React, {  use, useEffect, useState } from "react";
 import { OperationResult, useMutation, useQuery } from "urql";
@@ -27,7 +25,6 @@ interface Props {
   setData: React.Dispatch<React.SetStateAction<Credential[]>>;
   isOpen : boolean;
   setIsOpen : React.Dispatch<React.SetStateAction<boolean>>;
-  teams:Team[];
 }
 
 
@@ -84,12 +81,10 @@ const OneCredential = (props: Props) => {
           id={Credential?.id as number}
           data={props.data}
           setData={props.setData}
-          teams={props.teams}
-          team = {Credential?.team?.name as string}
-          roles = {Credential?.roles as Roles}
+
         />
       ) : props.isCreate ? (
-        <CreateCredential key={2} data={props.data} setData={props.setData} teams={props.teams}/>
+        <CreateCredential key={2} data={props.data} setData={props.setData} />
       ) : (
         <div>
           {fetching ? (

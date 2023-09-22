@@ -8,6 +8,7 @@ import {
   GetOneCategoryDocument,
   GetOneCategoryQuery,
   GetOneCategoryQueryVariables,
+  Section,
 } from "@/gql/graphql";
 import {  useState } from "react";
 import { OperationResult, useMutation, useQuery } from "urql";
@@ -26,6 +27,7 @@ interface Props {
   setData: React.Dispatch<React.SetStateAction<Category[]>>;
   isOpen : boolean;
   setIsOpen : React.Dispatch<React.SetStateAction<boolean>>;
+  section : Section[];
 }
 
 const OneCategory = (props: Props) => {
@@ -76,9 +78,10 @@ const OneCategory = (props: Props) => {
          id={category?.id as number}
          data={props.data}
          setData={props.setData}
+         sections={props.section}
        />
       ) : props.isCreate ? (
-        <CreateCategory key={2} data={props.data} setData={props.setData} />
+        <CreateCategory key={2} data={props.data} setData={props.setData}  section={props.section}/>
       ) : (
         <div className="w-full h-full">
           {fetching ? (

@@ -12,8 +12,8 @@ interface Props {
     selectedProgramme : Programme;
     skill: string;
     category : string;
-    programeCode : string;
-    candiateCount : number;
+    programCode : string;
+    candidateCount : number;
     groupCount : number;
     duration : number;
     conceptNote : string;
@@ -30,8 +30,8 @@ const EditProgramme = (props : Props) => {
     const [skill, setSkill] = React.useState<string>(props.skill);
     const [mode, setMode] = React.useState<Mode>(props.mode);
     const [model, setModel] = React.useState<Model>(props.model);
-    const [programCode, setProgramCode] = React.useState<string>(props.programeCode);
-    const [candidateCount, setCandidateCount] = React.useState<number>(props.candiateCount);
+    const [programCode, setProgramCode] = React.useState<string>(props.programCode);
+    const [candidateCount, setCandidateCount] = React.useState<number>(props.candidateCount);
     const [groupCount, setGroupCount] = React.useState<number>(props.groupCount);
     const [duration, setDuration] = React.useState<number>(props.duration);
     const [conceptNote, setConceptNote] = React.useState<string>(props.conceptNote);

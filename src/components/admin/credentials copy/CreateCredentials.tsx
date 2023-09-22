@@ -1,11 +1,10 @@
 "use client";
-import { AddCredentialDocument, AddCredentialMutation, AddCredentialMutationVariables, Credential, Roles, Team } from "@/gql/graphql";
+import { AddCredentialDocument, AddCredentialMutation, AddCredentialMutationVariables, Credential, Roles } from "@/gql/graphql";
 import React, { useState } from "react";
 import { OperationResult, useMutation } from "urql";
 
 interface Props {
   data : Credential[]
-  teams:Team[]
   setData : React.Dispatch<React.SetStateAction<Credential[]>>
 }
 
@@ -80,24 +79,12 @@ const CreateCredential = (props: Props) => {
           <option value={Roles.Media}>Media</option>
           <option value={Roles.TeamManager}>TeamManager</option>
         </select>
-        { 
-          roles == Roles.TeamManager &&
-         <>
-          <p>Team</p>
-          <select name="" id=""
-            value={team}
-            onChange={(e) => setTeam(e.target.value)}
-          >
-            {
-              props.teams.map((item) => {
-                return (
-                  <option value={item.name as string}>{item.name}</option>
-                )
-              })
-            }
-          </select>
-          </>
-        }
+        <p>Team</p>
+        <input
+          type="text"
+          defaultValue={team}
+          onChange={(e) => setTeam(e.target.value) }
+          />
 
         <button
           className="bg-fuchsia-600"

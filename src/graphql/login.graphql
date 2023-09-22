@@ -39,3 +39,7 @@ query GetAdmins {
     name
   }
 }
+
+mutation LogOutUser {
+  logout
+}

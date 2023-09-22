@@ -1,16 +1,25 @@
 "use client";
+import { logoutUser } from "@/app/(user)/login/api";
 import { useGlobalContext } from "@/context/context";
-import { Roles } from "@/gql/graphql";
+import {
+  AddProgrammeDocument,
+  LogOutUserDocument,
+  LogOutUserMutation,
+  LogOutUserMutationVariables,
+  Roles,
+} from "@/gql/graphql";
 import { ArrowRightSquare, IconArrowLeftSquare } from "@/icons/arrows";
 import {
   Candidates,
   Category,
   Credential,
   Dashboard as Dashoard,
+  LogOutIcon,
   SectionIcon,
 } from "@/icons/navs";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
+import { OperationResult, useMutation } from "urql";
 
 const AdminNavs = [
   {
@@ -156,69 +165,115 @@ const SideBar = () => {
 
   const router = useRouter();
 
+  const [state, LogoutExecute] = useMutation(LogOutUserDocument);
+
+  const LogOut = async () => {
+    const logout: OperationResult<
+      LogOutUserMutation,
+      LogOutUserMutationVariables
+    > = await LogoutExecute({});
+    router.push("/login");
+  };
+
   return (
     <div
       className={`${
         isOpen ? "w-56" : "w-20"
       } overflow-hidden transition-all duration-500 text-base-100  bg-primary hidden  lg:flex flex-col p-4`}
     >
-      <label className="swap swap-rotate w-12 my-2">
-        <input type="checkbox" />
-
-        <IconArrowLeftSquare
-          className="w-8 h-8 swap-on  fill-current"
-          SetOpen={setIsOpen}
-          open={isOpen}
-        />
-
-        <ArrowRightSquare
-          className="w-8 h-8 swap-off fill-current"
-          SetOpen={setIsOpen}
-          open={isOpen}
-        />
-      </label>
-      <ul
-        className={`menu h-full w-full ${isOpen ? "" : "px-0"} transition-all`}
-      >
-        <li className="p-0 w-1" onClick={() => router.push("/admin")}>
-          <p
-            className={` px-0 flex ${
-              isOpen ? "w-40" : "w-12 items-center justify-center"
+      <div className="p-0 w-1">
+        <div
+          className={` px-0 flex ${
+            isOpen ? "w-40" : "w-12 items-center justify-center"
+          }`}
+        >
+          <label className="swap w-12 my-2">
+            {isOpen ? (
+              <IconArrowLeftSquare
+                className="w-8 h-8  fill-current"
+                SetOpen={setIsOpen}
+                open={isOpen}
+              />
+            ) : (
+              <ArrowRightSquare
+                className="w-8 h-8 swap-off fill-current"
+                SetOpen={setIsOpen}
+                open={isOpen}
+              />
+            )}
+          </label>
+          <span
+            className={` text-base text-center font-bold ${
+              isOpen ? "flex" : "hidden "
             }`}
           >
-            <Dashoard className="w-8 h-8" />
-            <span
-              className={` text-base text-center font-bold ${
-                isOpen ? "flex" : "hidden "
-              }`}
-            >
-              Dashoard
-            </span>
-          </p>
-        </li>
-
-        {navs.map((nav, index) => (
-          <li
-            key={index}
-            className="p-0"
-            onClick={() => router.push(`/admin/${nav.nav}`)}
-          >
+            Realia 2k23
+          </span>
+        </div>
+      </div>
+      <ul
+        className={`menu h-full w-full ${
+          isOpen ? "" : "px-0"
+        } transition-all flex flex-col justify-between`}
+      >
+        <div>
+          <li className="p-0 w-1">
             <p
               className={` px-0 flex ${
-                isOpen ? "w-40" : "w-12 items-center justify-center "
+                isOpen ? "w-40" : "w-12 items-center justify-center"
               }`}
             >
-              {nav.icon}
+              <Dashoard className="w-8 h-8" />
               <span
                 className={` text-base text-center font-bold ${
                   isOpen ? "flex" : "hidden "
                 }`}
               >
-                {nav.name}
+                Dashoard
               </span>
             </p>
           </li>
-        ))}
+
+          {navs.map((nav, index) => (
+            <li
+              key={index}
+              className="p-0"
+              onClick={() => router.push(`/admin/${nav.nav}`)}
+            >
+              <p
+                className={` px-0 flex ${
+                  isOpen ? "w-40" : "w-12 items-center justify-center "
+                }`}
+              >
+                {nav.icon}
+                <span
+                  className={` text-base text-center font-bold ${
+                    isOpen ? "flex" : "hidden "
+                  }`}
+                >
+                  {nav.name}
+                </span>
+              </p>
+            </li>
+          ))}
+        </div>
+
+        <li className="p-0 w-1" onClick={LogOut}>
+          <p
+            className={` px-0 flex ${
+              isOpen ? "w-40" : "w-12 items-center justify-center"
+            }`}
+          >
+            <LogOutIcon className="w-8 h-8 text-white" />
+            <span
+              className={` text-base text-center font-bold  ${
+                isOpen ? "flex" : "hidden "
+              }`}
+            >
+              Logout
+            </span>
+          </p>
+        </li>
       </ul>
     </div>
   );

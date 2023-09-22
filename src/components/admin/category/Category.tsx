@@ -6,7 +6,7 @@ import { SERVER_URL } from "@/lib/urql";
 import { withUrqlClient } from "next-urql";
 import React, { useState } from "react";
 import { cacheExchange, fetchExchange } from "urql";
-import { Category } from "@/gql/graphql";
+import { Category, Section } from "@/gql/graphql";
 
 interface Props {
   data: {
@@ -14,6 +14,7 @@ interface Props {
     icon: any;
   }[];
   result: Category[];
+  section : Section[];
 }
 
 const Category = (props: Props) => {
@@ -50,8 +51,8 @@ const Category = (props: Props) => {
   return (
     <>
       <div className="w-full h-full">
-        <InfoBar data={props.data} />
-        <div className="w-full h-screen lg:h-4/5 flex mt-[3%] ">
+        {/* <InfoBar data={props.data} /> */}
+        <div className="w-full h-screen lg:h-[90%] flex mt-[3%] ">
           <div className="flex-1 w-full">
             <div className="h-10 cursor-pointer flex justify-between mb-4">
               {/* search bar */}
@@ -142,6 +143,7 @@ const Category = (props: Props) => {
               setData={setData}
               isOpen={IsRightSideBarOpen}
               setIsOpen={setIsRightSideBarOpen}
+              section={props.section}
             />
           </RightSideBar>
         </div>

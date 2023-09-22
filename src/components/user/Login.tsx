@@ -12,7 +12,6 @@ import {
   cacheExchange,
   fetchExchange,
   useMutation,
-  useQuery,
 } from "urql";
 import { withUrqlClient } from "next-urql";
 import {
@@ -27,7 +26,7 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const { data, setData } = useGlobalContext();
 
-  const [state, LoginMutaion] = useMutation(LoginUserDocument);
+  const [state, LoginMutation] = useMutation(LoginUserDocument);
 
   const {
     register,
@@ -43,7 +42,7 @@ const LoginPage = () => {
     const datas: OperationResult<
       LoginUserMutation,
       LoginUserMutationVariables
-    > = await LoginMutaion(data);
+    > = await LoginMutation(data);
     await login(datas.data?.login.token as string);
     if (!datas.data?.login) {
       setError("Invalid username or password");

@@ -1,4 +1,4 @@
-import { EditCredentialDocument, EditCredentialMutation, EditCredentialMutationVariables, Credential, Roles, Type, Team } from '@/gql/graphql';
+import { EditCredentialDocument, EditCredentialMutation, EditCredentialMutationVariables, Credential, Roles, Type } from '@/gql/graphql';
 import React, { useState } from 'react'
 import { OperationResult, useMutation } from 'urql';
 
@@ -9,16 +9,14 @@ interface Props {
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
   data: Credential[]
   setData: React.Dispatch<React.SetStateAction<Credential[]>>
-  teams:Team[]
-  team?: string;
-  roles : Roles
 }
 
 const EditCredential = (props: Props) => {
    const [name, setName] = useState<string>(props.name);
-    const [password , setPassword ] = useState<string >("password")
-    const [roles , setRoles ] = useState<Roles>(props.roles)
-    const [team , setTeam ] = useState<string>(props.team as string)
+   const [categories , setCategories ] = useState<string>("")
+    const [password , setPassword ] = useState<string>("")
+    const [roles , setRoles ] = useState<Roles>(Roles.Controller)
+    const [team , setTeam ] = useState<string>("")
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const [state, UpdateCredentialExecute] = useMutation(EditCredentialDocument);
@@ -31,7 +29,7 @@ const EditCredential = (props: Props) => {
     const updatedData: OperationResult<EditCredentialMutation, EditCredentialMutationVariables> = await UpdateCredentialExecute({
       id: props.id,
       name,
-      categories : "",
+      categories,
       password,
        roles,
       team
@@ -81,6 +79,12 @@ const EditCredential = (props: Props) => {
           defaultValue={name}
           onChange={(e) => setName(e.target.value) }
         />
+        <p>Categoris</p>
+        <input
+          type="text"
+          defaultValue={categories}
+          onChange={(e) => setCategories(e.target.value) }
+          />
         <p>Password</p>
         <input
           type="text"
@@ -89,32 +93,20 @@ const EditCredential = (props: Props) => {
           />
         <p>Roles</p>
         <select name="" id=""
-          value={roles}
+          value={Roles.Admin}
           onChange={(e) => setRoles(e.target.value as Roles)}
         >
-          <option value={Roles.Admin}>Admin</option>
-          <option value={Roles.Controller}>Controller</option>
-          <option value={Roles.Media}>Media</option>
-          <option value={Roles.TeamManager}>Team Manager</option>
+          <option value={Roles.Admin}>Group</option>
+          <option value={Roles.Controller}>House</option>
+          <option value={Roles.Media}>Single</option>
+          <option value={Roles.TeamManager}>Single</option>
         </select>
-        { 
-          roles == Roles.TeamManager &&
-         <>
-          <p>Team</p>
-          <select name="" id=""
-            value={team}
-            onChange={(e) => setTeam(e.target.value)}
-          >
-            {
-              props.teams.map((item) => {
-                return (
-                  <option value={item.name as string}>{item.name}</option>
-                )
-              })
-            }
-          </select>
-          </>
-        }
+        <p>Team</p>
+        <input
+          type="text"
+          defaultValue={team}
+          onChange={(e) => setTeam(e.target.value) }
+          />
         <button
           className="bg-fuchsia-600"
           type="submit"

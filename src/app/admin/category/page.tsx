@@ -3,6 +3,9 @@ import {
   GetAllCategoriesDocument,
   GetAllCategoriesQuery,
   GetAllCategoriesQueryVariables,
+  GetAllSectionsDocument,
+  GetAllSectionsQuery,
+  GetAllSectionsQueryVariables,
 } from "@/gql/graphql";
 import { SectionIcon } from "@/icons/navs";
 import { getUrqlClient } from "@/lib/urql";
@@ -15,6 +18,11 @@ const page = async () => {
     GetAllCategoriesQuery,
     GetAllCategoriesQueryVariables
   >(GetAllCategoriesDocument, {});
+
+  const section = await client.query<
+    GetAllSectionsQuery,
+    GetAllSectionsQueryVariables
+  >(GetAllSectionsDocument, {});
 
   const data = [
       {
@@ -35,9 +43,12 @@ const page = async () => {
       },
   ];
 
+  console.log(result);
+  
+
   return (
     <main className="w-full h-full flex ">
-      <Category key={1} data={data} result={result.data?.categories} pageProps={1}/>
+      <Category key={1} data={data} result={result.data?.categories} section={section.data?.sections} pageProps={1}/>
     </main>
   );
 };

@@ -1,11 +1,12 @@
 "use client";
-import { AddCategoryDocument, AddCategoryMutation, AddCategoryMutationVariables, Category } from "@/gql/graphql";
+import { AddCategoryDocument, AddCategoryMutation, AddCategoryMutationVariables, Category, Section } from "@/gql/graphql";
 import React from "react";
 import { OperationResult, useMutation } from "urql";
 
 interface Props {
   data: Category[]
   setData: React.Dispatch<React.SetStateAction<Category[]>>
+  section:Section[]
 }
 
 const CreateCategory = (props: Props) => {
@@ -48,11 +49,18 @@ const CreateCategory = (props: Props) => {
             className="input input-bordered input-secondary w-full max-w-xs mt-1"
           />
           <p>Section</p>
-          <input type="text"
-               className="input input-bordered input-secondary w-full max-w-xs mt-1"
-          value={section}
-          onChange={(e) => setSection(e.target.value)}
-          placeholder="section" />
+          <select name="" id="" value={section} className="select select-secondary w-full max-w-xs h-8" onChange={(e)=>{
+            setSection(e.target.value)
+          }}>
+            <option value="">Select Section</option>
+            {props.section.map((value, index) => {
+              return (
+                <option key={index} value={value.name as string}>
+                  {value.name}
+                </option>
+              );
+            })}
+          </select>
         </div>
         <div className="w-full mt-4 flex items-center justify-between">
           <button

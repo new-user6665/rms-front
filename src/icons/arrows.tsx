@@ -12,7 +12,7 @@ export function ArrowRightSquare(props: Props) {
       height="1em"
       width="1em"
       className={props.className}
-      onClick={() => props.SetOpen(false)}
+      onClick={() => props.SetOpen(true)}
     >
       <path
         fillRule="evenodd"
@@ -57,7 +57,7 @@ export function IconArrowLeftSquare(props: Props) {
       height="1em"
       width="1em"
       className={props.className}
-      onClick={() => props.SetOpen(true)}
+      onClick={() => props.SetOpen(false)}
     >
       <path
         fillRule="evenodd"

@@ -2,7 +2,8 @@ import { Client, cacheExchange, createClient, fetchExchange } from "urql/core";
 
 let _client: Client | null = null;
 
-export const SERVER_URL = "https://rms-omega-six.vercel.app/graphql" || process.env.SERVER_URL as string;
+export const SERVER_URL = //"https://sturdy-space-garbanzo-wj99qr54j57h5qx9-4000.app.github.dev/graphql"
+  "https://rms-omega-six.vercel.app/graphql" || process.env.SERVER_URL as string;
 
 export const getUrqlClient = () => {
   if (!_client) {

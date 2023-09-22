@@ -13,12 +13,12 @@ interface Props {
   setData: React.Dispatch<React.SetStateAction<Programme[]>>;
 }
 
-const ExcelUploadProgramme = (props: Props) => {
+const ExcelUploadTeamList = (props: Props) => {
   const [file, setFile] = React.useState<any>(null);
   const [finalizedData, setFinalizedData] = React.useState<any[]>([]);
   const [error, setError] = React.useState<string>("");
 
-  const [state, UploadManyProgrammeExicute] = useMutation(
+  const [state, UploadManyProgrammeExecute] = useMutation(
     AddManyProgrammesDocument
   );
 
@@ -39,7 +39,7 @@ const ExcelUploadProgramme = (props: Props) => {
     // const file = e.target.files[0];
     if (file) {
       const data = transformData(finalizedData);
-      console.log(finalizedData);
+      // console.log(finalizedData);
       console.log(data);
     } else {
       setError("File not selected");
@@ -106,24 +106,30 @@ const ExcelUploadProgramme = (props: Props) => {
     excelData.forEach((row: any) => {
       console.log(row);
       
-      const { programCode, ...candidates } = row;
+      const { p, ...candidates } = row;
 
       // Loop through candidate properties dynamically
       for (let i = 1; i <= 3; i++) {
-        const candidateKey = `candidate${i}`;
+
+        for (let j = 1; j <= 20; j++) {
+        const candidateKey = `g${i}c${j}`;
         const candidateValue = candidates[candidateKey];
 
-        console.log(candidateValue);
+        console.log(candidateValue);  
         console.log(isValidCandidate(candidateValue));
         
         
-        if (candidateValue && isValidCandidate(candidateValue)) {
+        if (candidateValue) {
+          console.log('====================================');
+          console.log(`valid candidate`);
+          console.log('====================================');
           transformedData.push({
-            programCode: programCode,
+            programCode: p,
             chestNo: candidateValue,
           });
         }
       }
+    }
     });
 
     return transformedData;
@@ -154,15 +160,15 @@ const ExcelUploadProgramme = (props: Props) => {
       const bstr = evt.target.result;
       const wb = XLSX.read(bstr, { type: "binary" });
       /* Get first worksheet */
-      const wsname = wb.SheetNames[0];
-      const ws = wb.Sheets[wsname];
+      const wsName = wb.SheetNames[0];
+      const ws = wb.Sheets[wsName];
       /* Convert array of arrays */
       fileData = XLSX.utils.sheet_to_json(ws);
 
       // checking the file data
 
       // json must include these keys
-      const requiredKeys = ["programCode"];
+      const requiredKeys = ["p"];
 
       // checking if the file data has all the required keys
       const hasAllKeys = requiredKeys.every((key) => {
@@ -248,4 +254,4 @@ const ExcelUploadProgramme = (props: Props) => {
   );
 };
 
-export default ExcelUploadProgramme;
+export default ExcelUploadTeamList;

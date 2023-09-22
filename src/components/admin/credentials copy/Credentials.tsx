@@ -10,7 +10,6 @@ import {
   GetAllCredentialsQuery,
   GetAllCredentialsQueryVariables,
   Roles,
-  Team,
 } from "@/gql/graphql";
 import { useGlobalContext } from "@/context/context";
 import RightSideBar from "../RightSideBar";
@@ -18,12 +17,11 @@ import OneCredential from "./SingleCredentials";
 
 interface Props {
   result: Category[];
-  team : Team[];
 }
 
 const Credentials = (props: Props) => {
   const [IsRightSideBarOpen, setIsRightSideBarOpen] = useState(false);
-  const [selectedCredential , SetSelectedCredential] = useState<Credential>();
+  const [selectedCredential, SetSelectedCredential] = useState<Credential>();
   const [search , setSearch] = useState('')
   const [searchedData , setSearchedData ] =  useState<Credential>();
   const [isCreate, setIsCreate] = useState(false);
@@ -58,8 +56,21 @@ const Credentials = (props: Props) => {
   });
 
   return (
+    // <>
+    //   <div
+    //     className="w-full h-full"
+    //     onClick={() => {
+    //       console.log(data, fetching);
+    //       console.log(props.result);
+    //     }}
+    //   >
+    //     credentials
+    //     {data && <h1>{data.credentials[0].username}</h1>}
+    //   </div>
+    // </>
     <>
     <div className="w-full h-full">
+      {/* <InfoBar data={props.data} /> */}
 
       <div className="w-full h-5/6 bg-base-200 rounded-lg mt-[1%]">
         <div>
@@ -109,6 +120,11 @@ const Credentials = (props: Props) => {
               if(item.roles != user.admin?.roles && user.admin?.roles != Roles.Admin){
                 return
               }
+              // if(item.roles == Roles.TeamManager && item.team?.name == user.admin?.team?.name){
+              //   console.log(item.team?.name);
+                
+              //   return
+              // }
               return (
                 <div
                   key={index}
@@ -152,7 +168,6 @@ const Credentials = (props: Props) => {
         setIsCreate={setIsCreate}
         data={data?.credentials as Credential[]}
         setData={setSearchedData as Dispatch<SetStateAction<Credential[]>> }
-        teams={props.team}
       />
     </RightSideBar>
   </>

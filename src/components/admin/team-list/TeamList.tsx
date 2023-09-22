@@ -26,6 +26,7 @@ const TeamList = (props: Props) => {
   const [IsRightSideBarOpen, setIsRightSideBarOpen] = useState(false);
   const [SelectedProgramme, setSelectedProgramme] = useState<Programme>();
   const [isExcelUpload, setIsExcelUpload] = useState<boolean>(false);
+  const [isExcelGroupUpload , setIsExcelGroupUpload] = useState<boolean>(false);
   const [isCreate, setIsCreate] = useState(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
@@ -146,9 +147,24 @@ const TeamList = (props: Props) => {
                     setIsEdit(false);
                     setIsRightSideBarOpen(true);
                     setIsExcelUpload(true);
+                    setIsExcelGroupUpload(false)
                   }}
                 >
                   Import
+                </button>
+              </div>
+              <div className="m-1 float-left">
+                <button
+                  className="bg-blue-600"
+                  onClick={() => {
+                    setIsCreate(false);
+                    setIsEdit(false);
+                    setIsRightSideBarOpen(true);
+                    setIsExcelUpload(false);
+                    setIsExcelGroupUpload(true)
+                  }}
+                >
+                  Import Group
                 </button>
               </div>
               <div className="m-1 float-left">
@@ -228,6 +244,8 @@ const TeamList = (props: Props) => {
           skill={SelectedProgramme?.skill?.name as string}
           categories={props.categories}
           skills={props.skills}
+          isExcelGroupUpload = {isExcelGroupUpload}
+          setExcelGroupUpload={setIsExcelGroupUpload}
         />
       </RightSideBar>
 

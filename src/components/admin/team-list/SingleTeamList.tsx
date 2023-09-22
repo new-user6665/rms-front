@@ -19,6 +19,7 @@ import EditProgramme from "./EditTeamList";
 import CreateProgramme from "./CreateTeamList";
 import ViewProgramme from "./ViewTeamList";
 import ExcelUploadProgramme from "./ExcelUploadTeamList";
+import ExcelUploadGroupTeamList from "./ExcelUploadGroupTeamList";
 
 interface Props {
   id: number;
@@ -35,14 +36,15 @@ interface Props {
   category: string;
   isExcelUpload: boolean;
   setIsExcelUpload: React.Dispatch<React.SetStateAction<boolean>>;
-  categories : Category[];
-  skills : Skill[];
+  isExcelGroupUpload: boolean;
+  setExcelGroupUpload: React.Dispatch<React.SetStateAction<boolean>>;
+  categories: Category[];
+  skills: Skill[];
 }
 
 const OneProgramme = (props: Props) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [isViewOpen, setIsViewOpen] = useState<boolean>(false);
-
 
   const [{ fetching, data }] = useQuery<
     GetOneProgrammeQuery,
@@ -57,34 +59,32 @@ const OneProgramme = (props: Props) => {
 
   const [state, DeleteProgrammeExecute] = useMutation(DeleteProgrammeDocument);
 
-
   const HandleDelete = async () => {
-
-    const deletedData: OperationResult<DeleteProgrammeMutation, DeleteProgrammeMutationVariables> = await DeleteProgrammeExecute({
-      id: props.id
+    const deletedData: OperationResult<
+      DeleteProgrammeMutation,
+      DeleteProgrammeMutationVariables
+    > = await DeleteProgrammeExecute({
+      id: props.id,
     });
 
     if (deletedData.data?.removeProgramme?.__typename) {
       const deleted = props.data.filter((value, index) => {
         return value.id !== props.id;
-      })
+      });
 
-      props.setData(deleted)
-      props.setIsOpen(false)
+      props.setData(deleted);
+      props.setIsOpen(false);
     }
     console.log(deletedData);
-    
-    setModalOpen(false)
-  }
+
+    setModalOpen(false);
+  };
 
   const Programme = data?.programme;
 
   return (
     <div>
-      
-      { props.isEdit ?
-      
-       (
+      {props.isEdit ? (
         <EditProgramme
           key={1}
           setIsEdit={props.setIsEdit}
@@ -95,8 +95,8 @@ const OneProgramme = (props: Props) => {
           setData={props.setData}
           category={props.category}
           skill={props.skill}
-          programeCode={Programme?.programCode as string}
-          candiateCount={Programme?.candidateCount as number}
+          programCode={Programme?.programCode as string}
+          candidateCount={Programme?.candidateCount as number}
           groupCount={Programme?.groupCount as number}
           duration={Programme?.duration as number}
           conceptNote={Programme?.conceptNote as string}
@@ -108,72 +108,87 @@ const OneProgramme = (props: Props) => {
           skills={props.skills}
         />
       ) : props.isCreate ? (
-        <CreateProgramme key={2} data={props.data} setData={props.setData}  categories={props.categories}
-        skills={props.skills} />
-      ) 
-      
-        : props.isExcelUpload ?
-        (
-          <ExcelUploadProgramme
-            data={props.data}
-            setData={props.setData}
-            isExcelUpload={props.isExcelUpload}
-            setIsExcelUpload={props.setIsExcelUpload}
-            key={1}
-          />
-        ) : (
-          <div>
-            {fetching ? (
-              <p> loading... </p>
-            ) : (
-              <div>
-                <p>name</p>
-                <p className="text-blue-400">{Programme?.name}</p>
-                <p>id</p>
-                <p className="text-blue-400">{Programme?.id}</p>
-                <p>programCode</p>
-                <p className="text-blue-400">{Programme?.programCode}</p>
-                <p>candidateCount</p>
-                <p className="text-blue-400">{Programme?.candidateCount}</p>
-                <p>category</p>
-                <p className="text-blue-400">{Programme?.category?.name}</p>
-                <p>conceptNote</p>
-                <p className="text-blue-400">{Programme?.conceptNote}</p>
-                <p>duration</p>
-                <p className="text-blue-400">{Programme?.duration}</p>
-                <p>groupCount</p>
-                <p className="text-blue-400">{Programme?.groupCount}</p>
-                <p>mode</p>
-                <p className="text-blue-400">{Programme?.mode}</p>
-                <p>model</p>
-                <p className="text-blue-400">{Programme?.model}</p>
-                <p>skill</p>
-                <p className="text-blue-400">{Programme?.skill?.name}</p>
-                <p>type</p>
-                <p className="text-blue-400">{Programme?.type}</p>
-                <button
-                  className="bg-blue-500"
-                  onClick={() => {
-                    props.setIsEdit(true);
-                    props.setIsCreate(false);
-                  }}
-                >
-                  Edit
-                </button>
-                <button className="bg-red-600" onClick={() => setModalOpen(true)}>
-                  Delete
-                </button>
-                <button className="bg-green-600" onClick={() => setIsViewOpen(true)}>
-                  View More
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+        <CreateProgramme
+          key={2}
+          data={props.data}
+          setData={props.setData}
+          categories={props.categories}
+          skills={props.skills}
+        />
+      ) : props.isExcelUpload ? (
+        <ExcelUploadProgramme
+          data={props.data}
+          setData={props.setData}
+          isExcelUpload={props.isExcelUpload}
+          setIsExcelUpload={props.setIsExcelUpload}
+          key={1}
+        />
+      ) : props.isExcelGroupUpload ? (
+        <ExcelUploadGroupTeamList
+          data={props.data}
+          setData={props.setData}
+          isExcelUpload={props.isExcelUpload}
+          setIsExcelUpload={props.setIsExcelUpload}
+          key={1}
+        />
+      ) : (
+        <div>
+          {fetching ? (
+            <p> loading... </p>
+          ) : (
+            <div>
+              <p>name</p>
+              <p className="text-blue-400">{Programme?.name}</p>
+              <p>id</p>
+              <p className="text-blue-400">{Programme?.id}</p>
+              <p>programCode</p>
+              <p className="text-blue-400">{Programme?.programCode}</p>
+              <p>candidateCount</p>
+              <p className="text-blue-400">{Programme?.candidateCount}</p>
+              <p>category</p>
+              <p className="text-blue-400">{Programme?.category?.name}</p>
+              <p>conceptNote</p>
+              <p className="text-blue-400">{Programme?.conceptNote}</p>
+              <p>duration</p>
+              <p className="text-blue-400">{Programme?.duration}</p>
+              <p>groupCount</p>
+              <p className="text-blue-400">{Programme?.groupCount}</p>
+              <p>mode</p>
+              <p className="text-blue-400">{Programme?.mode}</p>
+              <p>model</p>
+              <p className="text-blue-400">{Programme?.model}</p>
+              <p>skill</p>
+              <p className="text-blue-400">{Programme?.skill?.name}</p>
+              <p>type</p>
+              <p className="text-blue-400">{Programme?.type}</p>
+              <button
+                className="bg-blue-500"
+                onClick={() => {
+                  props.setIsEdit(true);
+                  props.setIsCreate(false);
+                }}
+              >
+                Edit
+              </button>
+              <button className="bg-red-600" onClick={() => setModalOpen(true)}>
+                Delete
+              </button>
+              <button
+                className="bg-green-600"
+                onClick={() => setIsViewOpen(true)}
+              >
+                View More
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
       <Modal modalOpen={modalOpen} setModalOpen={setModalOpen} key={3}>
         <p>Are you sure Do you want to Delete ?</p>
-        <button className="bg-red-600" onClick={HandleDelete}>Delete</button>
+        <button className="bg-red-600" onClick={HandleDelete}>
+          Delete
+        </button>
         <button className="bg-blue-500" onClick={() => setModalOpen(false)}>
           Cancel
         </button>
@@ -182,7 +197,8 @@ const OneProgramme = (props: Props) => {
       <ViewProgramme
         data={props.data}
         setData={props.setData}
-        modalOpen={isViewOpen} setModalOpen={setIsViewOpen}
+        modalOpen={isViewOpen}
+        setModalOpen={setIsViewOpen}
         selectedProgramme={Programme as Programme}
       />
     </div>
