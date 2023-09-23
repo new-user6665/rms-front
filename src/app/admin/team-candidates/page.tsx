@@ -12,6 +12,7 @@ import {
   GetAllTeamsQueryVariables,
 } from "@/gql/graphql";
 import { SectionIcon } from "@/icons/navs";
+import { API_KEY } from "@/lib/env";
 import { getUrqlClient } from "@/lib/urql";
 import React from "react";
 
@@ -20,16 +21,16 @@ const page = async () => {
   const result = await client.query<
     GetAllTeamCandidatesQuery,
     GetAllTeamCandidatesQueryVariables
-  >(GetAllTeamCandidatesDocument, {});
+  >(GetAllTeamCandidatesDocument, {api_key : API_KEY});
 
   const categories = await client.query<
     GetAllCategoriesQuery,
     GetAllCategoriesQueryVariables
-  >(GetAllCategoriesDocument, {});
+  >(GetAllCategoriesDocument, {api_key : API_KEY});
 
   const teams = await client.query<GetAllTeamsQuery, GetAllTeamsQueryVariables>(
     GetAllTeamsDocument,
-    {}
+    {api_key : API_KEY}
   );
 
   const data = [

@@ -1,6 +1,7 @@
 import Tag from "@/components/admin/tag/Tag";
 import { GetAllTagsDocument, GetAllTagsQuery, GetAllTagsQueryVariables } from "@/gql/graphql";
 import { SectionIcon } from "@/icons/navs";
+import { API_KEY } from "@/lib/env";
 import { getUrqlClient } from "@/lib/urql";
 import React from "react";
 
@@ -10,7 +11,7 @@ const page = async () => {
   const result = await client.query<
     GetAllTagsQuery,
     GetAllTagsQueryVariables
-  >(GetAllTagsDocument, {});
+  >(GetAllTagsDocument, {api_key : API_KEY});
 
   const data = [
     {

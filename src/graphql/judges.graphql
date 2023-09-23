@@ -1,5 +1,5 @@
-query getJudges($id:Int!){
-    programme(id:$id){
+query getJudges($id:Int!, $api_key: String!){
+    programme(id:$id, api_key: $api_key){
         judges{
             id
             username

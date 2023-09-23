@@ -217,7 +217,8 @@ const SideBar = () => {
         } transition-all flex flex-col justify-between`}
       >
         <div>
-          <li className="p-0 w-1">
+          <li className="p-0 w-1"
+          onClick={() => router.push('/admin')}>
             <p
               className={` px-0 flex ${
                 isOpen ? "w-40" : "w-12 items-center justify-center"
@@ -229,7 +230,7 @@ const SideBar = () => {
                   isOpen ? "flex" : "hidden "
                 }`}
               >
-                Dashoard
+                Dashboard
               </span>
             </p>
           </li>

@@ -1,8 +1,9 @@
+import AGrid from "@/components/admin/aGrid/AGrid";
 import Candidate from "@/components/admin/candidates/Candidate";
 import {
-  GetAllCandidatesDocument,
-  GetAllCandidatesQuery,
-  GetAllCandidatesQueryVariables,
+  GetAllDetailedCandidatesDocument,
+  GetAllDetailedCandidatesQuery,
+  GetAllDetailedCandidatesQueryVariables,
   GetAllCategoriesDocument,
   GetAllCategoriesQuery,
   GetAllCategoriesQueryVariables,
@@ -18,9 +19,9 @@ import React from "react";
 const page = async () => {
   const { client } = getUrqlClient();
   const result = await client.query<
-    GetAllCandidatesQuery,
-    GetAllCandidatesQueryVariables
-  >(GetAllCandidatesDocument, {
+    GetAllDetailedCandidatesQuery,
+    GetAllDetailedCandidatesQueryVariables
+  >(GetAllDetailedCandidatesDocument, {
     api_key : API_KEY
   });
 
@@ -60,7 +61,7 @@ const page = async () => {
   const h = data[0]; 
   return (
     <main className="w-full h-full flex overflow-hidden">
-      <Candidate
+      <AGrid
         key={1}
         data={data}
         result={result.data?.candidates}

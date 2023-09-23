@@ -9,6 +9,7 @@ import {
 import EditRules from "./EditRules";
 import CreateRules from "./CreateRules";
 import { useQuery } from "urql";
+import { API_KEY } from "@/lib/env";
 
 interface Props {
   id: number;
@@ -32,6 +33,7 @@ const OneRules = (props: Props) => {
     query: GetRulesDocument,
     variables: {
       id: props.id,
+      api_key : API_KEY
     },
     pause: props.isEdit && !props.isCreate,
   });

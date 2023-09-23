@@ -1,6 +1,7 @@
 import Section from "@/components/admin/section/Section";
 import { GetAllSectionsDocument, GetAllSectionsQuery, GetAllSectionsQueryVariables } from "@/gql/graphql";
 import { SectionIcon } from "@/icons/navs";
+import { API_KEY } from "@/lib/env";
 import { getUrqlClient } from "@/lib/urql";
 import React from "react";
 
@@ -10,7 +11,7 @@ const page = async () => {
   const result = await client.query<
     GetAllSectionsQuery,
     GetAllSectionsQueryVariables
-  >(GetAllSectionsDocument, {});
+  >(GetAllSectionsDocument, {api_key : API_KEY});
 
   const data = [ 
     {

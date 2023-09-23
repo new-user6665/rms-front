@@ -14,6 +14,7 @@ import { OperationResult, useMutation, useQuery } from "urql";
 import EditTeam from "./EditTeam";
 import CreateTeam from "./CreateTeam";
 import { DeleteIcon, EditIcon } from "@/icons/action";
+import { API_KEY } from "@/lib/env";
 
 interface Props {
   id: number;
@@ -38,6 +39,7 @@ const OneTeam = (props: Props) => {
     query: GetOneTeamDocument,
     variables: {
       id: props.id,
+      api_key : API_KEY
     },
     pause: props.isCreate || props.isEdit,
   });

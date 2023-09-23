@@ -195,10 +195,11 @@ const Programme = (props: Props) => {
                 onChange={(e) => {
                   setSearch(e.target.value);
                   setCurrentPage(1);
-                  setData(
-                    allData.filter((item: any) =>
-                      item.name
-                        .toLocaleLowerCase()
+                  setData(  
+                    allData.filter((item: Programme) =>
+                      item.name?.toLocaleLowerCase()
+                        .includes(e.target.value.toLocaleLowerCase())  ||
+                        item.programCode?.toLocaleLowerCase()
                         .includes(e.target.value.toLocaleLowerCase())
                     )
                   );

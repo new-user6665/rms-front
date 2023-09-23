@@ -1,5 +1,5 @@
-query GetAllProgrammes {
-  programmes {
+query GetAllProgrammes ($api_key: String!){
+  programmes (api_key: $api_key){
     id
     name
     programCode
@@ -15,8 +15,8 @@ query GetAllProgrammes {
   }
 }
 
-query GetDetailedProgramme($id: Int!) {
-  programme(id: $id) {
+query GetDetailedProgramme($id: Int!, $api_key: String!) {
+  programme(id: $id, api_key: $api_key) {
     candidateProgramme {
       candidate {
         name
@@ -30,8 +30,8 @@ query GetDetailedProgramme($id: Int!) {
   }
 }
 
-query GetAllProgrammesByCandidates {
-  programmes {
+query GetAllProgrammesByCandidates ($api_key: String!){
+  programmes (api_key: $api_key){
     id
     name
     programCode
@@ -54,8 +54,8 @@ query GetAllProgrammesByCandidates {
   }
 }
 
-query GetOneProgramme($id: Int!) {
-  programme(id: $id) {
+query GetOneProgramme($id: Int!, $api_key: String!) {
+  programme(id: $id, api_key: $api_key) {
     id
     name
     resultEntered

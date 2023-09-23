@@ -14,6 +14,7 @@ import { OperationResult, useMutation, useQuery } from "urql";
 import EditPosition from "./EditPosition";
 import CreatePosition from "./CreatePosition";
 import { DeleteIcon, EditIcon } from "@/icons/action";
+import { API_KEY } from "@/lib/env";
 
 interface Props {
   id: number;
@@ -38,6 +39,7 @@ const OnePosition = (props: Props) => {
     query: GetOnePositionDocument,
     variables: {
       id: props.id,
+      api_key : API_KEY
     },
 
     pause: props.isCreate || props.isEdit,

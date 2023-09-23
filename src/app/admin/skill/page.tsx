@@ -1,6 +1,7 @@
 import Skill from "@/components/admin/skill/Skill";
 import {  GetAllSkillsDocument, GetAllSkillsQuery, GetAllSkillsQueryVariables } from "@/gql/graphql";
 import { SectionIcon } from "@/icons/navs";
+import { API_KEY } from "@/lib/env";
 import { getUrqlClient } from "@/lib/urql";
 import React from "react";
 
@@ -10,7 +11,7 @@ const page = async () => {
   const result = await client.query<
     GetAllSkillsQuery,
     GetAllSkillsQueryVariables
-  >(GetAllSkillsDocument, {});
+  >(GetAllSkillsDocument, {api_key : API_KEY});
 
   const data = [
     {

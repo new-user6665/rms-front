@@ -20,6 +20,7 @@ import ExcelUploadCandidate from "./ExcelUploadCandidate";
 import Image from "next/image";
 import ImageUpload from "./ImageUpload";
 import { EditIcon, DeleteIcon } from "@/icons/action";
+import { API_KEY } from "@/lib/env";
 
 interface Props {
   id: number;
@@ -52,6 +53,7 @@ const OneCandidate = (props: Props) => {
     query: GetOneCandidateDocument,
     variables: {
       id: props.id,
+      api_key : API_KEY
     },
     pause: props.isCreate || props.isEdit || props.isExcelUpload,
   });

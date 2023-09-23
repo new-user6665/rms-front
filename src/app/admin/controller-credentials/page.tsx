@@ -6,6 +6,7 @@ import {
   GetAllCategoriesQueryVariables,
 } from "@/gql/graphql";
 import { SectionIcon } from "@/icons/navs";
+import { API_KEY } from "@/lib/env";
 import { getUrqlClient } from "@/lib/urql";
 import React from "react";
 
@@ -15,7 +16,7 @@ const page = async () => {
     const result = await client.query<
       GetAllCategoriesQuery,
       GetAllCategoriesQueryVariables
-    >(GetAllCategoriesDocument, {});
+    >(GetAllCategoriesDocument, {api_key : API_KEY});
 
 
   return (

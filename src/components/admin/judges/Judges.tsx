@@ -8,6 +8,7 @@ import { withUrqlClient } from "next-urql";
 import { useEffect, useRef, useState } from "react";
 import { cacheExchange, fetchExchange } from "urql";
 import OneJudges from "./SingleJudge";
+import html2pdf from "html2pdf.js";
 import { styled } from "styled-components";
 import { ChevronLeft } from "@/icons/arrows";
 import { PageChevronLeft, PageChevronRight } from "@/icons/pagination";
@@ -60,7 +61,7 @@ const Judges = (props: Props) => {
   const [screenHeigh, setScreenHeight] = useState<number>(400);
   const [judgeList, setJudgeList] = useState<string[]>([]);
   const [isEditJudge, setIsEditJudge] = useState<boolean>(false);
-  const [count, setCount] = useState<number>(0);
+  const [count, setCount] = useState<number>(1);
   const ProgrammeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -160,6 +161,35 @@ const Judges = (props: Props) => {
     return controls;
   };
 
+  async function downloadList() {
+    const element = document.getElementById("html-content"); // Replace 'html-content' with the ID of your HTML content element.
+
+    console.log(element);
+    
+    if (element) {
+      try {
+        const pdf = await html2pdf().from(element).outputPdf();
+
+        // Create a blob from the PDF data.
+        const blob = new Blob([pdf], { type: "application/pdf" });
+        const url = URL.createObjectURL(blob);
+
+        // Create a temporary link element to trigger the download.
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "my_pdf.pdf";
+        a.click();
+
+        console.log("PDF downloaded");
+        
+        // Clean up the object URL to release resources.
+        URL.revokeObjectURL(url);
+      } catch (error) {
+        console.error("Error generating PDF:", error);
+      }
+    }
+  }
+
   function downloadExcel() {
     const data = props.result;
     const replacer = (key: any, value: any) => (value === null ? "" : value); // specify how you want to handle null values here
@@ -182,7 +212,7 @@ const Judges = (props: Props) => {
 
   return (
     <>
-      <div className="w-full h-full">
+      <div className="w-full h-full ">
         <InfoBar data={props.data} />
 
         <DetailedDiv
@@ -211,8 +241,19 @@ const Judges = (props: Props) => {
               <div>
                 <div className="dropdown dropdown-end">
                   <label
+                    className="inline-flex bg-secondary text-white  rounded-full px-5 py-2 font-bold"
+                    onClick={async()=>{
+                      console.log("clicked");
+                      
+                      await downloadList()
+                    }}
+                  >
+                    Download List
+                  </label>
+
+                  <label
                     tabIndex={0}
-                    className="inline-flex bg-secondary text-white rounded-full px-5 py-2 font-bold"
+                    className="inline-flex bg-secondary ml-1  text-white rounded-full px-5 py-2 font-bold"
                   >
                     Add
                     <svg
@@ -393,12 +434,14 @@ const Judges = (props: Props) => {
             ) : (
               <>
                 {[...Array(count)].map((_, i) => {
+                  console.log(i + 1, count);
+
                   return (
-                    <>
-                      <label htmlFor="">Judge 7</label>
+                    <div key={i}>
+                      <label htmlFor="">Judge {i + 1}</label>
                       <input
                         type="text"
-                        placeholder="JUDGE 7"
+                        placeholder={`JUDGE ${i + 1}`}
                         className="mb-2"
                       />
                       <input
@@ -406,9 +449,17 @@ const Judges = (props: Props) => {
                         placeholder="judge@123"
                         className="mb-2"
                       />
-                    </>
+                    </div>
                   );
                 })}
+                {}
+                <button
+                  onClick={() => {
+                    setCount(count - 1);
+                  }}
+                >
+                  rmv
+                </button>
                 <button className="bg-secondary w-1/2 border-2 text-white px-3 flex-1 py-2 border-secondary rounded-xl font-bold">
                   submit
                 </button>
@@ -416,7 +467,7 @@ const Judges = (props: Props) => {
                   className="bg-secondary w-1/2 border-2 text-white px-3 flex-1 py-2 border-secondary rounded-xl font-bold"
                   onClick={() => {
                     // setIsEditJudge(true);
-                    setCount(count + 1)
+                    setCount(count + 1);
                   }}
                 >
                   Add
@@ -445,6 +496,12 @@ const Judges = (props: Props) => {
           </RightSideBar>
           {/* </div> */}
         </DetailedDiv>
+      </div>
+
+      <div id="html-content">
+Hahfsdfo
+fjsaoij
+fjsop
       </div>
     </>
   );

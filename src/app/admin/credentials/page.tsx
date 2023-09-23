@@ -7,6 +7,7 @@ import {
   GetAllTeamsQuery,
   GetAllTeamsQueryVariables,
 } from "@/gql/graphql";
+import { API_KEY } from "@/lib/env";
 import { getUrqlClient } from "@/lib/urql";
 import React from "react";
 
@@ -15,11 +16,11 @@ const page = async () => {
   const result = await client.query<
     GetAllCategoriesQuery,
     GetAllCategoriesQueryVariables
-  >(GetAllCategoriesDocument, {});
+  >(GetAllCategoriesDocument, {api_key : API_KEY});
 
   const team = await client.query<GetAllTeamsQuery, GetAllTeamsQueryVariables>(
     GetAllTeamsDocument,
-    {}
+    {api_key : API_KEY}
   );
   return (
     <main className="w-full h-full flex ">

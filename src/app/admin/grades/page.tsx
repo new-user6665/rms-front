@@ -1,6 +1,7 @@
 import Grades from "@/components/admin/grades/Grades";
 import { GetAllGradesDocument, GetAllGradesQuery, GetAllGradesQueryVariables } from "@/gql/graphql";
 import { SectionIcon as GradeIcon } from "@/icons/navs";
+import { API_KEY } from "@/lib/env";
 import { getUrqlClient } from "@/lib/urql";
 import React from "react";
 
@@ -10,7 +11,7 @@ const page = async () => {
   const result = await client.query<
     GetAllGradesQuery,
     GetAllGradesQueryVariables
-  >(GetAllGradesDocument, {});
+  >(GetAllGradesDocument, {api_key : API_KEY});
 
   const data = [
     {

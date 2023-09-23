@@ -8,6 +8,7 @@ import {
   GetSettingsQueryVariables,
 } from "@/gql/graphql";
 import { SectionIcon } from "@/icons/navs";
+import { API_KEY } from "@/lib/env";
 import { getUrqlClient } from "@/lib/urql";
 import React from "react";
 
@@ -16,7 +17,7 @@ const page = async () => {
   const result = await client.query<
     GetSettingsQuery,
     GetSettingsQueryVariables
-  >(GetSettingsDocument, {});
+  >(GetSettingsDocument, {api_key : API_KEY});
 
   return (
     <main className="flex flex-col w-full">

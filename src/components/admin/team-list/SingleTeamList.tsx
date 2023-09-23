@@ -20,6 +20,7 @@ import CreateProgramme from "./CreateTeamList";
 import ViewProgramme from "./ViewTeamList";
 import ExcelUploadProgramme from "./ExcelUploadTeamList";
 import ExcelUploadGroupTeamList from "./ExcelUploadGroupTeamList";
+import { API_KEY } from "@/lib/env";
 
 interface Props {
   id: number;
@@ -53,6 +54,7 @@ const OneProgramme = (props: Props) => {
     query: GetOneProgrammeDocument,
     variables: {
       id: props.id,
+      api_key : API_KEY
     },
     pause: props.isCreate || props.isEdit,
   });

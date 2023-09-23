@@ -14,6 +14,7 @@ import { OperationResult, useMutation, useQuery } from "urql";
 import EditSkill from "./EditSkill";
 import CreateSkill from "./CreateSkill";
 import { DeleteIcon, EditIcon } from "@/icons/action";
+import { API_KEY } from "@/lib/env";
 
 interface Props {
   id: number;
@@ -38,6 +39,7 @@ const OneSkill = (props: Props) => {
     query: GetOneSkillDocument,
     variables: {
       id: props.id,
+      api_key : API_KEY
     },
     pause: props.isCreate || props.isEdit,
   });

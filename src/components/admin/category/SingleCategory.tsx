@@ -15,6 +15,7 @@ import { OperationResult, useMutation, useQuery } from "urql";
 import EditCategory from "./EditCategory";
 import CreateCategory from "./CreateCategory";
 import { DeleteIcon, EditIcon } from "@/icons/action";
+import { API_KEY } from "@/lib/env";
 
 interface Props {
   id: number;
@@ -40,6 +41,7 @@ const OneCategory = (props: Props) => {
     query: GetOneCategoryDocument,
     variables: {
       id: props.id,
+      api_key : API_KEY
     },
     pause: props.isCreate || props.isEdit,
   });

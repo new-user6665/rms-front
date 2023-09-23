@@ -10,6 +10,7 @@ import {
 import { SectionIcon } from "@/icons/navs";
 import { getUrqlClient } from "@/lib/urql";
 import React from "react";
+import { API_KEY } from "@/lib/env";
 
 const page = async () => {
   
@@ -17,12 +18,12 @@ const page = async () => {
   const result = await client.query<
     GetAllCategoriesQuery,
     GetAllCategoriesQueryVariables
-  >(GetAllCategoriesDocument, {});
+  >(GetAllCategoriesDocument, {api_key : API_KEY});
 
   const section = await client.query<
     GetAllSectionsQuery,
     GetAllSectionsQueryVariables
-  >(GetAllSectionsDocument, {});
+  >(GetAllSectionsDocument, {api_key : API_KEY});
 
   const data = [
       {

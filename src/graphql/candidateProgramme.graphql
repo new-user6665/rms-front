@@ -1,0 +1,57 @@
+query GetAllCandidateProgrammes($api_key: String!) {
+  candidateProgrammes(api_key: $api_key) {
+    id
+    candidate {
+      name
+      chestNO
+    }
+    programme {
+      name
+      programCode
+    }
+  }
+}
+
+mutation AddCandidateProgramme(
+  $candidatesOfProgramme: [String!]
+  $chestNO: String!
+  $programCode: String!
+) {
+  createCandidateProgramme(
+    createCandidateProgrammeInput: {
+      candidatesOfGroup: $candidatesOfProgramme
+      chestNo: $chestNO
+      programme_code: $programCode
+    }
+  ) {
+    id
+    candidate {
+      name
+      chestNO
+    }
+    programme {
+      name
+      programCode
+    }
+  }
+}
+
+mutation AddManyCandidateProgrammes(
+  $inputs: [CreateCandidateProgrammeInput!]!
+) {
+  createManyCandidateProgramme(
+    createManyCandidateProgrammeInput: { inputs: $inputs }
+  ) {
+    errors
+    result {
+      candidate {
+        name
+        chestNO
+      }
+      programme {
+        name
+        programCode
+      }
+    }
+  }
+}

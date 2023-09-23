@@ -1,4 +1,7 @@
 import {
+  AddManyCandidateProgrammesDocument,
+  AddManyCandidateProgrammesMutation,
+  AddManyCandidateProgrammesMutationVariables,
   AddManyProgrammesDocument,
   Programme,
 } from "@/gql/graphql";
@@ -18,11 +21,11 @@ const ExcelUploadTeamList = (props: Props) => {
   const [finalizedData, setFinalizedData] = React.useState<any[]>([]);
   const [error, setError] = React.useState<string>("");
 
-  const [state, UploadManyProgrammeExecute] = useMutation(
-    AddManyProgrammesDocument
+  const [state, UploadManyCandidateProgrammeExecute] = useMutation(
+    AddManyCandidateProgrammesDocument
   );
 
-  function handleExcelChange(e: any) {
+  async function handleExcelChange(e: any) {
     const file = e.target.files[0];
     if (file) {
       if (verifyFile(file)) {
@@ -38,7 +41,7 @@ const ExcelUploadTeamList = (props: Props) => {
   async function handleFileUpload() {
     // const file = e.target.files[0];
     if (file) {
-      const data = transformData(finalizedData);
+      const data = await transformData(finalizedData);
       // console.log(finalizedData);
       console.log(data);
     } else {
@@ -49,90 +52,93 @@ const ExcelUploadTeamList = (props: Props) => {
     }
   }
 
-  // function transformData(excelData : any) {
-  //   console.log(excelData);
-
-  //   const transformedData : any[] = [];
-
-  //   excelData.forEach((row : any) => {
-  //     const { programCode, ...candidates } = row;
-
-  //     // Filter out empty candidate values and create an array of candidate objects
-  //     const candidateObjects = [];
-  //     for (const [key, value] of Object.entries(candidates)) {
-  //       if (value !== "") {
-  //         candidateObjects.push({ chestNo: value });
-  //       }
-  //     }
-
-  //     // Add the program code and candidate objects to the transformed data
-  //     transformedData.push({
-  //       programCode: programCode,
-  //       candidates: candidateObjects,
-  //     });
-  //   });
-
-  //   return transformedData;
-  // }
-  // function transformData(excelData : any) {
-  //   const transformedData : any[] = [];
-
-  //   excelData.forEach((row : any) => {
-  //     const { programCode, ...candidates } = row;
-
-  //     // Iterate through the candidates and add non-empty ones to the transformed data
-  //     for (const [key, value] of Object.entries(candidates)) {
-  //       if (value !== "") {
-  //         transformedData.push({
-  //           programCode: programCode,
-  //           chestNo: value,
-  //         });
-  //       }
-  //     }
-  //   });
-
-  //   return transformedData;
-  // }
-
   // Function to validate a candidate string
 
   function isValidCandidate(candidate: string) {
     return /^[A-Za-z]{1}\d{3}$/.test(candidate);
   }
 
-  function transformData(excelData: any) {
+ async function transformData(excelData: any) {
     const transformedData: any[] = [];
 
     excelData.forEach((row: any) => {
       console.log(row);
-      
+
       const { p, ...candidates } = row;
 
       // Loop through candidate properties dynamically
       for (let i = 1; i <= 3; i++) {
-
-        for (let j = 1; j <= 20; j++) {
-        const candidateKey = `g${i}c${j}`;
+        const candidateKey = `c${i}`;
         const candidateValue = candidates[candidateKey];
 
-        console.log(candidateValue);  
+        console.log(candidateValue);
         console.log(isValidCandidate(candidateValue));
-        
-        
+
         if (candidateValue) {
-          console.log('====================================');
-          console.log(`valid candidate`);
-          console.log('====================================');
           transformedData.push({
-            programCode: p,
+            programme_code: p,
             chestNo: candidateValue,
           });
         }
       }
+    });
+    await uploadCandidateProgrammes(transformedData);
+    return transformedData;
+  }
+
+  function chunkArray(array: any[], chunkSize: number) {
+    const chunks = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      chunks.push(array.slice(i, i + chunkSize));
     }
+    return chunks;
+  }
+
+  async function uploadCandidateProgrammes(data: any[]) {
+    let errors: any[] = [];
+    let allData: any[] = [];
+
+    
+    if(data.length <= 0) {
+      errors.push('No valid candidates were found')
+    }
+    // upload by every 50 data
+
+    const chunkedData = chunkArray(data, 50);
+
+    for (let index = 0; index < chunkedData.length ; index++) {
+      const chunk = chunkedData[index];
+      console.log(chunk);
+      const datas: OperationResult<
+      AddManyCandidateProgrammesMutation, AddManyCandidateProgrammesMutationVariables
+    > = await UploadManyCandidateProgrammeExecute({
+      inputs: chunk,
     });
 
-    return transformedData;
+    if (!datas.data?.createManyCandidateProgramme) {
+      errors.push("Error on some operation");
+    } else {
+      if ((datas.data?.createManyCandidateProgramme.errors?.length as number) >
+        0) {
+        errors.push(datas.data?.createManyCandidateProgramme?.errors);
+      } else {
+        allData.push(datas);
+      }
+    }
+      
+    }
+
+
+    if (errors.length > 0) {
+      console.log(errors);
+      console.log(allData);
+
+      alert("Error on some operation");
+    } else {
+      console.log(allData);
+
+      alert("Successfully uploaded");
+    }
   }
 
   function verifyFile(file: any) {
@@ -216,9 +222,9 @@ const ExcelUploadTeamList = (props: Props) => {
 
       {/* input field of well designed for upload excel file only */}
       <form
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          handleFileUpload();
+          await handleFileUpload();
         }}
       >
         <input
@@ -236,10 +242,10 @@ const ExcelUploadTeamList = (props: Props) => {
           accept=".xlsx"
           title="Upload Excel File"
           placeholder="Upload Excel File"
-          onChange={(e) => {
+          onChange={async(e) => {
             const file = e.target.files ? e.target.files[0] : null;
             setFile(file);
-            handleExcelChange(e);
+            await handleExcelChange(e);
           }}
         />
 

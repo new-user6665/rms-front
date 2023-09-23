@@ -1,5 +1,8 @@
-query GetAllCandidates {
-  candidates{
+query GetAllCandidates($api_key: String!) {
+  candidates
+  (
+    api_key: $api_key
+  ){
     id
     name
     chestNO
@@ -12,8 +15,36 @@ query GetAllCandidates {
   }
 }
 
-query GetOneCandidate($id: Int!) {
-  candidate(id: $id) {
+
+query GetAllDetailedCandidates($api_key: String!) {
+  candidates
+  (
+    api_key: $api_key
+  ){
+    id
+    name
+    chestNO
+    category {
+      name
+    }
+    team {
+      name
+    }
+    individualSportsPoint
+    groupSportsPoint
+    createdAt
+    updatedAt
+    imageId
+    individualPoint
+    groupPoint
+    id
+    class
+    adno
+  }
+}
+
+query GetOneCandidate($id: Int! $api_key: String!) {
+  candidate(id: $id , api_key: $api_key) {
     id
     name
     imageId
@@ -33,8 +64,8 @@ query GetOneCandidate($id: Int!) {
   }
 }
 
-query GetDetailedCandidate($id: Int!) {
-  candidate(id: $id) {
+query GetDetailedCandidate($id: Int!, $api_key: String!) {
+  candidate(id: $id , api_key: $api_key) {
     id
     chestNO
     candidateProgrammes {
@@ -73,6 +104,7 @@ mutation AddCandidate(
 ) {
   createCandidate(
     createCandidateInput: {
+      gender : MALE
       name: $name
       category: $category
       chestNO: $chestNO
@@ -144,3 +176,7 @@ mutation DeleteCandidate($id: Int!) {
     __typename
   }
 }
+
+# mutation fjsakl{
+#   # createCandidateProgramme
+# }

@@ -14,6 +14,7 @@ import { OperationResult, useMutation, useQuery } from "urql";
 import EditGrade from "./EditGrades";
 import CreateGrade from "./CreateGrades";
 import { DeleteIcon, EditIcon } from "@/icons/action";
+import { API_KEY } from "@/lib/env";
 
 interface Props {
   id: number;
@@ -37,6 +38,7 @@ const OneGrade = (props: Props) => {
     query: GetOneGradeDocument,
     variables: {
       id: props.id,
+      api_key : API_KEY
     },
     pause: props.isCreate || props.isEdit,
   });
