@@ -1,3 +1,4 @@
+import Alert from '@/components/Alert';
 import { EditGradeDocument, EditGradeMutation, EditGradeMutationVariables, Grade } from '@/gql/graphql';
 import { ChevronRight } from '@/icons/arrows';
 import React, { useState } from 'react'
@@ -14,9 +15,12 @@ interface Props {
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
   data: Grade[]
   setData: React.Dispatch<React.SetStateAction<Grade[]>>
+  isOpen: boolean;
 }
 
 const EditGrade = (props: Props) => {
+  const [isError, setIsError] = React.useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = React.useState<boolean>(false);
    const [name, setName] = useState<string>(props.name);
   const [percentage, setPercentage] = useState<number>(props.percentage as number);
   const [pointGroup, setPointGroup] = useState<number>(props.pointGroup as number);
@@ -143,6 +147,8 @@ const EditGrade = (props: Props) => {
       </div>
     </div>
     </form>
+    <Alert isError={isError} setError={setIsError}  isSuccess={isSuccess}>
+      </Alert>
   </div>
   );
 }

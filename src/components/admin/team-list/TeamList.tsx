@@ -79,8 +79,8 @@ const TeamList = (props: Props) => {
           key={page}
           onClick={() => goToPage(page)}
           className={`${
-            currentPage === page ? "active" : ""
-          } w-5 h-5 bg-black mx-1 my-5`}
+            currentPage === page ? "bg-secondary text-white" : "bg-[#ECE1FC]"
+          }  py-2 px-4 rounded-xl font-bold mx-1 my-5`}
         >
           {page}
         </button>

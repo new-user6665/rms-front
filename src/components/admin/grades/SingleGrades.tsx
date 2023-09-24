@@ -77,6 +77,7 @@ const OneGrade = (props: Props) => {
     <div className="w-full h-full">
       {props.isEdit ? (
                 <EditGrade
+                isOpen={props.isEdit}
                 key={1}
                 setIsEdit={props.setIsEdit}
                 isEdit={props.isEdit}
@@ -90,7 +91,7 @@ const OneGrade = (props: Props) => {
                 pointSingle={grade?.pointSingle as number}
               />
       ) : props.isCreate ? (
-        <CreateGrade key={2} data={props.data} setData={props.setData} />
+        <CreateGrade isOpen={props.isEdit} key={2} data={props.data} setData={props.setData} />
       ) : (
         <div className="w-full h-full">
           {fetching ? (
@@ -103,27 +104,27 @@ const OneGrade = (props: Props) => {
                 <div className="relative top-15 flex flex-col items-center justify-center gap-4">
               
 
-              <div  className="flex flex-col gap-2 w-full">
-              <p className="text-xl items-center justify-center text-center" >Name</p>
-              <span className="border border-gray-500 rounded-lg px-20 py-3  bg-slate-200 w-full">{grade?.name}</span>
+              <div  className="flex flex-col gap-1 w-full">
+              <p className="text-base text-[#8D8D8D]" >Name</p>
+              <span className="input input-bordered input-secondary w-full max-w-xs pt-2 text-[#3F127A] border-none">{grade?.name}</span>
               </div>
              
-              <div  className="flex flex-col gap-2 w-full">
-              <p className="text-xl items-center justify-center text-center" >Percentage</p>
-              <span className="border border-gray-500 rounded-lg px-20 py-3  bg-slate-200 w-full ">{grade?.percentage}</span>
+              <div  className="flex flex-col gap-1 w-full">
+              <p className="text-base text-[#8D8D8D]" >Percentage</p>
+              <span className="input input-bordered input-secondary w-full max-w-xs pt-2 text-[#3F127A] border-none ">{grade?.percentage}</span>
               </div>
               
-              <div  className="flex flex-col gap-2 w-full">
-              <p className="text-xl items-center justify-center text-center" >Point Group</p>
-              <span className="border border-gray-500 rounded-lg px-20 py-3  bg-slate-200 ">{grade?.pointGroup}</span>
+              <div  className="flex flex-col gap-1 w-full">
+              <p className="text-base text-[#8D8D8D]" >Point Group</p>
+              <span className="input input-bordered input-secondary w-full max-w-xs pt-2 text-[#3F127A] border-none ">{grade?.pointGroup}</span>
               </div>
-              <div  className="flex flex-col gap-2 w-full">
-              <p className="text-xl items-center justify-center text-center" >Point House</p>
-              <span className="border border-gray-500 rounded-lg px-20 py-3  bg-slate-200 w-full">{grade?.pointHouse}</span>
+              <div  className="flex flex-col gap-1 w-full">
+              <p className="text-base text-[#8D8D8D]" >Point House</p>
+              <span className="input input-bordered input-secondary w-full max-w-xs pt-2 text-[#3F127A] border-none">{grade?.pointHouse}</span>
               </div>
-              <div  className="flex flex-col gap-2 w-full">
-              <p className="text-xl items-center justify-center text-center" >Point Single</p>
-              <span className="border border-gray-500 rounded-lg px-20 py-3  bg-slate-200 w-full">{grade?.pointSingle}</span>
+              <div  className="flex flex-col gap-1 w-full">
+              <p className="text-base text-[#8D8D8D]" >Point Single</p>
+              <span className="input input-bordered input-secondary w-full max-w-xs pt-2 text-[#3F127A] border-none">{grade?.pointSingle}</span>
               </div>
             </div>
        

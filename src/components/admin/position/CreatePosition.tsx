@@ -1,4 +1,5 @@
 "use client";
+import Alert from "@/components/Alert";
 import { AddPositionDocument, AddPositionMutation, AddPositionMutationVariables, Position } from "@/gql/graphql";
 import React from "react";
 import { OperationResult, useMutation } from "urql";
@@ -6,10 +7,12 @@ import { OperationResult, useMutation } from "urql";
 interface Props {
   data: Position[]
   setData: React.Dispatch<React.SetStateAction<Position[]>>
+  isOpen: boolean;
 }
 
 const CreatePosition = (props: Props) => {
-
+  const [isError, setIsError] = React.useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = React.useState<boolean>(false);
   const [name, setName] = React.useState<string>('');
   const [pointGroup, setPointGroup] = React.useState<number>();
   const [pointHouse, setPointHouse] = React.useState<number>();
@@ -111,6 +114,8 @@ const CreatePosition = (props: Props) => {
         ></div>
       </div>
     </form>
+    <Alert  isError={isError} setError={setIsError}  isSuccess={isSuccess}>
+      </Alert>
   </div>
   );
 };

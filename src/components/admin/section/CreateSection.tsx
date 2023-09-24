@@ -1,4 +1,5 @@
 "use client";
+import Alert from "@/components/Alert";
 import {
   AddSectionDocument,
   AddSectionMutation,
@@ -14,9 +15,12 @@ import { OperationResult, useMutation } from "urql";
 interface Props {
   data: Section[];
   setData: React.Dispatch<React.SetStateAction<Section[]>>;
+  isOpen: boolean;
 }
 
 const CreateSection = (props: Props) => {
+  const [isError, setIsError] = React.useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = React.useState<boolean>(false);
   const [name, setName] = React.useState<string>("");
   const [state, CreateSectionExecute] = useMutation(AddSectionDocument);
 
@@ -69,6 +73,9 @@ const CreateSection = (props: Props) => {
           ></div>
         </div>
       </form>
+      <Alert isError={isError} setError={setIsError}  isSuccess={isSuccess}>
+
+      </Alert>
     </div>
   );
 };

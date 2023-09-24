@@ -1,3 +1,4 @@
+import Alert from '@/components/Alert';
 import {  EditSkillDocument, EditSkillMutation, EditSkillMutationVariables, Skill } from '@/gql/graphql';
 import { ChevronRight } from '@/icons/arrows';
 import React from 'react'
@@ -12,9 +13,12 @@ interface Props {
     setData : React.Dispatch<React.SetStateAction<Skill[]>>
     descriotion : string
     shortName : string
+    isOpen: boolean;
     }
 
 const EditSkill = (props : Props) => {
+  const [isError, setIsError] = React.useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = React.useState<boolean>(false);
     const [name, setName] = React.useState<string>(props.name); 
      const [shortName, setShortName] = React.useState<string>(props.shortName);
     const [description, setDescription] = React.useState<string>(props.descriotion);
@@ -110,6 +114,8 @@ const EditSkill = (props : Props) => {
         </div>
       </div>
       </form>
+      <Alert isError={isError} setError={setIsError}  isSuccess={isSuccess}>
+        </Alert>
     </div>
     );
 }
