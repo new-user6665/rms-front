@@ -152,7 +152,7 @@ const Section = (props: Props) => {
               setIsOpen={setIsRightSideBarOpen}
             >
               <SingleSection
-                isOpen={IsRightSideBarOpen}
+            
                 setIsOpen={setIsRightSideBarOpen}
                 key={3}
                 name={SelectedSection.name}

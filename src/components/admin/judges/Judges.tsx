@@ -271,8 +271,10 @@ const Judges = (props: Props) => {
         doc.text(`${a.name}`, 125, 218);
           var  aa  = 251
         a.candidateProgramme?.map((item, i) => {
-          aa = aa + (i+1)*15
+          aa = aa + 15
+          console.log(aa);
           doc.text(`${item.candidate?.chestNO}`, 67, aa)
+          doc.text(`${item.candidate?.name}`, 112, aa)
         })
   
         })
