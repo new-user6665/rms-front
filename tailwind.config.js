@@ -15,6 +15,18 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      screens: {
+        'bigphone' : '425px'
+      },
+      borderRadius: {
+        "big" :'2rem',
+        'large': '4rem',
+        "xlarge" : "5rem",
+      },
+      fontSize: {
+        "lt" : "12px",
+        "tn" : "9px"
+      },
     },
   },
   plugins: [require("daisyui")],
