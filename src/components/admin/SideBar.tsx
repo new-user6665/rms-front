@@ -95,6 +95,16 @@ const ControllerNavs = [
     nav: "results",
     icon: <Dashoard className="w-8 h-8" />,
   },
+  {
+    name: "C Grid",
+    nav: "agrid",
+    icon: <Dashoard className="w-8 h-8" />,
+  },
+  {
+    name: "C Grid",
+    nav: "agrid",
+    icon: <Dashoard className="w-8 h-8" />,
+  },
 ];
 
 const MediaNavs = [
