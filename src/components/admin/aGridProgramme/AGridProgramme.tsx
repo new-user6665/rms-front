@@ -1,5 +1,5 @@
 "use client";
-import { Candidate, Category, Team } from "@/gql/graphql";
+import { Category, Programme, Team } from "@/gql/graphql";
 import { parseJwt } from "@/lib/cryptr";
 import { SERVER_URL } from "@/lib/urql";
 import { withUrqlClient } from "next-urql";
@@ -128,7 +128,7 @@ interface Props {
     title: string;
     icon: any;
   }[];
-  result: Candidate[];
+  result: Programme[];
   categories: Category[];
   teams: Team[];
 }
@@ -236,11 +236,11 @@ interface ImageCellRendererParams extends ICellRendererParams {
   rendererImage: string;
 }
 
-const AGrid = (props: Props) => {
+const AGridProgramme = (props: Props) => {
   const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
-  const [allData, setAllData] = useState<Candidate[]>(props.result);
-  const [data, setData] = useState<Candidate[]>(props.result);
+  const [allData, setAllData] = useState<Programme[]>(props.result);
+  const [data, setData] = useState<Programme[]>(props.result);
   const [rowData, setRowData] = useState<IOlympicData[]>();
 
   // ///////////////////////////////////////
@@ -266,28 +266,22 @@ const AGrid = (props: Props) => {
     }
   }
   
-
-  const imageFormatter = (params: any) => {
-    // return params.value === null ? "-" : params.value;
-    // return `<img style="height: 14px; width: 14px" src=${params.data.avatar} />`;
-    return `<img style="height: 14px; width: 14px" src="https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGhvdG98ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60" />`;
-    // 
-    // cellRenderer: (params) => `<img style="height: 14px; width: 14px" src=${params.data.avatar} />`.
-  };
   ////////////////////////////////////////////////
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([
-    { field: "adno", headerName: "Ad No", defaultAggFunc: "sum", width: 100 },
+    { field: "anyIssue", headerName: "Issue", width: 100},
     { field: "category.name", headerName: "Category", minWidth: 150 },
-    { field: "chestNO", headerName: "Chest No", minWidth: 70 },
-    { field: "class", headerName: "Class" },
-    { field: "groupPoint", headerName: "Group Point" },
-    { field: "groupSportsPoint", headerName: "Group Sports Point" },
+    { field: "date", headerName: "Date", minWidth: 70 },
+    { field: "duration", headerName: "Duration" },
+    { field: "groupCount", headerName: "Group Count" },
+    { field: "model", headerName: "Model" },
     // { field: 'id' },
-    { field: "imageId", headerName: "Avatar", minWidth: 120 ,  cellRenderer: imageFormatter},
-    { field: "individualPoint", headerName: "Individual Point" },
-    { field: "individualSportsPoint", headerName: "Individual Sports Point" },
+    { field: "programCode", headerName: "Program Code", minWidth: 120 , cellRendererParams: { rendererImage: 'rain.png' }, cellRenderer: 'imageCellRenderer' },
+    { field: "resultEntered", headerName: "Result Entered" },
+    { field: "resultPublished", headerName: "Rsult Published" },
     { field: "name", headerName: "Name", minWidth: 200 },
-    { field: "team.name", headerName: "Team", minWidth: 100 },
+    { field: "skill.name", headerName: "Team", minWidth: 100 },
+    { field: "type", headerName: "Type", minWidth: 100 },
+    { field: "venue", headerName: "Venue", minWidth: 100 },
   ]);
 
   useEffect(() => {
@@ -298,12 +292,13 @@ const AGrid = (props: Props) => {
       setData(
         props.result.filter((item: any) =>
           cv.categories?.includes(item.category.name)
-        ) as Candidate[]
+        ) as Programme[]
       );
+
       setAllData(
         props.result.filter((item: any) =>
           cv.categories?.includes(item.category.name)
-        ) as Candidate[]
+        ) as Programme[]
       );
     }
 
@@ -317,7 +312,28 @@ const AGrid = (props: Props) => {
   const maxGroup = 5;
 
   const textFormatter = (params: any) => {
-    return params.value === null ? "-" : params.value;
+    // console.log(params.value);
+    if (params.value === null){
+      return "-";
+    } else{
+      if (params.value === true){
+        return "yes"
+        
+      } else{
+        
+        if (params.value === false){
+          console.log('no');
+          
+          return "no"
+        } else{
+          
+          
+          return params.value;
+        }
+      }
+      
+    }
+    // return params.value === null ? "-" : params.value === false && typeof(params) == Boolean ? "yes" : "no";;
   };
 
   
@@ -329,6 +345,8 @@ const AGrid = (props: Props) => {
       filter: true,
       // editable: true,
       resizable: true,
+  
+
       // valueFormatter: 'e'
       valueFormatter: textFormatter,
     };
@@ -344,6 +362,19 @@ const AGrid = (props: Props) => {
       field: "athlete",
     };
   }, []);
+
+  // const statusBar = useMemo<ColDef>(() => {
+  //   return {
+  //     statusPanels: [
+  //       { statusPanel: 'agTotalAndFilteredRowCountComponent', align: 'left' },
+  //       { statusPanel: 'agTotalRowCountComponent', align: 'center' },
+  //       { statusPanel: 'agFilteredRowCountComponent' },
+  //       { statusPanel: 'agSelectedRowCountComponent' },
+  //       { statusPanel: 'agAggregationComponent' },
+  //     ],
+  //   }
+  // }, []);
+    
 
   const onGridReady = useCallback((params: GridReadyEvent) => {
     fetch("https://www.ag-grid.com/example-assets/olympic-winners.json")
@@ -388,6 +419,9 @@ const AGrid = (props: Props) => {
             animateRows={true}
             suppressAggFuncInHeader={true}
             autoGroupColumnDef={autoGroupColumnDef}
+            // statusBar={ statusBar }
+            enableRangeSelection={true}
+            rowSelection="multiple"
             // onGridReady={onGridReady}
           />
         </div>
@@ -403,4 +437,4 @@ export default withUrqlClient(() => ({
     cache: "no-cache",
     credentials: "include",
   },
-}))(AGrid);
+}))(AGridProgramme);
