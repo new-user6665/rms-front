@@ -72,6 +72,7 @@ const OnePosition = (props: Props) => {
     <div className="w-full h-full">
       {props.isEdit ? (
         <EditPosition
+        isOpen={props.isEdit}
           pointGroup={Position?.pointGroup as number}
           pointHouse={Position?.pointHouse as number}
           pointSingle={Position?.pointSingle as number}
@@ -85,7 +86,7 @@ const OnePosition = (props: Props) => {
           setData={props.setData}
         />
       ) : props.isCreate ? (
-        <CreatePosition key={2} data={props.data} setData={props.setData} />
+        <CreatePosition isOpen={props.isEdit} key={2} data={props.data} setData={props.setData} />
       ) : (
         <div className="w-full h-full">
           {fetching ? (
@@ -103,27 +104,27 @@ const OnePosition = (props: Props) => {
               <div className="relative top-15 flex flex-col items-center justify-center gap-4">
 
 
-                <div className="flex flex-col gap-2 w-full">
-                  <p className="text-xl items-center justify-center text-center" >Name</p>
-                  <span className="border border-gray-500 rounded-lg px-20 py-3  bg-slate-200 w-full">{Position?.name}</span>
+                <div className="flex flex-col gap-1 w-full">
+                  <p className="text-base text-[#8D8D8D]" >Name</p>
+                  <span className="input input-bordered input-secondary w-full max-w-xs pt-2 text-[#3F127A] border-none">{Position?.name}</span>
                 </div>
 
-                <div className="flex flex-col gap-2 w-full">
-                  <p className="text-xl items-center justify-center text-center" >Value</p>
-                  <span className="border border-gray-500 rounded-lg px-20 py-3  bg-slate-200 w-full">{Position?.value}</span>
+                <div className="flex flex-col gap-1 w-full">
+                  <p className="text-base text-[#8D8D8D]" >Value</p>
+                  <span className="input input-bordered input-secondary w-full max-w-xs pt-2 text-[#3F127A] border-none">{Position?.value}</span>
                 </div>
 
-                <div className="flex flex-col gap-2 w-full">
-                  <p className="text-xl items-center justify-center text-center" >Point Group</p>
-                  <span className="border border-gray-500 rounded-lg px-20 py-3  bg-slate-200 w-full">{Position?.pointGroup}</span>
+                <div className="flex flex-col gap-1 w-full">
+                  <p className="text-base text-[#8D8D8D]" >Point Group</p>
+                  <span className="input input-bordered input-secondary w-full max-w-xs pt-2 text-[#3F127A] border-none">{Position?.pointGroup}</span>
                 </div>
-                <div className="flex flex-col gap-2 w-full">
-                  <p className="text-xl items-center justify-center text-center" >Point House</p>
-                  <span className="border border-gray-500 rounded-lg px-20 py-3  bg-slate-200 w-full">{Position?.pointHouse}</span>
+                <div className="flex flex-col gap-1 w-full">
+                  <p className="text-base text-[#8D8D8D]" >Point House</p>
+                  <span className="input input-bordered input-secondary w-full max-w-xs pt-2 text-[#3F127A] border-none">{Position?.pointHouse}</span>
                 </div>
-                <div className="flex flex-col gap-2 w-full">
-                  <p className="text-xl items-center justify-center text-center" >Point Single</p>
-                  <span className="border border-gray-500 rounded-lg px-20 py-3  bg-slate-200 w-full ">{Position?.pointSingle}</span>
+                <div className="flex flex-col gap-1 w-full">
+                  <p className="text-base text-[#8D8D8D]" >Point Single</p>
+                  <span className="input input-bordered input-secondary w-full max-w-xs pt-2 text-[#3F127A] border-none ">{Position?.pointSingle}</span>
                 </div>
               </div>
               <div className="w-full mt-4 flex items-center justify-between">

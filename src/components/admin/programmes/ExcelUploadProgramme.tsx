@@ -1,3 +1,4 @@
+import Alert from "@/components/Alert";
 import {
   AddManyProgrammesDocument,
   AddManyProgrammesMutation,
@@ -19,7 +20,8 @@ interface Props {
 }
 
 const ExcelUploadProgramme = (props: Props) => {
-
+  const [isError, setIsError] = React.useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = React.useState<boolean>(false);
   const [file, setFile] = React.useState<any>(null);
   const [finalizedData, setFinalizedData] = React.useState<CreateProgrammeInput[]>([]);
   const [error , setError] = React.useState<string>("");
@@ -183,15 +185,15 @@ const ExcelUploadProgramme = (props: Props) => {
   }
 
   return (
-    <div>
-      <p>Upload you Excel File</p>
+    <div className="flex flex-col  gap-2">
+      {/* <p className="text-lg text-[#3F127A]">Upload you Excel File</p> */}
 
       {
         error && <p className="text-red-500">{error}</p>
       }
-
-      <br />
-      <p>Download sample File</p>
+   
+      
+      <p className="text-lg text-[#3F127A]">Download sample File</p>
       <button
         className="
         bg-blue-500
@@ -201,27 +203,20 @@ const ExcelUploadProgramme = (props: Props) => {
       >
         Download
       </button>
-      <br />
+     
 
       {/* input field of well designed for upload excel file only */}
       <form 
+      className="h-full w-full flex flex-col  justify-between gap-3 mt-5 "
       onSubmit={(e) => {
         e.preventDefault();
         handleFileUpload();
       }
       } 
       >
+      <p className="text-lg text-[#3F127A]">Upload you Excel File</p>
       <input
-        className="
-        border-2 border-gray-300
-        rounded-md
-        p-2
-        w-full
-        focus:outline-none
-        focus:ring-2
-        focus:ring-blue-400
-        focus:border-transparent
-        "
+        className="file-input  file-input-bordered file-input-sm w-full max-w-xs"
         type="file"
         accept=".xlsx"
         title="Upload Excel File"
@@ -241,7 +236,8 @@ const ExcelUploadProgramme = (props: Props) => {
         />
 
       </form>
-
+      <Alert  isError={isError} setError={setIsError}  isSuccess={isSuccess}>
+      </Alert>
 
     </div>
   );

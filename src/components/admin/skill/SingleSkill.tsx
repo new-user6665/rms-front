@@ -70,6 +70,7 @@ const OneSkill = (props: Props) => {
     <div className="w-full h-full">
     {props.isEdit ? (
       <EditSkill
+      isOpen={props.isEdit}
       descriotion={Skill?.description as string}
       shortName={Skill?.shortName as string}
         key={1}
@@ -81,7 +82,7 @@ const OneSkill = (props: Props) => {
         setData={props.setData}
       />
     ) : props.isCreate ? (
-      <CreateSkill key={2} data={props.data} setData={props.setData} />
+      <CreateSkill     isOpen={props.isEdit} key={2} data={props.data} setData={props.setData} />
     ) : (
       <div className="w-full h-full">
         {fetching ? (
@@ -92,17 +93,17 @@ const OneSkill = (props: Props) => {
               
 
               <div  className="flex flex-col gap-2 w-full">
-              <p className="text-xl items-center justify-center text-center" >Name</p>
-              <span className="border border-gray-500 rounded-lg px-20 py-3  bg-slate-200 w-full">{Skill?.name}</span>
+              <p className="text-base text-[#8D8D8D]" >Name</p>
+              <span className="input input-bordered input-secondary w-full max-w-xs pt-2 text-[#3F127A] border-none">{Skill?.name}</span>
               </div>
              
               <div  className="flex flex-col gap-2 w-full">
-              <p className="text-xl items-center justify-center text-center" >Short Name</p>
-              <span className="border border-gray-500 rounded-lg px-20 py-3  bg-slate-200 w-full">{Skill?.shortName}</span>
+              <p className="text-base text-[#8D8D8D]" >Short Name</p>
+              <span className="input input-bordered input-secondary w-full max-w-xs pt-2 text-[#3F127A] border-none">{Skill?.shortName}</span>
               </div>
               <div  className="flex flex-col gap-2 w-full">
-              <p className="text-xl items-center justify-center text-center" >Description</p>
-              <span className="border border-gray-500 rounded-lg px-20 py-3  bg-slate-200 w-full">{Skill?.description}</span>
+              <p className="text-base text-[#8D8D8D]" >Description</p>
+              <span className="input input-bordered input-secondary w-full max-w-xs pt-2 text-[#3F127A] border-none">{Skill?.description}</span>
               </div>
             </div>
             <div className="w-full mt-4 flex items-center justify-between">

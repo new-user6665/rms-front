@@ -1,4 +1,5 @@
 "use client";
+import Alert from "@/components/Alert";
 import { AddCategoryDocument, AddCategoryMutation, AddCategoryMutationVariables, Category, Section } from "@/gql/graphql";
 import React from "react";
 import { OperationResult, useMutation } from "urql";
@@ -6,20 +7,22 @@ import { OperationResult, useMutation } from "urql";
 interface Props {
   data: Category[]
   setData: React.Dispatch<React.SetStateAction<Category[]>>
-  section:Section[]
+  section: Section[]
 }
 
 const CreateCategory = (props: Props) => {
+  const [isError, setIsError] = React.useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = React.useState<boolean>(false);
   const [name, setName] = React.useState<string>('');
-  const [section, setSection] = React.useState<string>('');
+  const [section, setSection] = React.useState<string>(''); 
   const [state, CreateCategoryExecute] = useMutation(AddCategoryDocument);
-  
+
 
   const HandleSubmit = async (data: any) => {
     const datas: OperationResult<AddCategoryMutation, AddCategoryMutationVariables> = await CreateCategoryExecute({
       name: data.name,
       section: data.section,
-    
+
     });
 
     if (datas.data?.createCategory) {
@@ -36,7 +39,7 @@ const CreateCategory = (props: Props) => {
         className="h-full w-full flex flex-col items-center justify-between "
         onSubmit={(e) => {
           e.preventDefault();
-          HandleSubmit({ name ,section });
+          HandleSubmit({ name, section });
         }}
       >
         <div className="mt-4">
@@ -49,7 +52,7 @@ const CreateCategory = (props: Props) => {
             className="input input-bordered input-secondary w-full max-w-xs mt-1"
           />
           <p>Section</p>
-          <select name="" id="" value={section} className="select select-secondary w-full max-w-xs h-8" onChange={(e)=>{
+          <select name="" id="" value={section} className="select select-secondary w-full max-w-xs h-8" onChange={(e) => {
             setSection(e.target.value)
           }}>
             <option value="">Select Section</option>
@@ -76,7 +79,13 @@ const CreateCategory = (props: Props) => {
           ></div>
         </div>
       </form>
+      <Alert isError={isError} setError={setIsError}  isSuccess={isSuccess}>
+
+      </Alert>
+
     </div>
+
+
   );
 };
 

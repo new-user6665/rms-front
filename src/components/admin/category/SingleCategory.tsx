@@ -16,6 +16,7 @@ import EditCategory from "./EditCategory";
 import CreateCategory from "./CreateCategory";
 import { DeleteIcon, EditIcon } from "@/icons/action";
 import { API_KEY } from "@/lib/env";
+import Alert from "@/components/Alert";
 
 interface Props {
   id: number;
@@ -72,6 +73,8 @@ const OneCategory = (props: Props) => {
     <div className="w-full h-full">
       {props.isEdit ? (
          <EditCategory
+          isOpen={props.isOpen}
+          setIsOpen={props.setIsOpen}
          key={1}
          setIsEdit={props.setIsEdit}
          isEdit={props.isEdit}
@@ -83,7 +86,7 @@ const OneCategory = (props: Props) => {
          sections={props.section}
        />
       ) : props.isCreate ? (
-        <CreateCategory key={2} data={props.data} setData={props.setData}  section={props.section}/>
+        <CreateCategory   key={2} data={props.data} setData={props.setData}  section={props.section}/>
       ) : (
         <div className="w-full h-full">
           {fetching ? (
@@ -98,14 +101,14 @@ const OneCategory = (props: Props) => {
               <div className="relative top-15 flex flex-col items-center justify-center gap-4">
               
 
+              
+
               <div  className="flex flex-col gap-2 w-full">
-              <p className="text-xl items-center justify-center text-center" >Name</p>
-              <span className="border border-gray-500 rounded-lg px-20 py-3  bg-slate-200 w-full">{category?.name}</span>
-              </div>
-             
-              <div  className="flex flex-col gap-2 w-full">
-              <p className="text-xl items-center justify-center text-center" >Section</p>
-              <span className="border border-gray-500 rounded-lg px-20 py-3  bg-slate-200 w-full">{category?.section?.name}</span>
+              <p className="text-base text-[#8D8D8D]" >Name</p>
+              <p className="input input-bordered input-secondary w-full max-w-xs pt-2 text-[#3F127A] border-none">{category?.name}</p>
+              <p className="text-base text-[#8D8D8D]" >Section</p>
+              <p className="input input-bordered input-secondary w-full max-w-xs pt-2 text-[#3F127A] border-none">{category?.section?.name}</p>
+              
               </div>
              
             </div>
@@ -136,6 +139,8 @@ const OneCategory = (props: Props) => {
           )}
         </div>
       )}
+
+         
 
       <Modal modalOpen={modalOpen} setModalOpen={setModalOpen} key={3}>
         <p>Are you sure Do you want to Delete ?</p>

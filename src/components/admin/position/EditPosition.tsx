@@ -1,3 +1,4 @@
+import Alert from '@/components/Alert';
 import {  EditPositionDocument, EditPositionMutation, EditPositionMutationVariables, Position } from '@/gql/graphql';
 import { ChevronRight } from '@/icons/arrows';
 import React from 'react'
@@ -14,9 +15,12 @@ interface Props {
     pointHouse: number;
     pointSingle: number;
     value: number;
+    isOpen: boolean;
     }
 
 const EditPosition = (props : Props) => {
+  const [isError, setIsError] = React.useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = React.useState<boolean>(false);
     const [name, setName] = React.useState<string>(props.name);
     const [pointGroup, setPointGroup] = React.useState<number>(props.pointGroup as number);
     const [pointHouse, setPointHouse] = React.useState<number>(props.pointHouse as number);
@@ -140,6 +144,8 @@ const EditPosition = (props : Props) => {
           </div>
         </div>
         </form>
+        <Alert  isError={isError} setError={setIsError}  isSuccess={isSuccess}>
+          </Alert>
       </div>
     );
 }

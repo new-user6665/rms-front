@@ -1,4 +1,5 @@
 "use client";
+import Alert from "@/components/Alert";
 import { AddSkillDocument, AddSkillMutation, AddSkillMutationVariables, Skill } from "@/gql/graphql";
 import React from "react";
 import { OperationResult, useMutation } from "urql";
@@ -6,9 +7,12 @@ import { OperationResult, useMutation } from "urql";
 interface Props {
   data: Skill[]
   setData: React.Dispatch<React.SetStateAction<Skill[]>>
+  isOpen: boolean;
 }
 
 const CreateSkill = (props: Props) => {
+  const [isError, setIsError] = React.useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = React.useState<boolean>(false);
   const [name, setName] = React.useState<string>('');
   const [shortName, setShortName] = React.useState<string>('');
   const [description, setDescription] = React.useState<string>('');
@@ -77,6 +81,8 @@ const CreateSkill = (props: Props) => {
           ></div>
         </div>
       </form>
+      <Alert isError={isError} setError={setIsError}  isSuccess={isSuccess}>
+        </Alert>
     </div>
   );
 };

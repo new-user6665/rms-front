@@ -1,4 +1,5 @@
 "use client";
+import Alert from "@/components/Alert";
 import { AddGradeDocument, AddGradeMutation, AddGradeMutationVariables, Grade } from "@/gql/graphql";
 import React, { useState } from "react";
 import { OperationResult, useMutation } from "urql";
@@ -6,9 +7,12 @@ import { OperationResult, useMutation } from "urql";
 interface Props {
   data: Grade[]
   setData: React.Dispatch<React.SetStateAction<Grade[]>>
+  isOpen: boolean;
 }
 
 const CreateGrade = (props: Props) => {
+  const [isError, setIsError] = React.useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = React.useState<boolean>(false);
   const [name, setName] = useState<string>('');
   const [percentage, setPercentage] = useState<number>();
   const [pointGroup, setPointGroup] = useState<number>();
@@ -109,6 +113,8 @@ const CreateGrade = (props: Props) => {
           ></div>
         </div>
       </form>
+      <Alert isError={isError} setError={setIsError}  isSuccess={isSuccess}>
+        </Alert>
     </div>
   );
 };

@@ -15,6 +15,7 @@ import EditSection from "./EditSection";
 import CreateSection from "./CreateSection";
 import { DeleteIcon, EditIcon } from "@/icons/action";
 import { API_KEY } from "@/lib/env";
+import { Category } from "@/icons/navs";
 
 interface Props {
   id: number;
@@ -25,7 +26,7 @@ interface Props {
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
   data: Section[];
   setData: React.Dispatch<React.SetStateAction<Section[]>>;
-  isOpen: boolean;
+
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -71,6 +72,8 @@ const OneSection = (props: Props) => {
     <div className="w-full h-full">
       {props.isEdit ? (
         <EditSection
+          isOpen={props.isEdit}
+        
           key={1}
           setIsEdit={props.setIsEdit}
           isEdit={props.isEdit}
@@ -81,7 +84,7 @@ const OneSection = (props: Props) => {
           
         />
       ) : props.isCreate ? (
-        <CreateSection key={2} data={props.data} setData={props.setData} />
+        <CreateSection   isOpen={props.isEdit} key={2} data={props.data} setData={props.setData} />
       ) : (
         <div className="w-full h-full">
           {fetching ? (
@@ -93,8 +96,9 @@ const OneSection = (props: Props) => {
               
 
               <div  className="flex flex-col gap-2 w-full">
-              <p className="text-xl items-center justify-center text-center" >Name</p>
-              <span className="border border-gray-500 rounded-lg px-20 py-3  bg-slate-200 w-full">{Section?.name}</span>
+              <p className="text-base text-[#8D8D8D]" >Name</p>
+              <p className="input input-bordered input-secondary w-full max-w-xs pt-2 text-[#3F127A] border-none">{Category?.name}</p>
+              
               </div>
              
           

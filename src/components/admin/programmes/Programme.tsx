@@ -256,18 +256,7 @@ const Programme = (props: Props) => {
                       IMPORT
                     </button>
 
-                    <button
-                      className="block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
-                      onClick={() => {
-                        setIsCreate(false);
-                        setIsEdit(false);
-                        setIsRightSideBarOpen(true);
-                        setExcel(false);
-                        setIsImageUpload(true);
-                      }}
-                    >
-                      IMAGE UPLOAD
-                    </button>
+                   
                   </ul>
                 </div>
                 <button

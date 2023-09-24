@@ -17,21 +17,21 @@ import RightSideBar from "../RightSideBar";
 import OneCredential from "./SingleCredentials";
 
 interface Props {
-  result: Category[];
-  team : Team[];
+  result: Credential[];
+  team: Team[];
 }
 
 const Credentials = (props: Props) => {
   const [IsRightSideBarOpen, setIsRightSideBarOpen] = useState(false);
-  const [selectedCredential , SetSelectedCredential] = useState<Credential>();
-  const [search , setSearch] = useState('')
-  const [searchedData , setSearchedData ] =  useState<Credential>();
+  const [selectedCredential, SetSelectedCredential] = useState<Credential>();
+  const [search, setSearch] = useState('')
+  const [searchedData, setSearchedData] = useState<Credential>();
   const [isCreate, setIsCreate] = useState(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
-  const { data: user , setData : setUser } = useGlobalContext();
+  const { data: user, setData: setUser } = useGlobalContext();
 
-  const [{ fetching,  data }] = useQuery<
+  const [{ fetching, data }] = useQuery<
     GetAllCredentialsQuery,
     GetAllCredentialsQueryVariables
   >({
@@ -45,117 +45,121 @@ const Credentials = (props: Props) => {
 
     data
       ? data.credentials.map((itemMani: Credential) => {
-          itemMani.categories?.map((item) => {
-            console.log(props.result.includes(item));
-            if (props.result.includes(item)) {
-              console.log(item);
-
-              // SetSelectedData(itemMani);
-            }
-          });
-        })
+        itemMani.categories?.map((item) => {
+          console.log(props.result.includes(item as any));
+          if (props.result.includes(item as any)) {
+            console.log(item);
+            // SetSelectedData(itemMani);
+          }
+        });
+      })
       : console.log("no data");
   });
 
   return (
     <>
-    <div className="w-full h-full">
-
-      <div className="w-full h-5/6 bg-base-200 rounded-lg mt-[1%]">
-        <div>
-          {/* search bar */}
-          <div className="w-full h-10 bg-base-300 rounded-lg mt-[1%] cursor-pointer">
-            <div className="w-1/3 h-full float-left">
+      <div className="w-full h-full">
+        {/* <InfoBar data={props.data} /> */}
+        <div className="w-full h-screen lg:h-[90%] flex mt-[3%] ">
+          <div className="flex-1 w-full">
+            <div className="h-10 cursor-pointer flex justify-between mb-4">
+              {/* search bar */}
               <input
+                className="w-1/3 lg:w-1/4 rounded-full bg-[#EEEEEE] px-5 text-xl border-secondary"
                 type="text"
+                placeholder="Search"
                 value={search}
                 onChange={(e) => {
                   setSearch(e.target.value);
-                  // setSearchedData(
-                  //   // data?.credentials.filter((item: Credential) =>
-                      
-                  //   // )
+                  // setData(
+                    
+
+                  //   props.result.filter((item: any) =>
+                  //     item?.name
+                  //       .toLocaleLowerCase()
+                  //       .includes(e.target.value.toLocaleLowerCase())
+                  //   )
                   // );
                 }}
               />
-            </div>
-            <div className="w-1/3 h-full float-left">
-              <button
-                className="bg-blue-600"
-                // onClick={downloadExcel}
-              >
-                Export
-              </button>
-            </div>
-            <div className="w-1/3 h-full float-left">
-              <button
-                className="bg-green-600"
-                onClick={() => {
-                  setIsCreate(true);
-                  setIsEdit(false);
-                  setIsRightSideBarOpen(true);
-                }}
-              >
-                Create
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex">
-          <div className="grid grid-cols-4 gap-4 w-full">
-            {
-            data?.credentials?.map((item: Credential, index: number) => {
-              if(item.roles != user.admin?.roles && user.admin?.roles != Roles.Admin){
-                return
-              }
-              return (
-                <div
-                  key={index}
-                  className="w-full h-full bg-base-100 rounded-lg mt-[1%] cursor-pointer "
+              <div>
+                <button
+                  className="inline-flex bg-secondary text-white rounded-full px-5 py-2 font-bold"
                   onClick={() => {
-                    setIsRightSideBarOpen(true);
-                    SetSelectedCredential(item as Credential);
+                    setIsCreate(true);
                     setIsEdit(false);
-                    setIsCreate(false);
+                    setIsRightSideBarOpen(true);
                   }}
                 >
-                  <div className="w-1/3">
-                    <p className="text-base-content">{item.username}</p>
-                  </div>
-                  <div className="w-1/3 ">
-                    <p className="text-base-content">{item.roles}</p>
-                  </div>
-                </div>
-              );
-            })}
+                  Create
+                </button>
+                <button
+                  className="ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
+                // onClick={downloadExcel}
+                >
+                  Export
+                </button>
+              </div>
+            </div>
+
+            <div className="flex flex-col w-full overflow-y-auto h-full">
+              <div
+                className={`grid gap-4 w-full transition-all grid-cols-1 ${IsRightSideBarOpen ? "lg:grid-cols-3" : "lg:grid-cols-4"
+                  }`}
+              >
+                {data?.credentials?.map((item: Credential, index: number) => {
+                  return (
+                    <div
+                      key={index}
+                      className="transition-all bg-[#EEEEEE] rounded-xl mt-[1%] cursor-pointer flex p-5 gap-3 content-center items-center h-20"
+                      onClick={() => {
+
+                        setIsRightSideBarOpen(true);
+                        SetSelectedCredential(item as Credential);
+                        setIsEdit(false);
+                        setIsCreate(false);
+                      }}
+                    >
+                      <div className="text-white font-bold bg-secondary px-3 py-1 text-xl rounded-xl flex justify-center content-center items-center">
+                        <p>{item.id}</p>
+                      </div>
+
+                      <p className="text-black leading-5 pr-[10%]">
+                        {item.username as string}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
+
+          {/* </div> */}
+          <RightSideBar
+            isCreate={isCreate}
+            isEdit={isEdit}
+            key={1}
+            isOpen={IsRightSideBarOpen}
+            setIsOpen={setIsRightSideBarOpen}
+          >
+            <OneCredential
+              isOpen={IsRightSideBarOpen}
+              setIsOpen={setIsRightSideBarOpen}
+              key={3}
+              name={selectedCredential?.username as string}
+              id={selectedCredential?.id as number}
+              isEdit={isEdit}
+              setIsEdit={setIsEdit}
+              isCreate={isCreate}
+              setIsCreate={setIsCreate}
+              data={data?.credentials as Credential[]}
+              setData={setSearchedData as Dispatch<SetStateAction<Credential[]>>}
+              teams={props.team}
+            />
+          </RightSideBar>
         </div>
       </div>
-    </div>
-    <RightSideBar
-    isCreate={isCreate}
-    isEdit={isEdit}
-      key={1}
-      isOpen={IsRightSideBarOpen}
-      setIsOpen={setIsRightSideBarOpen}
-    >
-      <OneCredential
-        isOpen={IsRightSideBarOpen}
-        setIsOpen={setIsRightSideBarOpen}
-        key={3}
-        name={selectedCredential?.username as string}
-        id={selectedCredential?.id as number}
-        isEdit={isEdit}
-        setIsEdit={setIsEdit}
-        isCreate={isCreate}
-        setIsCreate={setIsCreate}
-        data={data?.credentials as Credential[]}
-        setData={setSearchedData as Dispatch<SetStateAction<Credential[]>> }
-        teams={props.team}
-      />
-    </RightSideBar>
-  </>
+    </>
   );
 };
 
