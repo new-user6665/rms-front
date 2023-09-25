@@ -75,6 +75,7 @@ const Judges = (props: Props) => {
   const [count, setCount] = useState<number>(1);
   const ProgrammeRef = useRef<HTMLDivElement>(null);
 
+
   useEffect(() => {
     const cookie = document.cookie;
     if (cookie) {
@@ -163,6 +164,8 @@ const Judges = (props: Props) => {
           onClick={() => goToPage(page)}
           className={`${currentPage === page ? "bg-secondary text-white" : "bg-[#ECE1FC]"
             }  py-2 px-4 rounded-xl font-bold mx-1 my-5`}
+          className={`${currentPage === page ? "bg-secondary text-white" : "bg-[#ECE1FC]"
+            }  py-2 px-4 rounded-xl font-bold mx-1 my-5`}
         >
           {page}
         </button>
@@ -171,9 +174,14 @@ const Judges = (props: Props) => {
     return controls;
   };
 
+  async function downloadList() {
+    const element = document.getElementById("html-content"); // Replace 'html-content' with the ID of your HTML content element.
 
- 
-
+    console.log(element);
+    
+    if (element) {
+      try {
+        const pdf = await html2pdf().from(element).outputPdf();
 
   async function generatePdf() {
     const doc = new jsPDF();
@@ -312,7 +320,55 @@ const Judges = (props: Props) => {
               />
 
               <div>
-                <div className="dropdown dropdown-end">
+                <div className="">
+
+                  <div className="dropdown dropdown-end mr-1">
+                    <label
+                      tabIndex={0}
+                      className="inline-flex bg-secondary ml-1  text-white rounded-full px-5 py-2 font-bold"
+                    >
+                      Filter
+                      <svg
+                        className="-mr-1 h-5 w-5 text-gray-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </label>
+                    <ul
+                      tabIndex={0}
+                      className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40 font-bold"
+                    >
+                      {
+                        props.categories.map((item: Category, index: number) => {
+                          return (
+                            <button
+                              className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                              onClick={() => {
+                                setCurrentPage(1);
+                                setData(
+                                  allData.filter((itm: Programme) =>
+                                    itm?.category?.name?.toLocaleLowerCase() === item?.name?.toLocaleLowerCase()
+                                  )
+                                );
+                              }}
+                            >
+                              {item.name}
+                            </button>
+                          );
+                        }
+                        )
+                      }
+                    </ul>
+                  </div>
+
+
                   <label
                     className="inline-flex bg-secondary text-white  rounded-full px-5 py-2 font-bold cursor-pointer"
                     onClick={async () => {
@@ -325,74 +381,71 @@ const Judges = (props: Props) => {
                     Download List
                   </label>
 
-                  <label
-                    tabIndex={0}
-                    className="inline-flex bg-secondary ml-1  text-white rounded-full px-5 py-2 font-bold"
-                  >
-                    Add
-                    <svg
-                      className="-mr-1 h-5 w-5 text-gray-400"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      aria-hidden="true"
+                  <div className="dropdown dropdown-end">
+                    <label
+                      tabIndex={0}
+                      className="inline-flex bg-secondary ml-1  text-white rounded-full px-5 py-2 font-bold"
                     >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </label>
-                  <ul
-                    tabIndex={0}
-                    className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40 font-bold"
-                  >
-                    <button
-                      className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
-                      onClick={() => {
-                        setIsCreate(true);
-                        setIsEdit(false);
-                        setIsRightSideBarOpen(true);
-                        setExcel(false);
-                        setIsImageUpload(false);
-                      }}
+                      Add
+                      <svg
+                        className="-mr-1 h-5 w-5 text-gray-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </label>
+                    <ul
+                      tabIndex={0}
+                      className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40 font-bold"
                     >
-                      CREATE
-                    </button>
+                      <button
+                        className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                        onClick={() => {
+                          setIsCreate(true);
+                          setIsEdit(false);
+                          setIsRightSideBarOpen(true);
+                          setExcel(false);
+                          setIsImageUpload(false);
+                        }}
+                      >
+                        CREATE
+                      </button>
 
-                    <button
-                      className="block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
-                      onClick={() => {
-                        setIsCreate(false);
-                        setIsEdit(false);
-                        setExcel(true);
-                        setIsRightSideBarOpen(true);
-                        setIsImageUpload(false);
-                      }}
-                    >
-                      IMPORT
-                    </button>
+                      <button
+                        className="block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                        onClick={() => {
+                          setIsCreate(false);
+                          setIsEdit(false);
+                          setExcel(true);
+                          setIsRightSideBarOpen(true);
+                          setIsImageUpload(false);
+                        }}
+                      >
+                        IMPORT
+                      </button>
 
-                    <button
-                      className="block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
-                      onClick={() => {
-                        setIsCreate(false);
-                        setIsEdit(false);
-                        setIsRightSideBarOpen(true);
-                        setExcel(false);
-                        setIsImageUpload(true);
-                      }}
-                    >
-                      IMAGE UPLOAD
-                    </button>
-                  </ul>
+                      <button
+                        className="block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                        onClick={() => {
+                          setIsCreate(false);
+                          setIsEdit(false);
+                          setIsRightSideBarOpen(true);
+                          setExcel(false);
+                          setIsImageUpload(true);
+                        }}
+                      >
+                        IMAGE UPLOAD
+                      </button>
+                    </ul>
+                  </div>
                 </div>
-                <button
-                  className="ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
-                  onClick={downloadExcel}
-                >
-                  Export
-                </button>
+
               </div>
             </div>
             <div className="flex flex-col items-center lg:justify-center w-full h-full">

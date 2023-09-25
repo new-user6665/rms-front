@@ -8,6 +8,7 @@ import {
   Type,
 } from "@/gql/graphql";
 import React from "react";
+import { toast } from "react-toastify";
 import { OperationResult, useMutation } from "urql";
 import * as XLSX from "xlsx";
 
@@ -57,7 +58,7 @@ const ExcelUploadCandidate = (props: Props) => {
         if (datas.data?.createManyCandidates) {
           console.log(datas.data?.createManyCandidates);
 
-          alert("Candidate Added");
+          toast.success("Candidates Added");
           // to change finalised data to Candidate type set category and skill to {name : value}
 
           const finalData: Candidate[] = finalizedData.map((value, index) => {
@@ -162,7 +163,7 @@ const ExcelUploadCandidate = (props: Props) => {
 
       if (!hasAllKeys || hasMoreKeys) {
         console.log(fileData);
-        alert("Invalid File Content");
+        toast.error("Invalid File Content");  
         setFile(null);
         return null;
       } else {

@@ -2,6 +2,7 @@
 import Alert from "@/components/Alert";
 import { AddTeamDocument, AddTeamMutation, AddTeamMutationVariables, Team } from "@/gql/graphql";
 import React from "react";
+import { toast } from "react-toastify";
 import { OperationResult, useMutation } from "urql";
 
 interface Props {
@@ -29,10 +30,10 @@ const CreateTeam = (props: Props) => {
     });
 
     if (datas.data?.createTeam) {
-      alert("Team Added");
+      toast.success("Team Added");
       props.setData([...props.data, datas.data?.createTeam as Team]);
     } else {
-      alert("Team Not Added");
+      datas.error?.message.split("]")[1].startsWith(" target") ? toast.error("server error") : toast.error(datas.error?.message.split("]")[1]);
     }
   };
 

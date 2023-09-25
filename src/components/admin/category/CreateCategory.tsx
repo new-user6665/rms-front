@@ -2,6 +2,7 @@
 import Alert from "@/components/Alert";
 import { AddCategoryDocument, AddCategoryMutation, AddCategoryMutationVariables, Category, Section } from "@/gql/graphql";
 import React from "react";
+import { toast } from "react-toastify";
 import { OperationResult, useMutation } from "urql";
 
 interface Props {
@@ -26,10 +27,10 @@ const CreateCategory = (props: Props) => {
     });
 
     if (datas.data?.createCategory) {
-      alert("Category Added");
+      toast.success("Category Added");
       props.setData([...props.data, datas.data?.createCategory as Category]);
     } else {
-      alert("Category Not Added");
+      datas.error?.message.split("]")[1].startsWith(" target") ? toast.error("server error") : toast.error(datas.error?.message.split("]")[1]);
     }
   };
 

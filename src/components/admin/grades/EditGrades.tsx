@@ -2,6 +2,7 @@ import Alert from '@/components/Alert';
 import { EditGradeDocument, EditGradeMutation, EditGradeMutationVariables, Grade } from '@/gql/graphql';
 import { ChevronRight } from '@/icons/arrows';
 import React, { useState } from 'react'
+import { toast } from 'react-toastify';
 import { OperationResult, useMutation } from 'urql';
 
 interface Props {
@@ -45,7 +46,7 @@ const EditGrade = (props: Props) => {
     });
 
     if (updatedData.data?.updateGrade) {
-      alert("Grade Updated");
+      toast.success("Grade Updated");
       const updatedDates = props.data.map((value, index) => {
         if (value.id == updatedData.data?.updateGrade?.id) {
           return value = updatedData.data?.updateGrade as Grade
@@ -57,10 +58,10 @@ const EditGrade = (props: Props) => {
 
       props.setData(updatedDates as Grade[]);
     } else if (updatedData.error?.message) {
-      alert(updatedData.error?.message.split(']')[1]);
+      updatedData.error?.message.split("]")[1].startsWith(" target") ? toast.error("server error") : toast.error(updatedData.error?.message.split("]")[1]);
     }
     else {
-      alert("Grade Not Updated");
+      toast.error("Grade Not Updated");
     }
     setIsLoading(false);
     props.setIsEdit(false);

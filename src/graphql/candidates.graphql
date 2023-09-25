@@ -104,7 +104,6 @@ mutation AddCandidate(
 ) {
   createCandidate(
     createCandidateInput: {
-      gender : MALE
       name: $name
       category: $category
       chestNO: $chestNO

@@ -2,6 +2,7 @@ import Alert from '@/components/Alert';
 import { EditCredentialDocument, EditCredentialMutation, EditCredentialMutationVariables, Credential, Roles, Type, Team } from '@/gql/graphql';
 import { ChevronRight } from '@/icons/arrows';
 import React, { useState } from 'react'
+import { toast } from 'react-toastify';
 import { OperationResult, useMutation } from 'urql';
 
 interface Props {
@@ -43,7 +44,8 @@ const EditCredential = (props: Props) => {
     });
 
     if (updatedData.data?.updateCredential) {
-      alert("Credential Updated");
+  
+      toast.success("Credential Updated");
       const updatedDates = props.data.map((value, index) => {
         if (value.id == updatedData.data?.updateCredential?.id) {
           return value = updatedData.data?.updateCredential as Credential
@@ -55,10 +57,10 @@ const EditCredential = (props: Props) => {
 
       props.setData(updatedDates as Credential[]);
     } else if (updatedData.error?.message) {
-      alert(updatedData.error?.message.split(']')[1]);
+      updatedData.error?.message.split("]")[1].startsWith(" target") ? toast.error("server error") : toast.error(updatedData.error?.message.split("]")[1]);
     }
     else {
-      alert("Credential Not Updated");
+      toast.error("Credential Not Updated");
     }
     setIsLoading(false);
     props.setIsEdit(false);

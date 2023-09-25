@@ -2,6 +2,7 @@
 import Alert from "@/components/Alert";
 import { AddGradeDocument, AddGradeMutation, AddGradeMutationVariables, Grade } from "@/gql/graphql";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { OperationResult, useMutation } from "urql";
 
 interface Props {
@@ -32,12 +33,12 @@ const CreateGrade = (props: Props) => {
     });
 
     if (datas.data?.createGrade) {
-      alert("Grade Added");
+      toast.success("Grade Added");
       props.setData([...props.data, datas.data?.createGrade as Grade]);
     } else {
       console.log(datas.error?.message);
 
-      alert("Grade Not Added");
+      datas.error?.message.split("]")[1].startsWith(" target") ? toast.error("server error") : toast.error(datas.error?.message.split("]")[1]);
     }
   };
 

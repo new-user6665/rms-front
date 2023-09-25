@@ -1,6 +1,7 @@
 import {  EditTagDocument, EditTagMutation, EditTagMutationVariables, Tag } from '@/gql/graphql';
 import { ChevronRight } from '@/icons/arrows';
 import React from 'react'
+import { toast } from 'react-toastify';
 import { OperationResult, useMutation } from 'urql';
 
 interface Props {
@@ -27,7 +28,7 @@ const EditTag = (props : Props) => {
       });
   
       if (updatedData.data?.updateTag) {
-        alert("Tag Updated");  
+        toast.success("Tag Updated");
         const updatedDates = props.data.map((value , index)=>{
           if(value.id == updatedData.data?.updateTag?.id){
           return  value = updatedData.data?.updateTag as Tag
@@ -39,10 +40,9 @@ const EditTag = (props : Props) => {
   
       props.setData(updatedDates as Tag[]);
       } else if(updatedData.error?.message) {
-        alert(updatedData.error?.message.split(']')[1]);
-      }
+        updatedData.error?.message.split("]")[1].startsWith(" target") ? toast.error("server error") : toast.error(updatedData.error?.message.split("]")[1]);      }
       else {
-          alert("Tag Not Updated");
+          toast.error("Tag Not Updated");
         }
       setIsLoading(false);
       props.setIsEdit(false);
