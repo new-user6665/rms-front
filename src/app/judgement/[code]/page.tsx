@@ -29,7 +29,7 @@ export default async function page({
   
 
   return (
-    <main className="font-sans h-screen overflow-hidden flex">
+    <main className="font-sans h-screen overflow-hidden flex bg-accent">
       <Judgement programme={programme} />
     </main>
   );
