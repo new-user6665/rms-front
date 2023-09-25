@@ -102,7 +102,12 @@ const ControllerNavs = [
   },
   {
     name: "C Grid",
-    nav: "agrid",
+    nav: "agridProgramme",
+    icon: <Dashoard className="w-8 h-8" />,
+  },
+  {
+    name: "List",
+    nav: "team-list",
     icon: <Dashoard className="w-8 h-8" />,
   },
 ];
