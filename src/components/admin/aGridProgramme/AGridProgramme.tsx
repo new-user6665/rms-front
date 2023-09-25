@@ -268,20 +268,21 @@ const AGridProgramme = (props: Props) => {
   
   ////////////////////////////////////////////////
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([
-    { field: "anyIssue", headerName: "Issue", width: 100},
+    { field: "programCode", headerName: "Program Code", minWidth: 120},
+    { field: "name", headerName: "Name", minWidth: 200 },
     { field: "category.name", headerName: "Category", minWidth: 150 },
+    { field: "model", headerName: "Item" },
+    { field: "skill.name", headerName: "Skill", minWidth: 100 },
     { field: "date", headerName: "Date", minWidth: 70 },
     { field: "duration", headerName: "Duration" },
-    { field: "groupCount", headerName: "Group Count" },
-    { field: "model", headerName: "Model" },
-    // { field: 'id' },
-    { field: "programCode", headerName: "Program Code", minWidth: 120 , cellRendererParams: { rendererImage: 'rain.png' }, cellRenderer: 'imageCellRenderer' },
-    { field: "resultEntered", headerName: "Result Entered" },
-    { field: "resultPublished", headerName: "Rsult Published" },
-    { field: "name", headerName: "Name", minWidth: 200 },
-    { field: "skill.name", headerName: "Team", minWidth: 100 },
-    { field: "type", headerName: "Type", minWidth: 100 },
     { field: "venue", headerName: "Venue", minWidth: 100 },
+    { field: "candidateProgramme.length", headerName: "Programme Candidate" },
+    { field: "type", headerName: "Type", minWidth: 100 },
+    { field: "groupCount", headerName: "Group Count" },
+    { field: "resultEntered", headerName: "Result Entered" },
+    { field: "resultPublished", headerName: "Result Published" },
+    { field: "anyIssue", headerName: "Issue", width: 100},
+    // { field: 'id' },
   ]);
 
   useEffect(() => {
@@ -391,27 +392,9 @@ const AGridProgramme = (props: Props) => {
   return (
     <div style={containerStyle}>
       <div className="example-wrapper">
-        {/* <div className="example-header">
-          <div
-            style={{
-              display: 'inline-block',
-              height: '10px',
-              marginTop: '5px',
-              marginRight: '10px',
-              width: '100px',
-              border: '1px solid grey',
-            }}
-          >
-            <div
-              id="animationCountdown"
-              className="transition-width"
-              style={{ backgroundColor: 'grey', height: '100%', width: '0%' }}
-            ></div>
-          </div>
-          <span id="animationAction"></span>
-        </div> */}
 
-        <div style={gridStyle} className="ag-theme-alpine-dark">
+        <div style={gridStyle} className="ag-theme-alpine ag-theme-acmecorp">
+        {/* https://stackblitz.com/edit/react-1oe9w4?file=public%2Frobots.txt,src%2FApp.js */}
           <AgGridReact //<props.result>
             rowData={allData}
             columnDefs={columnDefs}

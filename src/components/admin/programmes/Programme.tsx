@@ -11,6 +11,7 @@ import OneProgramme from "./SingleProgramme";
 import { styled } from "styled-components";
 import { ChevronLeft } from "@/icons/arrows";
 import { PageChevronLeft, PageChevronRight } from "@/icons/pagination";
+import QRCode from "qrcode.react";
 
 interface Props {
   data: {
@@ -177,8 +178,34 @@ const Programme = (props: Props) => {
     a.click();
   }
 
+  // download QR code of displayed programme
+  const downloadQRCode = () => {
+    const canvas = document.getElementById("qrcode") as HTMLCanvasElement;
+    const pngUrl = canvas
+      .toDataURL("image/png")
+      .replace("image/png", "image/octet-stream");
+    console.log(pngUrl);
+    
+    // let downloadLink = document.createElement("a");
+    // downloadLink.href = pngUrl;
+    // downloadLink.download = "qrcode.png";
+    // document.body.appendChild(downloadLink);
+    // downloadLink.click();
+    // document.body.removeChild(downloadLink);
+    console.log(currentData);
+  };
+
   return (
     <>
+
+<QRCode
+        id="qrcode"
+        value='https://realia23.me/program/$%7BprogramCode%7D'
+        size={200}
+        level={"H"}
+        includeMargin={false}
+      />
+
       <div className="w-full h-full">
         <InfoBar data={props.data} />
 
@@ -195,18 +222,27 @@ const Programme = (props: Props) => {
                 onChange={(e) => {
                   setSearch(e.target.value);
                   setCurrentPage(1);
-                  setData(  
-                    allData.filter((item: Programme) =>
-                      item.name?.toLocaleLowerCase()
-                        .includes(e.target.value.toLocaleLowerCase())  ||
-                        item.programCode?.toLocaleLowerCase()
-                        .includes(e.target.value.toLocaleLowerCase())
+                  setData(
+                    allData.filter(
+                      (item: Programme) =>
+                        item.name
+                          ?.toLocaleLowerCase()
+                          .includes(e.target.value.toLocaleLowerCase()) ||
+                        item.programCode
+                          ?.toLocaleLowerCase()
+                          .includes(e.target.value.toLocaleLowerCase())
                     )
                   );
                 }}
               />
 
               <div>
+                <button
+                  className="ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
+                  onClick={downloadQRCode}
+                >
+                  QR CODE
+                </button>
                 <div className="dropdown dropdown-end">
                   <label
                     tabIndex={0}
@@ -255,8 +291,6 @@ const Programme = (props: Props) => {
                     >
                       IMPORT
                     </button>
-
-                   
                   </ul>
                 </div>
                 <button
@@ -309,31 +343,26 @@ const Programme = (props: Props) => {
                 <button
                   key={1}
                   onClick={() => {
-                    currentPage != 1 && goToPage(currentPage - 1)
+                    currentPage != 1 && goToPage(currentPage - 1);
                   }}
-                  className={`${"bg-[#ECE1FC]"
-                  }  py-2 px-2  rounded-xl font-bold mx-1 my-5`}
+                  className={`${"bg-[#ECE1FC]"}  py-2 px-2  rounded-xl font-bold mx-1 my-5`}
                 >
-                  {
-                    <PageChevronLeft className="w-6 h-6 fill-secondary"/>
-                  }
+                  {<PageChevronLeft className="w-6 h-6 fill-secondary" />}
                 </button>
                 <button
                   key={1}
-                  className={`${ "bg-secondary text-white"
-                     
-                  }  py-2 px-4 rounded-xl font-bold mx-1 my-5`}
+                  className={`${"bg-secondary text-white"}  py-2 px-4 rounded-xl font-bold mx-1 my-5`}
                 >
                   {currentPage}
                 </button>
                 <button
                   key={1}
-                  onClick={() => totalPages > currentPage && goToPage(currentPage + 1)}
-                  className={`${
-                     "bg-[#ECE1FC]"
-                  }  py-2 px-2  rounded-xl font-bold mx-1 my-5`}
+                  onClick={() =>
+                    totalPages > currentPage && goToPage(currentPage + 1)
+                  }
+                  className={`${"bg-[#ECE1FC]"}  py-2 px-2  rounded-xl font-bold mx-1 my-5`}
                 >
-                  <PageChevronRight className="w-6 h-6 fill-secondary"/>
+                  <PageChevronRight className="w-6 h-6 fill-secondary" />
                 </button>
               </div>
             </div>
@@ -361,7 +390,7 @@ const Programme = (props: Props) => {
               setData={setAllData}
               category={SelectedProgramme?.category?.name as string}
               categories={props.categories as Category[]}
-              skill= {SelectedProgramme?.skill?.name as string}
+              skill={SelectedProgramme?.skill?.name as string}
               skills={props.skills as Skill[]}
             />
           </RightSideBar>

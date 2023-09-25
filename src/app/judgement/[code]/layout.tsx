@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Realia | Profile",
+  title: "Realia | Program",
   description: "Created by Farrago",
 };
 
@@ -10,5 +10,5 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div>{children}</div>;
+  return <div className="w-screen h-screen overflow-hidden ">{children}</div>;
 }

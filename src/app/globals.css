@@ -41,11 +41,11 @@
   width: 100%;
 }
 
-.example-header {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 13px;
-  padding: 5px;
-  background-color: #0f0f0f;
+.ag-theme-alpine {
+  --ag-background-color: #e65757;
+}
+.ag-theme-acmecorp {
+  --ag-odd-row-background-color: #aaa;
 }
 
 .code-highlight-blue {
@@ -66,4 +66,11 @@
   -o-transition: width 3s;
   -ms-transition: width 3s;
   transition: width 3s;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: "";
 }

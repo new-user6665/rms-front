@@ -1,26 +1,14 @@
-
-
-
-
-import type { Metadata } from 'next'
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Realia | Program',
-  description: 'Created by Farrago',
-}
+  title: "Realia | Program",
+  description: "Created by Farrago",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-
-  return (
-    <html lang="en">
-    <body>
-      {children}
-      </body>
-  </html>
-  )
+  return <div>{children}</div>;
 }
-

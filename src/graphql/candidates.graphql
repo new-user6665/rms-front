@@ -48,11 +48,9 @@ query GetOneCandidate($id: Int! $api_key: String!) {
     id
     name
     imageId
-    dob
     class
     adno
     chestNO
-    gender
     individualPoint
     groupPoint
     category {
