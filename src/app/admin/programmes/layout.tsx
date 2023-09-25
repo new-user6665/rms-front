@@ -15,9 +15,6 @@ export default async function RootLayout({
     <main className="ms-3 w-full h-full flex"> 
     {children}    
   </main>
-  <script src=
-"https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
-    </script>
   </>
   );
 }

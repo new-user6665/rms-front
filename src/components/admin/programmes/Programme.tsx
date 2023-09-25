@@ -198,13 +198,13 @@ const Programme = (props: Props) => {
   return (
     <>
 
-<QRCode
+{/* <QRCode
         id="qrcode"
         value='https://realia23.me/program/$%7BprogramCode%7D'
         size={200}
         level={"H"}
         includeMargin={false}
-      />
+      /> */}
 
       <div className="w-full h-full">
         <InfoBar data={props.data} />
