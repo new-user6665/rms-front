@@ -2,6 +2,7 @@
 import Alert from "@/components/Alert";
 import { AddCredentialDocument, AddCredentialMutation, AddCredentialMutationVariables, Credential, Roles, Team } from "@/gql/graphql";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { OperationResult, useMutation } from "urql";
 
 interface Props {
@@ -35,12 +36,10 @@ const CreateCredential = (props: Props) => {
     });
 
     if (datas.data?.createCredential) {
-      alert("Credential Added");
+      toast.success("Credential Added");
       props.setData([...props.data, datas.data?.createCredential as Credential]);
     } else {
-      console.log(datas.error?.message);
-
-      alert("Credential Not Added");
+      datas.error?.message.split("]")[1].startsWith(" target") ? toast.error("server error") : toast.error(datas.error?.message.split("]")[1]);
     }
   };
 

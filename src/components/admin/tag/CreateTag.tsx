@@ -1,6 +1,7 @@
 "use client";
 import { AddTagDocument, AddTagMutation, AddTagMutationVariables, Tag } from "@/gql/graphql";
 import React from "react";
+import { toast } from "react-toastify";
 import { OperationResult, useMutation } from "urql";
 
 interface Props {
@@ -19,10 +20,10 @@ const CreateTag = (props: Props) => {
     });
 
     if (datas.data?.createTag) {
-      alert("Tag Added");
+      toast.success("Tag Added");
       props.setData([...props.data, datas.data?.createTag as Tag]);
     } else {
-      alert("Tag Not Added");
+      datas.error?.message.split("]")[1].startsWith(" target") ? toast.error("server error") : toast.error(datas.error?.message.split("]")[1]);
     }
   };
 

@@ -52,8 +52,10 @@ const Category = (props: Props) => {
     <>
       <div className="w-full h-full">
         {/* <InfoBar data={props.data} /> */}
-        <div className="w-full h-screen lg:h-[90%] flex mt-[3%]">
+
+        <div className="w-full h-screen lg:h-[90%] flex mt-[3%] ">
           <div className="flex-1 w-full">
+
             <div className="h-10 cursor-pointer flex justify-between mb-4">
               {/* search bar */}
               <input

@@ -5,6 +5,7 @@ import {
   Programme,
 } from "@/gql/graphql";
 import React from "react";
+import { toast } from "react-toastify";
 import { OperationResult, useMutation } from "urql";
 import * as XLSX from "xlsx";
 
@@ -147,11 +148,11 @@ const ExcelUploadGroupTeamList = (props: Props) => {
       console.log(errors);
       console.log(allData);
 
-      alert("Error on some operation");
+      toast.error("Error on some operation");
     } else {
       console.log(allData);
 
-      alert("Successfully uploaded");
+      toast.success("Programmes Added");
     }
   }
 
@@ -163,7 +164,7 @@ const ExcelUploadGroupTeamList = (props: Props) => {
       "text/csv",
     ];
     if (validTypes.indexOf(file.type) === -1) {
-      alert("Invalid File Type");
+      toast.error("Invalid File Type");
       return false;
     }
 
@@ -201,7 +202,7 @@ const ExcelUploadGroupTeamList = (props: Props) => {
 
       if (!hasAllKeys) {
         console.log(fileData);
-        alert("Invalid File Content");
+        toast.error("Invalid File Content");
         return null;
       } else {
         setFinalizedData(fileData);

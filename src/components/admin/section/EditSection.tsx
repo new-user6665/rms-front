@@ -2,6 +2,7 @@ import Alert from '@/components/Alert';
 import { EditSectionDocument, EditSectionMutation, EditSectionMutationVariables, Section } from '@/gql/graphql';
 import { ChevronRight } from '@/icons/arrows';
 import React from 'react'
+import { toast } from 'react-toastify';
 import { OperationResult, useMutation } from 'urql';
 
 interface Props {
@@ -31,7 +32,7 @@ const EditSection = (props: Props) => {
     });
 
     if (updatedData.data?.updateSection) {
-      alert("Section Added");
+      toast.success("Section Updated");
       const updatedDates = props.data.map((value, index) => {
         if (value.id == updatedData.data?.updateSection?.id) {
           return value = updatedData.data?.updateSection as Section
@@ -43,10 +44,10 @@ const EditSection = (props: Props) => {
 
       props.setData(updatedDates as Section[]);
     } else if (updatedData.error?.message) {
-      alert(updatedData.error?.message.split(']')[1]);
+      updatedData.error?.message.split("]")[1].startsWith(" target") ? toast.error("server error") : toast.error(updatedData.error?.message.split("]")[1]);
     }
     else {
-      alert("Section Not Added");
+      toast.error("Something went wrong");
     }
     setIsLoading(false);
     props.setIsEdit(false);
