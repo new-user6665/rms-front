@@ -227,6 +227,7 @@ const TeamList = (props: Props) => {
         setIsOpen={setIsRightSideBarOpen}
       >
         <OneProgramme
+        selectedProgramme={SelectedProgramme as Programme}
           isExcelUpload={isExcelUpload}
           setIsExcelUpload={setIsExcelUpload}
           isOpen={IsRightSideBarOpen}
@@ -246,6 +247,7 @@ const TeamList = (props: Props) => {
           skills={props.skills}
           isExcelGroupUpload = {isExcelGroupUpload}
           setExcelGroupUpload={setIsExcelGroupUpload}
+          allCandidates={props.candidates}
         />
       </RightSideBar>
 

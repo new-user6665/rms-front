@@ -1,4 +1,4 @@
-import Judgement from "@/components/judgement/Judgement";
+import Judgement from "@/components/judgment/Judgment";
 
 export default async function page({
   params,
@@ -9,12 +9,12 @@ export default async function page({
     name: "Balloon Breaking MLM",
     candidate: [
       {
-        chestNo: "SM123",
+        chestNo: "SM23",
         name: "Majid",
       },
       {
-        chestNo: "SM124",
-        name: "Muhammed Midlaj",
+        chestNo: "SM24",
+        name: "Muhammed Midlaj ",
       },
       {
         chestNo: "SM125",
