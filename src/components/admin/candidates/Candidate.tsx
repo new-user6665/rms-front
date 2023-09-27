@@ -200,7 +200,10 @@ const Candidate = (props: Props) => {
                     allData.filter((item: any) =>
                       item.name
                         .toLocaleLowerCase()
-                        .includes(e.target.value.toLocaleLowerCase())
+                        .includes(e.target.value.toLocaleLowerCase()) ||
+                      item.chestNO
+                        .toLocaleLowerCase()
+                        .includes(e.target.value.toLocaleLowerCase()) 
                     )
                   );
                 }}

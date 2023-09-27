@@ -16,9 +16,14 @@ query GetAllProgrammes ($api_key: String!){
 }
 
 query GetDetailedProgramme($id: Int!, $api_key: String!) {
-  programme(id: $id, api_key: $api_key) {
+ programme(id: $id api_key: $api_key) {
+  id
     candidateProgramme {
       candidate {
+        name
+        chestNO
+      }
+        candidatesOfGroup{
         name
         chestNO
       }
@@ -26,7 +31,25 @@ query GetDetailedProgramme($id: Int!, $api_key: String!) {
     resultEntered
     resultPublished
     programCode
+    candidateCount
+    conceptNote
+    mode
     model
+    name
+    type
+    groupCount
+    resultEntered
+    resultPublished
+    anyIssue
+    skill{
+      name
+    }
+    category{
+      name
+    }
+    duration
+    date
+    venue
   }
 }
 
@@ -34,6 +57,10 @@ query GetAllDetailedProgramme($api_key: String!) {
   programmes(api_key: $api_key) {
     candidateProgramme {
       candidate {
+        name
+        chestNO
+      }
+        candidatesOfGroup{
         name
         chestNO
       }
@@ -79,6 +106,10 @@ query GetAllProgrammesByCandidates ($api_key: String!){
         team{
           name
         }
+      }
+      candidatesOfGroup{
+        name
+        chestNO
       }
     }
   }

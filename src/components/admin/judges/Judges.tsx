@@ -1,7 +1,7 @@
 "use client";
 import InfoBar from "@/components/admin/InfoBar";
 import RightSideBar from "@/components/admin/RightSideBar";
-import { Programme, Category, Team, Skill } from "@/gql/graphql";
+import { Programme, Category, Team, Skill, Mode, Types } from "@/gql/graphql";
 import { parseJwt } from "@/lib/cryptr";
 import { SERVER_URL } from "@/lib/urql";
 import { withUrqlClient } from "next-urql";
@@ -13,7 +13,6 @@ import { ChevronLeft } from "@/icons/arrows";
 import { PageChevronLeft, PageChevronRight } from "@/icons/pagination";
 import { compile } from "handlebars";
 import { jsPDF } from "jspdf";
-import html2canvas from "html2canvas";
 import { saveAs } from "file-saver";
 // import launch from "puppeteer-extra"
 // const puppeteer = require('puppeteer-extra')
@@ -72,7 +71,6 @@ const Judges = (props: Props) => {
   const [isEditJudge, setIsEditJudge] = useState<boolean>(false);
   const [count, setCount] = useState<number>(1);
   const ProgrammeRef = useRef<HTMLDivElement>(null);
-
 
   useEffect(() => {
     const cookie = document.cookie;
@@ -152,58 +150,10 @@ const Judges = (props: Props) => {
     setCurrentPage(pageNumber);
   };
 
-  // Render the pagination controls
-  const renderPaginationControls = () => {
-    const controls = [];
-    for (let page = 1; page <= totalPages; page++) {
-      controls.push(
-        <button
-          key={page}
-          onClick={() => goToPage(page)}
-
-          className={`${
-            currentPage === page ? "bg-secondary text-white" : "bg-[#ECE1FC]"
-          }  py-2 px-4 rounded-xl font-bold mx-1 my-5`}
-
-        >
-          {page}
-        </button>
-      );
-    }
-    return controls;
-  };
 
 
-  async function generatePdf() {
-    const doc = new jsPDF();
-
-    doc.text("Hello world!", 10, 10);
-    doc.setFontSize(40);
-    doc.text("Octonyan loves jsPDF", 35, 25);
-    doc.addImage("examples/images/Octonyan.jpg", "JPEG", 15, 40, 180, 180);
-    doc.save("a4.pdf");
-  }
   // //   generatePdf();
 
-  function downloadExcel() {
-    const data = props.result;
-    const replacer = (key: any, value: any) => (value === null ? "" : value); // specify how you want to handle null values here
-    const header = Object.keys(data[0]);
-    let csv = data.map((row: any) =>
-      header
-        .map((fieldName) => JSON.stringify(row[fieldName], replacer))
-        .join(",")
-    );
-    csv.unshift(header.join(","));
-    let csvArray = csv.join("\r\n");
-
-    var a = document.createElement("a");
-    a.href = "data:attachment/csv," + csvArray;
-    a.target = "_Blank";
-    a.download = "Programme.csv";
-    document.body.appendChild(a);
-    a.click();
-  }
 
   const downloadPDF = () => {
     const doc = new jsPDF("portrait", "px", "a4");
@@ -215,45 +165,62 @@ const Judges = (props: Props) => {
       "normal"
     );
 
-    const backgroundImageUrl = "/a4.jpg"; // Update the path to your background image
+    // const backgroundImageUrl =  "/a4.jpg"   ; // Update the path to your background image
 
     const pdfWidth = doc.internal.pageSize.getWidth();
     const pdfHeight = doc.internal.pageSize.getHeight();
 
     console.log("pdf", pdfWidth, pdfHeight);
 
-    fetch(backgroundImageUrl)
-      .then((response) => response.blob())
-      .then((blob) => {
-        const imgData = URL.createObjectURL(blob);
+    currentData.forEach((a) => {
+      doc.addPage("a4");
 
-        currentData.forEach((a) => {
-          doc.addPage("a4");
+      const backgroundImageUrl = a.type === Types.Single ? "/a4.jpg" : "/a4g.jpg"
 
-          // Add the background image
-          doc.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
+      // Add the background image
+      doc.addImage(backgroundImageUrl, "JPEG", 0, 0, pdfWidth, pdfHeight);
 
-          // Set the font to Montserrat
-          doc.setFont("Montserrat");
+      // Set the font to Montserrat
+      doc.setFont("Montserrat");
 
-          // Add text and other content on top of the background image
-          doc.setFontSize(10);
-          doc.setTextColor(0, 0, 0); // Set text color to black
+      // Add text and other content on top of the background image
+      doc.setFontSize(10);
+      doc.setTextColor(0, 0, 0); // Set text color to black
 
-          doc.text(`${a.programCode}`, 125, 205);
-          doc.text(`${a.name}`, 125, 218);
-          var aa = 265;
-          a.candidateProgramme?.map((item, i) => {
-            aa = aa + 13.2;
-            console.log(aa);
-            doc.text(`${item.candidate?.chestNO}`, 67, aa);
-            doc.text(`${item.candidate?.name}`, 112, aa);
-          });
-        });
+      doc.text(`${a.programCode}`, 125, 205);
+      doc.text(`${a.name}`, 125, 218);
+      doc.text(`${a.category?.name}`, 345, 205);
+      var aa = 265;
 
-        const pdfBlob = doc.output("blob");
-        saveAs(pdfBlob, `judgeList.pdf`);
+      a.candidateProgramme?.map((item, i) => {
+        aa = aa + 13.5;
+        console.log(aa);
+        doc.text(`${item.candidate?.chestNO}`, 67, aa);
+
+
+        if (a.type == Types.Group) {
+          console.log(item.candidatesOfGroup);
+          let bb = 90;
+          item.candidatesOfGroup?.map((itm, ind) => {
+            console.log(itm.chestNO);
+            bb = bb + 22;
+            doc.text(`${itm.chestNO},`, bb, aa);
+          }
+          )
+          doc.text(`${item.candidate?.name}`, bb + 22, aa);
+        } else {
+          doc.text(`${item.candidate?.name}`, 112, aa);
+        }
       });
+
+
+
+
+    });
+
+    const pdfBlob = doc.output("blob");
+    saveAs(pdfBlob, `judgeList.pdf`);
+
   };
 
   const downloadSingle = (a: Programme) => {
@@ -268,7 +235,7 @@ const Judges = (props: Props) => {
       "normal"
     );
 
-    const backgroundImageUrl = "/a4.jpg"; // Update the path to your background image
+    const backgroundImageUrl = a.type === Types.Single ? "/a4.jpg" : "/a4g.jpg" // Update the path to your background image
 
     const pdfWidth = doc.internal.pageSize.getWidth();
     const pdfHeight = doc.internal.pageSize.getHeight();
@@ -293,12 +260,29 @@ const Judges = (props: Props) => {
           doc.text(`${a.programCode}`, 125, 205);
           doc.text(`${a.name}`, 125, 218);
           var aa = 265;
+
           a.candidateProgramme?.map((item, i) => {
-            aa = aa + 13.2;
+            aa = aa + 13.5;
             console.log(aa);
             doc.text(`${item.candidate?.chestNO}`, 67, aa);
-            doc.text(`${item.candidate?.name}`, 112, aa);
+
+
+            if (a.type == Types.Group) {
+              console.log(item.candidatesOfGroup);
+              let bb = 90;
+              item.candidatesOfGroup?.map((itm, ind) => {
+                console.log(itm.chestNO);
+                bb = bb + 22;
+                doc.text(`${itm.chestNO},`, bb, aa);
+              }
+              )
+              doc.text(`${item.candidate?.name}`, bb + 22, aa);
+            } else {
+              doc.text(`${item.candidate?.name}`, 112, aa);
+            }
           });
+
+
         });
 
         const pdfBlob = doc.output("blob");
@@ -335,7 +319,6 @@ const Judges = (props: Props) => {
 
               <div>
                 <div className="">
-
                   <div className="dropdown dropdown-end mr-1">
                     <label
                       tabIndex={0}
@@ -359,29 +342,27 @@ const Judges = (props: Props) => {
                       tabIndex={0}
                       className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40 font-bold"
                     >
-                      {
-                        props.categories.map((item: Category, index: number) => {
-                          return (
-                            <button
-                              className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
-                              onClick={() => {
-                                setCurrentPage(1);
-                                setData(
-                                  allData.filter((itm: Programme) =>
-                                    itm?.category?.name?.toLocaleLowerCase() === item?.name?.toLocaleLowerCase()
-                                  )
-                                );
-                              }}
-                            >
-                              {item.name}
-                            </button>
-                          );
-                        }
-                        )
-                      }
+                      {props.categories.map((item: Category, index: number) => {
+                        return (
+                          <button
+                            className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                            onClick={() => {
+                              setCurrentPage(1);
+                              setData(
+                                allData.filter(
+                                  (itm: Programme) =>
+                                    itm?.category?.name?.toLocaleLowerCase() ===
+                                    item?.name?.toLocaleLowerCase()
+                                )
+                              );
+                            }}
+                          >
+                            {item.name}
+                          </button>
+                        );
+                      })}
                     </ul>
                   </div>
-
 
                   <label
                     className="inline-flex bg-secondary text-white  rounded-full px-5 py-2 font-bold cursor-pointer"
@@ -459,20 +440,17 @@ const Judges = (props: Props) => {
                     </ul>
                   </div>
                 </div>
-
               </div>
             </div>
             <div className="flex flex-col items-center lg:justify-center w-full h-full">
               <ComponentsDiv
-                height={`${
-                  (itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6
-                }rem`}
+                height={`${(itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6
+                  }rem`}
               >
                 <div
                   ref={ProgrammeRef}
-                  className={`grid gap-4 w-full transition-all grid-cols-1 ${
-                    IsRightSideBarOpen ? "lg:grid-cols-3" : "lg:grid-cols-4"
-                  }`}
+                  className={`grid gap-4 w-full transition-all grid-cols-1 ${IsRightSideBarOpen ? "lg:grid-cols-3" : "lg:grid-cols-4"
+                    }`}
                 >
                   {currentData?.map((item: Programme, index: number) => {
                     return (
@@ -594,7 +572,7 @@ const Judges = (props: Props) => {
                     </div>
                   );
                 })}
-                {}
+                { }
                 <button
                   onClick={() => {
                     count < 2 ? null : setCount(count - 1);

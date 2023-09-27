@@ -384,7 +384,7 @@ const AGrid = (props: Props) => {
           <span id="animationAction"></span>
         </div> */}
 
-        <div style={gridStyle} className="ag-theme-alpine-dark">
+        <div style={gridStyle} className="ag-theme-alpine">
           <AgGridReact //<props.result>
             rowData={allData}
             columnDefs={columnDefs}

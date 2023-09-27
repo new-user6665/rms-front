@@ -17,5 +17,6 @@ export default async function page({
       {/* Desktop View */}
       <DesktopView />
     </main>
+
   );
 }
