@@ -221,7 +221,7 @@ const Profile = () => {
     {/* down */}
     <div className="w-full h-full bg-primary flex flex-col items-center">
       {/* image */}
-      <div className="w-full flex flex-col items-center items-start relative z-40">
+      <div className="w-full flex flex-col items-center relative z-40">
         <div className="rounded-full h-36 w-36 border-4 bg-white flex flex-col items-end relative">
           <img
             className="rounded-full"
