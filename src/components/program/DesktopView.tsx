@@ -1,4 +1,65 @@
-export default function DesktopView() {
+"use client";
+
+import { CandidateProgramme, Programme } from "@/gql/graphql";
+import { useEffect, useState } from "react";
+
+interface Props {
+  programme: Programme;
+}
+
+export default function DesktopView(props: Props) {
+  const { programme } = props;
+
+  const [resultedCandidates, setResultedCandidates] = useState<
+    CandidateProgramme[]
+  >([]);
+
+  useEffect(() => {
+    programme?.candidateProgramme?.map((candidate) => {
+      candidate?.position?.name !== null ||
+        (candidate?.grade?.name !== null &&
+          setResultedCandidates([...resultedCandidates, candidate]));
+    });
+  });
+
+  const specialButton = {
+    div: "rounded-xl text-sm h-6 bg-primary border border-primary flex items-center",
+    button: "px-2 text-white text-sm",
+  };
+  const commonButton = {
+    div: "rounded-xl text-sm h-6 border border-primary flex items-center",
+    button: "px-2 text-primary text-sm",
+  };
+  const [allOrSingleTeam, setAllOrSingleTeam] = useState("all");
+  const allCandidates = programme?.candidateProgramme;
+  const chronicleCandidates = allCandidates?.filter((candidate) => {
+    return candidate?.candidate?.team?.name === "Chronicle";
+  });
+  const gazetteCandidates = allCandidates?.filter((candidate) => {
+    return candidate?.candidate?.team?.name === "Gazatte";
+  });
+  const heraldCandidates = allCandidates?.filter((candidate) => {
+    return candidate?.candidate?.team?.name === "Herald";
+  });
+  const tribuneCandidates = allCandidates?.filter((candidate) => {
+    return candidate?.candidate?.team?.name === "Tribune";
+  });
+
+  const [allOrSingleTeamResult, setAllOrSingleTeamResult] = useState("all");
+
+  const allCandidatesResult = resultedCandidates;
+  const chronicleCandidatesResult = allCandidatesResult?.filter((candidate) => {
+    return candidate?.candidate?.team?.name === "Chronicle";
+  });
+  const gazetteCandidatesResult = allCandidatesResult?.filter((candidate) => {
+    return candidate?.candidate?.team?.name === "Gazatte";
+  });
+  const heraldCandidatesResult = allCandidatesResult?.filter((candidate) => {
+    return candidate?.candidate?.team?.name === "Herald";
+  });
+  const tribuneCandidatesResult = allCandidatesResult?.filter((candidate) => {
+    return candidate?.candidate?.team?.name === "Tribune";
+  });
   return (
     <div className="2xl:flex h-full w-full hidden">
       {/* sidebar */}
@@ -12,7 +73,7 @@ export default function DesktopView() {
             type="text"
             disabled
             className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-            placeholder="Muhammed Midlaj"
+            placeholder={`${programme?.name}`}
           />
         </div>
         <div className="flex w-full px-4">
@@ -22,7 +83,7 @@ export default function DesktopView() {
               type="text"
               disabled
               className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-              placeholder="SM123"
+              placeholder={`${programme?.programCode}`}
             />
           </div>
           <div className="flex flex-col w-2/3">
@@ -31,7 +92,7 @@ export default function DesktopView() {
               type="text"
               disabled
               className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-              placeholder="04"
+              placeholder={`0${programme?.candidateCount}`}
             />
           </div>
         </div>
@@ -41,7 +102,7 @@ export default function DesktopView() {
             type="text"
             disabled
             className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-            placeholder="Degree"
+            placeholder={`${programme?.category?.name}`}
           />
         </div>
         <div className="flex flex-col w-full pl-4">
@@ -50,7 +111,7 @@ export default function DesktopView() {
             type="text"
             disabled
             className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-            placeholder="40 Min"
+            placeholder={`${programme?.duration}`}
           />
         </div>
         <div className="flex flex-col w-full pl-4">
@@ -59,7 +120,7 @@ export default function DesktopView() {
             type="text"
             disabled
             className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-            placeholder="7:00 - 8:00 PM, 20-10-2023"
+            placeholder={`${programme?.date}`}
           />
         </div>
         <div className="flex w-full px-4">
@@ -68,8 +129,8 @@ export default function DesktopView() {
             <input
               type="text"
               disabled
-              className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-              placeholder="Arts"
+              className="h-10 w-11/12 bg-white rounded-lg text-sm placeholder:pl-2 placeholder:text-primary"
+              placeholder={`${programme?.mode}`}
             />
           </div>
           <div className="flex flex-col w-1/3">
@@ -78,7 +139,7 @@ export default function DesktopView() {
               type="text"
               disabled
               className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-              placeholder="Stage"
+              placeholder={`${programme?.model}`}
             />
           </div>
           <div className="flex flex-col w-1/3">
@@ -87,7 +148,7 @@ export default function DesktopView() {
               type="text"
               disabled
               className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-              placeholder="Single"
+              placeholder={`${programme?.type}`}
             />
           </div>
         </div>
@@ -109,41 +170,211 @@ export default function DesktopView() {
               <hr className="border" />
               {/* sort buttons */}
               <div className="flex h-10 items-center px-10 gap-3">
-                <div className="rounded-xl text-sm h-6 bg-primary border border-primary flex items-center">
-                  <p className="px-2 text-white text-sm">All</p>
+                <div
+                  className={`${
+                    allOrSingleTeam === "all"
+                      ? specialButton.div
+                      : commonButton.div
+                  }`}
+                >
+                  <button
+                    onClick={() => {
+                      setAllOrSingleTeam("all");
+                    }}
+                    className={`${
+                      allOrSingleTeam === "all"
+                        ? specialButton.button
+                        : commonButton.button
+                    }`}
+                  >
+                    All
+                  </button>
                 </div>
-                <div className="rounded-xl text-sm h-6 border border-primary flex items-center">
-                  <p className="px-2 text-primary text-sm">Chronicle</p>
+                <div
+                  className={`${
+                    allOrSingleTeam === "chronicle"
+                      ? specialButton.div
+                      : commonButton.div
+                  }`}
+                >
+                  <button
+                    onClick={() => {
+                      setAllOrSingleTeam("chronicle");
+                    }}
+                    className={`${
+                      allOrSingleTeam === "chronicle"
+                        ? specialButton.button
+                        : commonButton.button
+                    }`}
+                  >
+                    Chronicle
+                  </button>
                 </div>
-                <div className="rounded-xl text-sm h-6 border border-primary flex items-center">
-                  <p className="px-2 text-primary text-sm">Tribune</p>
+                <div
+                  className={`${
+                    allOrSingleTeam === "tribune"
+                      ? specialButton.div
+                      : commonButton.div
+                  }`}
+                >
+                  <button
+                    onClick={() => {
+                      setAllOrSingleTeam("tribune");
+                    }}
+                    className={`${
+                      allOrSingleTeam === "tribune"
+                        ? specialButton.button
+                        : commonButton.button
+                    }`}
+                  >
+                    Tribune
+                  </button>
                 </div>
-                <div className="rounded-xl text-sm h-6 border border-primary flex items-center">
-                  <p className="px-2 text-primary text-sm">Gazette</p>
+                <div
+                  className={`${
+                    allOrSingleTeam === "gazette"
+                      ? specialButton.div
+                      : commonButton.div
+                  }`}
+                >
+                  <button
+                    onClick={() => {
+                      setAllOrSingleTeam("gazette");
+                    }}
+                    className={`${
+                      allOrSingleTeam === "gazette"
+                        ? specialButton.button
+                        : commonButton.button
+                    }`}
+                  >
+                    Gazette
+                  </button>
                 </div>
-                <div className="rounded-xl text-sm h-6 border border-primary flex items-center">
-                  <p className="px-2 text-primary text-sm">Herald</p>
+                <div
+                  className={`${
+                    allOrSingleTeam === "herald"
+                      ? specialButton.div
+                      : commonButton.div
+                  }`}
+                >
+                  <button
+                    onClick={() => {
+                      setAllOrSingleTeam("herald");
+                    }}
+                    className={`${
+                      allOrSingleTeam === "herald"
+                        ? specialButton.button
+                        : commonButton.button
+                    }`}
+                  >
+                    Herald
+                  </button>
                 </div>
               </div>
               <hr className="border" />
               {/* table */}
               <div className="flex flex-col h-5/6 items-center pt-5 gap-5 overflow-y-auto">
-                {/* candidate List */}
-                <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
-                  <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
-                    <img
-                      src="1575462484669.jpg"
-                      className="rounded-full h-10 border"
-                      alt=""
-                    />
-                    <p>S123</p>
-                    <p>Muhammed Midlaj</p>
-                  </div>
-                  <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
-                    <p>Chronicle</p>
-                  </div>
-                </div>
-                {/* end */}
+                {allOrSingleTeam === "all"
+                  ? allCandidates?.map((candidate) => (
+                      <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
+                        <div className="flex h-8 w-3/4 text-md items-center pl-2 gap-3 justify-start">
+                          <img
+                            src={`${
+                              candidate?.candidate?.imageId ||
+                              "https://banner2.cleanpng.com/20180410/bbw/kisspng-avatar-user-medicine-surgery-patient-avatar-5acc9f7a7cb983.0104600115233596105109.jpg"
+                            }`}
+                            className="rounded-full h-10 border"
+                            alt=""
+                          />
+                          <p>{candidate?.candidate?.chestNO}</p>
+                          <p>{candidate?.candidate?.name}</p>
+                        </div>
+                        <div className="flex h-8 w-1/4 text-md items-center pr-2 gap-3 justify-end">
+                          <p>{candidate?.candidate?.team?.name}</p>
+                        </div>
+                      </div>
+                    ))
+                  : allOrSingleTeam === "chronicle"
+                  ? chronicleCandidates?.map((candidate) => (
+                      <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
+                        <div className="flex h-8 w-3/4 text-md items-center pl-2 gap-3 justify-start">
+                          <img
+                            src={`${
+                              candidate?.candidate?.imageId ||
+                              "https://banner2.cleanpng.com/20180410/bbw/kisspng-avatar-user-medicine-surgery-patient-avatar-5acc9f7a7cb983.0104600115233596105109.jpg"
+                            }`}
+                            className="rounded-full h-10 border"
+                            alt=""
+                          />
+                          <p>{candidate?.candidate?.chestNO}</p>
+                          <p>{candidate?.candidate?.name}</p>
+                        </div>
+                        <div className="flex h-8 w-1/4 text-md items-center pr-2 gap-3 justify-end">
+                          <p>{candidate?.candidate?.team?.name}</p>
+                        </div>
+                      </div>
+                    ))
+                  : allOrSingleTeam === "gazette"
+                  ? gazetteCandidates?.map((candidate) => (
+                      <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
+                        <div className="flex h-8 w-3/4 text-md items-center pl-2 gap-3 justify-start">
+                          <img
+                            src={`${
+                              candidate?.candidate?.imageId ||
+                              "https://banner2.cleanpng.com/20180410/bbw/kisspng-avatar-user-medicine-surgery-patient-avatar-5acc9f7a7cb983.0104600115233596105109.jpg"
+                            }`}
+                            className="rounded-full h-10 border"
+                            alt=""
+                          />
+                          <p>{candidate?.candidate?.chestNO}</p>
+                          <p>{candidate?.candidate?.name}</p>
+                        </div>
+                        <div className="flex h-8 w-1/4 text-md items-center pr-2 gap-3 justify-end">
+                          <p>{candidate?.candidate?.team?.name}</p>
+                        </div>
+                      </div>
+                    ))
+                  : allOrSingleTeam === "herald"
+                  ? heraldCandidates?.map((candidate) => (
+                      <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
+                        <div className="flex h-8 w-3/4 text-md items-center pl-2 gap-3 justify-start">
+                          <img
+                            src={`${
+                              candidate?.candidate?.imageId ||
+                              "https://banner2.cleanpng.com/20180410/bbw/kisspng-avatar-user-medicine-surgery-patient-avatar-5acc9f7a7cb983.0104600115233596105109.jpg"
+                            }`}
+                            className="rounded-full h-10 border"
+                            alt=""
+                          />
+                          <p>{candidate?.candidate?.chestNO}</p>
+                          <p>{candidate?.candidate?.name}</p>
+                        </div>
+                        <div className="flex h-8 w-1/4 text-md items-center pr-2 gap-3 justify-end">
+                          <p>{candidate?.candidate?.team?.name}</p>
+                        </div>
+                      </div>
+                    ))
+                  : allOrSingleTeam === "tribune"
+                  ? tribuneCandidates?.map((candidate) => (
+                      <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
+                        <div className="flex h-8 w-3/4 text-md items-center pl-2 gap-3 justify-start">
+                          <img
+                            src={`${
+                              candidate?.candidate?.imageId ||
+                              "https://banner2.cleanpng.com/20180410/bbw/kisspng-avatar-user-medicine-surgery-patient-avatar-5acc9f7a7cb983.0104600115233596105109.jpg"
+                            }`}
+                            className="rounded-full h-10 border"
+                            alt=""
+                          />
+                          <p>{candidate?.candidate?.chestNO}</p>
+                          <p>{candidate?.candidate?.name}</p>
+                        </div>
+                        <div className="flex h-8 w-1/4 text-md items-center pr-2 gap-3 justify-end">
+                          <p>{candidate?.candidate?.team?.name}</p>
+                        </div>
+                      </div>
+                    ))
+                  : null}
               </div>
             </div>
           </div>
@@ -157,39 +388,191 @@ export default function DesktopView() {
               <hr className="border" />
               {/* sort buttons */}
               <div className="flex h-10 items-center px-10 gap-3">
-                <div className="rounded-xl text-sm h-6 bg-primary border border-primary flex items-center">
-                  <p className="px-2 text-white text-sm">All</p>
+                <div
+                  className={`${
+                    allOrSingleTeamResult === "all"
+                      ? specialButton.div
+                      : commonButton.div
+                  }`}
+                >
+                  <button
+                    onClick={() => {
+                      setAllOrSingleTeamResult("all");
+                    }}
+                    className={`${
+                      allOrSingleTeamResult === "all"
+                        ? specialButton.button
+                        : commonButton.button
+                    }`}
+                  >
+                    All
+                  </button>
                 </div>
-                <div className="rounded-xl text-sm h-6 border border-primary flex items-center">
-                  <p className="px-2 text-primary text-sm">Chronicle</p>
+                <div
+                  className={`${
+                    allOrSingleTeamResult === "chronicle"
+                      ? specialButton.div
+                      : commonButton.div
+                  }`}
+                >
+                  <button
+                    onClick={() => {
+                      setAllOrSingleTeamResult("chronicle");
+                    }}
+                    className={`${
+                      allOrSingleTeamResult === "chronicle"
+                        ? specialButton.button
+                        : commonButton.button
+                    }`}
+                  >
+                    Chronicle
+                  </button>
                 </div>
-                <div className="rounded-xl text-sm h-6 border border-primary flex items-center">
-                  <p className="px-2 text-primary text-sm">Tribune</p>
+                <div
+                  className={`${
+                    allOrSingleTeamResult === "tribune"
+                      ? specialButton.div
+                      : commonButton.div
+                  }`}
+                >
+                  <button
+                    onClick={() => {
+                      setAllOrSingleTeamResult("tribune");
+                    }}
+                    className={`${
+                      allOrSingleTeamResult === "tribune"
+                        ? specialButton.button
+                        : commonButton.button
+                    }`}
+                  >
+                    Tribune
+                  </button>
                 </div>
-                <div className="rounded-xl text-sm h-6 border border-primary flex items-center">
-                  <p className="px-2 text-primary text-sm">Gazette</p>
+                <div
+                  className={`${
+                    allOrSingleTeamResult === "gazette"
+                      ? specialButton.div
+                      : commonButton.div
+                  }`}
+                >
+                  <button
+                    onClick={() => {
+                      setAllOrSingleTeamResult("gazette");
+                    }}
+                    className={`${
+                      allOrSingleTeamResult === "gazette"
+                        ? specialButton.button
+                        : commonButton.button
+                    }`}
+                  >
+                    Gazette
+                  </button>
                 </div>
-                <div className="rounded-xl text-sm h-6 border border-primary flex items-center">
-                  <p className="px-2 text-primary text-sm">Herald</p>
+                <div
+                  className={`${
+                    allOrSingleTeamResult === "herald"
+                      ? specialButton.div
+                      : commonButton.div
+                  }`}
+                >
+                  <button
+                    onClick={() => {
+                      setAllOrSingleTeamResult("herald");
+                    }}
+                    className={`${
+                      allOrSingleTeamResult === "herald"
+                        ? specialButton.button
+                        : commonButton.button
+                    }`}
+                  >
+                    Herald
+                  </button>
                 </div>
               </div>
               <hr className="border" />
               {/* table */}
               <div className="flex flex-col h-5/6 items-center pt-5 gap-5 overflow-y-auto">
-                {/* program List */}
-                <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
-                  <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
-                    <p>1st</p>
-                    <p>S123</p>
-                    <p>Muhammed Midlaj</p>
-                  </div>
-                  <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
-                    <p>Chronicle</p>
-                    <p>A</p>
-                    <p>3pts</p>
-                  </div>
-                </div>
-                {/* end */}
+                {/* result List */}
+                {resultedCandidates.length > 0 ? (
+                  allOrSingleTeam === "all" ? (
+                    allCandidatesResult?.map((candidate) => (
+                      <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
+                        <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
+                          <p>{candidate?.position?.name}</p>
+                          <p>{candidate?.programme?.programCode}</p>
+                          <p>{candidate?.candidate?.name}</p>
+                        </div>
+                        <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
+                          <p>{candidate?.candidate?.team?.name}</p>
+                          <p>{candidate?.grade?.name}</p>
+                          <p>{candidate?.point}pts</p>
+                        </div>
+                      </div>
+                    ))
+                  ) : allOrSingleTeam === "chronicle" ? (
+                    chronicleCandidatesResult?.map((candidate) => (
+                      <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
+                        <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
+                          <p>{candidate?.position?.name}</p>
+                          <p>{candidate?.programme?.programCode}</p>
+                          <p>{candidate?.candidate?.name}</p>
+                        </div>
+                        <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
+                          <p>{candidate?.candidate?.team?.name}</p>
+                          <p>{candidate?.grade?.name}</p>
+                          <p>{candidate?.point}pts</p>
+                        </div>
+                      </div>
+                    ))
+                  ) : allOrSingleTeam === "gazette" ? (
+                    gazetteCandidatesResult?.map((candidate) => (
+                      <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
+                        <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
+                          <p>{candidate?.position?.name}</p>
+                          <p>{candidate?.programme?.programCode}</p>
+                          <p>{candidate?.candidate?.name}</p>
+                        </div>
+                        <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
+                          <p>{candidate?.candidate?.team?.name}</p>
+                          <p>{candidate?.grade?.name}</p>
+                          <p>{candidate?.point}pts</p>
+                        </div>
+                      </div>
+                    ))
+                  ) : allOrSingleTeam === "herald" ? (
+                    heraldCandidatesResult?.map((candidate) => (
+                      <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
+                        <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
+                          <p>{candidate?.position?.name}</p>
+                          <p>{candidate?.programme?.programCode}</p>
+                          <p>{candidate?.candidate?.name}</p>
+                        </div>
+                        <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
+                          <p>{candidate?.candidate?.team?.name}</p>
+                          <p>{candidate?.grade?.name}</p>
+                          <p>{candidate?.point}pts</p>
+                        </div>
+                      </div>
+                    ))
+                  ) : allOrSingleTeam === "tribune" ? (
+                    tribuneCandidatesResult?.map((candidate) => (
+                      <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
+                        <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
+                          <p>{candidate?.position?.name}</p>
+                          <p>{candidate?.programme?.programCode}</p>
+                          <p>{candidate?.candidate?.name}</p>
+                        </div>
+                        <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
+                          <p>{candidate?.candidate?.team?.name}</p>
+                          <p>{candidate?.grade?.name}</p>
+                          <p>{candidate?.point}pts</p>
+                        </div>
+                      </div>
+                    ))
+                  ) : null
+                ) : (
+                  <p>No Results Found</p>
+                )}
               </div>
             </div>
           </div>

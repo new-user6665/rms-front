@@ -1,8 +1,5 @@
 query GetAllCandidates($api_key: String!) {
-  candidates
-  (
-    api_key: $api_key
-  ){
+  candidates(api_key: $api_key) {
     id
     name
     chestNO
@@ -15,12 +12,8 @@ query GetAllCandidates($api_key: String!) {
   }
 }
 
-
 query GetAllDetailedCandidates($api_key: String!) {
-  candidates
-  (
-    api_key: $api_key
-  ){
+  candidates(api_key: $api_key) {
     id
     name
     chestNO
@@ -43,8 +36,8 @@ query GetAllDetailedCandidates($api_key: String!) {
   }
 }
 
-query GetOneCandidate($id: Int! $api_key: String!) {
-  candidate(id: $id , api_key: $api_key) {
+query GetOneCandidate($id: Int!, $api_key: String!) {
+  candidate(id: $id, api_key: $api_key) {
     id
     name
     imageId
@@ -52,6 +45,7 @@ query GetOneCandidate($id: Int! $api_key: String!) {
     adno
     chestNO
     individualPoint
+    individualSportsPoint
     groupPoint
     category {
       name
@@ -62,8 +56,59 @@ query GetOneCandidate($id: Int! $api_key: String!) {
   }
 }
 
+query GetCandidateByChestNo($api_key: String!, $chestNO: String!) {
+  candidateByChestNo(api_key: $api_key, chestNo: $chestNO) {
+    id
+    chestNO
+    name
+    candidateProgrammes {
+      programme {
+        name
+        programCode
+        date
+        resultPublished
+      }
+    }
+    category {
+      id
+      name
+    }
+    team {
+      id
+      name
+    }
+    individualSportsPoint
+    individualPoint
+    imageId
+    candidateProgrammes {
+      id
+      programme {
+        id
+        type
+        programCode
+        date
+        name
+      }
+      grade {
+        id
+        name
+      }
+      position {
+        id
+        name
+      }
+      candidatesOfGroup {
+        id
+        name
+        chestNO
+      }
+      point
+    }
+  }
+}
+
 query GetDetailedCandidate($id: Int!, $api_key: String!) {
-  candidate(id: $id , api_key: $api_key) {
+  candidate(id: $id, api_key: $api_key) {
     id
     chestNO
     candidateProgrammes {

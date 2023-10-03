@@ -96,7 +96,7 @@ import React, {
   useState,
   useEffect,
 } from "react";
-import { AgGridReact } from 'ag-grid-react';
+import { AgGridReact, AgGridColumn } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { ICellRendererParams } from 'ag-grid-community';
@@ -268,20 +268,20 @@ const AGridProgramme = (props: Props) => {
   
   ////////////////////////////////////////////////
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([
-    { field: "programCode", headerName: "Program Code", minWidth: 120},
-    { field: "name", headerName: "Name", minWidth: 200 },
-    { field: "category.name", headerName: "Category", minWidth: 150 },
+    { field: "programCode", headerName: "Program Code",minWidth:110  },
+    { field: "name", headerName: "Name",},
+    { field: "category.name", headerName: "Category",},
     { field: "model", headerName: "Item" },
-    { field: "skill.name", headerName: "Skill", minWidth: 100 },
-    { field: "date", headerName: "Date", minWidth: 70 },
+    { field: "skill.name", headerName: "Skill",},
+    { field: "date", headerName: "Date",},
     { field: "duration", headerName: "Duration" },
-    { field: "venue", headerName: "Venue", minWidth: 100 },
+    { field: "venue", headerName: "Venue",},
     { field: "candidateProgramme.length", headerName: "Programme Candidate" },
-    { field: "type", headerName: "Type", minWidth: 100 },
+    { field: "type", headerName: "Type",},
     { field: "groupCount", headerName: "Group Count" },
     { field: "resultEntered", headerName: "Result Entered" },
     { field: "resultPublished", headerName: "Result Published" },
-    { field: "anyIssue", headerName: "Issue", width: 100},
+    { field: "anyIssue", headerName: "Issue",},
     // { field: 'id' },
   ]);
 

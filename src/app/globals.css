@@ -74,3 +74,16 @@ select {
   text-indent: 1px;
   text-overflow: "";
 }
+
+.bg-blue {
+  background: url("/img/bg-blue.jpg");
+  background-size: cover;
+}
+.bg {
+  background: url("/img/artwork.jpg");
+  background-size: cover;
+}
+.blackish {
+  background: url("/img/shadow.png");
+  background-size: cover;
+}

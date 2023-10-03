@@ -277,17 +277,17 @@ const AGrid = (props: Props) => {
   ////////////////////////////////////////////////
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([
     { field: "adno", headerName: "Ad No", defaultAggFunc: "sum", width: 100 },
-    { field: "category.name", headerName: "Category", minWidth: 150 },
+    { field: "name", headerName: "Name", minWidth: 200 },
     { field: "chestNO", headerName: "Chest No", minWidth: 70 },
     { field: "class", headerName: "Class" },
+    { field: "category.name", headerName: "Category", minWidth: 150 },
+    { field: "team.name", headerName: "Team", minWidth: 100 },
+    { field: "imageId", headerName: "Avatar", minWidth: 120 ,  cellRenderer: imageFormatter},
     { field: "groupPoint", headerName: "Group Point" },
     { field: "groupSportsPoint", headerName: "Group Sports Point" },
     // { field: 'id' },
-    { field: "imageId", headerName: "Avatar", minWidth: 120 ,  cellRenderer: imageFormatter},
     { field: "individualPoint", headerName: "Individual Point" },
     { field: "individualSportsPoint", headerName: "Individual Sports Point" },
-    { field: "name", headerName: "Name", minWidth: 200 },
-    { field: "team.name", headerName: "Team", minWidth: 100 },
   ]);
 
   useEffect(() => {

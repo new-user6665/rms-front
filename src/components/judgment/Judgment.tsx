@@ -1,16 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Judges from "../admin/judges/Judges";
-import { set } from "react-hook-form";
+import { CandidateProgramme, Programme } from "@/gql/graphql";
 
 interface Props {
-  programme: {
-    name: string;
-    candidate: {
-      chestNo: string;
-      name: string;
-    }[];
-  };
+  programme: Programme
 }
 
 const codeletter = [
@@ -123,7 +116,7 @@ const codeletter = [
 const Judgement = (props: Props) => {
   const [columnsCount, setColumnsCount] = useState<number>(2);
   const [judgeData, setJudgeData] = useState<any>({
-    programCode: "BBM",
+    programCode: props.programme?.programCode,
     candidates: [
       {
         chestNo: "SM123",
@@ -136,35 +129,37 @@ const Judgement = (props: Props) => {
   });
 
   useEffect(() => {
+    console.log(props.programme);
+
     let value;
     // Get the value from local storage if it exists
     value =
       localStorage.getItem("judgeData") as string
     console.log(JSON.parse(value));
-    
-      if (value){
-        setJudgeData(JSON.parse(value));
 
-      }
+    if (value) {
+      setJudgeData(JSON.parse(value));
+
+    }
 
     console.log("judgeData", judgeData);
-   
-    
+
+
   }, []);
 
-  const addTotal = (index: any)=>{
+  const addTotal = (index: any) => {
     var candidateIndex = judgeData.candidates[index];
     console.log(candidateIndex);
-    
+
     var totalPoints;
-    if(columnsCount == 0){
+    if (columnsCount == 0) {
       totalPoints = candidateIndex?.point1
-    }else if(columnsCount == 1){
+    } else if (columnsCount == 1) {
       totalPoints = ((candidateIndex?.point1 + candidateIndex?.point2) / 20) * 10
     }
-    else if(columnsCount == 2){
-      totalPoints = ((candidateIndex?.point1 + candidateIndex?.point2 + candidateIndex?.point3 ) / 30 ) * 10
-    }else{
+    else if (columnsCount == 2) {
+      totalPoints = ((candidateIndex?.point1 + candidateIndex?.point2 + candidateIndex?.point3) / 30) * 10
+    } else {
       totalPoints = 0
     }
     console.log(totalPoints);
@@ -181,7 +176,7 @@ const Judgement = (props: Props) => {
 
     candidateIndex[`point${value}`] = Number(e.target.value);
     console.log(judgeData.candidates[i]);
-    
+
     addTotal(i)
 
     localStorage.setItem("judgeData", JSON.stringify(judgeData));
@@ -200,10 +195,10 @@ const Judgement = (props: Props) => {
   useEffect(() => {
     // This code runs after the component has re-rendered with the updated state
     console.log(columnsCount);
-    props.programme.candidate.forEach((element:any, i:any) => {
-      addTotal(i) 
+    props.programme?.candidateProgramme?.forEach((element: CandidateProgramme, i: number) => {
+      addTotal(i)
     }); // You can access the updated state value here
-  }, [judgeData, columnsCount]); 
+  }, [judgeData, columnsCount]);
 
   return (
     <>
@@ -217,20 +212,20 @@ const Judgement = (props: Props) => {
         </div>
         {/* heading */}
         <div className=" w-4/5 flex items-center pt-12">
-          <h1 onClick={()=>{
-           let value;
-           // Get the value from local storage if it exists
-           value =
-             localStorage.getItem("judgeData") as string
-           console.log(JSON.parse(value));
-           
-             if (value){
-               setJudgeData(JSON.parse(value));
-               
-             }
-       
-           console.log("judgeData", judgeData);
-      
+          <h1 onClick={() => {
+            let value;
+            // Get the value from local storage if it exists
+            value =
+              localStorage.getItem("judgeData") as string
+            console.log(JSON.parse(value));
+
+            if (value) {
+              setJudgeData(JSON.parse(value));
+
+            }
+
+            console.log("judgeData", judgeData);
+
           }} className="text-2xl font-semibold px-6 text-white leading-none">
             Balloon Breaking MLM
           </h1>
@@ -250,13 +245,12 @@ const Judgement = (props: Props) => {
                     (columnsCount as number) == 2
                       ? null
                       : setColumnsCount(columnsCount + 1);
-                      console.log(columnsCount);
+                    console.log(columnsCount);
                   }}
                 >
                   <button
-                    className={`h-4 w-4 rounded ${
-                      columnsCount >= 2 ? "bg-[#D9D9D9]" : "bg-[#00ff73]"
-                    }`}
+                    className={`h-4 w-4 rounded ${columnsCount >= 2 ? "bg-[#D9D9D9]" : "bg-[#00ff73]"
+                      }`}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -277,9 +271,8 @@ const Judgement = (props: Props) => {
                   }}
                 >
                   <button
-                    className={`h-4 w-4 rounded ${
-                      columnsCount < 1 ? "bg-[#D9D9D9]" : "bg-[#ff0000] "
-                    }`}
+                    className={`h-4 w-4 rounded ${columnsCount < 1 ? "bg-[#D9D9D9]" : "bg-[#ff0000] "
+                      }`}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -299,9 +292,9 @@ const Judgement = (props: Props) => {
           {/* list */}
           <div className="flex flex-col items-center gap-2 overflow-y-auto h-5/6 pt-5">
             {/* list 1 */}
-            {props.programme.candidate.map((candidate, Index) => {
+            {props.programme?.candidateProgramme?.map((candidate: CandidateProgramme, Index) => {
               useEffect(() => {
-                judgeData.candidates[Index] = { chestNo: candidate.chestNo };
+                judgeData.candidates[Index] = { chestNo: candidate.candidate?.chestNO };
                 const candidateIndex = judgeData.candidates[Index];
                 candidateIndex.codeletter = codeletter[0].label;
                 candidateIndex.point1 = 0;
@@ -321,7 +314,7 @@ const Judgement = (props: Props) => {
                         id=""
                         className="w-5 h-5 rounded bg-accent border border-white pl-[3px] text-sm font-bold"
                         // value={judgeData.candidates[Index].codeletter}
-                        value={(codeletter.findIndex((object:any) => object.label === judgeData.candidates[Index]?.codeletter))+1}
+                        value={(codeletter.findIndex((object: any) => object.label === judgeData.candidates[Index]?.codeletter)) + 1}
                         onChange={(e) => {
                           judgeData.candidates[Index].codeletter =
                             codeletter[(e.target.value as any) - 1].label;
@@ -335,7 +328,7 @@ const Judgement = (props: Props) => {
                       >
                         {codeletter.map((letter, index) => {
                           // only return if the index of the candidate is there
-                          if (index < props.programme.candidate.length) {
+                          if (index < (props.programme?.candidateProgramme?.length as number)) {
                             return (
                               <option value={letter.value} >
                                 {letter.label}
@@ -344,9 +337,9 @@ const Judgement = (props: Props) => {
                           }
                         })}
                       </select>
-                      <span className="font-semibold">{candidate.chestNo}</span>
+                      <span className="font-semibold">{candidate?.candidate?.chestNO}</span>
                     </div>
-                    <p>{candidate.name}</p>
+                    <p>{candidate.candidate?.name}</p>
                   </div>
                   {/* second */}
                   <div className="bg-accent rounded-xl h-14 w-5/6 flex items-center gap-2 justify-between">
@@ -357,7 +350,7 @@ const Judgement = (props: Props) => {
                         <p className="text-[7px]">(MAX.10)</p>
                       </div>
                       <div className="flex gap-2">
-                        {generateArray(columnsCount).map((number) => {                                              
+                        {generateArray(columnsCount).map((number) => {
                           return (
                             <div className="h-2/3 w-8 rounded text-center text-primary text-xl font-semibold bg-white relative">
                               <select
@@ -366,10 +359,10 @@ const Judgement = (props: Props) => {
                                 className="h-full w-8 text-center rounded"
                                 onChange={(e) => {
                                   console.log(judgeData);
-                                  saveToLocalStorage(e, Index, number+1);
-                                   setJudgeData(JSON.parse(localStorage.getItem("judgeData") as string));
+                                  saveToLocalStorage(e, Index, number + 1);
+                                  setJudgeData(JSON.parse(localStorage.getItem("judgeData") as string));
                                 }}
-                                value={judgeData.candidates[Index] && judgeData.candidates[Index][`point${number+1}`]}
+                                value={judgeData.candidates[Index] && judgeData.candidates[Index][`point${number + 1}`]}
                               >
                                 {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
                                   (number) => {
@@ -382,9 +375,9 @@ const Judgement = (props: Props) => {
                             </div>
                           );
                         })}
-                    
+
                       </div>
-    
+
                     </div>
                     {/* total */}
                     <div className="h-full flex items-center gap-2 pr-2">
@@ -436,9 +429,8 @@ const Judgement = (props: Props) => {
                   }}
                 >
                   <button
-                    className={`h-4 w-4 rounded ${
-                      columnsCount >= 2 ? "bg-[#D9D9D9]" : "bg-[#00ff73]"
-                    }`}
+                    className={`h-4 w-4 rounded ${columnsCount >= 2 ? "bg-[#D9D9D9]" : "bg-[#00ff73]"
+                      }`}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -459,9 +451,8 @@ const Judgement = (props: Props) => {
                   }}
                 >
                   <button
-                    className={`h-4 w-4 rounded ${
-                      columnsCount < 1 ? "bg-[#D9D9D9]" : "bg-[#ff0000] "
-                    }`}
+                    className={`h-4 w-4 rounded ${columnsCount < 1 ? "bg-[#D9D9D9]" : "bg-[#ff0000] "
+                      }`}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -479,16 +470,16 @@ const Judgement = (props: Props) => {
             <hr className="border" />
             {/* Judgement List */}
             <div className="h-full flex flex-col pt-5 gap-2 overflow-y-auto">
-              {props.programme.candidate.map((candidate, Index) => {
-              useEffect(() => {
-                judgeData.candidates[Index] = { chestNo: candidate.chestNo };
-                const candidateIndex = judgeData.candidates[Index];
-                candidateIndex.codeletter = codeletter[0].label;
-                candidateIndex.point1 = 0;
-                candidateIndex.point2 = 0;
-                candidateIndex.point3 = 0;
-                console.log(judgeData);
-              }, []);
+              {props.programme?.candidateProgramme?.map((candidate: CandidateProgramme, Index) => {
+                useEffect(() => {
+                  judgeData.candidates[Index] = { chestNo: candidate?.candidate?.chestNO };
+                  const candidateIndex = judgeData.candidates[Index];
+                  candidateIndex.codeletter = codeletter[0].label;
+                  candidateIndex.point1 = 0;
+                  candidateIndex.point2 = 0;
+                  candidateIndex.point3 = 0;
+                  console.log(judgeData);
+                }, []);
                 return (
                   <>
                     {/* 1 */}
@@ -500,7 +491,7 @@ const Judgement = (props: Props) => {
                             name=""
                             id=""
                             className="w-5 h-5 rounded bg-accent border border-white pl-[3px] text-sm font-bold"
-                            value={(codeletter.findIndex((object:any) => object.label === judgeData.candidates[Index]?.codeletter))+1}
+                            value={(codeletter.findIndex((object: any) => object.label === judgeData.candidates[Index]?.codeletter)) + 1}
                             onChange={(e) => {
                               judgeData.candidates[Index].codeletter =
                                 codeletter[(e.target.value as any) - 1].label;
@@ -514,7 +505,7 @@ const Judgement = (props: Props) => {
                           >
                             {codeletter.map((letter, index) => {
                               // only return if the index of the candidate is there
-                              if (index < props.programme.candidate.length) {
+                              if (index < (props.programme?.candidateProgramme?.length as number)) {
                                 return (
                                   <option value={letter.value}>
                                     {letter.label}
@@ -524,9 +515,9 @@ const Judgement = (props: Props) => {
                             })}
                           </select>
                           <div className="bg-primary h-1 w-1 rounded-full" />
-                          <p>{candidate.chestNo}</p>
+                          <p>{candidate.candidate?.chestNO}</p>
                         </div>
-                        <p className="text-justify">{candidate.name}</p>
+                        <p className="text-justify">{candidate?.candidate?.name}</p>
                       </div>
                       {/* second */}
                       <div className="flex gap-5 bg-accent h-14 w-2/3 min-w-[66] rounded-xl px-5 items-center text-sm justify-between">
@@ -544,10 +535,10 @@ const Judgement = (props: Props) => {
                                   className="h-full w-8 text-center rounded"
                                   onChange={(e) => {
                                     console.log(judgeData);
-                                    saveToLocalStorage(e, Index, number+1);
+                                    saveToLocalStorage(e, Index, number + 1);
                                     setJudgeData(JSON.parse(localStorage.getItem("judgeData") as string));
                                   }}
-                                  value={judgeData.candidates[Index] && judgeData.candidates[Index][`point${number+1}`]}
+                                  value={judgeData.candidates[Index] && judgeData.candidates[Index][`point${number + 1}`]}
                                 >
                                   {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
                                     (number) => {

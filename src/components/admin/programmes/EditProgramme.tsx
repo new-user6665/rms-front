@@ -192,7 +192,7 @@ const EditProgramme = (props: Props) => {
           <p>Type</p>
           <select name="" id=""
             className="select select-secondary w-full max-w-xs h-8"
-            value={Type.Single}
+            value={type}
             onChange={(e) => setType(e.target.value as Type)}
           >
             <option value={Type.Group}>Group</option>

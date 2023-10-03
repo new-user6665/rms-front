@@ -6,9 +6,9 @@ import {
   GetAllCategoriesDocument,
   GetAllCategoriesQuery,
   GetAllCategoriesQueryVariables,
-  GetAllDetailedProgrammeDocument,
-  GetAllDetailedProgrammeQuery,
-  GetAllDetailedProgrammeQueryVariables,
+  GetAllProgrammesByCandidatesDocument,
+  GetAllProgrammesByCandidatesQuery,
+  GetAllProgrammesByCandidatesQueryVariables,
   GetAllProgrammesDocument,
   GetAllProgrammesQuery,
   GetAllProgrammesQueryVariables,
@@ -24,9 +24,9 @@ import React from "react";
 const page = async () => {
   const { client } = getUrqlClient();
   const propgrammes =   await client.query<
-  GetAllDetailedProgrammeQuery,
-  GetAllDetailedProgrammeQueryVariables
->(GetAllDetailedProgrammeDocument, {api_key : API_KEY});
+  GetAllProgrammesByCandidatesQuery,
+  GetAllProgrammesByCandidatesQueryVariables
+>(GetAllProgrammesByCandidatesDocument, {api_key : API_KEY});
 
   const candidates = await client.query<
   GetAllCandidatesQuery,

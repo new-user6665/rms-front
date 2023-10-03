@@ -3,28 +3,30 @@ import Modal from "@/components/Modal";
 import {
   Programme,
   Candidate,
-  DeleteProgrammeDocument,
-  DeleteProgrammeMutation,
-  DeleteProgrammeMutationVariables,
-  GetOneProgrammeDocument,
-  GetOneProgrammeQuery,
-  GetOneProgrammeQueryVariables,
-  Mode,
-  Model,
+  DeleteCandidateProgrammeDocument,
+  DeleteCandidateProgrammeMutation,
+  DeleteCandidateProgrammeMutationVariables,
   Category,
   Skill,
   GetDetailedProgrammeQuery,
   GetDetailedProgrammeQueryVariables,
   GetDetailedProgrammeDocument,
+  Type,
+  CandidateProgramme,
 } from "@/gql/graphql";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { OperationResult, useMutation, useQuery } from "urql";
 import ViewProgramme from "./ViewTeamList";
 import ExcelUploadProgramme from "./ExcelUploadTeamList";
 import ExcelUploadGroupTeamList from "./ExcelUploadGroupTeamList";
 import { API_KEY } from "@/lib/env";
-import { DeleteIcon, EditIcon } from "@/icons/action";
-import { set } from "react-hook-form";
+import { DeleteIcon, EditIcon, SubmitIcon } from "@/icons/action";
+import { IconArrowDown, IconArrowUp } from "@/icons/arrows";
+import CreateSingle from "./CreateSingle";
+import CreateGroup from "./CreateGroup";
+import EditableSingle from "./EditableSingle";
+import CandiatesOfGroup from "./CandiatesOfGroup";
+import { toast } from "react-toastify";
 
 interface Props {
   id: number;
@@ -51,63 +53,84 @@ interface Props {
 
 const OneProgramme = (props: Props) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [isViewOpen, setIsViewOpen] = useState<boolean>(false);
   const [toEditChestNo, setToEditChestNo] = useState<string>("");
-  const [isAdding, setIsAdding] = useState<boolean>(false);
-  const [newEditedChestNo , setNewEditedChestNo] = useState<string>("");
-  const [haveEditngChestNo, setHaveEditngChestNo] = useState<boolean>(true);
+  const [openedGroup, setOpenedGroup] = useState<string>("");
+  const [toDelete, setToDelete] = useState<CandidateProgramme>();
+  const [SingleProgramme , setSingleProgramme ] = useState<Programme>()
 
-
-  // console.log(props?.allCandidates);
-
-  
-  // props?.allCandidates?.map((value, index) => {
-  //   if (value.chestNO == 'S357') {
-  //     console.log(value);
-  //   }
-  //   // console.log(value);
-  // });
-
-  const [{ fetching, data }] = useQuery<
+  const [{ fetching, data, error }] = useQuery<
     GetDetailedProgrammeQuery,
     GetDetailedProgrammeQueryVariables
   >({
     query: GetDetailedProgrammeDocument,
     variables: {
-      id: props.id,
+      id: props.selectedProgramme?.id as number,
       api_key: API_KEY,
     },
-    pause: props.isCreate || props.isEdit,
   });
 
-  const [state, DeleteProgrammeExecute] = useMutation(DeleteProgrammeDocument);
+  useEffect(() => {
+    if (data?.programme) {
+      setSingleProgramme(data.programme); // Set the data to your state
+    }
+  }, [data?.programme]);
+
+  const [state, DeleteCandidateProgrammeExecute] = useMutation(
+    DeleteCandidateProgrammeDocument
+  );
 
   const HandleDelete = async () => {
     const deletedData: OperationResult<
-      DeleteProgrammeMutation,
-      DeleteProgrammeMutationVariables
-    > = await DeleteProgrammeExecute({
-      id: props.id,
+      DeleteCandidateProgrammeMutation,
+      DeleteCandidateProgrammeMutationVariables
+    > = await DeleteCandidateProgrammeExecute({
+      id: toDelete?.id as number,
     });
 
-    if (deletedData.data?.removeProgramme?.__typename) {
-      const deleted = props.data.filter((value, index) => {
-        return value.id !== props.id;
-      });
+    if (deletedData.data?.removeCandidateProgramme?.__typename) {
+      toast.success(
+        `candidate ${toDelete?.candidate?.chestNO} ${(Programme?.type as unknown as Type) != Type.Single && '& team' } removed from Program ${props.selectedProgramme?.programCode} successfully`
+      );
+      const programmeToDelete : Programme = SingleProgramme as Programme;
 
-      props.setData(deleted);
-      props.setIsOpen(false);
+      const DeletedSingleProgramme : CandidateProgramme[] = programmeToDelete?.candidateProgramme?.filter((value : CandidateProgramme, index : number) => {
+         console.log(value.candidate?.chestNO , "  " , toDelete);
+         
+        return value.candidate?.chestNO !== toDelete?.candidate?.chestNO
+      }) as CandidateProgramme[]
+
+      programmeToDelete.candidateProgramme  = DeletedSingleProgramme;
+
+      console.log(programmeToDelete);
+      
+
+      setSingleProgramme(programmeToDelete);
+
+    }else{
+      toast.error('data not deleted');
     }
     console.log(deletedData);
 
     setModalOpen(false);
   };
 
+  useEffect(() => {}, []);
+
   const Programme = data?.programme;
 
+  const totalCandidatesCount = Programme?.candidateProgramme?.length;
+  const outOfCandidatesCount =
+    (Programme?.type as unknown as Type) == Type.Single
+      ? (Programme?.candidateCount as number) * 4
+      : (Programme?.groupCount as number) * 4;
+
   return (
-    <div>
-      { props.isExcelUpload ? (
+    <div
+      onClick={() => {
+        console.log(props.selectedProgramme?.id);
+      }}
+    >
+      {props.isExcelUpload ? (
         <ExcelUploadProgramme
           data={props.data}
           setData={props.setData}
@@ -129,185 +152,185 @@ const OneProgramme = (props: Props) => {
             <p> loading... </p>
           ) : (
             <div className="">
-              {props?.selectedProgramme?.candidateProgramme?.map(
-                (value, index) => {     
-                  // setCandidateName(value.candidate?.name as string)
-                  return (
-                    <div key={index} className="bg-info rounded-md m-1 ">
-                      <div className="flex justify-between">
-                        
-                        {/* <p className="text-lg font-bold">{value.candidate?.chestNO}</p> */}
-                        {toEditChestNo === value.candidate?.chestNO ? (
-                          <div className="flex">
-                            <input
-                              type="text"
-                              className={`text-lg font-bold w-8/12 border-2 ${haveEditngChestNo?'border-green-500':'border-rose-500'}`}
-                              defaultValue={value.candidate?.chestNO as string}
-                              id={`input-${value.candidate?.chestNO}`}
-                              onChange={(e) => {
-                                console.log(e.target.value);
-                                props?.allCandidates?.map((candidate, index) => {
-                                  if (candidate.chestNO == e.target.value) {
-                                    console.log(candidate);
-                                    console.log(e.target.value);
-                                    // value.candidate?.chestNO = e.target.value
-                                    
-                                    // (document.getElementById(`${value.candidate?.chestNO}`) as any).id = candidate.chestNO as string
-                                    (document.getElementById(`${value.candidate?.chestNO}`) as any).innerText = candidate.name as string
-                                    setHaveEditngChestNo(true)
-                                    return
-                                  }
-                                  // else{   
-                                  //   setHaveEditngChestNo(false)
-                                  // }
-                                 
-                                });
-                              }}
-                            />
-                            <svg
-                              onClick={() => {
-                                var newChestNo : any = (document.getElementById( `input-${value.candidate?.chestNO}`) as any).value
-                                (value.candidate as any).chestNO = newChestNo
-                              }}
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="currentColor"
-                              className="w-7 h-7 bg-white cursor-pointer"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                              />
-                            </svg>
-                          </div>
-                        ) : (
-                          <input
-                            type="text"
-                            className="text-lg font-bold w-1/3 bg-inherit"
-                            defaultValue={value.candidate?.chestNO as string}
-                            disabled
-                          />
-                        )}
-                        
-                        <div className="flex pr-4">
-                          <div
-                            onClick={() =>
-                              setToEditChestNo(
+              <p>{data?.programme?.programCode}</p>
+              <p>{data?.programme?.name}</p>
+              <p>
+                Candidates{" "}
+                <span className="text-black font-extrabold">
+                  {" "}
+                  {totalCandidatesCount} / {outOfCandidatesCount}{" "}
+                </span>
+              </p>
+              {SingleProgramme?.candidateProgramme?.map((value, index) => {
+                // setCandidateName(value.candidate?.name as string)
+                return (
+                  <div
+                    key={index}
+                    className="bg-info rounded-md m-1 p-2 transition-all"
+                  >
+                    <div className="flex justify-between">
+                      {/* <p className="text-lg font-bold">{value.candidate?.chestNO}</p> */}
+                      {(Programme?.type as unknown as Type) == Type.Single &&
+                      toEditChestNo === value.candidate?.chestNO ? (
+                        <EditableSingle
+                          key={index}
+                          allCandidates={props.allCandidates}
+                          candidate={value.candidate}
+                          haveEditngChestNo
+                          selectedProgramme={props.selectedProgramme}
+                          id={value.id as number}
+                          setSingleProgramme={setSingleProgramme as any}
+                          singleProgramme={SingleProgramme as Programme}
+                          setToEditChestNo={setToEditChestNo}
+                          toEditChestNo={toEditChestNo}
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          className="text-lg font-bold w-1/3 bg-inherit"
+                          defaultValue={value.candidate?.chestNO as string}
+                          disabled
+                        />
+                      )}
+
+                      <div className="flex pr-4">
+                        <div
+                          onClick={() => {
+                            setToEditChestNo(
+                              value.candidate?.chestNO as string
+                            );
+                            console.log(
+                              toEditChestNo === value.candidate?.chestNO
+                            );
+                            (Programme?.type as unknown as Type) !=
+                              Type.Single &&
+                              setOpenedGroup(
                                 value.candidate?.chestNO as string
-                              )
-                            }
-                            className="m-2 cursor-pointer"
-                          >
-                            <EditIcon className="fill-black w-3 h-3 "></EditIcon>
-                          </div>
-                          <div
-                            onClick={() => setModalOpen(true)}
-                            className="m-2 cursor-pointer"
-                          >
-                            <DeleteIcon className="fill-black w-3 h-3 "></DeleteIcon>
-                          </div>
+                              );
+                          }}
+                          className="m-2 cursor-pointer"
+                        >
+                          <EditIcon className="fill-black w-3 h-3 "></EditIcon>
+                        </div>
+                        <div
+                          onClick={() => {
+                            setToDelete(value as CandidateProgramme);
+                            setModalOpen(true);
+                          }}
+                          className="m-2 cursor-pointer"
+                        >
+                          <DeleteIcon className="fill-black w-3 h-3 "></DeleteIcon>
                         </div>
                       </div>
-                      {/* <p>{candidateName}</p> */}
-                      {/* <p>{
-                        toEditChestNo === value.candidate?.chestNO ? (
-                          <div>
-                            {
-                              props?.allCandidates?.map((item, index) => {
-                                if (item.chestNO == toEditChestNo) {
-                                  console.log(value);
-                                  return (<div>{item.name} </div>)
-                                }
-                              }
-                              )
-                        
-                            }
-                          </div>
-                        ) : <div>
-                          {
-                            value.candidate?.name
-                          }
+                    </div>
+                    <div className="flex">
+                      {/* candiates name , if group programme then leaders name */}
+                      <p
+                        id={`name-${value.candidate?.chestNO}-${props.selectedProgramme?.programCode}`}
+                      >
+                        {value.candidate?.name}{" "}
+                        {(Programme?.type as unknown as Type) == Type.Single
+                          ? ""
+                          : "& Team"}
+                      </p>
+                      {(Programme?.type as unknown as Type) == Type.Single ? (
+                        ""
+                      ) : // if group programme , the icon to see and hide all candidates of group
+                      openedGroup != value.candidate?.chestNO ? (
+                        <div
+                          onClick={() => {
+                            setOpenedGroup(value.candidate?.chestNO as string);
+                            console.log(
+                              openedGroup === value.candidate?.chestNO
+                            );
+                            console.log(openedGroup);
+                          }}
+                        >
+                          <IconArrowDown className="w-4 h-4 cursor-pointer" />
                         </div>
-                        }
-                        </p> */}
-                        {/* <p>
-                            {
-                              props?.allCandidates?.map((item, index) => {
-                                // if (item.chestNO == toEditChestNo) {
-                                //   console.log(value);
-                                //   return (<div>{item.name} </div>)
-                                // }
-                                if (item.chestNO == newEditedChestNo) {
-                                  console.log(value);
-                                  return (<div>{item.name} </div>)
-                                }
-                              }
-                              )
-                            }
-                          
-                        </p> */}
-                        <p id={`${value.candidate?.chestNO}`}>{value.candidate?.name}</p>
+                      ) : (
+                        <div
+                          onClick={() => {
+                            setOpenedGroup("");
+                            setToEditChestNo("");
+                          }}
+                        >
+                          <IconArrowUp className="w-4 h-4 cursor-pointer" />
+                        </div>
+                      )}
                     </div>
-                  );
-                }
-              )}
-              <div className="bg-info rounded-md m-1 ">
-                <div className="flex justify-between">
-                  <div className="flex">
-                    <input type="text" className="text-lg font-bold w-8/12" />
-                    <svg
-                      onClick={() => {}}
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-7 h-7 bg-white"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
+                    {openedGroup === value.candidate?.chestNO ? (
+                      (Programme?.type as unknown as Type) == Type.Single ? (
+                        ""
+                      ) : (
+                        <CandiatesOfGroup
+                          allCandidates={props.allCandidates as Candidate[]}
+                          candidate={value.candidate}
+                          candidatesOfGroup={
+                            value?.candidatesOfGroup as Candidate[]
+                          }
+                          haveEditngChestNo
+                          selectedProgramme={
+                            props.selectedProgramme as Programme
+                          }
+                          toEditChestNo={toEditChestNo}
+                          key={index}
+                          id={value.id as number}
+                          setSingleProgramme={setSingleProgramme as any}
+                          setToEditChestNo={setToEditChestNo}
+                          singleProgramme={SingleProgramme as Programme}
+                        />
+                      )
+                    ) : (
+                      ""
+                    )}
                   </div>
+                );
+              })}
+              {props.isCreate ? (
+                (Programme?.type as unknown as Type) == Type.Single ? (
+                  <CreateSingle
+                    allCandidates={props.allCandidates}
+                    programmeCode={props.selectedProgramme?.programCode as string}
+                    isCreate={props.isCreate}
+                    setIsCreate={props.setIsCreate}
+                    setSingleProgramme={setSingleProgramme as any}
+                    singleProgramme={SingleProgramme as Programme}
+                  />
+                ) : (
+                  <CreateGroup
+                    Programme={Programme as Programme}
+                    allCandidates={props.allCandidates}
+                    setIsCreate={props.setIsCreate}
+                    setSingleProgramme={setSingleProgramme as any}
+                    singleProgramme={SingleProgramme as Programme}
+                  />
+                )
+              ) : null}
 
-                  <div className="flex pr-4">
-                    <div className="m-2 cursor-pointer">
-                      <EditIcon className="fill-black w-3 h-3 "></EditIcon>
-                    </div>
-                    <div
-                      // onClick={() => setModalOpen(true)}
-                      className="m-2 cursor-pointer"
-                    >
-                      <DeleteIcon className="fill-black w-3 h-3 "></DeleteIcon>
-                    </div>
-                  </div>
-                </div>
-                <p>ds</p>
-              </div>
-              <button
-                className="bg-green-600"
+             {!props.isCreate && <button
+                className={` ${
+                  totalCandidatesCount == outOfCandidatesCount
+                    ? "bg-gray-600 cursor-not-allowed"
+                    : "bg-green-600"
+                } `}
                 onClick={
                   () => {
-                    props.setIsEdit(false);
-                    props.setIsCreate(true);
+                    totalCandidatesCount != outOfCandidatesCount &&
+                      props.setIsCreate(true);
                   }
                   // props.setIsOpen(true)
                 }
               >
                 Add
-              </button>
+              </button>}
             </div>
           )}
         </div>
       )}
 
       <Modal modalOpen={modalOpen} setModalOpen={setModalOpen} key={3}>
-        <p>Are you sure Do you want to Delete ?</p>
+        <p>Are you sure Do you want to Delete {toDelete?.candidate?.chestNO} {(Programme?.type as unknown as Type) != Type.Single && '& team' } from program {props.selectedProgramme?.programCode} ?</p>
         <button className="bg-red-600" onClick={HandleDelete}>
           Delete
         </button>
@@ -315,14 +338,6 @@ const OneProgramme = (props: Props) => {
           Cancel
         </button>
       </Modal>
-
-      <ViewProgramme
-        data={props.data}
-        setData={props.setData}
-        modalOpen={isViewOpen}
-        setModalOpen={setIsViewOpen}
-        selectedProgramme={Programme as Programme}
-      />
     </div>
   );
 };

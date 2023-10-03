@@ -142,12 +142,12 @@ const OneCandidate = (props: Props) => {
                 <p className="">{Candidate?.category?.name}</p>
                 <div className="flex justify-center gap-3 mt-3 ">
                   <div className="flex flex-col items-center justify-center content-center w-20 h-20 rounded-xl  border-2 border-dashed border-secondary">
-                    <p className="font-bold">Single</p>
+                    <p className="font-bold">Arts</p>
                     <p className="font-bold text-5xl text-secondary">{Candidate?.individualPoint || 0}</p>
                   </div>
                   <div className="flex flex-col items-center justify-center content-center w-20 h-20 rounded-xl  border-2 border-dashed border-secondary">
-                    <p className="font-bold">Group</p>
-                    <p className="font-bold text-5xl text-secondary">{Candidate?.groupPoint || 0}</p>
+                    <p className="font-bold">Sports</p>
+                    <p className="font-bold text-5xl text-secondary">{Candidate?.individualSportsPoint || 0}</p>
                   </div>
 
                 </div>

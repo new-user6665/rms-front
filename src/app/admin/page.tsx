@@ -67,7 +67,7 @@ export default function Admin() {
     
   ];
   return (
-    <main className="ms-3 w-full h-full flex ">
+    <main className=" w-full h-full flex ">
       <DashBoard data={data} key={1} pageProps={'fd'} />
     </main>
   );

@@ -5,8 +5,12 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 export const metadata: Metadata = {
-  title: 'RMS Front',
-  description: 'Created by Farrago',
+  title: 'Realia 23',
+  description: 'Deconstructing Disinformation',
+  keywords: ['realia', 'realiaZlive', 'asas', 'dhiu', 
+  'darul huda', 'dhiu arts fest',
+   'dhiu rabee fest', 'rabee fest dhiu', 'realia23'
+    , 'sibaq' , 'result portal realia' , 'dhiu chemmad']
 }
 
 export default function RootLayout({
@@ -31,3 +35,5 @@ export default function RootLayout({
     </html>
   )
 }
+
+
