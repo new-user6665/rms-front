@@ -60,10 +60,10 @@ const TeamList = (props: Props) => {
   const endIndex = startIndex + itemsPerPage;
 
   // Get the data for the current page
-  const currentData = data.slice(startIndex, endIndex);
+  const currentData = data?.slice(startIndex, endIndex);
 
   // Calculate the total number of pages
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const totalPages = Math.ceil(data?.length / itemsPerPage);
 
   // Go to a specific page number
   const goToPage = (pageNumber: number) => {
@@ -115,10 +115,10 @@ const TeamList = (props: Props) => {
         <InfoBar data={props.data} />
 
         <div className="w-full h-5/6 bg-base-200 rounded-lg mt-[1%]">
-          <div>
+          <div className="flex w-full">
             {/* search bar */}
             <div className="w-full h-10 bg-base-300 rounded-lg mt-[1%] cursor-pointer">
-              <div className="w-1/3 h-full float-left">
+              <div className=" h-full float-left">
                 <input
                   type="text"
                   value={search}

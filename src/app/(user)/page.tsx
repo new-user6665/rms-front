@@ -1,14 +1,20 @@
-import { CheckLoggedInDocument, CheckLoggedInQuery, CheckLoggedInQueryVariables } from '@/gql/graphql';
-import { getUrqlClient } from '@/lib/urql';
-import Image from 'next/image'
-import { useEffect } from 'react';
+import React from "react";
+import First from "@/components/First";
+import Description from "@/components/Discription";
+import Count from "@/components/Count";
+import TeamLeaders from "@/components/TeamLeaders";
+import Footer from "@/components/Footer";
 
-export default async function User() {
-
-
+function page() {
   return (
-   <main>
-    User
-   </main>
-  )
+    <div className="">
+      <First />
+      <Count />
+      <Description />
+      <TeamLeaders />
+      <Footer />
+    </div>
+  );
 }
+
+export default page;

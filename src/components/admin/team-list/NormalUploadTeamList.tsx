@@ -15,7 +15,7 @@ interface Props {
 const NormalUploadTeamList = (props: Props) => {
   return (
     <div className="flex">
-      <div className={`grid  gap-4 w-full transition-all ${props.IsRightSideBarOpen ? "grid-cols-3" : "grid-cols-4"
+      <div className={`grid grid-4 w-full transition-all ${props.IsRightSideBarOpen ? "grid-cols-1 lg:grid-cols-3" : " grid-cols-1 lg:grid-cols-4"
         }`} >
         {props.currentData?.map((item: any, index: number) => {
           return (

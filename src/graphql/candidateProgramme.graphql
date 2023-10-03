@@ -33,6 +33,40 @@ mutation AddCandidateProgramme(
       name
       programCode
     }
+    candidatesOfGroup {
+      name
+      chestNO
+    }
+  }
+}
+
+mutation EditCandidateProgramme(
+  $candidatesOfProgramme: [String!]
+  $chestNO: String!
+  $programCode: String!
+  $id: Int!
+) {
+  updateCandidateProgramme(
+    updateCandidateProgrammeInput: {
+      candidatesOfGroup: $candidatesOfProgramme
+      chestNo: $chestNO
+      id: $id
+      programme_code: $programCode
+    }
+  ) {
+    id
+    candidate {
+      name
+      chestNO
+    }
+    programme {
+      name
+      programCode
+    }
+    candidatesOfGroup {
+      name
+      chestNO
+    }
   }
 }
 
@@ -53,5 +87,11 @@ mutation AddManyCandidateProgrammes(
         programCode
       }
     }
+  }
+}
+
+mutation DeleteCandidateProgramme($id: Int!) {
+  removeCandidateProgramme(id: $id) {
+    __typename
   }
 }

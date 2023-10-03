@@ -15,15 +15,61 @@ query GetAllProgrammes ($api_key: String!){
   }
 }
 
-query GetDetailedProgramme($id: Int!, $api_key: String!) {
- programme(id: $id api_key: $api_key) {
-  id
-    candidateProgramme {
+
+query GetProgrammeByCode($api_key: String! , $programCode : String!){
+  programmeByCode(api_key: $api_key , code: $programCode){
+      candidateProgramme {
       candidate {
+        name
+        imageId
+        chestNO
+        team{
+          name
+        }
+      }
+      candidatesOfGroup {
         name
         chestNO
       }
-        candidatesOfGroup{
+    }
+    resultEntered
+    resultPublished
+    programCode
+    model
+    name
+    type
+    groupCount
+    resultEntered
+    candidateCount
+    resultPublished
+    anyIssue
+    mode
+    type
+    skill{
+      name
+    }
+    category{
+      name
+    }
+    duration
+    date
+    venue
+  }
+}
+
+query GetDetailedProgramme($id: Int!, $api_key: String!) {
+  programme(id: $id, api_key: $api_key) {
+  candidateProgramme {
+    id
+      candidate {
+        name
+        chestNO
+        team{
+          name
+          id
+        }
+      }
+      candidatesOfGroup{
         name
         chestNO
       }
@@ -32,8 +78,6 @@ query GetDetailedProgramme($id: Int!, $api_key: String!) {
     resultPublished
     programCode
     candidateCount
-    conceptNote
-    mode
     model
     name
     type
@@ -55,12 +99,9 @@ query GetDetailedProgramme($id: Int!, $api_key: String!) {
 
 query GetAllDetailedProgramme($api_key: String!) {
   programmes(api_key: $api_key) {
+    id
     candidateProgramme {
       candidate {
-        name
-        chestNO
-      }
-        candidatesOfGroup{
         name
         chestNO
       }
@@ -92,8 +133,8 @@ query GetAllProgrammesByCandidates ($api_key: String!){
     id
     name
     programCode
-    resultEntered
-    resultPublished
+    candidateCount
+    groupCount
     category {
       name
     }
@@ -101,16 +142,7 @@ query GetAllProgrammesByCandidates ($api_key: String!){
       name
     }
     candidateProgramme{
-      point
-      candidate{
-        team{
-          name
-        }
-      }
-      candidatesOfGroup{
-        name
-        chestNO
-      }
+      id
     }
   }
 }
