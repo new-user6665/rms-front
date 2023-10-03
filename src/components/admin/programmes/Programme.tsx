@@ -292,7 +292,7 @@ const Programme = (props: Props) => {
 
   return (
     <>
-      <div className="qr-code-area">
+      {/* <div className="qr-code-area">
         <QRCode
           id="qrcode"
           value="https://realia23.me/program/$%7BprogramCode%7D"
@@ -300,7 +300,7 @@ const Programme = (props: Props) => {
           level={"H"}
           includeMargin={false}
         />
-        {/* {
+        {
           isClickedForQR && (
             currentData.map((item : Programme, index) => {
              return(
@@ -315,8 +315,8 @@ const Programme = (props: Props) => {
             })
           
           )
-        } */}
-      </div>
+        }
+      </div> */}
       <div className="w-full h-full">
         <InfoBar data={props.data} />
 
@@ -350,7 +350,7 @@ const Programme = (props: Props) => {
               <div>
                 <button
                   className="ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
-                  onClick={downloadQRCodePdf}
+                  // onClick={downloadQRCodePdf}
                 >
                   QR CODE
                 </button>

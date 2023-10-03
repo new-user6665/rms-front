@@ -113,6 +113,7 @@ query GetAllDetailedProgramme($api_key: String!) {
     name
     type
     groupCount
+    candidateCount
     resultEntered
     resultPublished
     anyIssue
