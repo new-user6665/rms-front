@@ -33,8 +33,23 @@ query GetAllDetailedCandidates($api_key: String!) {
     id
     class
     adno
+    candidateProgrammes{   
+      id
+      programme{
+        type
+        model
+        mode
+      }
+      candidatesOfGroup{
+       id
+       
+      }
+    }
+
   }
 }
+
+
 
 query GetOneCandidate($id: Int!, $api_key: String!) {
   candidate(id: $id, api_key: $api_key) {

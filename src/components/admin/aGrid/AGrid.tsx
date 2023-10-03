@@ -96,7 +96,7 @@ import React, {
   useState,
   useEffect,
 } from "react";
-import { AgGridReact } from "ag-grid-react";
+import { AgGridReact, AgGridColumn } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { ICellRendererParams } from 'ag-grid-community';
@@ -267,13 +267,17 @@ const AGrid = (props: Props) => {
   }
   
 
-  const imageFormatter = (params: any) => {
-    // return params.value === null ? "-" : params.value;
-    // return `<img style="height: 14px; width: 14px" src=${params.data.avatar} />`;
-    return `<img style="height: 14px; width: 14px" src="https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGhvdG98ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60" />`;
-    // 
-    // cellRenderer: (params) => `<img style="height: 14px; width: 14px" src=${params.data.avatar} />`.
-  };
+
+  const avatarFormatter = ( params:  any ) => {
+    console.log(params.value);  
+    var imageLink
+    if (params.value){
+      imageLink = 'https://drive.google.com/uc?id='+params.value
+    } else {
+      imageLink = '/img/avatar.jpg'
+    }
+    return <img src={imageLink} alt="Avatar" width="50px" height="50px"  className="rounded-full"/>
+  }
   ////////////////////////////////////////////////
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([
     { field: "adno", headerName: "Ad No", defaultAggFunc: "sum", width: 100 },
@@ -282,12 +286,12 @@ const AGrid = (props: Props) => {
     { field: "class", headerName: "Class" },
     { field: "category.name", headerName: "Category", minWidth: 150 },
     { field: "team.name", headerName: "Team", minWidth: 100 },
-    { field: "imageId", headerName: "Avatar", minWidth: 120 ,  cellRenderer: imageFormatter},
+    { field: "imageId", headerName: "Avatar", minWidth: 120 ,  cellRenderer: avatarFormatter},
     { field: "groupPoint", headerName: "Group Point" },
     { field: "groupSportsPoint", headerName: "Group Sports Point" },
-    // { field: 'id' },
     { field: "individualPoint", headerName: "Individual Point" },
     { field: "individualSportsPoint", headerName: "Individual Sports Point" },
+    
   ]);
 
   useEffect(() => {
@@ -357,9 +361,8 @@ const AGrid = (props: Props) => {
       });
   }, []);
 
-  const avatarFormatter = ( value:  any ) => {
-    return <img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80" alt="Avatar" width="50px" height="50px" />
-  }
+
+  
 
   return (
     <div style={containerStyle}>
@@ -390,11 +393,15 @@ const AGrid = (props: Props) => {
             columnDefs={columnDefs}
             defaultColDef={defaultColDef}
             animateRows={true}
+            rowHeight={60}
+            pagination={true}
+            // paginationPageSize={5}
             suppressAggFuncInHeader={true}
             autoGroupColumnDef={autoGroupColumnDef}
             // onGridReady={onGridReady}
             // <AgGridColumn/>
-          />
+          >
+          </AgGridReact>
         </div>
       </div>
     </div>
