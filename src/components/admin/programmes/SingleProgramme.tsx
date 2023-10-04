@@ -20,7 +20,8 @@ import CreateProgramme from "./CreateProgramme";
 import ViewProgramme from "./ViewProgramme";
 import ExcelUploadProgramme from "./ExcelUploadProgramme";
 import { API_KEY } from "@/lib/env";
-import { DeleteIcon, EditIcon } from "@/icons/action";
+import { AddIcon, DeleteIcon, EditIcon } from "@/icons/action";
+import CreateSchedule from "./CreateSchedule";
 
 interface Props {
   id: number;
@@ -39,6 +40,8 @@ interface Props {
   setIsExcelUpload: React.Dispatch<React.SetStateAction<boolean>>;
   categories: Category[];
   skills: Skill[];
+  setIsScheduleUpload : React.Dispatch<React.SetStateAction<boolean>>;
+  isScheduleUpload : boolean,
 }
 
 const OneProgramme = (props: Props) => {
@@ -83,112 +86,6 @@ const OneProgramme = (props: Props) => {
   const Programme = data?.programme;
 
   return (
-    // <div>
-
-    //   { props.isEdit ?
-
-    //    (
-    //     <EditProgramme
-    //       key={1}
-    //       setIsEdit={props.setIsEdit}
-    //       isEdit={props.isEdit}
-    //       name={Programme?.name as string}
-    //       id={Programme?.id as number}
-    //       data={props.data}
-    //       setData={props.setData}
-    //       category={props.category}
-    //       skill={props.skill}
-    //       programeCode={Programme?.programCode as string}
-    //       candiateCount={Programme?.candidateCount as number}
-    //       groupCount={Programme?.groupCount as number}
-    //       duration={Programme?.duration as number}
-    //       conceptNote={Programme?.conceptNote as string}
-    //       mode={Programme?.mode as unknown as Mode}
-    //       model={Programme?.model as Model}
-    //       type={Programme?.type as string}
-    //       selectedProgramme={Programme as Programme}
-    //       categories={props.categories}
-    //       skills={props.skills}
-    //     />
-    //   ) : props.isCreate ? (
-    //     <CreateProgramme key={2} data={props.data} setData={props.setData}  categories={props.categories}
-    //     skills={props.skills} />
-    //   ) 
-
-    //     : props.isExcelUpload ?
-    //     (
-    //       <ExcelUploadProgramme
-    //         data={props.data}
-    //         setData={props.setData}
-    //         isExcelUpload={props.isExcelUpload}
-    //         setIsExcelUpload={props.setIsExcelUpload}
-    //         key={1}
-    //       />
-    //     ) : (
-    //       <div>
-    //         {fetching ? (
-    //           <p> loading... </p>
-    //         ) : (
-    //           <div className="flex flex-col gap-2 w-full">
-    // <p>name</p>
-    // <p className="text-blue-400">{Programme?.name}</p>
-    // <p>id</p>
-    // <p className="text-blue-400">{Programme?.id}</p>
-    // <p>programCode</p>
-    // <p className="text-blue-400">{Programme?.programCode}</p>
-    // <p>candidateCount</p>
-    // <p className="text-blue-400">{Programme?.candidateCount}</p>
-    // <p>category</p>
-    // <p className="text-blue-400">{Programme?.category?.name}</p>
-    // <p>conceptNote</p>
-    // <p className="text-blue-400">{Programme?.conceptNote}</p>
-    // <p>duration</p>
-    // <p className="text-blue-400">{Programme?.duration}</p>
-    // <p>groupCount</p>
-    // <p className="text-blue-400">{Programme?.groupCount}</p>
-    // <p>mode</p>
-    // <p className="text-blue-400">{Programme?.mode}</p>
-    // <p>model</p>
-    // <p className="text-blue-400">{Programme?.model}</p>
-    // <p>skill</p>
-    // <p className="text-blue-400">{Programme?.skill?.name}</p>
-    // <p>type</p>
-    // <p className="text-blue-400">{Programme?.type}</p>
-    // <button
-    //               className="bg-blue-500"
-    //               onClick={() => {
-    //                 props.setIsEdit(true);
-    //                 props.setIsCreate(false);
-    //               }}
-    //             >
-    //               Edit
-    //             </button>
-    //             <button className="bg-red-600" onClick={() => setModalOpen(true)}>
-    //               Delete
-    //             </button>
-    //             <button className="bg-green-600" onClick={() => setIsViewOpen(true)}>
-    //               View More
-    //             </button>
-    //           </div>
-    //         )}
-    //       </div>
-    //     )}
-
-    //   <Modal modalOpen={modalOpen} setModalOpen={setModalOpen} key={3}>
-    //     <p>Are you sure Do you want to Delete ?</p>
-    //     <button className="bg-red-600" onClick={HandleDelete}>Delete</button>
-    //     <button className="bg-blue-500" onClick={() => setModalOpen(false)}>
-    //       Cancel
-    //     </button>
-    //   </Modal>
-
-    //   <ViewProgramme
-    //     data={props.data}
-    //     setData={props.setData}
-    //     modalOpen={isViewOpen} setModalOpen={setIsViewOpen}
-    //     selectedProgramme={Programme as Programme}
-    //   />
-    // </div>
     <div className="w-full h-full">
       {props.isEdit ? (
         <EditProgramme
@@ -217,7 +114,6 @@ const OneProgramme = (props: Props) => {
         <CreateProgramme key={2} data={props.data} setData={props.setData} categories={props.categories}
           skills={props.skills} />
       )
-
         : props.isExcelUpload ?
           (
             <ExcelUploadProgramme
@@ -227,7 +123,14 @@ const OneProgramme = (props: Props) => {
               setIsExcelUpload={props.setIsExcelUpload}
               key={1}
             />
-          ) : (
+          ) : props.isScheduleUpload? 
+              <CreateSchedule
+              data={props.data}
+              setData={props.setData}
+              isExcelUpload={props.isExcelUpload}
+              setIsExcelUpload={props.setIsExcelUpload}
+              key={1}/>
+            : (
             <div className="w-full h-full">
               {fetching ? (
                 <p> loading... </p>
@@ -276,24 +179,33 @@ const OneProgramme = (props: Props) => {
                   </div>
                   <div className="w-full mt-4 flex items-center justify-between">
                     <div
-                      className="w-1/2 flex items-center justify-center tooltip"
+                      className=" flex items-center justify-center tooltip"
                       data-tip="Back"
                     ></div>
-                    <div className="w-1/2 flex items-center justify-around">
-                      <button
-                        className=" border-2 text-white px-3 py-2 border-secondary rounded-xl font-bold"
+                    <div className="w-full flex items-center justify-around">
+                    <button
+                        className=" border-2 text-white px-2 py-2 border-secondary rounded-xl font-bold"
                         onClick={() => {
                           props.setIsEdit(true);
                           props.setIsCreate(false);
                         }}
                       >
-                        <EditIcon className="w-6 h-6 cursor-pointer fill-secondary  transition-all" />
+                        <AddIcon className="w-4 h-4 cursor-pointer fill-secondary text-black transition-all" />
                       </button>
                       <button
-                        className=" border-2 text-white px-3 py-2 border-secondary rounded-xl font-bold"
+                        className=" border-2 text-white px-2 py-2 border-secondary rounded-xl font-bold"
+                        onClick={() => {
+                          props.setIsEdit(true);
+                          props.setIsCreate(false);
+                        }}
+                      >
+                        <EditIcon className="w-4 h-4 cursor-pointer fill-secondary  transition-all" />
+                      </button>
+                      <button
+                        className=" border-2 text-white px-2 py-2 border-secondary rounded-xl font-bold"
                         onClick={() => setModalOpen(true)}
                       >
-                        <DeleteIcon className="w-6 h-6 cursor-pointer fill-secondary  transition-all" />
+                        <DeleteIcon className="w-4 h-4 cursor-pointer fill-secondary  transition-all" />
                       </button>
                     </div>
                   </div>

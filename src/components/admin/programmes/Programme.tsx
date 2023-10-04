@@ -63,6 +63,7 @@ const Programme = (props: Props) => {
   const [screenHeigh, setScreenHeight] = useState<number>(400);
   const ProgrammeRef = useRef<HTMLDivElement>(null);
   const [isClickedForQR, setIsClickedForQR] = useState<boolean>(false);
+  const [ isScheduleUpload ,  setIsScheduleUpload ] = useState(false)
 
   useEffect(() => {
     const cookie = document.cookie;
@@ -142,6 +143,12 @@ const Programme = (props: Props) => {
     setCurrentPage(pageNumber);
   };
 
+  useEffect(() => {
+    // This code runs after the component has re-rendered with the updated state
+    isClickedForQR ? downloadQRCodePdf(): null
+    // You can access the updated state value here
+  }, [isClickedForQR]);
+
   // Render the pagination controls
   const renderPaginationControls = () => {
     const controls = [];
@@ -184,66 +191,70 @@ const Programme = (props: Props) => {
   // download QR code of displayed programme
   const downloadQRCodePdf = () => {
     // setIsClickedForQR(true);
-  //   const qrCodeArea = document.querySelector(".qr-code-area");
-  //   (qrCodeArea as Element).innerHTML = `<QRCode
-  //   id="qrcode"
-  //   value="https://realia23.me/program/"
-  //   size={150}
-  //   level={"H"}
-  //   includeMargin={false}
-  // />`;
+    //   const qrCodeArea = document.querySelector(".qr-code-area");
+    //   (qrCodeArea as Element).innerHTML = `<QRCode
+    //   id="qrcode"
+    //   value="https://realia23.me/program/"
+    //   size={150}
+    //   level={"H"}
+    //   includeMargin={false}
+    // />`;
     // console.log(qrCodeArea);
-    
-    const canvas = document.getElementById("qrcode") as HTMLCanvasElement;
-    const pngUrl = canvas
-      .toDataURL("image/png")
-      .replace("image/png", "image/octet-stream");
-    console.log(pngUrl);
 
+    const canvas = document.getElementById("qrcode") as HTMLCanvasElement;
+    const canvases = document.querySelectorAll(".qrcodes")
+    console.log(canvases);
     const doc = new jsPDF("portrait", "px", "a4");
     const pdfSize = 75;
-
-    fetch(pngUrl)
+    canvases.forEach((qrcode : any, index) => {
+      console.log(qrcode);
+      var photoUrl = qrcode
+      .toDataURL("image/png")
+      .replace("image/png", "image/octet-stream");
+    console.log(photoUrl);
+    fetch(photoUrl)
       .then((response) => response.blob())
       .then((blob) => {
         const imgData = URL.createObjectURL(blob);
+        console.log(imgData);
+        
         var programNameY = 95;
         var programCodeY = 105;
 
-        currentData.forEach((a,i) => {
+        // currentData.forEach((a, i) => {
+          var a = currentData[index]
           // doc.addPage("a4");
           // console.log(a);
-          if(i % 15 == 0 && i != 0){
+          if (index % 15 == 0 && index != 0) {
             doc.addPage("a4");
+            programNameY = 95;
+            programCodeY = 105;
           }
 
           // Add the background image
-          doc.addImage(imgData, "JPEG", 20,  10, pdfSize, pdfSize);
+          doc.addImage(imgData, "JPEG", 20, 10, pdfSize, pdfSize);
           doc.addImage(imgData, "JPEG", 180, 10, pdfSize, pdfSize);
           doc.addImage(imgData, "JPEG", 340, 10, pdfSize, pdfSize);
 
-          doc.addImage(imgData, "JPEG", 20,  120, pdfSize, pdfSize);
+          doc.addImage(imgData, "JPEG", 20, 120, pdfSize, pdfSize);
           doc.addImage(imgData, "JPEG", 180, 120, pdfSize, pdfSize);
           doc.addImage(imgData, "JPEG", 340, 120, pdfSize, pdfSize);
 
-          doc.addImage(imgData, "JPEG", 20,  230, pdfSize, pdfSize);
+          doc.addImage(imgData, "JPEG", 20, 230, pdfSize, pdfSize);
           doc.addImage(imgData, "JPEG", 180, 230, pdfSize, pdfSize);
           doc.addImage(imgData, "JPEG", 340, 230, pdfSize, pdfSize);
 
-          doc.addImage(imgData, "JPEG", 20,  340, pdfSize, pdfSize);
+          doc.addImage(imgData, "JPEG", 20, 340, pdfSize, pdfSize);
           doc.addImage(imgData, "JPEG", 180, 340, pdfSize, pdfSize);
           doc.addImage(imgData, "JPEG", 340, 340, pdfSize, pdfSize);
 
-          doc.addImage(imgData, "JPEG", 20,  450, pdfSize, pdfSize);
+          doc.addImage(imgData, "JPEG", 20, 450, pdfSize, pdfSize);
           doc.addImage(imgData, "JPEG", 180, 450, pdfSize, pdfSize);
           doc.addImage(imgData, "JPEG", 340, 450, pdfSize, pdfSize);
 
-
-
-
           // Set the font to Montserrat
           doc.setFont("Montserrat");
-          
+
           // Add text and other content on top of the background image
           doc.setTextColor(0, 0, 0); // Set text color to black
           doc.setFontSize(7);
@@ -258,15 +269,15 @@ const Programme = (props: Props) => {
           doc.text(`${a.name}`, 340, programNameY);
           doc.setFontSize(15);
           doc.text(`${a.programCode}`, 340, programCodeY);
-          if (i%3 == 0 && i != 0){
-            programNameY += 110
-            programCodeY += 110
+          if (index % 3 == 0 && index != 0) {
+            programNameY += 110;
+            programCodeY += 110;
           }
           // doc.setFontSize(7);
           // doc.text(`${a.name}`, 20, 205);
           // doc.setFontSize(15);
           // doc.text(`${a.programCode}`, 20, 215);
-          
+
           // doc.text(`${a.programCode}`, 125, 205);
           // var aa = 265;
           // a.candidateProgramme?.map((item, i) => {
@@ -275,11 +286,106 @@ const Programme = (props: Props) => {
           //   doc.text(`${item.candidate?.chestNO}`, 67, aa);
           //   doc.text(`${item.candidate?.name}`, 112, aa);
           // });
-        });
-
-        const pdfBlob = doc.output("blob");
-        saveAs(pdfBlob, `judgeList.pdf`);
+        // });
+        // const pdfBlob = doc.output("blob");
+        // saveAs(pdfBlob, `judgeList.pdf`);
+       
       });
+    })
+    console.log('finisd');
+    const pdfBlob = doc.output("blob");
+    saveAs(pdfBlob, `judgeList.pdf`);
+    
+    
+
+
+
+    // const pngUrl = canvas
+    //   .toDataURL("image/png")
+    //   .replace("image/png", "image/octet-stream");
+    // console.log(pngUrl);
+
+    // const doc = new jsPDF("portrait", "px", "a4");
+    // const pdfSize = 75;
+
+    // fetch(pngUrl)
+    //   .then((response) => response.blob())
+    //   .then((blob) => {
+    //     const imgData = URL.createObjectURL(blob);
+    //     console.log(imgData);
+        
+    //     var programNameY = 95;
+    //     var programCodeY = 105;
+
+    //     currentData.forEach((a, i) => {
+    //       // doc.addPage("a4");
+    //       // console.log(a);
+    //       if (i % 15 == 0 && i != 0) {
+    //         doc.addPage("a4");
+    //         programNameY = 95;
+    //         programCodeY = 105;
+    //       }
+
+    //       // Add the background image
+    //       doc.addImage(imgData, "JPEG", 20, 10, pdfSize, pdfSize);
+    //       doc.addImage(imgData, "JPEG", 180, 10, pdfSize, pdfSize);
+    //       doc.addImage(imgData, "JPEG", 340, 10, pdfSize, pdfSize);
+
+    //       doc.addImage(imgData, "JPEG", 20, 120, pdfSize, pdfSize);
+    //       doc.addImage(imgData, "JPEG", 180, 120, pdfSize, pdfSize);
+    //       doc.addImage(imgData, "JPEG", 340, 120, pdfSize, pdfSize);
+
+    //       doc.addImage(imgData, "JPEG", 20, 230, pdfSize, pdfSize);
+    //       doc.addImage(imgData, "JPEG", 180, 230, pdfSize, pdfSize);
+    //       doc.addImage(imgData, "JPEG", 340, 230, pdfSize, pdfSize);
+
+    //       doc.addImage(imgData, "JPEG", 20, 340, pdfSize, pdfSize);
+    //       doc.addImage(imgData, "JPEG", 180, 340, pdfSize, pdfSize);
+    //       doc.addImage(imgData, "JPEG", 340, 340, pdfSize, pdfSize);
+
+    //       doc.addImage(imgData, "JPEG", 20, 450, pdfSize, pdfSize);
+    //       doc.addImage(imgData, "JPEG", 180, 450, pdfSize, pdfSize);
+    //       doc.addImage(imgData, "JPEG", 340, 450, pdfSize, pdfSize);
+
+    //       // Set the font to Montserrat
+    //       doc.setFont("Montserrat");
+
+    //       // Add text and other content on top of the background image
+    //       doc.setTextColor(0, 0, 0); // Set text color to black
+    //       doc.setFontSize(7);
+    //       doc.text(`${a.name}`, 20, programNameY);
+    //       doc.setFontSize(15);
+    //       doc.text(`${a.programCode}`, 20, programCodeY);
+    //       doc.setFontSize(7);
+    //       doc.text(`${a.name}`, 180, programNameY);
+    //       doc.setFontSize(15);
+    //       doc.text(`${a.programCode}`, 180, programCodeY);
+    //       doc.setFontSize(7);
+    //       doc.text(`${a.name}`, 340, programNameY);
+    //       doc.setFontSize(15);
+    //       doc.text(`${a.programCode}`, 340, programCodeY);
+    //       if (i % 3 == 0 && i != 0) {
+    //         programNameY += 110;
+    //         programCodeY += 110;
+    //       }
+    //       // doc.setFontSize(7);
+    //       // doc.text(`${a.name}`, 20, 205);
+    //       // doc.setFontSize(15);
+    //       // doc.text(`${a.programCode}`, 20, 215);
+
+    //       // doc.text(`${a.programCode}`, 125, 205);
+    //       // var aa = 265;
+    //       // a.candidateProgramme?.map((item, i) => {
+    //       //   aa = aa + 13.2;
+    //       //   console.log(aa);
+    //       //   doc.text(`${item.candidate?.chestNO}`, 67, aa);
+    //       //   doc.text(`${item.candidate?.name}`, 112, aa);
+    //       // });
+    //     });
+
+    //     // const pdfBlob = doc.output("blob");
+    //     // saveAs(pdfBlob, `judgeList.pdf`);
+    //   });
 
     // let downloadLink = document.createElement("a");
     // downloadLink.href = pngUrl;
@@ -287,8 +393,12 @@ const Programme = (props: Props) => {
     // document.body.appendChild(downloadLink);
     // downloadLink.click();
     // document.body.removeChild(downloadLink);
-    console.log(currentData);
+    console.log(pdfBlob);
+  setIsClickedForQR(false);
+  // (document.querySelector("embed") as any).src = pdfBlob
   };
+
+
 
   return (
     <>
@@ -300,12 +410,13 @@ const Programme = (props: Props) => {
           level={"H"}
           includeMargin={false}
         />
+        <embed src="" type="application/pdf" className="overflow-auto w-full h-full"/>
         {
           isClickedForQR && (
             currentData.map((item : Programme, index) => {
              return(
               <QRCode
-              id="qrcode"
+              className="qrcodes"
               value= {`https://realia23.me/program/${item.programCode}`}
               size={150}
               level={"H"}
@@ -350,7 +461,10 @@ const Programme = (props: Props) => {
               <div>
                 <button
                   className="ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
-                  // onClick={downloadQRCodePdf}
+                  onClick={()=>{
+                    // setIsClickedForQR(true)
+                    // downloadQRCodePdf()
+                  }}
                 >
                   QR CODE
                 </button>
@@ -385,6 +499,7 @@ const Programme = (props: Props) => {
                         setIsRightSideBarOpen(true);
                         setExcel(false);
                         setIsImageUpload(false);
+                        setIsScheduleUpload(false);
                       }}
                     >
                       CREATE
@@ -398,9 +513,23 @@ const Programme = (props: Props) => {
                         setExcel(true);
                         setIsRightSideBarOpen(true);
                         setIsImageUpload(false);
+                        setIsScheduleUpload(false);
                       }}
                     >
                       IMPORT
+                    </button>
+                    <button
+                      className="block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                      onClick={() => {
+                        setIsCreate(false);
+                        setIsEdit(false);
+                        setExcel(false);
+                        setIsRightSideBarOpen(true);
+                        setIsImageUpload(false);
+                        setIsScheduleUpload(true);
+                      }}
+                    >
+                     SCHEDULE
                     </button>
                   </ul>
                 </div>
@@ -436,6 +565,7 @@ const Programme = (props: Props) => {
                           setIsCreate(false);
                           setExcel(false);
                           setIsImageUpload(false);
+                          setIsScheduleUpload(false);
                         }}
                       >
                         <div className="text-white font-bold bg-secondary px-3 py-1 text-xl rounded-xl flex justify-center content-center items-center">
@@ -503,6 +633,8 @@ const Programme = (props: Props) => {
               categories={props.categories as Category[]}
               skill={SelectedProgramme?.skill?.name as string}
               skills={props.skills as Skill[]}
+              setIsScheduleUpload= {setIsScheduleUpload}
+              isScheduleUpload = {isScheduleUpload}
             />
           </RightSideBar>
           {/* </div> */}
