@@ -150,10 +150,7 @@ const Judges = (props: Props) => {
     setCurrentPage(pageNumber);
   };
 
-
-
   // //   generatePdf();
-
 
   const downloadPDF = () => {
     const doc = new jsPDF("portrait", "px", "a4");
@@ -175,7 +172,8 @@ const Judges = (props: Props) => {
     currentData.forEach((a) => {
       doc.addPage("a4");
 
-      const backgroundImageUrl = a.type === Types.Single ? "/a4.jpg" : "/a4g.jpg"
+      const backgroundImageUrl =
+        a.type === Types.Single ? "/a4.jpg" : "/a4g.jpg";
 
       // Add the background image
       doc.addImage(backgroundImageUrl, "JPEG", 0, 0, pdfWidth, pdfHeight);
@@ -197,7 +195,6 @@ const Judges = (props: Props) => {
         console.log(aa);
         doc.text(`${item.candidate?.chestNO}`, 67, aa);
 
-
         if (a.type == Types.Group) {
           console.log(item.candidatesOfGroup);
           let bb = 90;
@@ -205,22 +202,16 @@ const Judges = (props: Props) => {
             console.log(itm.chestNO);
             bb = bb + 22;
             doc.text(`${itm.chestNO},`, bb, aa);
-          }
-          )
+          });
           doc.text(`${item.candidate?.name}`, bb + 22, aa);
         } else {
           doc.text(`${item.candidate?.name}`, 112, aa);
         }
       });
-
-
-
-
     });
 
     const pdfBlob = doc.output("blob");
     saveAs(pdfBlob, `judgeList.pdf`);
-
   };
 
   const downloadSingle = (a: Programme) => {
@@ -235,7 +226,7 @@ const Judges = (props: Props) => {
       "normal"
     );
 
-    const backgroundImageUrl = a.type === Types.Single ? "/a4.jpg" : "/a4g.jpg" // Update the path to your background image
+    const backgroundImageUrl = a.type === Types.Single ? "/a4.jpg" : "/a4g.jpg"; // Update the path to your background image
 
     const pdfWidth = doc.internal.pageSize.getWidth();
     const pdfHeight = doc.internal.pageSize.getHeight();
@@ -259,30 +250,31 @@ const Judges = (props: Props) => {
 
           doc.text(`${a.programCode}`, 125, 205);
           doc.text(`${a.name}`, 125, 218);
-          var aa = 265;
+          var aa = 257.75;
 
           a.candidateProgramme?.map((item, i) => {
-            aa = aa + 13.5;
+            aa = aa + 27;
             console.log(aa);
             doc.text(`${item.candidate?.chestNO}`, 67, aa);
-
 
             if (a.type == Types.Group) {
               console.log(item.candidatesOfGroup);
               let bb = 90;
-              item.candidatesOfGroup?.map((itm, ind) => {
+
+              if ((item.candidatesOfGroup as any).length > 7) {
+                console.log((item.candidatesOfGroup as any).length);
+                aa = 265
+              }
+              item.candidatesOfGroup?.map((itm, index) => {
                 console.log(itm.chestNO);
                 bb = bb + 22;
                 doc.text(`${itm.chestNO},`, bb, aa);
-              }
-              )
-              doc.text(`${item.candidate?.name}`, bb + 22, aa);
+              });
+              // doc.text(`${item.candidate?.name}`, bb + 22, aa);
             } else {
               doc.text(`${item.candidate?.name}`, 112, aa);
             }
           });
-
-
         });
 
         const pdfBlob = doc.output("blob");
@@ -373,10 +365,10 @@ const Judges = (props: Props) => {
                       downloadPDF();
                     }}
                   >
-                    Download List
+                    Load
                   </label>
 
-                  <div className="dropdown dropdown-end">
+                  {/* <div className="dropdown dropdown-end">
                     <label
                       tabIndex={0}
                       className="inline-flex bg-secondary ml-1  text-white rounded-full px-5 py-2 font-bold"
@@ -438,19 +430,21 @@ const Judges = (props: Props) => {
                         IMAGE UPLOAD
                       </button>
                     </ul>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
             <div className="flex flex-col items-center lg:justify-center w-full h-full">
               <ComponentsDiv
-                height={`${(itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6
-                  }rem`}
+                height={`${
+                  (itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6
+                }rem`}
               >
                 <div
                   ref={ProgrammeRef}
-                  className={`grid gap-4 w-full transition-all grid-cols-1 ${IsRightSideBarOpen ? "lg:grid-cols-3" : "lg:grid-cols-4"
-                    }`}
+                  className={`grid gap-4 w-full transition-all grid-cols-1 ${
+                    IsRightSideBarOpen ? "lg:grid-cols-3" : "lg:grid-cols-4"
+                  }`}
                 >
                   {currentData?.map((item: Programme, index: number) => {
                     return (
@@ -572,7 +566,7 @@ const Judges = (props: Props) => {
                     </div>
                   );
                 })}
-                { }
+                {}
                 <button
                   onClick={() => {
                     count < 2 ? null : setCount(count - 1);
