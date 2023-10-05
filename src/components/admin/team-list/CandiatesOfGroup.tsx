@@ -90,16 +90,12 @@ const CandiatesOfGroup = (props: Props) => {
     <div>
       {props.candidatesOfGroup?.map((item: Candidate, i: number) => {
         return (
-          <div key={i} className="bg-yellow-300 m-2 rounded-lg ">
+          <div key={i} className="bg-base-200 m-2 rounded-lg p-2">
             {props.toEditChestNo === props.candidate?.chestNO ? (
               <div className="flex">
                 <input
                   type="text"
-                  className={`text-lg font-bold w-8/12 border-2 ${
-                    props.haveEditngChestNo
-                      ? "border-green-500"
-                      : "border-rose-500"
-                  }`}
+                  className={`text-lg font-bold w-8/12 border-2 px-1 border-secondary rounded-md`}
                   defaultValue={item?.chestNO as string}
                   id={`input-${item?.chestNO}-${props.selectedProgramme.programCode}-${i}`}
                   onChange={(e) => {
@@ -144,14 +140,17 @@ const CandiatesOfGroup = (props: Props) => {
         );
       })}
       {props.toEditChestNo === props.candidate?.chestNO && (
-        <button
-          onClick={async () => {
-            await HandleSubmit();
-          }}
-          className="bg-green-600"
-        >
-          Submit
-        </button>
+        <div className="w-full h-full flex items-center  justify-center">
+          <button
+            onClick={async () => {
+              await HandleSubmit();
+            }}
+            className="bg-secondary py-[2px] px-4 text-white rounded-md"
+          >
+            Submit
+          </button>
+        </div>
+
       )}
     </div>
   );

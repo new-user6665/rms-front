@@ -61,15 +61,15 @@ const CreateGroup = (props: Props) => {
   };
 
   return (
-    <div className="bg-info p-2">
+    <div className="bg-white p-2 rounded-md">
       {[...Array(props.Programme?.candidateCount)].map((_, index) => {
         return (
-          <div className="bg-yellow-300 rounded-md m-1 ">
+          <div className="bg-base-200 rounded-md m-1 p-1 ">
             <div className="flex justify-between">
               <div className="flex">
                 <input
                   type="text"
-                  className="text-lg font-bold w-8/12"
+                  className="text-lg font-bold w-8/12 border-2 border-secondary rounded-md"
                   onChange={(e) => {
                     handleChestNomsChange(index, e.target.value);
 
@@ -94,13 +94,15 @@ const CreateGroup = (props: Props) => {
           </div>
         );
       })}
+       <div className="w-full h-full flex items-center justify-around">
 
+     
       <div
         onClick={async () => {
           await HandleSubmit();
         }}
       >
-        <SubmitIcon className="w-6 h-6 text-black cursor-pointer" />
+        <SubmitIcon className="w-7 h-7 text-secondary cursor-pointer" />
       </div>
       <div
         onClick={() => {
@@ -108,7 +110,8 @@ const CreateGroup = (props: Props) => {
         }}
         className="mx-2"
       >
-        <MinusIcon className="w-6 h-6 text-black cursor-pointer" />
+        <MinusIcon className="w-7 h-7 text-secondary cursor-pointer" />
+      </div>
       </div>
     </div>
   );
