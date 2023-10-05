@@ -53,12 +53,12 @@ const CreateSingle = (props: Props) => {
   };
 
   return (
-    <div className="bg-info rounded-md m-1 ">
+    <div className="bg-white rounded-md m-1 p-2 ">
       <div className="flex justify-between">
         <div className="flex">
           <input
             type="text"
-            className="text-lg font-bold w-8/12"
+            className="text-lg font-bold w-8/12 border-2 border-secondary rounded-md "
             value={chestNo}
             onChange={(e) => {
               setChestNo(e.target.value);
@@ -75,14 +75,14 @@ const CreateSingle = (props: Props) => {
           <div onClick={async()=>{
             await HandleSubmit()
           }}>
-          <SubmitIcon className="w-6 h-6 text-black cursor-pointer"/>
+          <SubmitIcon className="w-7 h-7 text-secondary cursor-pointer"/>
           </div>
           <div onClick={(()=>{
             props.setIsCreate(false)
           })}
           className="mx-2">
 
-          <MinusIcon className="w-6 h-6 text-black cursor-pointer" />
+          <MinusIcon className="w-7 h-7 text-secondary cursor-pointer" />
           </div>
         </div>
       </div>
