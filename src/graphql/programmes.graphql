@@ -163,6 +163,8 @@ query GetOneProgramme($id: Int!, $api_key: String!) {
     anyIssue
     candidateCount
     groupCount
+    venue
+    date
     category {
       name
     }
