@@ -14,13 +14,13 @@ import {
   Type,
   CandidateProgramme,
 } from "@/gql/graphql";
+
 import { useEffect, useState } from "react";
 import { OperationResult, useMutation, useQuery } from "urql";
-import ViewProgramme from "./ViewTeamList";
 import ExcelUploadProgramme from "./ExcelUploadTeamList";
 import ExcelUploadGroupTeamList from "./ExcelUploadGroupTeamList";
 import { API_KEY } from "@/lib/env";
-import { DeleteIcon, EditIcon, SubmitIcon } from "@/icons/action";
+import { DeleteIcon, EditIcon } from "@/icons/action";
 import { IconArrowDown, IconArrowUp } from "@/icons/arrows";
 import CreateSingle from "./CreateSingle";
 import CreateGroup from "./CreateGroup";
@@ -73,9 +73,9 @@ const OneProgramme = (props: Props) => {
     if (data?.programme) {
       setSingleProgramme(data.programme); // Set the data to your state
     }
-  }, [data?.programme]);
+  }, [data]);
 
-  const [state, DeleteCandidateProgrammeExecute] = useMutation(
+  const [ state , DeleteCandidateProgrammeExecute ] = useMutation(
     DeleteCandidateProgrammeDocument
   );
 
@@ -114,7 +114,6 @@ const OneProgramme = (props: Props) => {
     setModalOpen(false);
   };
 
-  useEffect(() => {}, []);
 
   const Programme = data?.programme;
 
@@ -188,7 +187,7 @@ const OneProgramme = (props: Props) => {
                         <input
                           type="text"
                           className="text-lg font-bold w-1/3 bg-inherit"
-                          defaultValue={value.candidate?.chestNO as string}
+                          value={value.candidate?.chestNO as string}
                           disabled
                         />
                       )}
