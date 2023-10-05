@@ -62,6 +62,8 @@ const Judges = (props: Props) => {
   const [isCreate, setIsCreate] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
+  // const [dowloading, setDowloading] = useState<boolean>(false);
+  // const [downloadAsBulk, setDownloadAsBulk] = useState<boolean>();
   const [data, setData] = useState<Programme[]>(props.result);
   const [currentPage, setCurrentPage] = useState(1);
   const [isImageUpload, setIsImageUpload] = useState<boolean>(false);
@@ -131,6 +133,16 @@ const Judges = (props: Props) => {
     console.log(shh);
   }, [screenHeigh]);
 
+//   useEffect(() => {
+// if (dowloading){
+// if (downloadAsBulk){
+//   downloadJudgeList()
+// } else{
+//   downloadJudgeList(SelectedProgramme,false)
+// }
+// }
+//   }, [dowloading]);
+
   const calculateBreakPoint = (sh: number) => {
     return Math.floor((sh + 30 - 300) / 100) * 4;
   };
@@ -152,8 +164,11 @@ const Judges = (props: Props) => {
 
   // //   generatePdf();
 
-  const downloadPDF = () => {
+
+  const downloadJudgeList = (programme: any = currentData , bulk:boolean=true) => {
     const doc = new jsPDF("portrait", "px", "a4");
+    console.log(programme);
+    
 
     // Load Montserrat font
     doc.addFont(
@@ -162,14 +177,12 @@ const Judges = (props: Props) => {
       "normal"
     );
 
-    // const backgroundImageUrl =  "/a4.jpg"   ; // Update the path to your background image
-
     const pdfWidth = doc.internal.pageSize.getWidth();
     const pdfHeight = doc.internal.pageSize.getHeight();
 
     console.log("pdf", pdfWidth, pdfHeight);
-
-    currentData.forEach((a) => {
+    var program = bulk?programme:[programme]
+    program.forEach((a:any) => {
       doc.addPage("a4");
 
       const backgroundImageUrl =
@@ -190,97 +203,65 @@ const Judges = (props: Props) => {
       doc.text(`${a.category?.name}`, 345, 205);
       var aa = 265;
 
-      a.candidateProgramme?.map((item, i) => {
+      a.candidateProgramme?.map((item:any, i:number) => {
         aa = aa + 13.5;
         console.log(aa);
-        doc.text(`${item.candidate?.chestNO}`, 67, aa);
+        // doc.text(`${item.candidate?.chestNO}`, 67, aa);
 
         if (a.type == Types.Group) {
+          aa = 284.75 + 27 * i;
+          doc.text(`${item.candidate?.chestNO}`, 67, aa);
           console.log(item.candidatesOfGroup);
           let bb = 90;
-          item.candidatesOfGroup?.map((itm, ind) => {
+
+          let groupPositionY: number;
+
+          if ((item.candidatesOfGroup as any).length > 7) {
+            console.log((item.candidatesOfGroup as any).length);
+            if (i == 0) {
+              groupPositionY = 265;
+            } else {
+              groupPositionY = 265 + 13.5 * 2 * i;
+            }
+          } else {
+            groupPositionY = 284.75 + 27 * i;
+          }
+
+          item.candidatesOfGroup?.map((itm:any, index:number) => {
             console.log(itm.chestNO);
+            if ((item.candidatesOfGroup as any).length > 7) {
+              console.log((item.candidatesOfGroup as any).length);
+              if (index == 0) {
+                groupPositionY = groupPositionY + 13.5;
+              }
+              if (index == 7) {
+                bb = 90;
+                groupPositionY = groupPositionY + 13.5;
+              }
+            }
             bb = bb + 22;
-            doc.text(`${itm.chestNO},`, bb, aa);
+            console.log(groupPositionY, i);
+
+            var chestNO =
+              index == (item.candidatesOfGroup as any).length - 1
+                ? itm.chestNO
+                : itm.chestNO + ",";
+            doc.text(`${chestNO}`, bb, groupPositionY);
           });
-          doc.text(`${item.candidate?.name}`, bb + 22, aa);
         } else {
+          doc.text(`${item.candidate?.chestNO}`, 67, aa);
           doc.text(`${item.candidate?.name}`, 112, aa);
         }
       });
     });
 
     const pdfBlob = doc.output("blob");
-    saveAs(pdfBlob, `judgeList.pdf`);
+    var filename = bulk? `Judge-List`: `${(programme as any).programCode} ${(programme as any).name}`
+    saveAs(pdfBlob, `${filename}.pdf`);
+    // setDowloading(true)
   };
 
-  const downloadSingle = (a: Programme) => {
-    console.log(a);
 
-    const doc = new jsPDF("portrait", "px", "a4");
-
-    // Load Montserrat font
-    doc.addFont(
-      "https://fonts.gstatic.com/s/montserrat/v15/JTUSjIg1_i6t8kCHKm459Wlhzg.ttf",
-      "Montserrat",
-      "normal"
-    );
-
-    const backgroundImageUrl = a.type === Types.Single ? "/a4.jpg" : "/a4g.jpg"; // Update the path to your background image
-
-    const pdfWidth = doc.internal.pageSize.getWidth();
-    const pdfHeight = doc.internal.pageSize.getHeight();
-    console.log("pdf", pdfWidth, pdfHeight);
-
-    fetch(backgroundImageUrl)
-      .then((response) => response.blob())
-      .then((blob) => {
-        const imgData = URL.createObjectURL(blob);
-
-        [a].forEach((a) => {
-          // Add the background image
-          doc.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
-
-          // Set the font to Montserrat
-          doc.setFont("Montserrat");
-
-          // Add text and other content on top of the background image
-          doc.setFontSize(10);
-          doc.setTextColor(0, 0, 0); // Set text color to black
-
-          doc.text(`${a.programCode}`, 125, 205);
-          doc.text(`${a.name}`, 125, 218);
-          var aa = 257.75;
-
-          a.candidateProgramme?.map((item, i) => {
-            aa = aa + 27;
-            console.log(aa);
-            doc.text(`${item.candidate?.chestNO}`, 67, aa);
-
-            if (a.type == Types.Group) {
-              console.log(item.candidatesOfGroup);
-              let bb = 90;
-
-              if ((item.candidatesOfGroup as any).length > 7) {
-                console.log((item.candidatesOfGroup as any).length);
-                aa = 265
-              }
-              item.candidatesOfGroup?.map((itm, index) => {
-                console.log(itm.chestNO);
-                bb = bb + 22;
-                doc.text(`${itm.chestNO},`, bb, aa);
-              });
-              // doc.text(`${item.candidate?.name}`, bb + 22, aa);
-            } else {
-              doc.text(`${item.candidate?.name}`, 112, aa);
-            }
-          });
-        });
-
-        const pdfBlob = doc.output("blob");
-        saveAs(pdfBlob, `${a.programCode} ${a.name}.pdf`);
-      });
-  };
   return (
     <>
       <div className="w-full h-full " id="element-container">
@@ -359,10 +340,9 @@ const Judges = (props: Props) => {
                   <label
                     className="inline-flex bg-secondary text-white  rounded-full px-5 py-2 font-bold cursor-pointer"
                     onClick={async () => {
-                      console.log("clicked");
-
-                      // await generatePdf()
-                      downloadPDF();
+                      downloadJudgeList();
+                      // setDownloadAsBulk(true)
+                      // setDowloading(true)
                     }}
                   >
                     Load
@@ -436,15 +416,13 @@ const Judges = (props: Props) => {
             </div>
             <div className="flex flex-col items-center lg:justify-center w-full h-full">
               <ComponentsDiv
-                height={`${
-                  (itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6
-                }rem`}
+                height={`${(itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6
+                  }rem`}
               >
                 <div
                   ref={ProgrammeRef}
-                  className={`grid gap-4 w-full transition-all grid-cols-1 ${
-                    IsRightSideBarOpen ? "lg:grid-cols-3" : "lg:grid-cols-4"
-                  }`}
+                  className={`grid gap-4 w-full transition-all grid-cols-1 ${IsRightSideBarOpen ? "lg:grid-cols-3" : "lg:grid-cols-4"
+                    }`}
                 >
                   {currentData?.map((item: Programme, index: number) => {
                     return (
@@ -546,7 +524,7 @@ const Judges = (props: Props) => {
               </>
             ) : (
               <>
-                <h1>{SelectedProgramme?.name}</h1>
+                <h1>{SelectedProgramme?.programCode} - {SelectedProgramme?.name}</h1>
                 {[...Array(count)].map((_, i) => {
                   console.log(i + 1, count);
 
@@ -566,7 +544,7 @@ const Judges = (props: Props) => {
                     </div>
                   );
                 })}
-                {}
+                { }
                 <button
                   onClick={() => {
                     count < 2 ? null : setCount(count - 1);
@@ -588,29 +566,15 @@ const Judges = (props: Props) => {
                 </button>
               </>
             )}
-            {/* <OneJudges
-              isExcelUpload={isExcelUpload}
-              setIsExcelUpload={setExcel}
-              isOpen={IsRightSideBarOpen}
-              setIsOpen={setIsRightSideBarOpen}
-              key={3}
-              name={SelectedProgramme?.name as string}
-              id={SelectedProgramme?.id as number}
-              isEdit={isEdit}
-              setIsEdit={setIsEdit}
-              isCreate={isCreate}
-              setIsCreate={setIsCreate}
-              data={allData}
-              setData={setAllData}
-              category={SelectedProgramme?.category?.name as string}
-              categories={props.categories as Category[]}
-              skill= {SelectedProgramme?.skill?.name as string}
-              skills={props.skills as Skill[]}
-            /> */}
+            
 
             <button
               className=""
-              onClick={() => downloadSingle(SelectedProgramme as Programme)}
+              onClick={() => {
+                // setDownloadAsBulk(false)
+                // setDowloading(true)
+                downloadJudgeList(SelectedProgramme,false)
+              }}
             >
               <svg
                 fill="#000000"
