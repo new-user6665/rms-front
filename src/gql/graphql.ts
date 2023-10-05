@@ -193,7 +193,7 @@ export type CreateGradeInput = {
   pointSingle: Scalars['Int']['input'];
 };
 
-export type CreateInput = {
+export type CreateManyCandidatesInput = {
   inputs: Array<CreateCandidateInput>;
 };
 
@@ -548,7 +548,7 @@ export type MutationCreateManyCandidateProgrammeArgs = {
 
 
 export type MutationCreateManyCandidatesArgs = {
-  createCandidateInput: CreateInput;
+  createCandidateInput: CreateManyCandidatesInput;
 };
 
 
