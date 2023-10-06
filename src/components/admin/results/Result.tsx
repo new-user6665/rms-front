@@ -1,211 +1,4 @@
-// "use client";
-// import { SERVER_URL } from "@/lib/urql";
-// import { withUrqlClient } from "next-urql";
-// import React, { useEffect, useState } from "react";
-// import { cacheExchange, fetchExchange } from "urql";
-// import { Category, Programme, Skill } from "@/gql/graphql";
-// import { parseJwt } from "@/lib/cryptr";
-// import ResultBar from "../ResultBar";
 
-// interface Props {
-//   result: Programme[];
-//   categories: Category[];
-//   skills: Skill[];
-// }
-
-// const Result = (props: Props) => {
-//   const [SelectedProgramme, setSelectedProgramme] = useState<Programme>();
-//   const [isExcelUpload, setIsExcelUpload] = useState<boolean>(false);
-//   const [search, setSearch] = useState<string>("");
-//   const [data, setData] = useState<Programme[]>(props.result);
-//   const [allData , setAllData] = useState<Programme[]>(props.result);
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const [SelectedProgrammes, setSelectedProgrammes] = useState<string[]>([]);
-
-//   const itemsPerPage =  16;
-
-//   useEffect(()=>{
-//     const cookie = document.cookie;
-//     if (cookie) {
-//       const token = cookie.split("=")[1];
-//       const cv = parseJwt(token);
-//       setData( props.result.filter((item: any) => cv.categories?.includes(item.category.name)) as Programme[])
-//       setAllData( props.result.filter((item: any) => cv.categories?.includes(item.category.name)) as Programme[])
-//     }
-//   },[])
-
-//   // Calculate the index range for the current page
-//   const startIndex = (currentPage - 1) * itemsPerPage;
-//   const endIndex = startIndex + itemsPerPage;
-
-//   // Get the data for the current page
-//   const currentData = data.slice(startIndex, endIndex);
-
-//   // Calculate the total number of pages
-//   const totalPages = Math.ceil(data.length / itemsPerPage);
-
-//   // Go to a specific page number
-//   const goToPage = (pageNumber: number) => {
-//     setCurrentPage(pageNumber);
-//   };
-
-//   // Render the pagination controls
-//   const renderPaginationControls = () => {
-//     const controls = [];
-//     for (let page = 1; page <= totalPages; page++) {
-//       controls.push(
-//         <button
-//           key={page}
-//           onClick={() => goToPage(page)}
-//           className={`${
-//             currentPage === page ? "active" : ""
-//           } w-5 h-5 bg-black mx-1 my-5`}
-//         >
-//           {page}
-//         </button>
-//       );
-//     }
-//     return controls;
-//   };
-
-//   function downloadExcel() {
-//     const data = props.result;
-//     const replacer = (key: any, value: any) => (value === null ? "" : value); // specify how you want to handle null values here
-//     const header = Object.keys(data[0]);
-//     let csv = data.map((row: any) =>
-//       header
-//         .map((fieldName) => JSON.stringify(row[fieldName], replacer))
-//         .join(",")
-//     );
-//     csv.unshift(header.join(","));
-//     let csvArray = csv.join("\r\n");
-
-//     var a = document.createElement("a");
-//     a.href = "data:attachment/csv," + csvArray;
-//     a.target = "_Blank";
-//     a.download = "Programme.csv";
-//     document.body.appendChild(a);
-//     a.click();
-//   }
-
-//   return (
-//     <>
-//       <div className="w-full h-full">
-//         {/* <ResultBar data={{}} /> */}
-
-//         <div className="w-full h-5/6 bg-base-200 rounded-lg mt-[1%]">
-//           <div>
-//             {/* search bar */}
-//             <div className="w-full h-10 bg-base-300 rounded-lg mt-[1%] cursor-pointer">
-//               <div className="w-1/3 h-full float-left">
-//                 <input
-//                   type="text"
-//                   value={search}
-//                   onChange={(e) => {
-//                     setSearch(e.target.value);
-//                     setCurrentPage(1);
-//                     setData(
-//                       allData.filter((item: Programme) =>
-//                         item.name?.toLocaleLowerCase().includes(e.target.value?.toLocaleLowerCase())
-//                         || item.programCode?.toLocaleLowerCase().includes(e.target.value?.toLocaleLowerCase())
-//                       )
-//                     );
-//                   }}
-//                 />
-//               </div>
-//               <div className="m-1 float-left">
-//                 <button
-//                   className="bg-blue-600"
-//                   onClick={() => {
-//                     setIsExcelUpload(true);
-//                   }}
-//                 >
-//                   Import
-//                 </button>
-//               </div>
-//               <div className="m-1 float-left">
-//                 <button
-//                   className="bg-blue-600"
-//                   onClick={downloadExcel}
-//                 >
-//                   Export
-//                 </button>
-//               </div>
-//               <div className="m-1 float-left">
-//                 <button
-//                   className="bg-green-600"
-//                   onClick={() => {
-//                     setIsExcelUpload(false);
-//                   }}
-//                 >
-//                   Create
-//                 </button>
-//               </div>
-//               <div className="m-1 float-left">
-//                 <p>
-//                   Selected Count :  {SelectedProgrammes.length}
-//                 </p>
-//               </div>
-//             </div>
-//           </div>
-
-//           <div className="flex">
-//             <div className={`grid  gap-4 w-full transition-all grid-cols-4`} >
-//               {currentData?.map((item: Programme, index: number) => {
-
-//                 return (
-//                   <div
-//                     key={index}
-//                     className={`w-full h-full bg-base-100  transition-all rounded-lg mt-[1%] cursor-pointer ${
-//                       SelectedProgrammes.includes(item.programCode as string) ?' bg-red-400':'bg-base-100'
-//                     }`}
-//                     onClick={() => {
-//                       setSelectedProgramme(item);
-//                       setIsExcelUpload(false);
-//                       if(SelectedProgrammes.includes(item.programCode as string)){
-
-//                       const deletedPrpgrammesData :  string[] = SelectedProgrammes.filter((programCode :string) => {
-//                           return programCode != item.programCode
-//                         });
-
-//                         setSelectedProgrammes(deletedPrpgrammesData as string[]);
-//                       }else{
-//                         setSelectedProgrammes([...SelectedProgrammes as string[] , item.programCode as string]);
-//                       }
-
-//                       console.log(SelectedProgrammes);
-
-//                     }}
-//                   >
-//                     <div className="">
-//                       <p className="text-base-content">{item.name}</p>
-//                     </div>
-//                     <div className=" ">
-//                       <p className="text-base-content">{item.programCode}</p>
-//                     </div>
-//                   </div>
-//                 );
-//               })}
-//             </div>
-//           </div>
-//           <div className="w-full flex items-center justify-center">
-//             {renderPaginationControls()}
-//           </div>
-//         </div>
-//       </div>
-
-//     </>
-//   );
-// };
-
-// export default withUrqlClient(() => ({
-//   url: SERVER_URL,
-//   exchanges: [fetchExchange, cacheExchange],
-//   fetchOptions: {
-//     cache: "no-cache",
-//     credentials: "include",
-//   },
-// }))(Result);
 
 "use client";
 import ResultBar from "../ResultBar";
@@ -221,6 +14,7 @@ import OneResult from "./SingleResult";
 import { styled } from "styled-components";
 import { ChevronLeft } from "@/icons/arrows";
 import { PageChevronLeft, PageChevronRight } from "@/icons/pagination";
+import { DownLoadIcon } from "@/icons/action";
 
 interface Props {
   data: {
@@ -435,7 +229,7 @@ const Result = (props: Props) => {
                 }}
               />
 
-              <div>
+              <div className="flex items-center">
               <button
                   className="ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
                   onClick={downloadExcel}
@@ -443,11 +237,17 @@ const Result = (props: Props) => {
                    {SelectedProgrammes.length} Selected
                 </button>
                 <button
-                  className="ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
+                  className="hidden md:inline-flex ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
                   onClick={downloadExcel}
                 >
                   Export
                 </button>
+                <button
+                  className="ml-1 bg-secondary text-white rounded-full px-6 py-[8px] font-bold md:hidden"
+                  onClick={downloadExcel}
+                >
+                  <DownLoadIcon className="w-6 h-6 cursor-pointer fill-white  transition-all"/>
+                </button> 
               </div>
             </div>
             <div className="flex flex-col items-center lg:justify-center w-full h-full">

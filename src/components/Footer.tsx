@@ -1,7 +1,13 @@
-import Image from "next/image";
-import React from "react";
 
+"use client"
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import Login from "./user/Login";
+import { UserIcon } from "@/icons/home";
+import { useRouter } from "next/navigation";
 function Footer() {
+  const router = useRouter()
   return (
     <footer className="bg-secondary text-white text-sm p-16">
       <div className="flex flex-wrap gap-7">
@@ -23,6 +29,10 @@ function Footer() {
             Email: asas@dhiu.in | Phone :+91494-2463155 <br />
             Fax: 0494 2460575
           </p>
+          <div className=" py-2  my-1  flex gap-2   ">
+            <button onClick={() => router.push('/login')} className=" bg-white rounded-md px-5 py-2 text-black font-semibold ">  log as admin</button>
+            <button className=" bg-white rounded-md px-5 py-2 text-black font-semibold ">  log as judge</button>
+          </div>
         </div>
       </div>
 
