@@ -23,7 +23,6 @@ const CreateCategory = (props: Props) => {
     const datas: OperationResult<AddCategoryMutation, AddCategoryMutationVariables> = await CreateCategoryExecute({
       name: data.name,
       section: data.section,
-
     });
 
     if (datas.data?.createCategory) {

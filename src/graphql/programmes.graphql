@@ -96,7 +96,36 @@ query GetDetailedProgramme($id: Int!, $api_key: String!) {
   }
 }
 
-query GetAllDetailedProgramme($api_key: String!) {
+query GetPublishedProgrammes($api_key: String!) {
+  resultEnteredProgrammes(api_key: $api_key) {
+    id
+    name
+    programCode
+    resultEntered
+    resultPublished
+    candidateCount
+    category {
+      name
+    }
+    skill {
+      name
+    }
+    anyIssue
+    candidateProgramme {
+      id
+      point
+      candidate {
+        chestNO
+        team {
+          name
+          id
+        }
+      }
+    }
+  }
+}
+
+query GetAllDetailedProgrammeForJudge($api_key: String!) {
   programmes(api_key: $api_key) {
     id
     candidateProgramme {
@@ -107,6 +136,39 @@ query GetAllDetailedProgramme($api_key: String!) {
       candidatesOfGroup {
         name
         chestNO
+      }
+      mark
+      grade {
+        name
+      }
+      position {
+        name
+      }
+    }
+    resultEntered
+    resultPublished
+    programCode
+    name
+    groupCount
+    candidateCount
+    resultEntered
+    resultPublished
+    anyIssue
+    category {
+      name
+    }
+  }
+}
+
+query GetAllDetailedProgramme($api_key: String!) {
+  programmes(api_key: $api_key) {
+    id
+    candidateProgramme {
+      candidate {
+        id
+      }
+      candidatesOfGroup {
+        id
       }
     }
     resultEntered
