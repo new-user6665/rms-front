@@ -1,40 +1,33 @@
-import {
-  AddResultDocument,
-  AddResultMutation,
-  AddResultMutationVariables,
-  Programme,
-} from "@/gql/graphql";
+import { AddResultDocument, AddResultMutation, AddResultMutationVariables, CandidateProgramme, Programme } from "@/gql/graphql";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { OperationResult, useMutation } from "urql";
 
 interface Props {
-  isPointUploadOpen: boolean;
-  setIsPointUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isResultBarOpen: boolean;
+  setIsViewResultAndEditOpen: React.Dispatch<React.SetStateAction<boolean>>;
   Programme: Programme;
-  allData : Programme[]
-  setAllData : React.Dispatch<React.SetStateAction< Programme[]>>
+  allData : Programme[];
 }
 
 interface toUploadFormModel {
   programmeCode: string;
-  inputs: { chestNo: string; mark: number }[];
+  inputs: {chestNo: string, mark: number}[];
 }
 
-function PointUpload(props: Props) {
+function ViewResultAndEdit(props: Props) {
   const [pointsCount, setPointsCount] = useState<number>(1);
-  const [toUploadForm, setToUploadForm] = useState<toUploadFormModel>({
-    programmeCode: props.Programme?.programCode as string,
-    inputs: [],
-  });
+  const [toUploadForm , setToUploadForm] = useState<toUploadFormModel>({
+    programmeCode : props.Programme?.programCode as string,
+    inputs : []
+  })
   const [state, AddResultExecute] = useMutation(AddResultDocument);
 
-  const uploadResult = async () => {
-    const data: OperationResult<AddResultMutation, AddResultMutationVariables> =
-      await AddResultExecute({
-        programmeCode: toUploadForm.programmeCode,
-        input: toUploadForm.inputs,
-      });
+  const uploadResult = async ()=>{
+    const data: OperationResult<AddResultMutation, AddResultMutationVariables> = await AddResultExecute({
+      programmeCode : toUploadForm.programmeCode,
+      input : toUploadForm.inputs
+    });
     console.log(data);
     if (data.data?.addNormalResult) {
       let finalData = data.data?.addNormalResult;
@@ -54,37 +47,36 @@ function PointUpload(props: Props) {
       }
       return data
      })
-
-    //  props.
       toast.success("Result Added");
     } else {
-      data.error?.message.split("]")[1].startsWith(" target")
-        ? toast.error("server error")
-        : toast.error(data.error?.message.split("]")[1]);
+      data.error?.message.split("]")[1].startsWith(" target") ? toast.error("server error") : toast.error(data.error?.message.split("]")[1]);
     }
-  };
+  }
 
-  useEffect(() => {
-    if (
-      toUploadForm.inputs.length <
-      (props.Programme?.candidateProgramme?.length as number)
-    ) {
-      props.Programme.candidateProgramme?.map((item, index) => {
-        console.log(item);
 
-        let form = toUploadForm;
+  useEffect(()=>{
+    if(toUploadForm.inputs.length < (props.Programme?.candidateProgramme?.length as number)){
+      props.Programme.candidateProgramme?.map((item , index)=>{
+          console.log(item);
+          
+          let form = toUploadForm
 
-        form.inputs.push({
-          chestNo: item.candidate?.chestNO as string,
-          mark: 0,
-        });
+          form.inputs.push({
+            chestNo : item.candidate?.chestNO as string,
+            mark : item.mark as number
+          })
 
-        setToUploadForm(form);
+          
 
-        console.log(form, toUploadForm);
-      });
+          setToUploadForm(form)
+
+          console.log(form , toUploadForm);
+          document.getElementById(`input-${0}-of-${item.candidate?.chestNO}`)
+      })
     }
-  }, []);
+      
+  },[])
+
 
   const TotalMarkSetter = (i: number, value: string, chestNo: string) => {
     if (!value) {
@@ -141,35 +133,33 @@ function PointUpload(props: Props) {
       inputThree = value;
     }
 
-    let totalMarkOptained = parseFloat(
-      (
-        (parseFloat(inputOne as string) +
-          parseFloat(inputTwo as string) +
-          parseFloat(inputThree as string)) /
-        pointsCount
-      ).toFixed(2)
-    );
+    let totalMarkOptained =  parseFloat((
+      (parseFloat(inputOne as string) +
+        parseFloat(inputTwo as string) +
+        parseFloat(inputThree as string)) /
+      pointsCount
+    ).toFixed(2));
 
-    (document.getElementById(`total-${chestNo}`) as any).innerHTML =
-      totalMarkOptained;
+    (document.getElementById(`total-${chestNo}`) as any).innerHTML = totalMarkOptained
 
-    let candiateToUpload = toUploadForm.inputs.map((data) => {
-      if (data.chestNo == chestNo) {
+    let candiateToUpload = toUploadForm.inputs.map((data)=>{
+      if(data.chestNo == chestNo){
         return {
           ...data,
-          mark: totalMarkOptained,
-        };
+          mark : totalMarkOptained 
+        }
       }
-      return data;
-    });
+      return data
+    })
 
-    let form = toUploadForm;
+    let form = toUploadForm
 
-    form.inputs = candiateToUpload;
+    form.inputs = candiateToUpload
 
-    setToUploadForm(form);
-
+    setToUploadForm(form)
+    
     console.log(toUploadForm);
+    
   };
 
   return (
@@ -221,10 +211,7 @@ function PointUpload(props: Props) {
           </div>
           {props.Programme?.candidateProgramme?.map((item, index) => {
             return (
-              <div
-                className="flex flex-col gap-3 h-[70%] overflow-y-auto"
-                key={index}
-              >
+              <div className="flex flex-col gap-3 h-[70%] overflow-y-auto" key={index}>
                 {/* list1 */}
                 <div className="flex gap-1 w-full">
                   <div className="bg-accent h-10 rounded-full flex justify-between items-center px-2 text-[10px] gap-2 w-1/3">
@@ -274,10 +261,7 @@ function PointUpload(props: Props) {
       {/* desktop only */}
       <div className="fixed top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 md:flex flex-col bg-white h-[80%] w-[80%] rounded-big py-5 overflow-hidden hidden">
         {/* title */}
-        <button
-          className="absolute bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full bottom-8 right-8"
-          onClick={uploadResult}
-        >
+        <button className="absolute bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full bottom-8 right-8" onClick={uploadResult}>
           Submit
         </button>
         {/* <button className="absolute bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full bottom-8 left-6">
@@ -288,7 +272,7 @@ function PointUpload(props: Props) {
           <button
             className="bg-gray-300 h-10 w-10 flex items-center justify-center rounded-full"
             onClick={() => {
-              props.setIsPointUploadOpen(false);
+              props.setIsViewResultAndEditOpen(false);
             }}
           >
             <svg
@@ -383,7 +367,7 @@ function PointUpload(props: Props) {
                     {[...Array(pointsCount)].map((_, i) => {
                       return (
                         <input
-                          key={index}
+                        key={index}
                           type="number"
                           className="bg-white h-10 w-10 rounded-lg justify-center flex items-center text-lg font-semibold text-primary text-center"
                           id={`input-${i}-of-${item.candidate?.chestNO}`}
@@ -395,9 +379,17 @@ function PointUpload(props: Props) {
                               item.candidate?.chestNO as string
                             );
                           }}
+                          defaultValue={item.mark as number}
                         />
+                        
                       );
                     })}
+                  </div>
+                  <div className="bg-white h-10 w-10 rounded-lg justify-center flex items-center text-lg font-semibold text-primary text-center">
+                    {item.grade?.name || 'NIL'}
+                  </div>
+                  <div className="bg-white h-10 w-20 rounded-lg justify-center flex items-center text-lg font-semibold text-primary text-center">
+                  {item.position?.name || 'NIL'}
                   </div>
                   <div className="flex gap-5 items-center">
                     <p>total</p>
@@ -419,4 +411,4 @@ function PointUpload(props: Props) {
   );
 }
 
-export default PointUpload;
+export default ViewResultAndEdit;

@@ -11,8 +11,15 @@ import { styled } from "styled-components";
 import { PageChevronLeft, PageChevronRight } from "@/icons/pagination";
 import { jsPDF } from "jspdf";
 import { saveAs } from "file-saver";
-import { AddIcon, DownLoadIcon } from "@/icons/action";
+import {
+  AddIcon,
+  DownLoadIcon,
+  EyeIcon,
+  ManualUploadIcon,
+} from "@/icons/action";
 import PointUpload from "./PointUpload";
+import ManualUpload from "./ManualUpload";
+import ViewResultAndEdit from "./ViewResultAndEdit";
 // import launch from "puppeteer-extra"
 // const puppeteer = require('puppeteer-extra')
 // const StealthPlugin = require('puppeteer-extra-plugin-stealth')
@@ -69,7 +76,9 @@ const Judges = (props: Props) => {
   const [judgeList, setJudgeList] = useState<string[]>([]);
   const [isEditJudge, setIsEditJudge] = useState<boolean>(false);
   const [count, setCount] = useState<number>(1);
-  const [isPointUploadOpen , setIsPointUploadOpen ] = useState<boolean>(false)
+  const [isPointUploadOpen, setIsPointUploadOpen] = useState<boolean>(false);
+  const [isManualUploadOpen, setIsManualUploadOpen] = useState<boolean>(false);
+  const [isResultBarOpen, setIsResultBarOpen] = useState<boolean>(false);
   const ProgrammeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -300,13 +309,14 @@ const Judges = (props: Props) => {
                   setSearch(e.target.value);
                   setCurrentPage(1);
                   setData(
-                    allData.filter((item: any) =>
-                      item.name
-                        .toLocaleLowerCase()
-                        .includes(e.target.value.toLocaleLowerCase()) ||
+                    allData.filter(
+                      (item: any) =>
+                        item.name
+                          .toLocaleLowerCase()
+                          .includes(e.target.value.toLocaleLowerCase()) ||
                         item.programCode
-                        .toLocaleLowerCase()
-                        .includes(e.target.value.toLocaleLowerCase()) 
+                          .toLocaleLowerCase()
+                          .includes(e.target.value.toLocaleLowerCase())
                     )
                   );
                 }}
@@ -389,7 +399,7 @@ const Judges = (props: Props) => {
                     return (
                       <div
                         key={index}
-                        className="transition-all bg-[#EEEEEE] rounded-xl mt-[1%] cursor-pointer flex p-5 gap-3 content-center items-center h-20"
+                        className="transition-all bg-[#EEEEEE] rounded-xl mt-[1%] cursor-pointer flex p-5 gap-3 content-center items-center h-20 relative"
                         onClick={() => {
                           setIsRightSideBarOpen(true);
                           setSelectedProgramme(item);
@@ -406,6 +416,10 @@ const Judges = (props: Props) => {
                         <p className="text-black leading-5 pr-[10%]">
                           {item.name}
                         </p>
+                        <div className={`${item.anyIssue ? 'bg-error' : item.resultPublished ?'bg-success'  :  item.resultEntered ?'bg-info' : 'bg-warning'}  absolute w-3 h-3 rounded-full right-3`}>
+                          
+                          </div>
+                        
                       </div>
                     );
                   })}
@@ -450,7 +464,7 @@ const Judges = (props: Props) => {
               <div>
                 <h1>{SelectedProgramme?.name}</h1>
 
-                {[...Array(count)].map((_, i) => {
+                {/* {[...Array(count)].map((_, i) => {
                   console.log(i + 1, count);
 
                   return (
@@ -489,7 +503,7 @@ const Judges = (props: Props) => {
                   }}
                 >
                   Add
-                </button>
+                </button> */}
               </div>
 
               <div className="w-full flex justify-between">
@@ -507,6 +521,24 @@ const Judges = (props: Props) => {
                 >
                   <AddIcon className="w-6 h-6 text-white" />
                 </button>
+
+                {!SelectedProgramme?.resultEntered && (
+                  <button
+                    className="bg-secondary p-1 rounded-md"
+                    onClick={() => setIsManualUploadOpen(true)}
+                  >
+                    <ManualUploadIcon className="w-6 h-6 text-white" />
+                  </button>
+                )}
+
+                {SelectedProgramme?.resultEntered && (
+                  <button
+                    className="bg-secondary p-1 rounded-md"
+                    onClick={() => setIsResultBarOpen(true)}
+                  >
+                    <EyeIcon className="w-6 h-6 text-white" />
+                  </button>
+                )}
               </div>
             </div>
           </RightSideBar>
@@ -514,18 +546,36 @@ const Judges = (props: Props) => {
         </DetailedDiv>
 
         {/* { */}
-         
+
         {/* // } */}
-
       </div>
- 
 
-                  {
-                    isPointUploadOpen &&
-                  <PointUpload Programme={SelectedProgramme as Programme} isPointUploadOpen setIsPointUploadOpen={setIsPointUploadOpen}/>
+      {isPointUploadOpen && (
+        <PointUpload
+          Programme={SelectedProgramme as Programme}
+          isPointUploadOpen
+          setIsPointUploadOpen={setIsPointUploadOpen}
+          allData={data as Programme[]}
+          setAllData={setData}
+        />
+      )}
 
-                  }
+      {isResultBarOpen && (
+        <ViewResultAndEdit
+          Programme={SelectedProgramme as Programme}
+          isResultBarOpen
+          setIsViewResultAndEditOpen={setIsResultBarOpen}
+          allData={data as Programme[]}
+        />
+      )}
 
+      {isManualUploadOpen && (
+        <ManualUpload
+          Programme={SelectedProgramme as Programme}
+          isManualUploadOpen
+          setIsManualUploadOpen={setIsManualUploadOpen}
+        />
+      )}
     </>
   );
 };
