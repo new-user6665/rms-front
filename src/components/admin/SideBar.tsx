@@ -86,11 +86,6 @@ const ControllerNavs = [
     icon: <Dashoard className="w-8 h-8" />,
   },
   {
-    name: "Substitute",
-    nav: "substitute",
-    icon: <Dashoard className="w-8 h-8" />,
-  },
-  {
     name: "Results",
     nav: "results",
     icon: <Dashoard className="w-8 h-8" />,
@@ -101,7 +96,7 @@ const ControllerNavs = [
     icon: <Dashoard className="w-8 h-8" />,
   },
   {
-    name: "C Grid",
+    name: "P Grid",
     nav: "agridProgramme",
     icon: <Dashoard className="w-8 h-8" />,
   },
@@ -113,11 +108,6 @@ const ControllerNavs = [
 ];
 
 const MediaNavs = [
-  {
-    name: "Feeds",
-    nav: "feeds",
-    icon: <Candidates className="w-8 h-8" />,
-  },
   {
     name: "Gallery",
     nav: "gallery",
@@ -232,8 +222,7 @@ const SideBar = () => {
         } transition-all flex flex-col justify-between`}
       >
         <div>
-          <li className="p-0 w-1"
-          onClick={() => router.push('/admin')}>
+          <li className="p-0 w-1" onClick={() => router.push("/admin")}>
             <p
               className={` px-0 flex ${
                 isOpen ? "w-40" : "w-12 items-center justify-center"

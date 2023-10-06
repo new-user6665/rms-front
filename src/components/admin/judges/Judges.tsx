@@ -7,14 +7,21 @@ import { SERVER_URL } from "@/lib/urql";
 import { withUrqlClient } from "next-urql";
 import { useEffect, useRef, useState } from "react";
 import { cacheExchange, fetchExchange } from "urql";
-import OneJudges from "./SingleJudge";
 import { styled } from "styled-components";
-import { ChevronLeft } from "@/icons/arrows";
 import { PageChevronLeft, PageChevronRight } from "@/icons/pagination";
-import { compile } from "handlebars";
 import { jsPDF } from "jspdf";
 import { saveAs } from "file-saver";
 import { DownLoadIcon, FilterIcon } from "@/icons/action";
+import {
+  AddIcon,
+  DownLoadIcon,
+  EyeIcon,
+  ManualUploadIcon,
+} from "@/icons/action";
+import PointUpload from "./PointUpload";
+import ManualUpload from "./ManualUpload";
+import ViewResultAndEdit from "./ViewResultAndEdit";
+
 // import launch from "puppeteer-extra"
 // const puppeteer = require('puppeteer-extra')
 // const StealthPlugin = require('puppeteer-extra-plugin-stealth')
@@ -63,6 +70,8 @@ const Judges = (props: Props) => {
   const [isCreate, setIsCreate] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
+  // const [dowloading, setDowloading] = useState<boolean>(false);
+  // const [downloadAsBulk, setDownloadAsBulk] = useState<boolean>();
   const [data, setData] = useState<Programme[]>(props.result);
   const [currentPage, setCurrentPage] = useState(1);
   const [isImageUpload, setIsImageUpload] = useState<boolean>(false);
@@ -71,6 +80,9 @@ const Judges = (props: Props) => {
   const [judgeList, setJudgeList] = useState<string[]>([]);
   const [isEditJudge, setIsEditJudge] = useState<boolean>(false);
   const [count, setCount] = useState<number>(1);
+  const [isPointUploadOpen, setIsPointUploadOpen] = useState<boolean>(false);
+  const [isManualUploadOpen, setIsManualUploadOpen] = useState<boolean>(false);
+  const [isResultBarOpen, setIsResultBarOpen] = useState<boolean>(false);
   const ProgrammeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -132,6 +144,16 @@ const Judges = (props: Props) => {
     console.log(shh);
   }, [screenHeigh]);
 
+//   useEffect(() => {
+// if (dowloading){
+// if (downloadAsBulk){
+//   downloadJudgeList()
+// } else{
+//   downloadJudgeList(SelectedProgramme,false)
+// }
+// }
+//   }, [dowloading]);
+
   const calculateBreakPoint = (sh: number) => {
     return Math.floor((sh + 30 - 300) / 100) * 4;
   };
@@ -153,8 +175,11 @@ const Judges = (props: Props) => {
 
   // //   generatePdf();
 
-  const downloadPDF = () => {
+
+  const downloadJudgeList = (programme: any = currentData , bulk:boolean=true) => {
     const doc = new jsPDF("portrait", "px", "a4");
+    console.log(programme);
+    
 
     // Load Montserrat font
     doc.addFont(
@@ -163,14 +188,12 @@ const Judges = (props: Props) => {
       "normal"
     );
 
-    // const backgroundImageUrl =  "/a4.jpg"   ; // Update the path to your background image
-
     const pdfWidth = doc.internal.pageSize.getWidth();
     const pdfHeight = doc.internal.pageSize.getHeight();
 
     console.log("pdf", pdfWidth, pdfHeight);
-
-    currentData.forEach((a) => {
+    var program = bulk?programme:[programme]
+    program.forEach((a:any) => {
       doc.addPage("a4");
 
       const backgroundImageUrl =
@@ -191,97 +214,66 @@ const Judges = (props: Props) => {
       doc.text(`${a.category?.name}`, 345, 205);
       var aa = 265;
 
-      a.candidateProgramme?.map((item, i) => {
+      a.candidateProgramme?.map((item:any, i:number) => {
         aa = aa + 13.5;
         console.log(aa);
-        doc.text(`${item.candidate?.chestNO}`, 67, aa);
+        // doc.text(`${item.candidate?.chestNO}`, 67, aa);
 
         if (a.type == Types.Group) {
+          aa = 284.75 + 27 * i;
+          doc.text(`${item.candidate?.chestNO}`, 67, aa);
           console.log(item.candidatesOfGroup);
           let bb = 90;
-          item.candidatesOfGroup?.map((itm, ind) => {
+
+          let groupPositionY: number;
+
+          if ((item.candidatesOfGroup as any).length > 7) {
+            console.log((item.candidatesOfGroup as any).length);
+            if (i == 0) {
+              groupPositionY = 265;
+            } else {
+              groupPositionY = 265 + 13.5 * 2 * i;
+            }
+          } else {
+            groupPositionY = 284.75 + 27 * i;
+          }
+
+          item.candidatesOfGroup?.map((itm:any, index:number) => {
             console.log(itm.chestNO);
+            if ((item.candidatesOfGroup as any).length > 7) {
+              console.log((item.candidatesOfGroup as any).length);
+              if (index == 0) {
+                groupPositionY = groupPositionY + 13.5;
+              }
+              if (index == 7) {
+                bb = 90;
+                groupPositionY = groupPositionY + 13.5;
+              }
+            }
             bb = bb + 22;
-            doc.text(`${itm.chestNO},`, bb, aa);
+            console.log(groupPositionY, i);
+
+            var chestNO =
+              index == (item.candidatesOfGroup as any).length - 1
+                ? itm.chestNO
+                : itm.chestNO + ",";
+            doc.text(`${chestNO}`, bb, groupPositionY);
           });
-          doc.text(`${item.candidate?.name}`, bb + 22, aa);
         } else {
+          doc.text(`${item.candidate?.chestNO}`, 67, aa);
           doc.text(`${item.candidate?.name}`, 112, aa);
         }
       });
     });
 
     const pdfBlob = doc.output("blob");
-    saveAs(pdfBlob, `judgeList.pdf`);
+    var filename = bulk? `Judge-List`: `${(programme as any).programCode} ${(programme as any).name}`
+    saveAs(pdfBlob, `${filename}.pdf`);
+    // setDowloading(true)
   };
 
-  const downloadSingle = (a: Programme) => {
-    console.log(a);
 
-    const doc = new jsPDF("portrait", "px", "a4");
 
-    // Load Montserrat font
-    doc.addFont(
-      "https://fonts.gstatic.com/s/montserrat/v15/JTUSjIg1_i6t8kCHKm459Wlhzg.ttf",
-      "Montserrat",
-      "normal"
-    );
-
-    const backgroundImageUrl = a.type === Types.Single ? "/a4.jpg" : "/a4g.jpg"; // Update the path to your background image
-
-    const pdfWidth = doc.internal.pageSize.getWidth();
-    const pdfHeight = doc.internal.pageSize.getHeight();
-    console.log("pdf", pdfWidth, pdfHeight);
-
-    fetch(backgroundImageUrl)
-      .then((response) => response.blob())
-      .then((blob) => {
-        const imgData = URL.createObjectURL(blob);
-
-        [a].forEach((a) => {
-          // Add the background image
-          doc.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
-
-          // Set the font to Montserrat
-          doc.setFont("Montserrat");
-
-          // Add text and other content on top of the background image
-          doc.setFontSize(10);
-          doc.setTextColor(0, 0, 0); // Set text color to black
-
-          doc.text(`${a.programCode}`, 125, 205);
-          doc.text(`${a.name}`, 125, 218);
-          var aa = 257.75;
-
-          a.candidateProgramme?.map((item, i) => {
-            aa = aa + 27;
-            console.log(aa);
-            doc.text(`${item.candidate?.chestNO}`, 67, aa);
-
-            if (a.type == Types.Group) {
-              console.log(item.candidatesOfGroup);
-              let bb = 90;
-
-              if ((item.candidatesOfGroup as any).length > 7) {
-                console.log((item.candidatesOfGroup as any).length);
-                aa = 265
-              }
-              item.candidatesOfGroup?.map((itm, index) => {
-                console.log(itm.chestNO);
-                bb = bb + 22;
-                doc.text(`${itm.chestNO},`, bb, aa);
-              });
-              // doc.text(`${item.candidate?.name}`, bb + 22, aa);
-            } else {
-              doc.text(`${item.candidate?.name}`, 112, aa);
-            }
-          });
-        });
-
-        const pdfBlob = doc.output("blob");
-        saveAs(pdfBlob, `${a.programCode} ${a.name}.pdf`);
-      });
-  };
   return (
     <>
       <div className="w-full h-full " id="element-container">
@@ -301,10 +293,14 @@ const Judges = (props: Props) => {
                   setSearch(e.target.value);
                   setCurrentPage(1);
                   setData(
-                    allData.filter((item: any) =>
-                      item.name
-                        .toLocaleLowerCase()
-                        .includes(e.target.value.toLocaleLowerCase())
+                    allData.filter(
+                      (item: any) =>
+                        item.name
+                          .toLocaleLowerCase()
+                          .includes(e.target.value.toLocaleLowerCase()) ||
+                        item.programCode
+                          .toLocaleLowerCase()
+                          .includes(e.target.value.toLocaleLowerCase())
                     )
                   );
                 }}
@@ -379,14 +375,14 @@ const Judges = (props: Props) => {
                   <label
                     className="hidden md:inline-flex bg-secondary text-white  rounded-full px-5 py-2 font-bold cursor-pointer"
                     onClick={async () => {
-                      console.log("clicked");
-
-                      // await generatePdf()
-                      downloadPDF();
+                      downloadJudgeList();
+                      // setDownloadAsBulk(true)
+                      // setDowloading(true)
                     }}
                   >
-                    Load
+                    Download
                   </label>
+
 
                   
                   <label
@@ -395,7 +391,7 @@ const Judges = (props: Props) => {
                       console.log("clicked");
 
                       // await generatePdf()
-                      downloadPDF();
+                      downloadJudgeList();
                     }}
                   >
                   <DownLoadIcon className="w-7 h-7 fill-white cursor-pointer"/>
@@ -464,26 +460,25 @@ const Judges = (props: Props) => {
                       </button>
                     </ul>
                   </div> */}
+
                 </div>
               </div>
             </div>
             <div className="flex flex-col items-center lg:justify-center w-full h-full">
               <ComponentsDiv
-                height={`${
-                  (itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6
-                }rem`}
+                height={`${(itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6
+                  }rem`}
               >
                 <div
                   ref={ProgrammeRef}
-                  className={`grid gap-4 w-full transition-all grid-cols-1 ${
-                    IsRightSideBarOpen ? "lg:grid-cols-3" : "lg:grid-cols-4"
-                  }`}
+                  className={`grid gap-4 w-full transition-all grid-cols-1 ${IsRightSideBarOpen ? "lg:grid-cols-3" : "lg:grid-cols-4"
+                    }`}
                 >
                   {currentData?.map((item: Programme, index: number) => {
                     return (
                       <div
                         key={index}
-                        className="transition-all bg-[#EEEEEE] rounded-xl mt-[1%] cursor-pointer flex p-5 gap-3 content-center items-center h-20"
+                        className="transition-all bg-[#EEEEEE] rounded-xl mt-[1%] cursor-pointer flex p-5 gap-3 content-center items-center h-20 relative"
                         onClick={() => {
                           setIsRightSideBarOpen(true);
                           setSelectedProgramme(item);
@@ -500,6 +495,10 @@ const Judges = (props: Props) => {
                         <p className="text-black leading-5 pr-[10%]">
                           {item.name}
                         </p>
+                        <div className={`${item.anyIssue ? 'bg-error' : item.resultPublished ?'bg-success'  :  item.resultEntered ?'bg-info' : 'bg-warning'}  absolute w-3 h-3 rounded-full right-3`}>
+                          
+                          </div>
+                        
                       </div>
                     );
                   })}
@@ -540,51 +539,16 @@ const Judges = (props: Props) => {
             isCreate={isCreate}
             isEdit={isEdit}
           >
-            {judgeList.length > 0 ? (
-              <p>judges:</p>
-            ) : isEditJudge ? (
-              <>
-                <label htmlFor="">Judge 1</label>
-                <input type="text" placeholder="JUDGE 1" className="mb-2" />
-                <input type="text" placeholder="judge@123" className="mb-2" />
-                <label htmlFor="">Judge 2</label>
-                <input type="text" placeholder="JUDGE 2" className="mb-2" />
-                <input type="text" placeholder="judge@123" className="mb-2" />
-                <label htmlFor="">Judge 3</label>
-                <input type="text" placeholder="JUDGE 3" className="mb-2" />
-                <input type="text" placeholder="judge@123" className="mb-2" />
-                <label htmlFor="">Judge 4</label>
-                <input type="text" placeholder="JUDGE 4" className="mb-2" />
-                <input type="text" placeholder="judge@123" className="mb-2" />
-                <label htmlFor="">Judge 5</label>
-                <input type="text" placeholder="JUDGE 5" className="mb-2" />
-                <input type="text" placeholder="judge@123" className="mb-2" />
-                <label htmlFor="">Judge 6</label>
-                <input type="text" placeholder="JUDGE 6" className="mb-2" />
-                <input type="text" placeholder="judge@123" className="mb-2" />
-                <label htmlFor="">Judge 7</label>
-                <input type="text" placeholder="JUDGE 7" className="mb-2" />
-                <input type="text" placeholder="judge@123" className="mb-2" />
-                <button className="bg-secondary w-1/2 border-2 text-white px-3 flex-1 py-2 border-secondary rounded-xl font-bold">
-                  submit
-                </button>
-                <button
-                  className="bg-secondary w-1/2 border-2 text-white px-3 flex-1 py-2 border-secondary rounded-xl font-bold"
-                  onClick={() => {
-                    setIsEditJudge(false);
-                  }}
-                >
-                  add
-                </button>
-              </>
-            ) : (
-              <>
+            <div className="flex flex-col justify-between w-full h-full">
+              <div>
                 <h1>{SelectedProgramme?.name}</h1>
-                {[...Array(count)].map((_, i) => {
+
+                {/* {[...Array(count)].map((_, i) => {
+
                   console.log(i + 1, count);
 
                   return (
-                    <div key={i}>
+                    <div key={i} className="bg-black">
                       <label htmlFor="">Judge {i + 1}</label>
                       <input
                         type="text"
@@ -599,8 +563,9 @@ const Judges = (props: Props) => {
                     </div>
                   );
                 })}
-                {}
+                { }
                 <button
+                  className="bg-secondary w-1/2 border-2 text-white px-3 flex-1 py-2 border-secondary rounded-xl font-bold"
                   onClick={() => {
                     count < 2 ? null : setCount(count - 1);
                   }}
@@ -618,65 +583,82 @@ const Judges = (props: Props) => {
                   }}
                 >
                   Add
-                </button>
-              </>
-            )}
-            {/* <OneJudges
-              isExcelUpload={isExcelUpload}
-              setIsExcelUpload={setExcel}
-              isOpen={IsRightSideBarOpen}
-              setIsOpen={setIsRightSideBarOpen}
-              key={3}
-              name={SelectedProgramme?.name as string}
-              id={SelectedProgramme?.id as number}
-              isEdit={isEdit}
-              setIsEdit={setIsEdit}
-              isCreate={isCreate}
-              setIsCreate={setIsCreate}
-              data={allData}
-              setData={setAllData}
-              category={SelectedProgramme?.category?.name as string}
-              categories={props.categories as Category[]}
-              skill= {SelectedProgramme?.skill?.name as string}
-              skills={props.skills as Skill[]}
-            /> */}
 
-            <button
-              className=""
-              onClick={() => downloadSingle(SelectedProgramme as Programme)}
-            >
-              <svg
-                fill="#000000"
-                height="35px"
-                version="1.1"
-                id="Capa_1"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="-3 -3 35.98 35.98"
-                stroke="#000000"
-              >
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g
-                  id="SVGRepo_tracerCarrier"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></g>
-                <g id="SVGRepo_iconCarrier">
-                  <g>
-                    <path d="M25.462,19.105v6.848H4.515v-6.848H0.489v8.861c0,1.111,0.9,2.012,2.016,2.012h24.967c1.115,0,2.016-0.9,2.016-2.012 v-8.861H25.462z"></path>
-                    <path d="M14.62,18.426l-5.764-6.965c0,0-0.877-0.828,0.074-0.828s3.248,0,3.248,0s0-0.557,0-1.416c0-2.449,0-6.906,0-8.723 c0,0-0.129-0.494,0.615-0.494c0.75,0,4.035,0,4.572,0c0.536,0,0.524,0.416,0.524,0.416c0,1.762,0,6.373,0,8.742 c0,0.768,0,1.266,0,1.266s1.842,0,2.998,0c1.154,0,0.285,0.867,0.285,0.867s-4.904,6.51-5.588,7.193 C15.092,18.979,14.62,18.426,14.62,18.426z"></path>
-                    <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g>
-                    <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g>
-                    <g> </g> <g> </g> <g> </g>
-                  </g>
-                </g>
-              </svg>
-            </button>
+                </button> */}
+
+              </div>
+
+              <div className="w-full flex justify-between">
+                <div className="w-1/2"></div>
+                <button
+                  className="bg-secondary p-1 rounded-md"
+                  onClick={() => downloadJudgeList(SelectedProgramme,false)}
+                >
+                  <DownLoadIcon className="w-6 h-6 text-white" />
+                </button>
+
+                <button
+                  className="bg-secondary p-1 rounded-md"
+                  onClick={() => setIsPointUploadOpen(true)}
+                >
+                  <AddIcon className="w-6 h-6 text-white" />
+                </button>
+
+                {!SelectedProgramme?.resultEntered && (
+                  <button
+                    className="bg-secondary p-1 rounded-md"
+                    onClick={() => setIsManualUploadOpen(true)}
+                  >
+                    <ManualUploadIcon className="w-6 h-6 text-white" />
+                  </button>
+                )}
+
+                {SelectedProgramme?.resultEntered && (
+                  <button
+                    className="bg-secondary p-1 rounded-md"
+                    onClick={() => setIsResultBarOpen(true)}
+                  >
+                    <EyeIcon className="w-6 h-6 text-white" />
+                  </button>
+                )}
+              </div>
+            </div>
+
           </RightSideBar>
           {/* </div> */}
         </DetailedDiv>
+
+        {/* { */}
+
+        {/* // } */}
       </div>
 
-      <div id="html-content"></div>
+      {isPointUploadOpen && (
+        <PointUpload
+          Programme={SelectedProgramme as Programme}
+          isPointUploadOpen
+          setIsPointUploadOpen={setIsPointUploadOpen}
+          allData={data as Programme[]}
+          setAllData={setData}
+        />
+      )}
+
+      {isResultBarOpen && (
+        <ViewResultAndEdit
+          Programme={SelectedProgramme as Programme}
+          isResultBarOpen
+          setIsViewResultAndEditOpen={setIsResultBarOpen}
+          allData={data as Programme[]}
+        />
+      )}
+
+      {isManualUploadOpen && (
+        <ManualUpload
+          Programme={SelectedProgramme as Programme}
+          isManualUploadOpen
+          setIsManualUploadOpen={setIsManualUploadOpen}
+        />
+      )}
     </>
   );
 };

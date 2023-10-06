@@ -1,4 +1,5 @@
 "use client"
+import ErrorPage from "@/components/Error";
 import SideBar from "@/components/admin/SideBar";
 import { useGlobalContext } from "@/context/context";
 import { CheckLoggedInDocument, CheckLoggedInQuery } from "@/gql/graphql";
@@ -23,7 +24,7 @@ import { cacheExchange, fetchExchange, useQuery } from "urql";
 });
 
   return (
-    <div className="flex w-screen  lg:h-screen  overflow-y-scroll  lg:overflow-x-hidden lg:overflow-y-hidden">
+    <div className={`${ data?.checkLoggedIn?.roles &&  'flex w-screen  lg:h-screen  overflow-y-scroll  lg:overflow-x-hidden lg:overflow-y-hidden'}`}>
       { data?.checkLoggedIn?.roles ? 
       (
         <>
@@ -32,7 +33,7 @@ import { cacheExchange, fetchExchange, useQuery } from "urql";
         </>
       ) :
       (
-        <div className="flex-1">Login</div>
+        <ErrorPage/>
       )
     }
     </div>

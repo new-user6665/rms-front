@@ -1,7 +1,7 @@
 "use client";
 import Alert from "@/components/Alert";
 import { AddProgrammeDocument, AddProgrammeMutation, AddProgrammeMutationVariables, Category, Mode, Model, Programme, Skill, Type } from "@/gql/graphql";
-import React from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { OperationResult, useMutation } from "urql";
 

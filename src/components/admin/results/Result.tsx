@@ -1,5 +1,3 @@
-
-
 "use client";
 import ResultBar from "../ResultBar";
 import InfoBar from "@/components/admin/InfoBar";
@@ -17,14 +15,20 @@ import { PageChevronLeft, PageChevronRight } from "@/icons/pagination";
 import { DownLoadIcon } from "@/icons/action";
 
 interface Props {
-  data: {
-    title: string;
-    icon: any;
-  }[];
   result: Programme[];
   categories: Category[];
   skills: Skill[];
+  teams : Team[];
 }
+
+interface BarData {
+  name : string
+  totalPoint : number;
+  currentPoint : number;
+  totalSports : number;
+  currentSports : number
+}
+
 // styled components
 
 const ComponentsDiv: any = styled.div<{ height: string }>`
@@ -63,6 +67,8 @@ const Result = (props: Props) => {
   const [itemsPerPage, setItemsPerPage] = useState<number>(7);
   const [screenHeigh, setScreenHeight] = useState<number>(400);
   const [SelectedProgrammes, setSelectedProgrammes] = useState<string[]>([]);
+  const [barData , setBarData] = useState<BarData[]>([])
+
   const ProgrammeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -72,15 +78,29 @@ const Result = (props: Props) => {
       const cv = parseJwt(token);
       setData(
         props.result.filter((item: any) =>
-          cv.categories?.includes(item.category.name)
+          cv.categories?.includes(item.category.name) && !item.resultPublished && !item.anyIssue
         ) as Programme[]
       );
       setAllData(
-        props.result.filter((item: any) =>
-          cv.categories?.includes(item.category.name)
+        props.result.filter((item: Programme) =>
+          cv.categories?.includes(item?.category?.name) && !item.resultPublished && !item.anyIssue
         ) as Programme[]
       );
     }
+
+        // Bar data
+
+        let teamData : BarData[] = props.teams.map((data , i)=>{
+          return {
+            name : data.name as string,
+            totalPoint : data.totalPoint as number || 0 as number,
+            totalSports : data.totalSportsPoint as number || 0 as number, 
+            currentPoint : 0 as number,
+            currentSports : 0 as number
+          } 
+        })
+
+        setBarData(teamData)
 
     // window height settings
     const windowWidth = window.innerWidth;
@@ -185,26 +205,7 @@ const Result = (props: Props) => {
   return (
     <>
       <div className="w-full h-full">
-      <ResultBar data={[
-        {
-          title: "A",
-          totalPoints: 1,
-          selectedPoints : 1
-        },
-        {
-          title: "B",
-          totalPoints: 1,
-          selectedPoints : 1
-        }, {
-          title: "C",
-          totalPoints: 1,
-          selectedPoints : 1
-        }, {
-          title: "D",
-          totalPoints: 1,
-          selectedPoints : 1
-        },
-      ]} />
+      <ResultBar data={barData} />
 
         <DetailedDiv
           height={`${(itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6 + 8}rem`}
@@ -221,9 +222,13 @@ const Result = (props: Props) => {
                   setCurrentPage(1);
                   setData(
                     allData.filter((item: any) =>
-                      item.name
-                        .toLocaleLowerCase()
-                        .includes(e.target.value.toLocaleLowerCase())
+                    item.name
+                    ?.toLocaleLowerCase()
+                    .includes(e.target.value.toLocaleLowerCase()) ||
+                  item.programCode
+                    ?.toLocaleLowerCase()
+                    .includes(e.target.value.toLocaleLowerCase())
+
                     )
                   );
                 }}
@@ -266,7 +271,7 @@ const Result = (props: Props) => {
                     return (
                       <div
                         key={index}
-                        className={`transition-all bg-[#EEEEEE] rounded-xl mt-[1%] cursor-pointer flex p-5 gap-3 content-center items-center h-20 ${
+                        className={`transition-all bg-[#EEEEEE] rounded-xl mt-[1%] cursor-pointer flex p-5 gap-3 content-center items-center h-20 relative ${
                           SelectedProgrammes.includes(
                             item.programCode as string
                           )
@@ -313,6 +318,9 @@ const Result = (props: Props) => {
                         <p className="text-black leading-5 pr-[10%]">
                           {item.name}
                         </p>
+                        <div className={`${item.anyIssue ? 'bg-error' : item.resultPublished ?'bg-success'  :  item.resultEntered ?'bg-info' : 'bg-warning'}  absolute w-3 h-3 rounded-full right-3`}>
+                          
+                          </div>
                       </div>
                     );
                   })}
