@@ -1,4 +1,3 @@
-
 "use client";
 import ResultBar from "../ResultBar";
 import InfoBar from "@/components/admin/InfoBar";
@@ -13,6 +12,7 @@ import OneResult from "./SingleResult";
 import { styled } from "styled-components";
 import { ChevronLeft } from "@/icons/arrows";
 import { PageChevronLeft, PageChevronRight } from "@/icons/pagination";
+import { DownLoadIcon } from "@/icons/action";
 
 interface Props {
   result: Programme[];
@@ -234,7 +234,7 @@ const Result = (props: Props) => {
                 }}
               />
 
-              <div>
+              <div className="flex items-center">
               <button
                   className="ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
                   onClick={downloadExcel}
@@ -242,11 +242,17 @@ const Result = (props: Props) => {
                    {SelectedProgrammes.length} Selected
                 </button>
                 <button
-                  className="ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
+                  className="hidden md:inline-flex ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
                   onClick={downloadExcel}
                 >
                   Export
                 </button>
+                <button
+                  className="ml-1 bg-secondary text-white rounded-full px-6 py-[8px] font-bold md:hidden"
+                  onClick={downloadExcel}
+                >
+                  <DownLoadIcon className="w-6 h-6 cursor-pointer fill-white  transition-all"/>
+                </button> 
               </div>
             </div>
             <div className="flex flex-col items-center lg:justify-center w-full h-full">

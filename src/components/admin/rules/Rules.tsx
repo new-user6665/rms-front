@@ -7,6 +7,7 @@ import { withUrqlClient } from "next-urql";
 import React, { useState } from "react";
 import { cacheExchange, fetchExchange } from "urql";
 import { Category } from "@/gql/graphql";
+import { AddIcon, DownLoadIcon } from "@/icons/action";
 
 interface Props {
   data: {
@@ -71,9 +72,9 @@ const Rules = (props: Props) => {
                   );
                 }}
               />
-              <div>
+              <div className="flex items-center">
                 <button
-                  className="inline-flex bg-secondary text-white rounded-full px-5 py-2 font-bold"
+                  className="hidden  md:inline-flex bg-secondary text-white rounded-full px-5 py-2 font-bold"
                   onClick={() => {
                     setIsCreate(true);
                     setIsEdit(false);
@@ -82,12 +83,29 @@ const Rules = (props: Props) => {
                 >
                   Create
                 </button>
+
                 <button
-                  className="ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
+                  className="md:hidden inline-flex bg-secondary text-white rounded-full px-5 py-2 font-bold"
+                  onClick={() => {
+                    setIsCreate(true);
+                    setIsEdit(false);
+                    setIsRightSideBarOpen(true);
+                  }}
+                >
+                 <AddIcon className="w-6 h-6 cursor-pointer fill-white  transition-all"/>
+                </button>
+                <button
+                  className="hidden md:block ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
                   onClick={downloadExcel}
                 >
                   Export
                 </button>
+                <button
+                  className="ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold md:hidden"
+                  onClick={downloadExcel}
+                >
+                  <DownLoadIcon className="w-6 h-6 cursor-pointer fill-white  transition-all"/>
+                </button> 
               </div>
             </div>
 

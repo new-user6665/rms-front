@@ -132,7 +132,7 @@ export type CreateCategoryInput = {
 
 export type CreateCategorySettingInput = {
   category: Scalars['String']['input'];
-  maxGroup: Scalars['Int']['input'];
+  maxGroup: Scalars['Int']['];
   maxNonStage?: InputMaybe<Scalars['Int']['input']>;
   maxOutDoor?: InputMaybe<Scalars['Int']['input']>;
   maxProgram: Scalars['Int']['input'];
@@ -192,6 +192,7 @@ export type CreateGradeInput = {
   pointHouse: Scalars['Int']['input'];
   pointSingle: Scalars['Int']['input'];
 };
+
 
 export type CreateManyCandidatesInput = {
   inputs: Array<CreateCandidateInput>;
