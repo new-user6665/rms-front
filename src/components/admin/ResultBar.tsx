@@ -21,8 +21,8 @@ const ResultBar = (props: Props) => {
           <div className="w-full h-full flex flex-col items-center">
             <p className="text-lg font-light">{item.name}</p>
             <div className="flex justify-around w-full h-full">
-            <div className="text-2xl font-extrabold	text-secondary ">{item.totalPoint} <p>Arts</p></div>
-            <div className="text-xl font-extrabold	text-secondary ">{item.totalSports} <p>Sports</p></div>
+            <div className="text-2xl font-extrabold	text-secondary ">{item.totalPoint} - {item.currentPoint} <p>Arts</p></div>
+            <div className="text-xl font-extrabold	text-secondary ">{item.totalSports} - {item.currentSports} <p>Sports</p></div>
             </div>
           </div>
         </div>

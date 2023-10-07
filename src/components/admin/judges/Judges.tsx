@@ -263,6 +263,7 @@ const Judges = (props: Props) => {
         }
       });
     });
+    doc.deletePage(1)
 
     const pdfBlob = doc.output("blob");
     var filename = bulk? `Judge-List`: `${(programme as any).programCode} ${(programme as any).name}`
