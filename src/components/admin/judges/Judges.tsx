@@ -218,6 +218,7 @@ const Judges = (props: Props) => {
         }
       });
     });
+    doc.deletePage(1)
 
     const pdfBlob = doc.output("blob");
     saveAs(pdfBlob, `judgeList.pdf`);
