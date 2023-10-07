@@ -14,6 +14,7 @@ import { PageChevronLeft, PageChevronRight } from "@/icons/pagination";
 import QRCode from "qrcode.react";
 import { jsPDF } from "jspdf";
 import { saveAs } from "file-saver";
+import { AddIcon, DownLoadIcon } from "@/icons/action";
 
 interface Props {
   data: {
@@ -458,9 +459,9 @@ const Programme = (props: Props) => {
                 }}
               />
 
-              <div>
+              <div className="flex items-center ">
                 <button
-                  className="ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
+                  className="ml-1  mr-1 bg-secondary text-white rounded-full px-5 py-2 font-bold hidden md:block"
                   onClick={()=>{
                     // setIsClickedForQR(true)
                     // downloadQRCodePdf()
@@ -471,7 +472,26 @@ const Programme = (props: Props) => {
                 <div className="dropdown dropdown-end">
                   <label
                     tabIndex={0}
-                    className="inline-flex bg-secondary text-white rounded-full px-5 py-2 font-bold"
+                    className=" md:hidden inline-flex bg-secondary text-white rounded-full px-5 py-2 font-bold"
+                  >
+                    <AddIcon className="w-7 h-7 fill-white cursor-pointer"/>
+                    <svg
+                      className="-mr-1 h-5 w-5 text-gray-400"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </label>
+
+                  <label
+                    tabIndex={0}
+                    className="hidden  md:inline-flex bg-secondary text-white rounded-full px-5 py-2 font-bold"
                   >
                     Add
                     <svg
@@ -534,11 +554,17 @@ const Programme = (props: Props) => {
                   </ul>
                 </div>
                 <button
-                  className="ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
+                  className="hidden md:block ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
                   onClick={downloadExcel}
                 >
                   Export
                 </button>
+                <button
+                  className="ml-1 bg-secondary text-white rounded-full px-6 py-[10px] font-bold md:hidden"
+                  onClick={downloadExcel}
+                >
+                  <DownLoadIcon className="w-6 h-6 cursor-pointer fill-white  transition-all"/>
+                </button> 
               </div>
             </div>
             <div className="flex flex-col items-center lg:justify-center w-full h-full">

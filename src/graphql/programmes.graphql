@@ -156,6 +156,7 @@ query GetAllDetailedProgrammeForJudge($api_key: String!) {
     resultEntered
     resultPublished
     anyIssue
+    type
     category {
       name
     }

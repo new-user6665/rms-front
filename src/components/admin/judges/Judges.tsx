@@ -11,6 +11,7 @@ import { styled } from "styled-components";
 import { PageChevronLeft, PageChevronRight } from "@/icons/pagination";
 import { jsPDF } from "jspdf";
 import { saveAs } from "file-saver";
+import { DownLoadIcon, FilterIcon } from "@/icons/action";
 import {
   AddIcon,
   DownLoadIcon,
@@ -20,6 +21,7 @@ import {
 import PointUpload from "./PointUpload";
 import ManualUpload from "./ManualUpload";
 import ViewResultAndEdit from "./ViewResultAndEdit";
+
 // import launch from "puppeteer-extra"
 // const puppeteer = require('puppeteer-extra')
 // const StealthPlugin = require('puppeteer-extra-plugin-stealth')
@@ -310,9 +312,28 @@ const Judges = (props: Props) => {
                   <div className="dropdown dropdown-end mr-1">
                     <label
                       tabIndex={0}
-                      className="inline-flex bg-secondary ml-1  text-white rounded-full px-5 py-2 font-bold"
+                      className="hidden md:inline-flex bg-secondary ml-1  text-white rounded-full px-5 py-2 font-bold"
                     >
                       Filter
+                      <svg
+                        className="-mr-1 h-5 w-5 text-gray-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </label>
+
+                    <label
+                      tabIndex={0}
+                      className="md:hidden inline-flex bg-secondary ml-1  text-white rounded-full px-5 py-2 font-bold"
+                    >
+                     <FilterIcon className="w-7 h-7 fill-white cursor-pointer"/>
                       <svg
                         className="-mr-1 h-5 w-5 text-gray-400"
                         viewBox="0 0 20 20"
@@ -330,7 +351,7 @@ const Judges = (props: Props) => {
                       tabIndex={0}
                       className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40 font-bold"
                     >
-                      {props.categories.map((item: Category, index: number) => {
+                      {props.categories?.map((item: Category, index: number) => {
                         return (
                           <button
                             className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
@@ -353,7 +374,7 @@ const Judges = (props: Props) => {
                   </div>
 
                   <label
-                    className="inline-flex bg-secondary text-white  rounded-full px-5 py-2 font-bold cursor-pointer"
+                    className="hidden md:inline-flex bg-secondary text-white  rounded-full px-5 py-2 font-bold cursor-pointer"
                     onClick={async () => {
                       downloadJudgeList();
                       // setDownloadAsBulk(true)
@@ -362,6 +383,85 @@ const Judges = (props: Props) => {
                   >
                     Download
                   </label>
+
+
+                  
+                  <label
+                    className=" md:hidden inline-flex bg-secondary text-white  rounded-full px-5 py-2 font-bold cursor-pointer"
+                    onClick={async () => {
+                      console.log("clicked");
+
+                      // await generatePdf()
+                      downloadJudgeList();
+                    }}
+                  >
+                  <DownLoadIcon className="w-7 h-7 fill-white cursor-pointer"/>
+                  </label>
+
+                  {/* <div className="dropdown dropdown-end">
+                    <label
+                      tabIndex={0}
+                      className="inline-flex bg-secondary ml-1  text-white rounded-full px-5 py-2 font-bold"
+                    >
+                      Add
+                      <svg
+                        className="-mr-1 h-5 w-5 text-gray-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </label>
+                    <ul
+                      tabIndex={0}
+                      className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40 font-bold"
+                    >
+                      <button
+                        className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                        onClick={() => {
+                          setIsCreate(true);
+                          setIsEdit(false);
+                          setIsRightSideBarOpen(true);
+                          setExcel(false);
+                          setIsImageUpload(false);
+                        }}
+                      >
+                        CREATE
+                      </button>
+
+                      <button
+                        className="block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                        onClick={() => {
+                          setIsCreate(false);
+                          setIsEdit(false);
+                          setExcel(true);
+                          setIsRightSideBarOpen(true);
+                          setIsImageUpload(false);
+                        }}
+                      >
+                        IMPORT
+                      </button>
+
+                      <button
+                        className="block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                        onClick={() => {
+                          setIsCreate(false);
+                          setIsEdit(false);
+                          setIsRightSideBarOpen(true);
+                          setExcel(false);
+                          setIsImageUpload(true);
+                        }}
+                      >
+                        IMAGE UPLOAD
+                      </button>
+                    </ul>
+                  </div> */}
+
                 </div>
               </div>
             </div>
