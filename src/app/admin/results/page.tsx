@@ -4,12 +4,15 @@ import {
   GetAllCategoriesDocument,
   GetAllCategoriesQuery,
   GetAllCategoriesQueryVariables,
-  GetAllProgrammesDocument,
-  GetAllProgrammesQuery,
-  GetAllProgrammesQueryVariables,
+  GetPublishedProgrammesDocument,
+  GetPublishedProgrammesQuery,
+  GetPublishedProgrammesQueryVariables,
   GetAllSkillsDocument,
   GetAllSkillsQuery,
   GetAllSkillsQueryVariables,
+  GetAllTeamsDocument,
+  GetAllTeamsQueryVariables,
+  GetAllTeamsQuery,
 } from "@/gql/graphql";
 import { SectionIcon } from "@/icons/navs";
 import { API_KEY } from "@/lib/env";
@@ -19,9 +22,9 @@ import React from "react";
 const page = async () => {
   const { client } = getUrqlClient();
   const result = await client.query<
-    GetAllProgrammesQuery,
-    GetAllProgrammesQueryVariables
-  >(GetAllProgrammesDocument, {api_key : API_KEY});
+    GetPublishedProgrammesQuery,
+    GetPublishedProgrammesQueryVariables
+  >(GetPublishedProgrammesDocument, {api_key : API_KEY});
 
   const categories = await client.query<
     GetAllCategoriesQuery,
@@ -33,14 +36,20 @@ const page = async () => {
     GetAllSkillsQueryVariables
   >(GetAllSkillsDocument, {api_key : API_KEY});
 
+  const teams = await client.query<
+  GetAllTeamsQuery,
+  GetAllTeamsQueryVariables
+>(GetAllTeamsDocument, {api_key : API_KEY});
+
   return (
     <main className="w-full h-full flex ">
       <Result
         key={1}
-        result={result.data?.programmes}
+        result={result.data?.resultEnteredProgrammes}
         pageProps={1}
         categories={categories.data?.categories}
         skills={skills.data?.skills}
+        teams = {teams.data?.teams}
       />
     </main>
   );

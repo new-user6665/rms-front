@@ -2,10 +2,12 @@ import React from "react";
 
 interface Props {
   data: {
-    title: string;
-    totalPoints: number;
-    selectedPoints : number;
-  }[];
+    name : string
+    totalPoint : number;
+    currentPoint : number;
+    totalSports : number;
+    currentSports : number
+  }[]
 } 
 
 const ResultBar = (props: Props) => {
@@ -16,10 +18,12 @@ const ResultBar = (props: Props) => {
           key={index}
           className="rounded-3xl w-1/4 py-3 bg-accent hidden lg:flex items-center justify-center flex-row "
         >
-          <div>
-            <p className="text-lg font-light">{item.title}</p>
-            <p className="text-4xl font-extrabold	text-secondary ">{item.totalPoints}</p>
-            <p className="text-4xl font-extrabold	text-secondary ">{item.selectedPoints}</p>
+          <div className="w-full h-full flex flex-col items-center">
+            <p className="text-lg font-light">{item.name}</p>
+            <div className="flex justify-around w-full h-full">
+            <div className="text-2xl font-extrabold	text-secondary ">{item.totalPoint} - {item.currentPoint} <p>Arts</p></div>
+            <div className="text-xl font-extrabold	text-secondary ">{item.totalSports} - {item.currentSports} <p>Sports</p></div>
+            </div>
           </div>
         </div>
       ))}

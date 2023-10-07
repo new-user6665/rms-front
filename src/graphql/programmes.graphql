@@ -1,5 +1,5 @@
-query GetAllProgrammes ($api_key: String!){
-  programmes (api_key: $api_key){
+query GetAllProgrammes($api_key: String!) {
+  programmes(api_key: $api_key) {
     id
     name
     programCode
@@ -15,15 +15,14 @@ query GetAllProgrammes ($api_key: String!){
   }
 }
 
-
-query GetProgrammeByCode($api_key: String! , $programCode : String!){
-  programmeByCode(api_key: $api_key , code: $programCode){
-      candidateProgramme {
+query GetProgrammeByCode($api_key: String!, $programCode: String!) {
+  programmeByCode(api_key: $api_key, code: $programCode) {
+    candidateProgramme {
       candidate {
         name
         imageId
         chestNO
-        team{
+        team {
           name
         }
       }
@@ -45,10 +44,10 @@ query GetProgrammeByCode($api_key: String! , $programCode : String!){
     anyIssue
     mode
     type
-    skill{
+    skill {
       name
     }
-    category{
+    category {
       name
     }
     duration
@@ -59,17 +58,17 @@ query GetProgrammeByCode($api_key: String! , $programCode : String!){
 
 query GetDetailedProgramme($id: Int!, $api_key: String!) {
   programme(id: $id, api_key: $api_key) {
-  candidateProgramme {
-    id
+    candidateProgramme {
+      id
       candidate {
         name
         chestNO
-        team{
+        team {
           name
           id
         }
       }
-      candidatesOfGroup{
+      candidatesOfGroup {
         name
         chestNO
       }
@@ -85,15 +84,82 @@ query GetDetailedProgramme($id: Int!, $api_key: String!) {
     resultEntered
     resultPublished
     anyIssue
-    skill{
+    skill {
       name
     }
-    category{
+    category {
       name
     }
     duration
     date
     venue
+  }
+}
+
+query GetPublishedProgrammes($api_key: String!) {
+  resultEnteredProgrammes(api_key: $api_key) {
+    id
+    name
+    model
+    mode
+    programCode
+    resultEntered
+    resultPublished
+    candidateCount
+    category {
+      name
+    }
+    skill {
+      name
+    }
+    anyIssue
+    candidateProgramme {
+      id
+      point
+      candidate {
+        chestNO
+        team {
+          name
+          id
+        }
+      }
+    }
+  }
+}
+
+query GetAllDetailedProgrammeForJudge($api_key: String!) {
+  programmes(api_key: $api_key) {
+    id
+    candidateProgramme {
+      candidate {
+        name
+        chestNO
+      }
+      candidatesOfGroup {
+        name
+        chestNO
+      }
+      mark
+      grade {
+        name
+      }
+      position {
+        name
+      }
+    }
+    resultEntered
+    resultPublished
+    programCode
+    name
+    groupCount
+    candidateCount
+    resultEntered
+    resultPublished
+    anyIssue
+    type
+    category {
+      name
+    }
   }
 }
 
@@ -102,8 +168,10 @@ query GetAllDetailedProgramme($api_key: String!) {
     id
     candidateProgramme {
       candidate {
-        name
-        chestNO
+        id
+      }
+      candidatesOfGroup {
+        id
       }
     }
     resultEntered
@@ -117,10 +185,10 @@ query GetAllDetailedProgramme($api_key: String!) {
     resultEntered
     resultPublished
     anyIssue
-    skill{
+    skill {
       name
     }
-    category{
+    category {
       name
     }
     duration
@@ -129,8 +197,8 @@ query GetAllDetailedProgramme($api_key: String!) {
   }
 }
 
-query GetAllProgrammesByCandidates ($api_key: String!){
-  programmes (api_key: $api_key){
+query GetAllProgrammesByCandidates($api_key: String!) {
+  programmes(api_key: $api_key) {
     id
     name
     programCode
@@ -142,7 +210,7 @@ query GetAllProgrammesByCandidates ($api_key: String!){
     skill {
       name
     }
-    candidateProgramme{
+    candidateProgramme {
       id
     }
   }
@@ -160,6 +228,8 @@ query GetOneProgramme($id: Int!, $api_key: String!) {
     anyIssue
     candidateCount
     groupCount
+    venue
+    date
     category {
       name
     }
@@ -218,7 +288,6 @@ mutation AddManyProgrammes($inputs: [CreateProgrammeInput!]!) {
     programCode
     model
   }
-
 }
 
 mutation EditProgramme(
@@ -263,5 +332,23 @@ mutation EditProgramme(
 mutation DeleteProgramme($id: Int!) {
   removeProgramme(id: $id) {
     __typename
+  }
+}
+
+mutation UploadManySchedule($inputs: [CreateSchedule!]!) {
+  setManySchedule(createScheduleInput: { inputs: $inputs }) {
+    programCode
+    date
+    venue
+  }
+}
+
+mutation UploadSchedule($programCode: String!, $date: DateTime!, $venue: Int) {
+  setSchedule(
+    createScheduleInput: { code: $programCode, date: $date, venue: $venue }
+  ) {
+    programCode
+    date
+    venue
   }
 }

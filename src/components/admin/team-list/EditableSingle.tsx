@@ -69,13 +69,11 @@ const EditableSingle = (props: Props) => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex items-center justify-center">
       <input
         type="text"
         value={chestNo as string}
-        className={`text-lg font-bold w-8/12 border-2 ${
-          props.haveEditngChestNo ? "border-green-500" : "border-rose-500"
-        }`}
+        className={`text-lg font-bold w-8/12 border-2 border-secondary rounded-md`}
         id={`input-${props.candidate?.chestNO}-${props.selectedProgramme.programCode}`}
         onChange={(e) => {
           setChestNo(e.target.value);
@@ -117,7 +115,7 @@ const EditableSingle = (props: Props) => {
         }}
       >
 
-      <SubmitIcon className="w-7 h-7 bg-white cursor-pointer text-black" />
+      <SubmitIcon className="w-7 h-7 bg-white cursor-pointer text-secondary" />
       </div>
     </div>
   );
