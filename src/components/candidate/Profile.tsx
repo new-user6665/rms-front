@@ -67,11 +67,11 @@ const Profile = (props: Props) => {
   };
 
   useEffect(() => {
-    props?.candidate?.candidateProgrammes?.map((programme) => {
-      programme?.programme?.resultPublished &&
-        setPublishedResults([...publishedResults, programme]);
+    props?.candidate?.candidateProgrammes?.map((candidateProgramme) => {
+      candidateProgramme?.programme?.resultPublished &&
+        setPublishedResults([...publishedResults, candidateProgramme]);
     });
-  });
+  }, []);
 
   return (
     <>
@@ -389,18 +389,29 @@ const Profile = (props: Props) => {
         <div className="w-full h-full bg-primary flex flex-col items-center">
           {/* image */}
           <div className="w-full flex flex-col items-center relative z-40">
-            <div className="rounded-full h-36 w-36 border-4 bg-white flex flex-col items-end relative">
-              <img
+            <div
+              className="rounded-full h-36 w-36 border-4 bg-white flex flex-col items-end relative bg-cover"
+              style={{
+                backgroundImage: `url(${
+                  props?.candidate?.imageId
+                    ? `https://drive.google.com/uc?id=${props?.candidate?.imageId}`
+                    : "https://banner2.cleanpng.com/20180410/bbw/kisspng-avatar-user-medicine-surgery-patient-avatar-5acc9f7a7cb983.0104600115233596105109.jpg"
+                })`,
+              }}
+            >
+              {/* <img
                 className="rounded-full"
                 src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MXw3NjA4Mjc3NHx8ZW58MHx8fHx8&w=1000&q=80"
                 alt=""
-              />
+              /> */}
               {/* Color */}
               <div className="bg-red-900 h-4 w-4 rounded-xl border-2 absolute left-5 z-50" />
             </div>
             {/* chessNo */}
             <div className="bg-white h-6 rounded-xl border-2 -mt-3 relative z-50">
-              <h1 className="text-sm px-2 font-bold">S313</h1>
+              <h1 className="text-sm px-2 font-bold">
+                {props?.candidate?.chestNO}
+              </h1>
             </div>
           </div>
           {/* card */}

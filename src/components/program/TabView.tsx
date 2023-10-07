@@ -1,4 +1,60 @@
-export default function TabView() {
+"use client";
+
+import { CandidateProgramme, Programme } from "@/gql/graphql";
+import { useEffect, useState } from "react";
+import TabCandidates from "./TabCandidates";
+import TabResults from "./TabResults";
+
+interface Props {
+  programme: Programme;
+}
+
+export default function TabView(props: Props) {
+  const { programme } = props;
+
+  const [candidatesOrResults, setCandidatesOrResults] = useState("candidates");
+  const [dateTime, setDateTime] = useState<Date>();
+
+  const active = {
+    div: "rounded-xl text-sm h-8 bg-primary border border-primary flex items-center",
+    button: "px-3 text-white text-lg",
+  };
+  const inactive = {
+    div: "rounded-xl text-sm h-8 border border-primary flex items-center",
+    button: "px-3 text-primary text-lg",
+  };
+
+  useEffect(() => {
+    if (programme?.date) {
+      setDateTime(new Date(programme?.date));
+    }
+    console.log(dateTime);
+  }, []);
+
+  function timeFormat12Hour() {
+    let h: any = dateTime?.getUTCHours();
+    let m: any = dateTime?.getUTCMinutes();
+    let ampm = h >= 12 ? "pm" : "am";
+
+    h = h % 12;
+    h = h ? h : 12;
+
+    m = m?.toString().padStart(2, "0");
+    const formatedTimeString = h + ":" + m + " " + ampm;
+    return formatedTimeString;
+  }
+
+  function timeFormatDate() {
+    console.log(dateTime?.getUTCMonth());
+    let day: any = dateTime?.getUTCDate();
+    let month: any = dateTime?.getUTCMonth();
+    let year: any = dateTime?.getUTCFullYear();
+
+    const formatedTimeString = day + "-" + month + "-" + year;
+    return formatedTimeString;
+  }
+
+
   return (
     <div className="xl:flex h-full w-full hidden 2xl:hidden">
       {/* sidebar */}
@@ -12,7 +68,7 @@ export default function TabView() {
             type="text"
             disabled
             className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-            placeholder="Muhammed Midlaj"
+            placeholder={`${programme?.name}`}
           />
         </div>
         <div className="flex w-full px-4">
@@ -22,7 +78,7 @@ export default function TabView() {
               type="text"
               disabled
               className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-              placeholder="SM123"
+              placeholder={`${programme?.programCode}`}
             />
           </div>
           <div className="flex flex-col w-2/3">
@@ -31,7 +87,7 @@ export default function TabView() {
               type="text"
               disabled
               className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-              placeholder="04"
+              placeholder={`0${programme?.candidateCount}`}
             />
           </div>
         </div>
@@ -41,7 +97,7 @@ export default function TabView() {
             type="text"
             disabled
             className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-            placeholder="Degree"
+            placeholder={`${programme?.category?.name}`}
           />
         </div>
         <div className="flex flex-col w-full pl-4">
@@ -50,7 +106,7 @@ export default function TabView() {
             type="text"
             disabled
             className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-            placeholder="40 Min"
+            placeholder={`${programme?.duration}`}
           />
         </div>
         <div className="flex flex-col w-full pl-4">
@@ -59,7 +115,7 @@ export default function TabView() {
             type="text"
             disabled
             className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-            placeholder="7:00 - 8:00 PM, 20-10-2023"
+            // placeholder={`${timeFormat12Hour()}, ${timeFormatDate()}`}
           />
         </div>
         <div className="flex w-full px-4">
@@ -69,7 +125,7 @@ export default function TabView() {
               type="text"
               disabled
               className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-              placeholder="Arts"
+              placeholder={`${programme?.mode}`}
             />
           </div>
           <div className="flex flex-col w-1/3">
@@ -78,7 +134,7 @@ export default function TabView() {
               type="text"
               disabled
               className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-              placeholder="Stage"
+              placeholder={`${programme?.model}`}
             />
           </div>
           <div className="flex flex-col w-1/3">
@@ -87,7 +143,7 @@ export default function TabView() {
               type="text"
               disabled
               className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-              placeholder="Single"
+              placeholder={`${programme?.type}`}
             />
           </div>
         </div>
@@ -99,65 +155,46 @@ export default function TabView() {
         <div className="flex flex-col w-10/11 h-5/6 bg-white rounded-big overflow-hidden pb-10 pt-4">
           {/* sliders */}
           <div className="flex h-16 justify-center items-center gap-5">
-            <div className="rounded-xl text-sm h-8 bg-primary border border-primary flex items-center">
-              <p className="px-3 text-white text-lg">Programs</p>
+            <div
+              onClick={() => setCandidatesOrResults("candidates")}
+              className={
+                candidatesOrResults === "candidates" ? active.div : inactive.div
+              }
+            >
+              <button
+                className={
+                  candidatesOrResults === "candidates"
+                    ? active.button
+                    : inactive.button
+                }
+              >
+                Candidates
+              </button>
             </div>
-            <div className="rounded-xl text-sm h-8 border border-primary flex items-center">
-              <p className="px-3 text-primary text-lg">Results</p>
+            <div
+              onClick={() => setCandidatesOrResults("results")}
+              className={
+                candidatesOrResults !== "candidates" ? active.div : inactive.div
+              }
+            >
+              <button
+                className={
+                  candidatesOrResults !== "candidates"
+                    ? active.button
+                    : inactive.button
+                }
+              >
+                Results
+              </button>
             </div>
           </div>
           <hr className="border" />
           {/* sort buttons */}
-          <div className="flex h-10 items-center px-10 gap-3">
-            <div className="rounded-xl text-sm h-6 bg-primary border border-primary flex items-center">
-              <p className="px-2 text-white text-sm">All</p>
-            </div>
-            <div className="rounded-xl text-sm h-6 border border-primary flex items-center">
-              <p className="px-2 text-primary text-sm">Chronicle</p>
-            </div>
-            <div className="rounded-xl text-sm h-6 border border-primary flex items-center">
-              <p className="px-2 text-primary text-sm">Tribune</p>
-            </div>
-            <div className="rounded-xl text-sm h-6 border border-primary flex items-center">
-              <p className="px-2 text-primary text-sm">Gazette</p>
-            </div>
-            <div className="rounded-xl text-sm h-6 border border-primary flex items-center">
-              <p className="px-2 text-primary text-sm">Herald</p>
-            </div>
-          </div>
-          <hr className="border" />
-          {/* table */}
-          <div className="flex flex-col h-full items-center pt-5 mt-5 gap-5 overflow-y-auto">
-            {/* program List */}
-            <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
-              <div className="flex h-8 w-1/2 text-sm items-center pl-2 gap-3 justify-start">
-                <p>1st</p>
-                <p>S123</p>
-                <p>Muhammed Midlaj</p>
-              </div>
-              <div className="flex h-8 w-1/2 text-sm items-center pr-2 gap-3 justify-end">
-                <p>Chronicle</p>
-                <p>A</p>
-                <p>3pts</p>
-              </div>
-            </div>
-            {/* candidate List */}
-            <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
-              <div className="flex h-8 w-1/2 text-sm items-center pl-2 gap-3 justify-start">
-                <img
-                  src="1575462484669.jpg"
-                  className="rounded-full h-8 border"
-                  alt=""
-                />
-                <p>S123</p>
-                <p>Muhammed Midlaj</p>
-              </div>
-              <div className="flex h-8 w-1/2 text-sm items-center pr-2 gap-3 justify-end">
-                <p>Chronicle</p>
-              </div>
-            </div>
-            {/* end */}
-          </div>
+          {candidatesOrResults === "candidates" ? (
+            <TabCandidates programme={programme} />
+          ) : (
+            <TabResults programme={programme} />
+          )}
         </div>
       </div>
     </div>

@@ -13,6 +13,7 @@ export default function DesktopView(props: Props) {
   const [resultedCandidates, setResultedCandidates] = useState<
     CandidateProgramme[]
   >([]);
+  const [dateTime, setDateTime] = useState<Date>();
 
   useEffect(() => {
     programme?.candidateProgramme?.map((candidate) => {
@@ -21,6 +22,36 @@ export default function DesktopView(props: Props) {
           setResultedCandidates([...resultedCandidates, candidate]));
     });
   });
+
+  useEffect(() => {
+    if (programme?.date) {
+      setDateTime(new Date(programme?.date));
+    }
+    console.log(dateTime);
+  }, []);
+
+  function timeFormat12Hour() {
+    let h: any = dateTime?.getHours();
+    let m: any = dateTime?.getMinutes();
+    let ampm = h >= 12 ? "pm" : "am";
+
+    h = h % 12;
+    h = h ? h : 12;
+
+    m = m?.toString().padStart(2, "0");
+    const formatedTimeString = h + ":" + m + " " + ampm;
+    return formatedTimeString;
+  }
+
+  function timeFormatDate() {
+    console.log(dateTime?.getUTCMonth());
+    let day: any = dateTime?.getUTCDate();
+    let month: any = dateTime?.getUTCMonth();
+    let year: any = dateTime?.getUTCFullYear();
+
+    const formatedTimeString = day + "-" + month + "-" + year;
+    return formatedTimeString;
+  }
 
   const specialButton = {
     div: "rounded-xl text-sm h-6 bg-primary border border-primary flex items-center",
@@ -120,7 +151,7 @@ export default function DesktopView(props: Props) {
             type="text"
             disabled
             className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-            placeholder={`${programme?.date}`}
+            // placeholder={`${timeFormat12Hour()}, ${timeFormatDate()}`}
           />
         </div>
         <div className="flex w-full px-4">
@@ -129,7 +160,7 @@ export default function DesktopView(props: Props) {
             <input
               type="text"
               disabled
-              className="h-10 w-11/12 bg-white rounded-lg text-sm placeholder:pl-2 placeholder:text-primary"
+              className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
               placeholder={`${programme?.mode}`}
             />
           </div>
