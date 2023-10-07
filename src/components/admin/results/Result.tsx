@@ -2,31 +2,50 @@
 import ResultBar from "../ResultBar";
 import InfoBar from "@/components/admin/InfoBar";
 import RightSideBar from "@/components/admin/RightSideBar";
-import { Programme, Category, Team, Skill } from "@/gql/graphql";
+import {
+  Programme,
+  Category,
+  Team,
+  Skill,
+  Model,
+  PublishResultsMutation,
+  PublishResultsMutationVariables,
+  PublishResultsDocument,
+  CandidateProgramme,
+} from "@/gql/graphql";
 import { parseJwt } from "@/lib/cryptr";
 import { SERVER_URL } from "@/lib/urql";
 import { withUrqlClient } from "next-urql";
 import { useEffect, useRef, useState } from "react";
-import { cacheExchange, fetchExchange } from "urql";
+import {
+  OperationResult,
+  cacheExchange,
+  fetchExchange,
+  useMutation,
+} from "urql";
 import OneResult from "./SingleResult";
 import { styled } from "styled-components";
 import { ChevronLeft } from "@/icons/arrows";
 import { PageChevronLeft, PageChevronRight } from "@/icons/pagination";
+import { it } from "node:test";
+import Modal from "@/components/Modal";
+import { toast } from "react-toastify";
 import { DownLoadIcon } from "@/icons/action";
+
 
 interface Props {
   result: Programme[];
   categories: Category[];
   skills: Skill[];
-  teams : Team[];
+  teams: Team[];
 }
 
 interface BarData {
-  name : string
-  totalPoint : number;
-  currentPoint : number;
-  totalSports : number;
-  currentSports : number
+  name: string;
+  totalPoint: number;
+  currentPoint: number;
+  totalSports: number;
+  currentSports: number;
 }
 
 // styled components
@@ -67,9 +86,36 @@ const Result = (props: Props) => {
   const [itemsPerPage, setItemsPerPage] = useState<number>(7);
   const [screenHeigh, setScreenHeight] = useState<number>(400);
   const [SelectedProgrammes, setSelectedProgrammes] = useState<string[]>([]);
-  const [barData , setBarData] = useState<BarData[]>([])
+  const [isOrderedToPublish, setIsOrderedToPublish] = useState(false);
+  const [isOrderedToGoLive, setIsOrderedToGoLive] = useState(false);
+  const [barData, setBarData] = useState<BarData[]>([]);
+  const [timeInSec, setTimeInSec] = useState<number>(3);
 
   const ProgrammeRef = useRef<HTMLDivElement>(null);
+
+  const [state, UploadManyProgrammeExicute] = useMutation(
+    PublishResultsDocument
+  );
+
+  const PublishResults = async () => {
+    const datas: OperationResult<
+      PublishResultsMutation,
+      PublishResultsMutationVariables
+    > = await UploadManyProgrammeExicute({
+      programCodes: SelectedProgrammes,
+    });
+
+    console.log(datas);
+    
+
+    if (datas.data?.publishResults) {
+      console.log(datas.data?.publishResults);
+      setIsOrderedToPublish(false);
+      toast.success("Results Published");
+    } else {
+      toast.error("Results not Published");
+    }
+  };
 
   useEffect(() => {
     const cookie = document.cookie;
@@ -77,30 +123,40 @@ const Result = (props: Props) => {
       const token = cookie.split("=")[1];
       const cv = parseJwt(token);
       setData(
-        props.result.filter((item: any) =>
-          cv.categories?.includes(item.category.name) && !item.resultPublished && !item.anyIssue
+        props.result?.filter(
+          (item: any) =>
+            cv.categories?.includes(item.category.name) &&
+            !item.resultPublished &&
+            !item.anyIssue
         ) as Programme[]
       );
       setAllData(
-        props.result.filter((item: Programme) =>
-          cv.categories?.includes(item?.category?.name) && !item.resultPublished && !item.anyIssue
+        props.result?.filter(
+          (item: Programme) =>
+            cv.categories?.includes(item?.category?.name) &&
+            !item.resultPublished &&
+            !item.anyIssue
         ) as Programme[]
       );
     }
 
-        // Bar data
+    console.log(props.result);
 
-        let teamData : BarData[] = props.teams.map((data , i)=>{
-          return {
-            name : data.name as string,
-            totalPoint : data.totalPoint as number || 0 as number,
-            totalSports : data.totalSportsPoint as number || 0 as number, 
-            currentPoint : 0 as number,
-            currentSports : 0 as number
-          } 
-        })
+    // Bar data
 
-        setBarData(teamData)
+    let teamData: BarData[] = props.teams.map((data, i) => {
+      console.log(data);
+
+      return {
+        name: data.name as string,
+        totalPoint: (data.totalPoint as number) || (0 as number),
+        totalSports: (data.totalSportsPoint as number) || (0 as number),
+        currentPoint: 0 as number,
+        currentSports: 0 as number,
+      };
+    });
+
+    setBarData(teamData);
 
     // window height settings
     const windowWidth = window.innerWidth;
@@ -153,10 +209,10 @@ const Result = (props: Props) => {
   const endIndex = startIndex + itemsPerPage;
 
   // Get the data for the current page
-  const currentData = data.slice(startIndex, endIndex);
+  const currentData = data?.slice(startIndex, endIndex);
 
   // Calculate the total number of pages
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const totalPages = Math.ceil(data?.length / itemsPerPage);
 
   // Go to a specific page number
   const goToPage = (pageNumber: number) => {
@@ -205,7 +261,7 @@ const Result = (props: Props) => {
   return (
     <>
       <div className="w-full h-full">
-      <ResultBar data={barData} />
+        <ResultBar data={barData} />
 
         <DetailedDiv
           height={`${(itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6 + 8}rem`}
@@ -221,26 +277,63 @@ const Result = (props: Props) => {
                   setSearch(e.target.value);
                   setCurrentPage(1);
                   setData(
-                    allData.filter((item: any) =>
-                    item.name
-                    ?.toLocaleLowerCase()
-                    .includes(e.target.value.toLocaleLowerCase()) ||
-                  item.programCode
-                    ?.toLocaleLowerCase()
-                    .includes(e.target.value.toLocaleLowerCase())
-
+                    allData.filter(
+                      (item: any) =>
+                        item.name
+                          ?.toLocaleLowerCase()
+                          .includes(e.target.value.toLocaleLowerCase()) ||
+                        item.programCode
+                          ?.toLocaleLowerCase()
+                          .includes(e.target.value.toLocaleLowerCase())
                     )
                   );
                 }}
               />
 
-              <div className="flex items-center">
-              <button
-                  className="ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
-                  onClick={downloadExcel}
-                >
-                   {SelectedProgrammes.length} Selected
-                </button>
+
+              <div>
+                <div className="dropdown dropdown-end mr-1">
+                  <label
+                    tabIndex={0}
+                    className="inline-flex bg-secondary ml-1  text-white rounded-full px-5 py-2 font-bold cursor-pointer"
+                  >
+                    {SelectedProgrammes.length} Selected
+                    <svg
+                      className="-mr-1 h-5 w-5 text-gray-400"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </label>
+                  <ul
+                    tabIndex={0}
+                    className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40 font-bold"
+                  >
+                    <button
+                      className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                      onClick={() => {
+                        setIsOrderedToPublish(true);
+                      }}
+                    >
+                      Publish
+                    </button>
+                    <button
+                      className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                      onClick={() => {
+                        setIsOrderedToGoLive(true);
+                      }}
+                    >
+                      Go Live
+                    </button>
+                  </ul>
+                </div>
+
                 <button
                   className="hidden md:inline-flex ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
                   onClick={downloadExcel}
@@ -308,7 +401,60 @@ const Result = (props: Props) => {
                             ]);
                           }
 
-                          console.log(SelectedProgrammes);
+                          // setting point
+
+                          // for (let index = 0; index < (item.candidateProgramme?.length as number); index++) {
+                          //   const itm = (item.candidateProgramme as CandidateProgramme[])[index];
+
+                          // }
+                          let point = barData;
+
+                          item.candidateProgramme?.forEach((itm) => {
+                            console.log(itm);
+
+                            let editedData = point.map((bar, i) => {
+                              if (bar.name == itm.candidate?.team?.name) {
+                                let Arts = 0;
+                                let Sports = 0;
+                                // bar.currentPoint = itm.point as number
+
+                                if (item.model == Model.Arts) {
+                                  Arts = (itm.point as number) || 0;
+                                } else {
+                                  Sports = (itm.point as number) || 0;
+                                }
+
+                                if (
+                                  SelectedProgrammes.includes(
+                                    item.programCode as string
+                                  )
+                                ) {
+                                  return {
+                                    ...bar,
+                                    currentPoint: bar.currentPoint - Arts,
+                                    totalPoint: bar.totalPoint - Arts,
+                                    totalSports: bar.totalSports - Sports,
+                                    currentSports: bar.currentSports - Sports,
+                                    // itm.point
+                                  };
+                                } else {
+                                  return {
+                                    ...bar,
+                                    currentPoint: bar.currentPoint + Arts,
+                                    totalPoint: bar.totalPoint + Arts,
+                                    totalSports: bar.totalSports + Sports,
+                                    currentSports: bar.currentSports + Sports,
+                                    // itm.point
+                                  };
+                                }
+                              }
+                              return bar;
+                            });
+
+                            point = editedData;
+                          });
+
+                          setBarData(point);
                         }}
                       >
                         <div className="text-white font-bold bg-secondary px-3 py-1 text-xl rounded-xl flex justify-center content-center items-center">
@@ -318,9 +464,17 @@ const Result = (props: Props) => {
                         <p className="text-black leading-5 pr-[10%]">
                           {item.name}
                         </p>
-                        <div className={`${item.anyIssue ? 'bg-error' : item.resultPublished ?'bg-success'  :  item.resultEntered ?'bg-info' : 'bg-warning'}  absolute w-3 h-3 rounded-full right-3`}>
-                          
-                          </div>
+                        <div
+                          className={`${
+                            item.anyIssue
+                              ? "bg-error"
+                              : item.resultPublished
+                              ? "bg-success"
+                              : item.resultEntered
+                              ? "bg-info"
+                              : "bg-warning"
+                          }  absolute w-3 h-3 rounded-full right-3`}
+                        ></div>
                       </div>
                     );
                   })}
@@ -354,9 +508,84 @@ const Result = (props: Props) => {
               </div>
             </div>
           </div>
-        
         </DetailedDiv>
       </div>
+
+      <Modal
+        modalOpen={isOrderedToPublish}
+        setModalOpen={setIsOrderedToPublish}
+      >
+        Are you sure, Do you want to{" "}
+        <span className="font-bold">Publish results</span>?
+        <p className="mt-4">Selected programs :</p>
+        <div className="w-full flex flex-wrap gap-2 mt-1">
+          {SelectedProgrammes.map((pr, i) => {
+            return (
+              <p key={i} className="text-primary font-bold">
+                {" "}
+                {pr}{" "}
+              </p>
+            );
+          })}
+        </div>
+        <div className="flex justify-end gap-3 mt-8">
+          <button
+            onClick={async () => {
+              await PublishResults();
+            }}
+            className="btn btn-secondary"
+          >
+            Confirm
+          </button>
+          <button
+            onClick={() => {
+              setIsOrderedToPublish(false);
+            }}
+            className="btn btn-secondary"
+          >
+            Cancel
+          </button>
+        </div>
+      </Modal>
+
+      <Modal modalOpen={isOrderedToGoLive} setModalOpen={setIsOrderedToGoLive}>
+        Are you sure, Do you want to do{" "}
+        <span className="font-bold">Live results</span>?
+        <div className="mt-1 flex justify-start gap-5 items-center">
+          <p>Enter the Delay time</p>
+          <input
+            type="number"
+            id="small-input"
+            value={timeInSec}
+            onChange={(e) => {
+              setTimeInSec(+e.target.value);
+            }}
+            className="block w-10 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          />
+        </div>
+        <p className="mt-4">Selected programs :</p>
+        <div className="w-full flex flex-wrap gap-2 mt-1">
+          {SelectedProgrammes.map((pr, i) => {
+            return (
+              <p key={i} className="text-primary font-bold">
+                {" "}
+                {pr}{" "}
+              </p>
+            );
+          })}
+        </div>
+        <div className="flex justify-end gap-3 mt-8">
+          <button className="btn btn-secondary">Confirm</button>
+          <button
+            onClick={() => {
+              setIsOrderedToGoLive(false);
+            }}
+            className="btn btn-secondary"
+          >
+            Cancel
+          </button>
+        </div>
+      </Modal>
     </>
   );
 };
