@@ -2,7 +2,7 @@
 import ErrorPage from "@/components/Error";
 import SideBar from "@/components/admin/SideBar";
 import { useGlobalContext } from "@/context/context";
-import { CheckLoggedInDocument, CheckLoggedInQuery } from "@/gql/graphql";
+import { CheckLoggedInDocument, CheckLoggedInQuery, Roles } from "@/gql/graphql";
 import { SERVER_URL } from "@/lib/urql";
 import { withUrqlClient } from "next-urql";
 import { cacheExchange, fetchExchange, useQuery } from "urql";
@@ -22,13 +22,10 @@ import { cacheExchange, fetchExchange, useQuery } from "urql";
 });
 
   return (
-    <div className={`${ data?.checkLoggedIn?.roles &&  'flex w-screen  lg:h-screen  overflow-y-scroll  lg:overflow-x-hidden lg:overflow-y-hidden'}`}>
-      { data?.checkLoggedIn?.roles ? 
+    <div className={`${ data?.checkLoggedIn?.roles === Roles.Admin &&  'w-full h-full'}`}>
+      { data?.checkLoggedIn?.roles  === Roles.Admin   ? 
       (
-        <>
-          <SideBar />
-          <div className="px-6 pt-6 flex-1">{children}</div>
-        </>
+        <>{children}</>
       ) :
       (
         <ErrorPage/>

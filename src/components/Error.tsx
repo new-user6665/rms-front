@@ -1,7 +1,14 @@
 "use client";
 import React from "react";
+import { useRouter } from "next/navigation";
+import { useGlobalContext } from "@/context/context";
 
 const ErrorPage = () => {
+
+  const router = useRouter()
+
+  const { data, setData } = useGlobalContext();
+
   return (
     <>
       {/* content */}
@@ -33,16 +40,17 @@ const ErrorPage = () => {
             <p className="mt-6 text-base leading-7 text-gray-600">
               Sorry, we couldn’t find the page you’re looking for.
             </p>
-            <div className="mt-10 flex items-center justify-center gap-x-6">
-              <a
-                href="#"
+            <div className="mt-10 flex items-center justify-center gap-x-6 cursor-pointer">
+              <p
+                onClick={() => router.push(`${data.admin ? '/admin' : '/'}`)}
+
                 className="rounded-md bg-secondary px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secodarybg-secondary"
               >
                 Go back home
-              </a>
-              <a href="#" className="text-sm font-semibold text-gray-900">
+              </p>
+              <p className="text-sm font-semibold text-gray-900 border px-3.5 py-2.5 rounded-md">
                 Contact Us <span aria-hidden="true" />
-              </a>
+              </p>
             </div>
           </div>
         </div>

@@ -2,8 +2,6 @@
 import InfoBar from "@/components/admin/InfoBar";
 import RightSideBar from "@/components/admin/RightSideBar";
 import DashBoard from "@/components/admin/DashBoard";
-import { withUrqlClient } from "next-urql";
-import { cacheExchange, fetchExchange } from "urql";
 
 export default function Admin() {
   const data = [
@@ -68,7 +66,7 @@ export default function Admin() {
   ];
   return (
     <main className=" w-full h-full flex ">
-      <DashBoard data={data} key={1} pageProps={'fd'} />
+      <DashBoard data={data} key={1} pageProps={0} />
     </main>
   );
 }

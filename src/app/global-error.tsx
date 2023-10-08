@@ -1,4 +1,7 @@
 'use client'
+
+import ErrorPage from "@/components/Error"
+
  
 export default function GlobalError({
   error,
@@ -8,11 +11,8 @@ export default function GlobalError({
   reset: () => void
 }) {
   return (
-    <html>
-      <body>
-        <h2>Something went wrong!</h2>
-        <button onClick={() => reset()}>Try again</button>
-      </body>
-    </html>
+    <>
+    <ErrorPage/>
+    </>
   )
 }

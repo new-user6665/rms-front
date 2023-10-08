@@ -40,20 +40,26 @@ const page = async () => {
 
   const data = [
     {
-      title: "Total Users",
+      title: "Total Candidates",
       icon: <Candidates className="w-16 h-16 mx-3 text-secondary" />,
+      value : result.data?.candidates.length
     },
     {
-      title: "Total Users",
+      title: "Team Candidates(Avg) ",
       icon: <Candidates className="w-16 h-16 mx-3 text-secondary" />,
+      value : parseInt(result.data?.candidates?.length as number / (teams.data?.teams?.length as number) + '')
     },
     {
-      title: "Total Users",
+      title: "Candidates (CHS)",
       icon: <Candidates className="w-16 h-16 mx-3 text-secondary" />,
+      // candidates who starting chestNO with C
+      value : result.data?.candidates?.filter((candidate)=>candidate.chestNO?.startsWith('C')).length
     },
     {
-      title: "Total Users",
+      title: "Candidates (SMS)",
       icon: <Candidates className="w-16 h-16 mx-3 text-secondary" />,
+      // candidates who starting chestNO with S
+      value : result.data?.candidates?.filter((candidate)=>candidate.chestNO?.startsWith('S')).length
     },
 
   ];

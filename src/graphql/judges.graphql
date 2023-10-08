@@ -63,6 +63,11 @@ mutation addResult($input: [AddResult!]!, $programmeCode: String!) {
   }
 }
 
-# mutation addManualUpload{
-#     re
-# }
+mutation addManualUpload($input : [AddManual!]! , $programmeCode: String!){
+
+   uploadResultManually(addManual:$input , programmeCode:$programmeCode){
+      id
+      anyIssue
+}
+
+}

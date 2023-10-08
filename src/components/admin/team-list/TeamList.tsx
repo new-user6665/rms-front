@@ -5,7 +5,7 @@ import { SERVER_URL } from "@/lib/urql";
 import { withUrqlClient } from "next-urql";
 import React, { useEffect, useRef, useState } from "react";
 import { cacheExchange, fetchExchange } from "urql";
-import { Candidate, Category, Programme, Skill } from "@/gql/graphql";
+import { Candidate, CandidateProgramme, Category, Programme, Skill } from "@/gql/graphql";
 import OneProgramme from "./SingleTeamList";
 import { parseJwt } from "@/lib/cryptr";
 import BulkUploadTeamList from "./BulkUploadTeamList";
@@ -83,6 +83,22 @@ const TeamList = (props: Props) => {
       );
     }
 
+
+       // sort the candidateProgramme array in Programme object by chestNO
+
+       let temp = [...props.result]
+
+       // to sort by chestNO take the last three digits of chestNO and sort them as it is a string
+
+       temp.map((item:Programme)=>{
+         item.candidateProgramme?.sort((a: CandidateProgramme, b: CandidateProgramme)=>{
+           let chestNOA = a.candidate?.chestNO?.slice(-3)
+           let chestNOB = b.candidate?.chestNO?.slice(-3)
+           return Number(chestNOA) - Number(chestNOB)
+         })
+       })
+
+       setData(temp as Programme[])
 
     // window height settings
     const windowWidth = window.innerWidth;

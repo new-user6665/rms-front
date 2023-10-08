@@ -38,7 +38,7 @@ function PointUpload(props: Props) {
     console.log(data);
     if (data.data?.addNormalResult) {
       let finalData = data.data?.addNormalResult;
-     let editedDate = props.allData.map((data , i)=>{
+     let editedDate : any = props.allData.map((data , i)=>{
       if(data.id == props.Programme.id){
         return {
           ...data,
@@ -47,15 +47,16 @@ function PointUpload(props: Props) {
           candidateProgramme : data.candidateProgramme?.map((itm , ind )=>{
             return {
               ...itm,
-              mark : finalData[i]?.mark
-            }
+              mark : finalData[i]?.mark as number,
+            } 
           })
         }
       }
-      return data
-     })
+      return data as Programme
+    })
+    props.setAllData(editedDate)
 
-    //  props.
+     props.setIsPointUploadOpen(false);
       toast.success("Result Added");
     } else {
       data.error?.message.split("]")[1].startsWith(" target")
