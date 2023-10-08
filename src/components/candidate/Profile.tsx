@@ -14,6 +14,17 @@ const Profile = (props: Props) => {
   const [publishedResults, setPublishedResults] = useState<
     CandidateProgramme[]
   >([]);
+
+  useEffect(() => {
+    let candidateProgrammes: CandidateProgramme[] = [];
+    props?.candidate?.candidateProgrammes?.map((candidateProgramme) => {
+      candidateProgramme?.programme?.resultPublished &&
+        candidateProgrammes.push(candidateProgramme);
+    });
+
+    setPublishedResults(candidateProgrammes);
+  }, []);
+
   const [programsOrResults, setProgramsOrResults] = useState("programs");
   const [allOrIndividualOrGroup, setAllOrIndividualOrGroup] = useState("all");
   const [allOrIndividualOrGroupResult, setAllOrIndividualOrGroupResult] =
@@ -65,13 +76,6 @@ const Profile = (props: Props) => {
     div: "bg-transparent h-6 rounded-xl outline outline-1",
     button: "px-2 text-primary",
   };
-
-  useEffect(() => {
-    props?.candidate?.candidateProgrammes?.map((candidateProgramme) => {
-      candidateProgramme?.programme?.resultPublished &&
-        setPublishedResults([...publishedResults, candidateProgramme]);
-    });
-  }, []);
 
   return (
     <>
@@ -276,8 +280,16 @@ const Profile = (props: Props) => {
                         <p className="">{programme?.programme?.name}</p>
                       </div>
                       <div className="text-sm flex gap-2 flex-row items-end -pt-2 ml-24">
-                        <p>{programme?.position?.name}</p>
-                        <p>{programme?.grade?.name}</p>
+                        <p>
+                          {programme?.position?.name
+                            ? programme?.position?.name
+                            : `Nil`}
+                        </p>
+                        <p>
+                          {programme?.grade?.name
+                            ? programme?.grade?.name
+                            : `Nil`}
+                        </p>
                         <p>{programme?.point}pts</p>
                       </div>
                     </div>
@@ -304,8 +316,16 @@ const Profile = (props: Props) => {
                         <p className="">{programme?.programme?.name}</p>
                       </div>
                       <div className="text-sm flex gap-2 flex-row items-end -pt-2 ml-24">
-                        <p>{programme?.position?.name}</p>
-                        <p>{programme?.grade?.name}</p>
+                        <p>
+                          {programme?.position?.name
+                            ? programme?.position?.name
+                            : `Nil`}
+                        </p>
+                        <p>
+                          {programme?.grade?.name
+                            ? programme?.grade?.name
+                            : `Nil`}
+                        </p>
                         <p>{programme?.point}pts</p>
                       </div>
                     </div>
@@ -404,8 +424,6 @@ const Profile = (props: Props) => {
                 src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MXw3NjA4Mjc3NHx8ZW58MHx8fHx8&w=1000&q=80"
                 alt=""
               /> */}
-              {/* Color */}
-              <div className="bg-red-900 h-4 w-4 rounded-xl border-2 absolute left-5 z-50" />
             </div>
             {/* chessNo */}
             <div className="bg-white h-6 rounded-xl border-2 -mt-3 relative z-50">

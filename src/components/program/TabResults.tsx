@@ -13,12 +13,15 @@ export default function TabResults(props: Props) {
   >([]);
 
   useEffect(() => {
+    let candidateResults: CandidateProgramme[] = [];
     programme?.candidateProgramme?.map((candidate) => {
-      candidate?.position?.name !== null ||
-        (candidate?.grade?.name !== null &&
-          setResultedCandidates([...resultedCandidates, candidate]));
+      console.log(candidate);
+      (candidate?.position?.name !== null || candidate?.grade?.name !== null) &&
+        candidateResults.push(candidate);
     });
-  });
+    setResultedCandidates(candidateResults);
+    console.log(candidateResults);
+  }, []);
 
   const active = {
     div: "rounded-xl text-sm h-6 bg-primary border border-primary flex items-center",
@@ -125,13 +128,19 @@ export default function TabResults(props: Props) {
             allCandidatesResult?.map((candidate) => (
               <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
                 <div className="flex h-8 w-1/2 text-sm items-center pl-2 gap-3 justify-start">
-                  <p>{candidate?.position?.name}</p>
+                  <p>
+                    {candidate?.position?.name
+                      ? candidate?.position?.name
+                      : "Nil"}
+                  </p>
                   <p>{candidate?.programme?.programCode}</p>
                   <p>{candidate?.candidate?.name}</p>
                 </div>
                 <div className="flex h-8 w-1/2 text-sm items-center pr-2 gap-3 justify-end">
                   <p>{candidate?.candidate?.team?.name}</p>
-                  <p>{candidate?.grade?.name}</p>
+                  <p>
+                    {candidate?.grade?.name ? candidate?.grade?.name : `Nil`}
+                  </p>
                   <p>{candidate?.point}pts</p>
                 </div>
               </div>
@@ -140,13 +149,19 @@ export default function TabResults(props: Props) {
             chronicleCandidatesResult?.map((candidate) => (
               <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
                 <div className="flex h-8 w-1/2 text-sm items-center pl-2 gap-3 justify-start">
-                  <p>{candidate?.position?.name}</p>
+                  <p>
+                    {candidate?.position?.name
+                      ? candidate?.position?.name
+                      : "Nil"}
+                  </p>
                   <p>{candidate?.programme?.programCode}</p>
                   <p>{candidate?.candidate?.name}</p>
                 </div>
                 <div className="flex h-8 w-1/2 text-sm items-center pr-2 gap-3 justify-end">
                   <p>{candidate?.candidate?.team?.name}</p>
-                  <p>{candidate?.grade?.name}</p>
+                  <p>
+                    {candidate?.grade?.name ? candidate?.grade?.name : `Nil`}
+                  </p>
                   <p>{candidate?.point}pts</p>
                 </div>
               </div>
@@ -155,13 +170,19 @@ export default function TabResults(props: Props) {
             gazetteCandidatesResult?.map((candidate) => (
               <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
                 <div className="flex h-8 w-1/2 text-sm items-center pl-2 gap-3 justify-start">
-                  <p>{candidate?.position?.name}</p>
+                  <p>
+                    {candidate?.position?.name
+                      ? candidate?.position?.name
+                      : "Nil"}
+                  </p>
                   <p>{candidate?.programme?.programCode}</p>
                   <p>{candidate?.candidate?.name}</p>
                 </div>
                 <div className="flex h-8 w-1/2 text-sm items-center pr-2 gap-3 justify-end">
                   <p>{candidate?.candidate?.team?.name}</p>
-                  <p>{candidate?.grade?.name}</p>
+                  <p>
+                    {candidate?.grade?.name ? candidate?.grade?.name : `Nil`}
+                  </p>
                   <p>{candidate?.point}pts</p>
                 </div>
               </div>
@@ -170,13 +191,19 @@ export default function TabResults(props: Props) {
             heraldCandidatesResult?.map((candidate) => (
               <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
                 <div className="flex h-8 w-1/2 text-sm items-center pl-2 gap-3 justify-start">
-                  <p>{candidate?.position?.name}</p>
+                  <p>
+                    {candidate?.position?.name
+                      ? candidate?.position?.name
+                      : "Nil"}
+                  </p>
                   <p>{candidate?.programme?.programCode}</p>
                   <p>{candidate?.candidate?.name}</p>
                 </div>
                 <div className="flex h-8 w-1/2 text-sm items-center pr-2 gap-3 justify-end">
                   <p>{candidate?.candidate?.team?.name}</p>
-                  <p>{candidate?.grade?.name}</p>
+                  <p>
+                    {candidate?.grade?.name ? candidate?.grade?.name : `Nil`}
+                  </p>
                   <p>{candidate?.point}pts</p>
                 </div>
               </div>
@@ -185,13 +212,19 @@ export default function TabResults(props: Props) {
             tribuneCandidatesResult?.map((candidate) => (
               <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
                 <div className="flex h-8 w-1/2 text-sm items-center pl-2 gap-3 justify-start">
-                  <p>{candidate?.position?.name}</p>
+                  <p>
+                    {candidate?.position?.name
+                      ? candidate?.position?.name
+                      : "Nil"}
+                  </p>
                   <p>{candidate?.programme?.programCode}</p>
                   <p>{candidate?.candidate?.name}</p>
                 </div>
                 <div className="flex h-8 w-1/2 text-sm items-center pr-2 gap-3 justify-end">
                   <p>{candidate?.candidate?.team?.name}</p>
-                  <p>{candidate?.grade?.name}</p>
+                  <p>
+                    {candidate?.grade?.name ? candidate?.grade?.name : `Nil`}
+                  </p>
                   <p>{candidate?.point}pts</p>
                 </div>
               </div>

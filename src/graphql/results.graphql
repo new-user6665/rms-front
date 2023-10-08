@@ -7,9 +7,7 @@ mutation PublishResults($programCodes: [String!]!) {
 }
 
 mutation PublishResult($programCodes: String!) {
-  publishResult(programmeCode: $programCodes){
-    id
-  }
+  publishResult(programmeCode: $programCodes)
 }
 
 mutation GoLive($programCodes: [String!]!  $timeInSec : Float!) {
