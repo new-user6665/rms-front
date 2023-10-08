@@ -2,27 +2,32 @@ import React from "react";
 
 interface Props {
   data: {
-    name : string
-    totalPoint : number;
-    currentPoint : number;
-    totalSports : number;
-    currentSports : number
+    name: string
+    totalPoint: number;
+    currentPoint: number;
+    totalSports: number;
+    currentSports: number
   }[]
-} 
+}
 
 const ResultBar = (props: Props) => {
   return (
     <div className="w-full flex flex-wrap md:flex-nowrap gap-10 justify-between">
       {props.data.map((item, index) => (
-        <div
-          key={index}
-          className="rounded-3xl w-1/4 py-3 bg-accent hidden lg:flex items-center justify-center flex-row "
-        >
-          <div className="w-full h-full flex flex-col items-center">
-            <p className="text-lg font-light">{item.name}</p>
-            <div className="flex justify-around w-full h-full">
-            <div className="text-2xl font-extrabold	text-secondary ">{item.totalPoint} - {item.currentPoint} <p>Arts</p></div>
-            <div className="text-xl font-extrabold	text-secondary ">{item.totalSports} - {item.currentSports} <p>Sports</p></div>
+        <div key={index} className="bg-accent text-secondary  rounded-2xl w-1/5 flex flex-col items-center py-2 ">
+          <h1 className="font-bold text-lg">{item.name}</h1>
+          <div className="flex gap-2 w-full px-5">
+            <div className="w-1/2 h-full flex flex-col items-center">
+              <h1 className="text-3xl font-bold">{item.totalPoint}</h1>
+              <h1 className="text-xs">Arts Total</h1>
+              <h1 className="text-2xl font-semibold">{item.currentPoint}</h1>
+              <h1 className="text-[10px]">Current Points</h1>
+            </div>
+            <div className="w-1/2 h-full flex flex-col items-center">
+              <h1 className="text-3xl font-bold">{item.totalSports}</h1>
+              <h1 className="text-xs">Sports Total</h1>
+              <h1 className="text-2xl font-semibold">{item.currentSports}</h1>
+              <h1 className="text-[10px]">Current Points</h1>
             </div>
           </div>
         </div>

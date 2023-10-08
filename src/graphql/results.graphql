@@ -1,5 +1,9 @@
 mutation PublishResults($programCodes: [String!]!) {
-  publishResults(programmeCode: $programCodes)
+  publishResults(programmeCode: $programCodes){
+    id
+    resultPublished
+    programCode
+  }
 }
 
 mutation PublishResult($programCodes: String!) {

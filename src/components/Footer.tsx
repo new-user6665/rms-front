@@ -30,8 +30,8 @@ function Footer() {
             Fax: 0494 2460575
           </p>
           <div className=" py-2  my-1  flex gap-2   ">
-            <button onClick={() => router.push('/login')} className=" bg-white rounded-md px-5 py-2 text-black font-semibold ">  log as admin</button>
-            <button className=" bg-white rounded-md px-5 py-2 text-black font-semibold ">  log as judge</button>
+            <button onClick={() => router.push('/login')} className=" bg-white rounded-md px-5 py-2 text-black font-semibold ">  Login </button>
+            {/* <button className=" bg-white rounded-md px-5 py-2 text-black font-semibold ">  Login as Judge</button> */}
           </div>
         </div>
       </div>

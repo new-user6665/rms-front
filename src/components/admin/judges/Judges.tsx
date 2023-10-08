@@ -1,7 +1,7 @@
 "use client";
 import InfoBar from "@/components/admin/InfoBar";
 import RightSideBar from "@/components/admin/RightSideBar";
-import { Programme, Category, Team, Skill, Mode, Types } from "@/gql/graphql";
+import { Programme, Category, Team, Skill, Mode, Types, CandidateProgramme } from "@/gql/graphql";
 import { parseJwt } from "@/lib/cryptr";
 import { SERVER_URL } from "@/lib/urql";
 import { withUrqlClient } from "next-urql";
@@ -11,12 +11,12 @@ import { styled } from "styled-components";
 import { PageChevronLeft, PageChevronRight } from "@/icons/pagination";
 import { jsPDF } from "jspdf";
 import { saveAs } from "file-saver";
-import { DownLoadIcon, FilterIcon } from "@/icons/action";
 import {
   AddIcon,
   DownLoadIcon,
   EyeIcon,
   ManualUploadIcon,
+  FilterIcon
 } from "@/icons/action";
 import PointUpload from "./PointUpload";
 import ManualUpload from "./ManualUpload";
@@ -100,6 +100,23 @@ const Judges = (props: Props) => {
           cv.categories?.includes(item.category.name)
         ) as Programme[]
       );
+
+        // sort the candidateProgramme array in Programme object by chestNO
+
+        let temp = [...props.result]
+
+        // to sort by chestNO take the last three digits of chestNO and sort them as it is a string
+
+        temp.map((item:Programme)=>{
+          item.candidateProgramme?.sort((a: CandidateProgramme, b: CandidateProgramme)=>{
+            let chestNOA = a.candidate?.chestNO?.slice(-3)
+            let chestNOB = b.candidate?.chestNO?.slice(-3)
+            return Number(chestNOA) - Number(chestNOB)
+          })
+        })
+
+        setData(temp as Programme[])
+
     }
 
     // window height settings
@@ -600,17 +617,19 @@ const Judges = (props: Props) => {
 
                 <button
                   className="bg-secondary p-1 rounded-md"
-                  onClick={() => setIsPointUploadOpen(true)}
+                  onClick={() => setIsManualUploadOpen(true)}
+                  
                 >
-                  <AddIcon className="w-6 h-6 text-white" />
+                  <ManualUploadIcon className="w-6 h-6 text-white" />
+                  
                 </button>
 
                 {!SelectedProgramme?.resultEntered && (
                   <button
                     className="bg-secondary p-1 rounded-md"
-                    onClick={() => setIsManualUploadOpen(true)}
+                    onClick={() => setIsPointUploadOpen(true)}
                   >
-                    <ManualUploadIcon className="w-6 h-6 text-white" />
+                    <AddIcon className="w-6 h-6 text-white" />
                   </button>
                 )}
 
@@ -658,6 +677,8 @@ const Judges = (props: Props) => {
           Programme={SelectedProgramme as Programme}
           isManualUploadOpen
           setIsManualUploadOpen={setIsManualUploadOpen}
+          allData={data as Programme[]}
+          setAllData={setData}
         />
       )}
     </>

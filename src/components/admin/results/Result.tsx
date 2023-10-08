@@ -1,7 +1,5 @@
 "use client";
 import ResultBar from "../ResultBar";
-import InfoBar from "@/components/admin/InfoBar";
-import RightSideBar from "@/components/admin/RightSideBar";
 import {
   Programme,
   Category,
@@ -11,6 +9,9 @@ import {
   PublishResultsMutation,
   PublishResultsMutationVariables,
   PublishResultsDocument,
+  GoLiveDocument,
+  GoLiveMutation,
+  GoLiveMutationVariables,
   CandidateProgramme,
 } from "@/gql/graphql";
 import { parseJwt } from "@/lib/cryptr";
@@ -23,14 +24,12 @@ import {
   fetchExchange,
   useMutation,
 } from "urql";
-import OneResult from "./SingleResult";
 import { styled } from "styled-components";
-import { ChevronLeft } from "@/icons/arrows";
 import { PageChevronLeft, PageChevronRight } from "@/icons/pagination";
-import { it } from "node:test";
 import Modal from "@/components/Modal";
 import { toast } from "react-toastify";
 import { DownLoadIcon } from "@/icons/action";
+import * as XLSX from 'xlsx';
 
 
 interface Props {
@@ -93,20 +92,24 @@ const Result = (props: Props) => {
 
   const ProgrammeRef = useRef<HTMLDivElement>(null);
 
-  const [state, UploadManyProgrammeExicute] = useMutation(
+  const [state, PublishResultExicute] = useMutation(
     PublishResultsDocument
+  );
+
+  const [_, GoLiveResiltExicute] = useMutation(
+    GoLiveDocument
   );
 
   const PublishResults = async () => {
     const datas: OperationResult<
       PublishResultsMutation,
       PublishResultsMutationVariables
-    > = await UploadManyProgrammeExicute({
+    > = await PublishResultExicute({
       programCodes: SelectedProgrammes,
     });
 
     console.log(datas);
-    
+
 
     if (datas.data?.publishResults) {
       console.log(datas.data?.publishResults);
@@ -114,6 +117,27 @@ const Result = (props: Props) => {
       toast.success("Results Published");
     } else {
       toast.error("Results not Published");
+    }
+  };
+
+  const GoLiveResults = async () => {
+    const datas: OperationResult<
+      GoLiveMutation,
+      GoLiveMutationVariables
+    > = await GoLiveResiltExicute({
+      programCodes: SelectedProgrammes,
+      timeInSec: timeInSec
+    });
+
+    console.log(datas);
+
+
+    if (datas.data) {
+      console.log(datas.data);
+      setIsOrderedToPublish(false);
+      toast.success("Results Are Live");
+    } else {
+      toast.error("Results not Live");
     }
   };
 
@@ -140,7 +164,6 @@ const Result = (props: Props) => {
       );
     }
 
-    console.log(props.result);
 
     // Bar data
 
@@ -227,9 +250,8 @@ const Result = (props: Props) => {
         <button
           key={page}
           onClick={() => goToPage(page)}
-          className={`${
-            currentPage === page ? "bg-secondary text-white" : "bg-[#ECE1FC]"
-          }  py-2 px-4 rounded-xl font-bold mx-1 my-5`}
+          className={`${currentPage === page ? "bg-secondary text-white" : "bg-[#ECE1FC]"
+            }  py-2 px-4 rounded-xl font-bold mx-1 my-5`}
         >
           {page}
         </button>
@@ -239,23 +261,69 @@ const Result = (props: Props) => {
   };
 
   function downloadExcel() {
-    const data = props.result;
-    const replacer = (key: any, value: any) => (value === null ? "" : value); // specify how you want to handle null values here
-    const header = Object.keys(data[0]);
-    let csv = data.map((row: any) =>
-      header
-        .map((fieldName) => JSON.stringify(row[fieldName], replacer))
-        .join(",")
-    );
-    csv.unshift(header.join(","));
-    let csvArray = csv.join("\r\n");
+    // const data = props.result;
+    // const replacer = (key: any, value: any) => (value === null ? "" : value); // specify how you want to handle null values here
+    // const header = Object.keys(data[0]);
+    // let csv = data.map((row: any) =>
+    //   header
+    //     .map((fieldName) => JSON.stringify(row[fieldName], replacer))
+    //     .join(",")
+    // );
+    // csv.unshift(header.join(","));
+    // let csvArray = csv.join("\r\n");
 
-    var a = document.createElement("a");
-    a.href = "data:attachment/csv," + csvArray;
-    a.target = "_Blank";
-    a.download = "Programme.csv";
-    document.body.appendChild(a);
-    a.click();
+    // var a = document.createElement("a");
+    // a.href = "data:attachment/csv," + csvArray;
+    // a.target = "_Blank";
+    // a.download = "Programme.csv";
+    // document.body.appendChild(a);
+    // a.click();
+    // / Create a new workbook
+    const workbook = XLSX.utils.book_new();
+
+    // Static data for the first two rows
+    const staticData = [
+      ['Merged and Centered', null, null],
+      ['Static Data 1', 'Static Data 2', 'Static Data 3'],
+      ['Static Data A', 'Static Data B', 'Static Data C'],
+    ];
+
+    // Create a worksheet
+    const worksheet = XLSX.utils.aoa_to_sheet(staticData);
+
+    // Merge and center cells for the first row
+    worksheet['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 2 } }];
+    // worksheet.A1.s = { alignment: { horizontal: 'center' }, fill: { fgColor: { rgb: 'FFFF00' } }};
+
+    // Add the worksheet to the workbook
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet 1');
+
+    // Dynamic data (replace this with your actual dynamic array)
+    const dynamicData = [
+      ['Dynamic Data 1', 'Dynamic Data 2', 'Dynamic Data 3'],
+      ['Dynamic Data A', 'Dynamic Data B', 'Dynamic Data C'],
+      // ... more dynamic data
+    ];
+
+    // Create another worksheet for dynamic data
+    const dynamicWorksheet = XLSX.utils.aoa_to_sheet(dynamicData);
+
+    // Color the cells in the dynamic worksheet (e.g., alternate row coloring)
+    for (let row = 0; row < dynamicData.length; row++) {
+      for (let col = 0; col < dynamicData[row].length; col++) {
+        const cellAddress = XLSX.utils.encode_cell({ r: row + 2, c: col }); // Add 2 to row for offset
+        // dynamicWorksheet[cellAddress].s = { fill: { fgColor: { rgb: row % 2 === 0 ? 'DDDDDD' : 'FFFFFF' } } };
+      }
+    }
+
+    // Add the dynamic worksheet to the workbook
+    XLSX.utils.book_append_sheet(workbook, dynamicWorksheet, 'Sheet 2');
+
+    // Save the workbook to a file
+    XLSX.writeFile(workbook, 'output.xlsx');
+
+    console.log('Excel file created successfully!');
+
   }
 
   return (
@@ -264,7 +332,7 @@ const Result = (props: Props) => {
         <ResultBar data={barData} />
 
         <DetailedDiv
-          height={`${(itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6 + 8}rem`}
+          height={`${(itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6 + 4.5}rem`}
         >
           <div className="flex-1 h-full">
             <div className="h-10 cursor-pointer flex justify-between mb-4">
@@ -344,33 +412,30 @@ const Result = (props: Props) => {
                   className="ml-1 bg-secondary text-white rounded-full px-6 py-[8px] font-bold md:hidden"
                   onClick={downloadExcel}
                 >
-                  <DownLoadIcon className="w-6 h-6 cursor-pointer fill-white  transition-all"/>
-                </button> 
+                  <DownLoadIcon className="w-6 h-6 cursor-pointer fill-white  transition-all" />
+                </button>
               </div>
             </div>
             <div className="flex flex-col items-center lg:justify-center w-full h-full">
               <ComponentsDiv
-                height={`${
-                  (itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6
-                }rem`}
+                height={`${(itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6
+                  }rem`}
               >
                 <div
                   ref={ProgrammeRef}
-                  className={`grid gap-4 w-full transition-all grid-cols-1 ${
-                    IsRightSideBarOpen ? "lg:grid-cols-3" : "lg:grid-cols-4"
-                  }`}
+                  className={`grid gap-4 w-full transition-all grid-cols-1 ${IsRightSideBarOpen ? "lg:grid-cols-3" : "lg:grid-cols-4"
+                    }`}
                 >
                   {currentData?.map((item: Programme, index: number) => {
                     return (
                       <div
                         key={index}
-                        className={`transition-all bg-[#EEEEEE] rounded-xl mt-[1%] cursor-pointer flex p-5 gap-3 content-center items-center h-20 relative ${
-                          SelectedProgrammes.includes(
-                            item.programCode as string
-                          )
+                        className={`transition-all bg-[#EEEEEE] rounded-xl mt-[1%] cursor-pointer flex p-5 gap-3 content-center items-center h-20 relative ${SelectedProgrammes.includes(
+                          item.programCode as string
+                        )
                             ? "bg-[#e1c7f9]"
                             : "inherit"
-                        }`}
+                          }`}
                         onClick={() => {
                           // setIsRightSideBarOpen(true);
                           setSelectedProgramme(item);
@@ -465,15 +530,14 @@ const Result = (props: Props) => {
                           {item.name}
                         </p>
                         <div
-                          className={`${
-                            item.anyIssue
+                          className={`${item.anyIssue
                               ? "bg-error"
                               : item.resultPublished
-                              ? "bg-success"
-                              : item.resultEntered
-                              ? "bg-info"
-                              : "bg-warning"
-                          }  absolute w-3 h-3 rounded-full right-3`}
+                                ? "bg-success"
+                                : item.resultEntered
+                                  ? "bg-info"
+                                  : "bg-warning"
+                            }  absolute w-3 h-3 rounded-full right-3`}
                         ></div>
                       </div>
                     );
@@ -575,7 +639,9 @@ const Result = (props: Props) => {
           })}
         </div>
         <div className="flex justify-end gap-3 mt-8">
-          <button className="btn btn-secondary">Confirm</button>
+          <button onClick={async () => {
+            await GoLiveResults()
+          }} className="btn btn-secondary">Confirm</button>
           <button
             onClick={() => {
               setIsOrderedToGoLive(false);

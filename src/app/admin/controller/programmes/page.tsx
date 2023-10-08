@@ -20,30 +20,33 @@ const page = async () => {
   const result = await client.query<
     GetAllProgrammesQuery,
     GetAllProgrammesQueryVariables
-  >(GetAllProgrammesDocument, {api_key : API_KEY});
+  >(GetAllProgrammesDocument, { api_key: API_KEY });
 
   const categories = await client.query<
     GetAllCategoriesQuery,
     GetAllCategoriesQueryVariables
-  >(GetAllCategoriesDocument, {api_key : API_KEY});
+  >(GetAllCategoriesDocument, { api_key: API_KEY });
 
   const skills = await client.query<
     GetAllSkillsQuery,
     GetAllSkillsQueryVariables
-  >(GetAllSkillsDocument, {api_key : API_KEY});
+  >(GetAllSkillsDocument, { api_key: API_KEY });
 
   const data = [
     {
-      title: "Total Users",
+      title: "Total Programs",
       icon: <SectionIcon className="w-6 h-6 text-teal-600" />,
+      value: result.data?.programmes.length,
     },
     {
-      title: "Total Users",
+      title: "Result Pubished",
       icon: <SectionIcon className="w-6 h-6 text-teal-600" />,
+      value: result.data?.programmes.filter((programme) => programme.resultPublished).length
     },
     {
-      title: "Total Users",
+      title: "Result Entered",
       icon: <SectionIcon className="w-6 h-6 text-teal-600" />,
+      value: result.data?.programmes.filter((programme) => programme.resultEntered).length
     },
     {
       title: "Total Users",

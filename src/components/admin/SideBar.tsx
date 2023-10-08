@@ -24,42 +24,42 @@ import { OperationResult, useMutation } from "urql";
 const AdminNavs = [
   {
     name: "Settings",
-    nav: "settings",
+    nav: "admin/settings",
     icon: <Dashoard className="w-8 h-8" />,
   },
   {
     name: "Category",
-    nav: "category",
+    nav: "admin/category",
     icon: <Category className="w-8 h-8" />,
   },
   {
     name: "Section",
-    nav: "section",
+    nav: "admin/section",
     icon: <SectionIcon className="w-8 h-8" />,
   },
   {
     name: "Credentials",
-    nav: "credentials",
+    nav: "admin/credentials",
     icon: <Credential className="w-8 h-8" />,
   },
   {
     name: "Skill",
-    nav: "skill",
+    nav: "admin/skill",
     icon: <Dashoard className="w-8 h-8" />,
   },
   {
     name: "Grade",
-    nav: "grades",
+    nav: "admin/grades",
     icon: <Dashoard className="w-8 h-8" />,
   },
   {
     name: "Position",
-    nav: "position",
+    nav: "admin/position",
     icon: <Dashoard className="w-8 h-8" />,
   },
   {
     name: "Team",
-    nav: "team",
+    nav: "admin/team",
     icon: <Dashoard className="w-8 h-8" />,
   },
 ];
@@ -67,42 +67,42 @@ const AdminNavs = [
 const ControllerNavs = [
   {
     name: "Rules",
-    nav: "rules",
+    nav: "controller/rules",
     icon: <Dashoard className="w-8 h-8" />,
   },
   {
     name: "Candidates",
-    nav: "candidates",
+    nav: "controller/candidates",
     icon: <Candidates className="w-8 h-8" />,
   },
   {
     name: "Programs",
-    nav: "programmes",
+    nav: "controller/programmes",
     icon: <Candidates className="w-8 h-8" />,
   },
   {
     name: "Judges",
-    nav: "judges",
+    nav: "controller/judges",
     icon: <Dashoard className="w-8 h-8" />,
   },
   {
     name: "Results",
-    nav: "results",
+    nav: "controller/results",
     icon: <Dashoard className="w-8 h-8" />,
   },
   {
     name: "C Grid",
-    nav: "agrid",
+    nav: "controller/agrid",
     icon: <Dashoard className="w-8 h-8" />,
   },
   {
     name: "P Grid",
-    nav: "agridProgramme",
+    nav: "controller/agridProgramme",
     icon: <Dashoard className="w-8 h-8" />,
   },
   {
     name: "List",
-    nav: "team-list",
+    nav: "controller/team-list",
     icon: <Dashoard className="w-8 h-8" />,
   },
 ];
@@ -110,17 +110,17 @@ const ControllerNavs = [
 const MediaNavs = [
   {
     name: "Gallery",
-    nav: "gallery",
+    nav: "media/gallery",
     icon: <Dashoard className="w-8 h-8" />,
   },
   {
     name: "Certificate",
-    nav: "cartificate",
+    nav: "media/cartificate",
     icon: <Dashoard className="w-8 h-8" />,
   },
   {
     name: "Tags",
-    nav: "tags",
+    nav: "media/tag",
     icon: <Dashoard className="w-8 h-8" />,
   },
 ];
@@ -128,22 +128,22 @@ const MediaNavs = [
 const TeamManagerNavs = [
   {
     name: "Candidates",
-    nav: "team-candidates",
+    nav: "team-manager/team-candidates",
     icon: <Candidates className="w-8 h-8" />,
   },
   {
     name: "Programs",
-    nav: "team-programs",
+    nav: "team-manager/team-programs",
     icon: <Dashoard className="w-8 h-8" />,
   },
   {
     name: "List",
-    nav: "team-list",
+    nav: "team-manager/team-list",
     icon: <Dashoard className="w-8 h-8" />,
   },
   {
     name: "Results",
-    nav: "team-results",
+    nav: "team-manager/team-results",
     icon: <Dashoard className="w-8 h-8" />,
   },
 ];
