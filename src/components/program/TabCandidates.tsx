@@ -113,10 +113,10 @@ export default function TabCandidates(props: Props) {
                 <div className="flex h-8 w-1/2 text-sm items-center pl-2 gap-3 justify-start">
                   <img
                     src={`${
-                      candidate?.candidate?.imageId ||
+                      `https://drive.google.com/uc?id=${candidate?.candidate?.imageId}` ||
                       "https://banner2.cleanpng.com/20180410/bbw/kisspng-avatar-user-medicine-surgery-patient-avatar-5acc9f7a7cb983.0104600115233596105109.jpg"
                     }`}
-                    className="rounded-full h-8 border"
+                    className="rounded-full h-10 border"
                     alt=""
                   />
                   <p>{candidate?.candidate?.chestNO}</p>
@@ -133,10 +133,10 @@ export default function TabCandidates(props: Props) {
                 <div className="flex h-8 w-1/2 text-sm items-center pl-2 gap-3 justify-start">
                   <img
                     src={`${
-                      candidate?.candidate?.imageId ||
+                      `https://drive.google.com/uc?id=${candidate?.candidate?.imageId}` ||
                       "https://banner2.cleanpng.com/20180410/bbw/kisspng-avatar-user-medicine-surgery-patient-avatar-5acc9f7a7cb983.0104600115233596105109.jpg"
                     }`}
-                    className="rounded-full h-8 border"
+                    className="rounded-full h-10 border"
                     alt=""
                   />
                   <p>{candidate?.candidate?.chestNO}</p>
@@ -153,10 +153,10 @@ export default function TabCandidates(props: Props) {
                 <div className="flex h-8 w-1/2 text-sm items-center pl-2 gap-3 justify-start">
                   <img
                     src={`${
-                      candidate?.candidate?.imageId ||
+                      `https://drive.google.com/uc?id=${candidate?.candidate?.imageId}` ||
                       "https://banner2.cleanpng.com/20180410/bbw/kisspng-avatar-user-medicine-surgery-patient-avatar-5acc9f7a7cb983.0104600115233596105109.jpg"
                     }`}
-                    className="rounded-full h-8 border"
+                    className="rounded-full h-10 border"
                     alt=""
                   />
                   <p>{candidate?.candidate?.chestNO}</p>
@@ -173,10 +173,10 @@ export default function TabCandidates(props: Props) {
                 <div className="flex h-8 w-1/2 text-sm items-center pl-2 gap-3 justify-start">
                   <img
                     src={`${
-                      candidate?.candidate?.imageId ||
+                      `https://drive.google.com/uc?id=${candidate?.candidate?.imageId}` ||
                       "https://banner2.cleanpng.com/20180410/bbw/kisspng-avatar-user-medicine-surgery-patient-avatar-5acc9f7a7cb983.0104600115233596105109.jpg"
                     }`}
-                    className="rounded-full h-8 border"
+                    className="rounded-full h-10 border"
                     alt=""
                   />
                   <p>{candidate?.candidate?.chestNO}</p>
@@ -193,10 +193,10 @@ export default function TabCandidates(props: Props) {
                 <div className="flex h-8 w-1/2 text-sm items-center pl-2 gap-3 justify-start">
                   <img
                     src={`${
-                      candidate?.candidate?.imageId ||
+                      `https://drive.google.com/uc?id=${candidate?.candidate?.imageId}` ||
                       "https://banner2.cleanpng.com/20180410/bbw/kisspng-avatar-user-medicine-surgery-patient-avatar-5acc9f7a7cb983.0104600115233596105109.jpg"
                     }`}
-                    className="rounded-full h-8 border"
+                    className="rounded-full h-10 border"
                     alt=""
                   />
                   <p>{candidate?.candidate?.chestNO}</p>
