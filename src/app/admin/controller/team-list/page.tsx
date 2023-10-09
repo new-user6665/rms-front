@@ -9,9 +9,6 @@ import {
   GetAllProgrammesByCandidatesDocument,
   GetAllProgrammesByCandidatesQuery,
   GetAllProgrammesByCandidatesQueryVariables,
-  GetAllProgrammesDocument,
-  GetAllProgrammesQuery,
-  GetAllProgrammesQueryVariables,
   GetAllSkillsDocument,
   GetAllSkillsQuery,
   GetAllSkillsQueryVariables,
@@ -45,20 +42,24 @@ const page = async () => {
 
   const data = [
     {
-      title: "Total Users",
+      title: "Total Programs",
       icon: <SectionIcon className="w-6 h-6 text-teal-600" />,
+      value: propgrammes.data?.programmes.length,
     },
     {
-      title: "Total Users",
+      title: "Result Pubished",
       icon: <SectionIcon className="w-6 h-6 text-teal-600" />,
-    }, 
-    {
-      title: "Total Users",
-      icon: <SectionIcon className="w-6 h-6 text-teal-600" />,
+      value: propgrammes.data?.programmes.filter((programme) => programme.resultPublished).length
     },
     {
-      title: "Total Users",
+      title: "Result Entered",
       icon: <SectionIcon className="w-6 h-6 text-teal-600" />,
+      value: propgrammes.data?.programmes.filter((programme) => programme.resultEntered).length
+    },
+    {
+      title: "Avg Category Program",
+      icon: <SectionIcon className="w-6 h-6 text-teal-600" />,
+      value: parseInt(propgrammes.data?.programmes.length as number / (categories.data?.categories.length as number)+""),
     },
   ];
   const h = data[0];

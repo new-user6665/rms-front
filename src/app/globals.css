@@ -16,8 +16,8 @@
 
 @media (max-width: 600px) {
   ::-webkit-scrollbar {
-    width: 1px;
-    height: 1px;
+    width: 0px;
+    height: 0px;
   }
 }
 
@@ -77,12 +77,12 @@
   transition: width 3s;
 }
 
-/* select {
+select {
   -webkit-appearance: inherit;
   -moz-appearance: inherit;
   text-indent: 1px;
   text-overflow: "";
-} */
+}
 
 .remove-arrow{
   -webkit-appearance: inherit;
