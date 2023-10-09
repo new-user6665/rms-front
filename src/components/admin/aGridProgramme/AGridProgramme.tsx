@@ -1,5 +1,5 @@
 "use client";
-import { Category, Programme, Team , Type} from "@/gql/graphql";
+import { Category, Programme, Team, Type } from "@/gql/graphql";
 import { parseJwt } from "@/lib/cryptr";
 import { SERVER_URL } from "@/lib/urql";
 import { withUrqlClient } from "next-urql";
@@ -266,32 +266,32 @@ const AGridProgramme = (props: Props) => {
     }
   }
 
-  const candidateCountFormatter = (params:any)=>{
+  const candidateCountFormatter = (params: any) => {
     console.log(params.value);
 
-    const selectedProgramme = allData.find((program:Programme , index) =>{
+    const selectedProgramme = allData.find((program: Programme, index) => {
       return program.programCode === params.value;
     })
 
     // console.log(selectedProgramme);
-    
-    
+
+
     const totalCandidatesCount = selectedProgramme?.candidateProgramme?.length;
     const outOfCandidatesCount =
       (selectedProgramme?.type as unknown as Type) == Type.Single
         ? (selectedProgramme?.candidateCount as number) * 4
         : (selectedProgramme?.groupCount as number) * 4;
     // console.log(`${totalCandidatesCount} / ${outOfCandidatesCount}`);
-    
+
     return `${totalCandidatesCount} / ${outOfCandidatesCount}`
-    
+
   }
 
   // const booleanFormatter = (params:any)=>{
   //   if (params.value == true){}
   // }
 
-  
+
   ////////////////////////////////////////////////
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([
     { field: "programCode", headerName: "Program Code", minWidth: 110 },
@@ -302,7 +302,7 @@ const AGridProgramme = (props: Props) => {
     { field: "date", headerName: "Date" },
     { field: "duration", headerName: "Duration" },
     { field: "venue", headerName: "Venue" },
-    { field: "programCode", headerName: "Candidate count", cellRenderer:candidateCountFormatter},
+    { field: "programCode", headerName: "Candidate count", cellRenderer: candidateCountFormatter },
     { field: "type", headerName: "Type" },
     // { field: "groupCount", headerName: "Group Count" },
     { field: "resultEntered", headerName: "Result Entered" },
@@ -341,10 +341,14 @@ const AGridProgramme = (props: Props) => {
     return params.value === null
       ? "-"
       : params.value === true
-      ? <svg fill="#11ff00" height="10px" width="10px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 490 490"  stroke="#11ff00" strokeWidth="0.0049"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <polygon points="452.253,28.326 197.831,394.674 29.044,256.875 0,292.469 207.253,461.674 490,54.528 "></polygon> </g></svg>
-      : params.value === false
-      ? <svg fill="#ff0000" height="10px" width="10px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 490 490" stroke="#ff0000"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <polygon points="456.851,0 245,212.564 33.149,0 0.708,32.337 212.669,245.004 0.708,457.678 33.149,490 245,277.443 456.851,490 489.292,457.678 277.331,245.004 489.292,32.337 "></polygon> </g></svg>
-      : params.value;
+        ? <div className="flex items-center h-full">
+          <svg fill="#11ff00" height="10px" width="10px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 490 490" stroke="#11ff00" strokeWidth="0.0049"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <polygon points="452.253,28.326 197.831,394.674 29.044,256.875 0,292.469 207.253,461.674 490,54.528 "></polygon> </g></svg>
+        </div>
+        : params.value === false
+          ? <div className="flex items-center h-full">
+            <svg fill="#ff0000" height="10px" width="10px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 490 490" stroke="#ff0000"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <polygon points="456.851,0 245,212.564 33.149,0 0.708,32.337 212.669,245.004 0.708,457.678 33.149,490 245,277.443 456.851,490 489.292,457.678 277.331,245.004 489.292,32.337 "></polygon> </g></svg>
+          </div>
+          : params.value;
   };
 
   const defaultColDef = useMemo<ColDef>(() => {
@@ -410,7 +414,7 @@ const AGridProgramme = (props: Props) => {
             pagination={true}
             enableRangeSelection={true}
             rowSelection="multiple"
-            // onGridReady={onGridReady}
+          // onGridReady={onGridReady}
           />
         </div>
       </div>

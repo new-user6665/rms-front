@@ -134,6 +134,9 @@ query GetAllDetailedProgrammeForJudge($api_key: String!) {
       candidate {
         name
         chestNO
+        team{
+          name
+        }
       }
       candidatesOfGroup {
         name

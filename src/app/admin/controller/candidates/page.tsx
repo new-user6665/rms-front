@@ -1,8 +1,8 @@
 import Candidate from "@/components/admin/candidates/Candidate";
 import {
-  GetAllCandidatesDocument,
-  GetAllCandidatesQuery,
-  GetAllCandidatesQueryVariables,
+  GetAllDetailedCandidatesDocument,
+  GetAllDetailedCandidatesQuery,
+  GetAllDetailedCandidatesQueryVariables,
   GetAllCategoriesDocument,
   GetAllCategoriesQuery,
   GetAllCategoriesQueryVariables,
@@ -18,9 +18,9 @@ import React from "react";
 const page = async () => {
   const { client } = getUrqlClient();
   const result = await client.query<
-    GetAllCandidatesQuery,
-    GetAllCandidatesQueryVariables
-  >(GetAllCandidatesDocument, {
+    GetAllDetailedCandidatesQuery,
+    GetAllDetailedCandidatesQueryVariables
+  >(GetAllDetailedCandidatesDocument, {
     api_key : API_KEY
   });
 
