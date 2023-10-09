@@ -11,13 +11,25 @@ import {
 import { ArrowRightSquare, IconArrowLeftSquare } from "@/icons/arrows";
 import { Menu2Icon, MenuIcon } from "@/icons/home";
 import {
-  Candidates,
-  Category,
-  Credential,
+  CandidatesIcon,
+  CategoryIcon,
+  CredentialIcon,
   Dashboard as Dashoard,
   LogOutIcon,
   SectionIcon,
-} from "@/icons/navs";
+  RulesIcon,
+  ProgramsIcon,
+  JudgesIcon,
+  ResultIcon,
+  CandidateListIcon,
+  ProgramListIcon,
+  TeamListIcon,
+  SettingsIcon,
+  SkillIcon,
+  GradeIcon,
+  PositionIcon,
+  TeamIcon
+} from "@/icons/sidebar";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import { OperationResult, useMutation } from "urql";
@@ -26,12 +38,12 @@ const AdminNavs = [
   {
     name: "Settings",
     nav: "admin/settings",
-    icon: <Dashoard className="w-8 h-8" />,
+    icon: <SettingsIcon className="w-8 h-8" />,
   },
   {
     name: "Category",
     nav: "admin/category",
-    icon: <Category className="w-8 h-8" />,
+    icon: <CategoryIcon className="w-8 h-8" />,
   },
   {
     name: "Section",
@@ -41,27 +53,27 @@ const AdminNavs = [
   {
     name: "Credentials",
     nav: "admin/credentials",
-    icon: <Credential className="w-8 h-8" />,
+    icon: <CredentialIcon className="w-8 h-8" />,
   },
   {
     name: "Skill",
     nav: "admin/skill",
-    icon: <Dashoard className="w-8 h-8" />,
+    icon: <SkillIcon className="w-8 h-8" />,
   },
   {
     name: "Grade",
     nav: "admin/grades",
-    icon: <Dashoard className="w-8 h-8" />,
+    icon: <GradeIcon className="w-8 h-8" />,
   },
   {
     name: "Position",
     nav: "admin/position",
-    icon: <Dashoard className="w-8 h-8" />,
+    icon: <PositionIcon className="w-8 h-8" />,
   },
   {
     name: "Team",
     nav: "admin/team",
-    icon: <Dashoard className="w-8 h-8" />,
+    icon: <TeamIcon className="w-8 h-8" />,
   },
 ];
 
@@ -69,42 +81,42 @@ const ControllerNavs = [
   {
     name: "Rules",
     nav: "controller/rules",
-    icon: <Dashoard className="w-8 h-8" />,
+    icon: <RulesIcon className="w-8 h-8" />,
   },
   {
     name: "Candidates",
     nav: "controller/candidates",
-    icon: <Candidates className="w-8 h-8" />,
+    icon: <CandidatesIcon className="w-8 h-8" />,
   },
   {
     name: "Programs",
     nav: "controller/programmes",
-    icon: <Candidates className="w-8 h-8" />,
+    icon: <ProgramsIcon className="w-8 h-8" />,
   },
   {
     name: "Judges",
     nav: "controller/judges",
-    icon: <Dashoard className="w-8 h-8" />,
+    icon: <JudgesIcon className="w-8 h-8" />,
   },
   {
     name: "Results",
     nav: "controller/results",
-    icon: <Dashoard className="w-8 h-8" />,
+    icon: <ResultIcon className="w-8 h-8" />,
   },
   {
     name: "C Grid",
     nav: "controller/agrid",
-    icon: <Dashoard className="w-8 h-8" />,
+    icon: <CandidateListIcon className="w-8 h-8" />,
   },
   {
     name: "P Grid",
     nav: "controller/agridProgramme",
-    icon: <Dashoard className="w-8 h-8" />,
+    icon: <ProgramListIcon className="w-8 h-8" />,
   },
   {
     name: "List",
     nav: "controller/team-list",
-    icon: <Dashoard className="w-8 h-8" />,
+    icon: <TeamListIcon className="w-8 h-8" />,
   },
 ];
 
@@ -130,12 +142,12 @@ const TeamManagerNavs = [
   {
     name: "Candidates",
     nav: "team-manager/team-candidates",
-    icon: <Candidates className="w-8 h-8" />,
+    icon: <CandidatesIcon className="w-8 h-8" />,
   },
   {
     name: "Programs",
     nav: "team-manager/team-programs",
-    icon: <Dashoard className="w-8 h-8" />,
+    icon: <ProgramsIcon className="w-8 h-8" />,
   },
   {
     name: "List",
@@ -145,7 +157,7 @@ const TeamManagerNavs = [
   {
     name: "Results",
     nav: "team-manager/team-results",
-    icon: <Dashoard className="w-8 h-8" />,
+    icon: <ResultIcon className="w-8 h-8" />,
   },
 ];
 

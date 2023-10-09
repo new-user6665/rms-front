@@ -16,6 +16,8 @@ query GetAllDetailedCandidates($api_key: String!) {
   candidates(api_key: $api_key) {
     id
     name
+    adno
+    class
     chestNO
     category {
       name
@@ -23,33 +25,24 @@ query GetAllDetailedCandidates($api_key: String!) {
     team {
       name
     }
-    individualSportsPoint
-    groupSportsPoint
-    createdAt
-    updatedAt
-    imageId
-    individualPoint
-    groupPoint
     id
-    class
-    adno
-    candidateProgrammes{   
+    candidateProgrammes {
       id
-      programme{
-        type
-        model
-        mode
+      programme {
+        name
+        programCode
       }
-      candidatesOfGroup{
-       id
-       
+      candidatesOfGroup {
+        id
       }
     }
 
+    groupPoint
+    groupSportsPoint
+    individualPoint
+    individualSportsPoint
   }
 }
-
-
 
 query GetOneCandidate($id: Int!, $api_key: String!) {
   candidate(id: $id, api_key: $api_key) {

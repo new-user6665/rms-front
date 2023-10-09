@@ -1,7 +1,15 @@
 "use client";
 import InfoBar from "@/components/admin/InfoBar";
 import RightSideBar from "@/components/admin/RightSideBar";
-import { Programme, Category, Team, Skill, Mode, Types, CandidateProgramme } from "@/gql/graphql";
+import {
+  Programme,
+  Category,
+  Team,
+  Skill,
+  Mode,
+  Types,
+  CandidateProgramme,
+} from "@/gql/graphql";
 import { parseJwt } from "@/lib/cryptr";
 import { SERVER_URL } from "@/lib/urql";
 import { withUrqlClient } from "next-urql";
@@ -16,7 +24,7 @@ import {
   DownLoadIcon,
   EyeIcon,
   ManualUploadIcon,
-  FilterIcon
+  FilterIcon,
 } from "@/icons/action";
 import PointUpload from "./PointUpload";
 import ManualUpload from "./ManualUpload";
@@ -101,22 +109,23 @@ const Judges = (props: Props) => {
         ) as Programme[]
       );
 
-        // sort the candidateProgramme array in Programme object by chestNO
+      // sort the candidateProgramme array in Programme object by chestNO
 
-        let temp = [...props.result]
+      let temp = [...props.result];
 
-        // to sort by chestNO take the last three digits of chestNO and sort them as it is a string
+      // to sort by chestNO take the last three digits of chestNO and sort them as it is a string
 
-        temp.map((item:Programme)=>{
-          item.candidateProgramme?.sort((a: CandidateProgramme, b: CandidateProgramme)=>{
-            let chestNOA = a.candidate?.chestNO?.slice(-3)
-            let chestNOB = b.candidate?.chestNO?.slice(-3)
-            return Number(chestNOA) - Number(chestNOB)
-          })
-        })
+      temp.map((item: Programme) => {
+        item.candidateProgramme?.sort(
+          (a: CandidateProgramme, b: CandidateProgramme) => {
+            let chestNOA = a.candidate?.chestNO?.slice(-3);
+            let chestNOB = b.candidate?.chestNO?.slice(-3);
+            return Number(chestNOA) - Number(chestNOB);
+          }
+        );
+      });
 
-        setData(temp as Programme[])
-
+      setData(temp as Programme[]);
     }
 
     // window height settings
@@ -161,15 +170,15 @@ const Judges = (props: Props) => {
     console.log(shh);
   }, [screenHeigh]);
 
-//   useEffect(() => {
-// if (dowloading){
-// if (downloadAsBulk){
-//   downloadJudgeList()
-// } else{
-//   downloadJudgeList(SelectedProgramme,false)
-// }
-// }
-//   }, [dowloading]);
+  //   useEffect(() => {
+  // if (dowloading){
+  // if (downloadAsBulk){
+  //   downloadJudgeList()
+  // } else{
+  //   downloadJudgeList(SelectedProgramme,false)
+  // }
+  // }
+  //   }, [dowloading]);
 
   const calculateBreakPoint = (sh: number) => {
     return Math.floor((sh + 30 - 300) / 100) * 4;
@@ -192,11 +201,13 @@ const Judges = (props: Props) => {
 
   // //   generatePdf();
 
-
-  const downloadJudgeList = (programme: any = currentData , bulk:boolean=true) => {
+  const downloadJudgeList = (
+    programme: any = currentData,
+    bulk: boolean = true,
+    withName: boolean = true
+  ) => {
     const doc = new jsPDF("portrait", "px", "a4");
     console.log(programme);
-    
 
     // Load Montserrat font
     doc.addFont(
@@ -209,13 +220,15 @@ const Judges = (props: Props) => {
     const pdfHeight = doc.internal.pageSize.getHeight();
 
     console.log("pdf", pdfWidth, pdfHeight);
-    var program = bulk?programme:[programme]
-    program.forEach((a:any) => {
+    var program = bulk ? programme : [programme];
+    program.forEach((a: any) => {
       doc.addPage("a4");
 
-      const backgroundImageUrl =
-        a.type === Types.Single ? "/a4.jpg" : "/a4g.jpg";
-
+      const backgroundImageUrl = withName
+        ? a.type === Types.Single
+          ? "/a4.jpg"
+          : "/a4g.jpg"
+        : "/a4Comment.jpg";
       // Add the background image
       doc.addImage(backgroundImageUrl, "JPEG", 0, 0, pdfWidth, pdfHeight);
 
@@ -231,66 +244,77 @@ const Judges = (props: Props) => {
       doc.text(`${a.category?.name}`, 345, 205);
       var aa = 265;
 
-      a.candidateProgramme?.map((item:any, i:number) => {
+      a.candidateProgramme?.map((item: any, i: number) => {
         aa = aa + 13.5;
         console.log(aa);
         // doc.text(`${item.candidate?.chestNO}`, 67, aa);
 
-        if (a.type == Types.Group) {
-          aa = 284.75 + 27 * i;
+        
+        if (withName==false){
           doc.text(`${item.candidate?.chestNO}`, 67, aa);
-          console.log(item.candidatesOfGroup);
-          let bb = 90;
-
-          let groupPositionY: number;
-
-          if ((item.candidatesOfGroup as any).length > 7) {
-            console.log((item.candidatesOfGroup as any).length);
-            if (i == 0) {
-              groupPositionY = 265;
-            } else {
-              groupPositionY = 265 + 13.5 * 2 * i;
-            }
-          } else {
-            groupPositionY = 284.75 + 27 * i;
-          }
-
-          item.candidatesOfGroup?.map((itm:any, index:number) => {
-            console.log(itm.chestNO);
+        } else{
+          if (a.type == Types.Group) {
+            aa = 284.75 + 27 * i;
+            doc.text(`${item.candidate?.chestNO}`, 67, aa);
+            console.log(item.candidatesOfGroup);
+            let bb = 90;
+  
+            let groupPositionY: number;
+  
             if ((item.candidatesOfGroup as any).length > 7) {
               console.log((item.candidatesOfGroup as any).length);
-              if (index == 0) {
-                groupPositionY = groupPositionY + 13.5;
+              if (i == 0) {
+                groupPositionY = 265;
+              } else {
+                groupPositionY = 265 + 13.5 * 2 * i;
               }
-              if (index == 7) {
-                bb = 90;
-                groupPositionY = groupPositionY + 13.5;
-              }
+            } else {
+              groupPositionY = 284.75 + 27 * i;
             }
-            bb = bb + 22;
-            console.log(groupPositionY, i);
-
-            var chestNO =
-              index == (item.candidatesOfGroup as any).length - 1
-                ? itm.chestNO
-                : itm.chestNO + ",";
-            doc.text(`${chestNO}`, bb, groupPositionY);
-          });
-        } else {
-          doc.text(`${item.candidate?.chestNO}`, 67, aa);
-          doc.text(`${item.candidate?.name}`, 112, aa);
+  
+            item.candidatesOfGroup?.map((itm: any, index: number) => {
+              if ((item.candidatesOfGroup as any).length > 7) {
+                console.log((item.candidatesOfGroup as any).length);
+                if (index == 0) {
+                  groupPositionY = groupPositionY + 13.5;
+                }
+                if (index == 7) {
+                  bb = 90;
+                  groupPositionY = groupPositionY + 13.5;
+                }
+              }
+              bb = bb + 22;
+  
+              var chestNO =
+                index == (item.candidatesOfGroup as any).length - 1
+                  ? itm.chestNO
+                  : itm.chestNO + ",";
+              doc.text(`${chestNO}`, bb, groupPositionY);
+            });
+          } else if (a.type == Types.House) {
+            let positionY = 284.75 + 27 * i;
+            doc.text(
+              `${item.candidate?.chestNO.slice(0, -2) + "00"}`,
+              67,
+              positionY
+            );
+            doc.text(`${item.candidate?.team.name}`, 112, positionY);
+          } else {
+            doc.text(`${item.candidate?.chestNO}`, 67, aa);
+            doc.text(`${item.candidate?.name}`, 112, aa);
+          }
         }
       });
     });
-    doc.deletePage(1)
+    doc.deletePage(1);
 
     const pdfBlob = doc.output("blob");
-    var filename = bulk? `Judge-List`: `${(programme as any).programCode} ${(programme as any).name}`
+    var filename = bulk
+      ? `Judge List`
+      : `${(programme as any).programCode} ${(programme as any).name}`;
     saveAs(pdfBlob, `${filename}.pdf`);
     // setDowloading(true)
   };
-
-
 
   return (
     <>
@@ -350,7 +374,7 @@ const Judges = (props: Props) => {
                       tabIndex={0}
                       className="md:hidden inline-flex bg-secondary ml-1  text-white rounded-full px-5 py-2 font-bold"
                     >
-                     <FilterIcon className="w-7 h-7 fill-white cursor-pointer"/>
+                      <FilterIcon className="w-7 h-7 fill-white cursor-pointer" />
                       <svg
                         className="-mr-1 h-5 w-5 text-gray-400"
                         viewBox="0 0 20 20"
@@ -368,52 +392,91 @@ const Judges = (props: Props) => {
                       tabIndex={0}
                       className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40 font-bold"
                     >
-                      {props.categories?.map((item: Category, index: number) => {
-                        return (
-                          <button
-                            className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
-                            onClick={() => {
-                              setCurrentPage(1);
-                              setData(
-                                allData.filter(
-                                  (itm: Programme) =>
-                                    itm?.category?.name?.toLocaleLowerCase() ===
-                                    item?.name?.toLocaleLowerCase()
-                                )
-                              );
-                            }}
-                          >
-                            {item.name}
-                          </button>
-                        );
-                      })}
+                      {props.categories?.map(
+                        (item: Category, index: number) => {
+                          return (
+                            <button
+                              className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                              onClick={() => {
+                                setCurrentPage(1);
+                                setData(
+                                  allData.filter(
+                                    (itm: Programme) =>
+                                      itm?.category?.name?.toLocaleLowerCase() ===
+                                      item?.name?.toLocaleLowerCase()
+                                  )
+                                );
+                              }}
+                            >
+                              {item.name}
+                            </button>
+                          );
+                        }
+                      )}
                     </ul>
                   </div>
 
-                  <label
-                    className="hidden md:inline-flex bg-secondary text-white  rounded-full px-5 py-2 font-bold cursor-pointer"
-                    onClick={async () => {
-                      downloadJudgeList();
-                      // setDownloadAsBulk(true)
-                      // setDowloading(true)
-                    }}
-                  >
-                    Download
-                  </label>
+                  <div className="dropdown dropdown-end">
+                    <label
+                      tabIndex={0}
+                      className=" md:hidden inline-flex bg-secondary text-white rounded-full px-5 py-2 font-bold"
+                    >
+                      <DownLoadIcon className="w-7 h-7 fill-white cursor-pointer" />
+                      <svg
+                        className="-mr-1 h-5 w-5 text-gray-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </label>
 
+                    <label
+                      tabIndex={0}
+                      className="hidden  md:inline-flex bg-secondary text-white rounded-full px-5 py-2 font-bold"
+                    >
+                      Download
+                      <svg
+                        className="-mr-1 h-5 w-5 text-gray-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </label>
+                    <ul
+                      tabIndex={0}
+                      className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40 font-bold"
+                    >
+                      <button
+                        className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                        onClick={() => {
+                          downloadJudgeList(currentData, true, false);
+                        }}
+                      >
+                        Without name
+                      </button>
 
-                  
-                  <label
-                    className=" md:hidden inline-flex bg-secondary text-white  rounded-full px-5 py-2 font-bold cursor-pointer"
-                    onClick={async () => {
-                      console.log("clicked");
-
-                      // await generatePdf()
-                      downloadJudgeList();
-                    }}
-                  >
-                  <DownLoadIcon className="w-7 h-7 fill-white cursor-pointer"/>
-                  </label>
+                      <button
+                        className="block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                        onClick={async () => {
+                          downloadJudgeList();
+                        }}
+                      >
+                        With name
+                      </button>
+                    </ul>
+                  </div>
 
                   {/* <div className="dropdown dropdown-end">
                     <label
@@ -478,19 +541,20 @@ const Judges = (props: Props) => {
                       </button>
                     </ul>
                   </div> */}
-
                 </div>
               </div>
             </div>
             <div className="flex flex-col items-center lg:justify-center w-full h-full">
               <ComponentsDiv
-                height={`${(itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6
-                  }rem`}
+                height={`${
+                  (itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6
+                }rem`}
               >
                 <div
                   ref={ProgrammeRef}
-                  className={`grid gap-4 w-full transition-all grid-cols-1 ${IsRightSideBarOpen ? "lg:grid-cols-3" : "lg:grid-cols-4"
-                    }`}
+                  className={`grid gap-4 w-full transition-all grid-cols-1 ${
+                    IsRightSideBarOpen ? "lg:grid-cols-3" : "lg:grid-cols-4"
+                  }`}
                 >
                   {currentData?.map((item: Programme, index: number) => {
                     return (
@@ -513,10 +577,17 @@ const Judges = (props: Props) => {
                         <p className="text-black leading-5 pr-[10%]">
                           {item.name}
                         </p>
-                        <div className={`${item.anyIssue ? 'bg-error' : item.resultPublished ?'bg-success'  :  item.resultEntered ?'bg-info' : 'bg-warning'}  absolute w-3 h-3 rounded-full right-3`}>
-                          
-                          </div>
-                        
+                        <div
+                          className={`${
+                            item.anyIssue
+                              ? "bg-error"
+                              : item.resultPublished
+                              ? "bg-success"
+                              : item.resultEntered
+                              ? "bg-info"
+                              : "bg-warning"
+                          }  absolute w-3 h-3 rounded-full right-3`}
+                        ></div>
                       </div>
                     );
                   })}
@@ -603,14 +674,19 @@ const Judges = (props: Props) => {
                   Add
 
                 </button> */}
-
               </div>
 
               <div className="w-full flex justify-between">
                 <div className="w-1/2"></div>
                 <button
                   className="bg-secondary p-1 rounded-md"
-                  onClick={() => downloadJudgeList(SelectedProgramme,false)}
+                  onClick={() => downloadJudgeList(SelectedProgramme, false, false)}
+                >
+                 without
+                </button>
+                <button
+                  className="bg-secondary p-1 rounded-md"
+                  onClick={() => downloadJudgeList(SelectedProgramme, false)}
                 >
                   <DownLoadIcon className="w-6 h-6 text-white" />
                 </button>
@@ -618,10 +694,8 @@ const Judges = (props: Props) => {
                 <button
                   className="bg-secondary p-1 rounded-md"
                   onClick={() => setIsManualUploadOpen(true)}
-                  
                 >
                   <ManualUploadIcon className="w-6 h-6 text-white" />
-                  
                 </button>
 
                 {!SelectedProgramme?.resultEntered && (
@@ -643,7 +717,6 @@ const Judges = (props: Props) => {
                 )}
               </div>
             </div>
-
           </RightSideBar>
           {/* </div> */}
         </DetailedDiv>
