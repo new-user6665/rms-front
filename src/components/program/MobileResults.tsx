@@ -13,12 +13,15 @@ export default function MobileResults(props: Props) {
   >([]);
 
   useEffect(() => {
+    let candidateResults: CandidateProgramme[] = [];
     programme?.candidateProgramme?.map((candidate) => {
-      candidate?.position?.name !== null ||
-        (candidate?.grade?.name !== null &&
-          setResultedCandidates([...resultedCandidates, candidate]));
+      console.log(candidate);
+      (candidate?.position?.name !== null || candidate?.grade?.name !== null) &&
+        candidateResults.push(candidate);
     });
-  });
+    setResultedCandidates(candidateResults);
+    console.log(candidateResults);
+  }, []);
 
   const active = {
     button:
@@ -98,13 +101,19 @@ export default function MobileResults(props: Props) {
               allCandidatesResult?.map((candidate) => (
                 <div className="w-full bg-[#E1DEFF] h-8 bigphone:h-16 rounded-lg flex gap-2">
                   <div className="flex h-8 bigphone:h-16 w-1/2 text-tn bigphone:text-sm items-center pl-2 gap-3 justify-start">
-                    <p>{candidate?.position?.name}</p>
+                    <p>
+                      {candidate?.position?.name
+                        ? candidate?.position?.name
+                        : "Nil"}
+                    </p>
                     <p>{candidate?.programme?.programCode}</p>
                     <p>{candidate?.candidate?.name}</p>
                   </div>
                   <div className="flex h-8 bigphone:h-16 w-1/2 text-tn bigphone:text-sm items-center pr-2 gap-3 justify-end">
                     <p>{candidate?.candidate?.team?.name}</p>
-                    <p>{candidate?.grade?.name}</p>
+                    <p>
+                      {candidate?.grade?.name ? candidate?.grade?.name : `Nil`}
+                    </p>
                     <p>{candidate?.point}pts</p>
                   </div>
                 </div>
@@ -113,13 +122,19 @@ export default function MobileResults(props: Props) {
               chronicleCandidatesResult?.map((candidate) => (
                 <div className="w-full bg-[#E1DEFF] h-8 bigphone:h-16 rounded-lg flex gap-2">
                   <div className="flex h-8 bigphone:h-16 w-1/2 text-tn bigphone:text-sm items-center pl-2 gap-3 justify-start">
-                    <p>{candidate?.position?.name}</p>
+                    <p>
+                      {candidate?.position?.name
+                        ? candidate?.position?.name
+                        : "Nil"}
+                    </p>
                     <p>{candidate?.programme?.programCode}</p>
                     <p>{candidate?.candidate?.name}</p>
                   </div>
                   <div className="flex h-8 bigphone:h-16 w-1/2 text-tn bigphone:text-sm items-center pr-2 gap-3 justify-end">
                     <p>{candidate?.candidate?.team?.name}</p>
-                    <p>{candidate?.grade?.name}</p>
+                    <p>
+                      {candidate?.grade?.name ? candidate?.grade?.name : `Nil`}
+                    </p>
                     <p>{candidate?.point}pts</p>
                   </div>
                 </div>
@@ -128,13 +143,19 @@ export default function MobileResults(props: Props) {
               gazetteCandidatesResult?.map((candidate) => (
                 <div className="w-full bg-[#E1DEFF] h-8 bigphone:h-16 rounded-lg flex gap-2">
                   <div className="flex h-8 bigphone:h-16 w-1/2 text-tn bigphone:text-sm items-center pl-2 gap-3 justify-start">
-                    <p>{candidate?.position?.name}</p>
+                    <p>
+                      {candidate?.position?.name
+                        ? candidate?.position?.name
+                        : "Nil"}
+                    </p>
                     <p>{candidate?.programme?.programCode}</p>
                     <p>{candidate?.candidate?.name}</p>
                   </div>
                   <div className="flex h-8 bigphone:h-16 w-1/2 text-tn bigphone:text-sm items-center pr-2 gap-3 justify-end">
                     <p>{candidate?.candidate?.team?.name}</p>
-                    <p>{candidate?.grade?.name}</p>
+                    <p>
+                      {candidate?.grade?.name ? candidate?.grade?.name : `Nil`}
+                    </p>
                     <p>{candidate?.point}pts</p>
                   </div>
                 </div>
@@ -143,13 +164,19 @@ export default function MobileResults(props: Props) {
               heraldCandidatesResult?.map((candidate) => (
                 <div className="w-full bg-[#E1DEFF] h-8 bigphone:h-16 rounded-lg flex gap-2">
                   <div className="flex h-8 bigphone:h-16 w-1/2 text-tn bigphone:text-sm items-center pl-2 gap-3 justify-start">
-                    <p>{candidate?.position?.name}</p>
+                    <p>
+                      {candidate?.position?.name
+                        ? candidate?.position?.name
+                        : "Nil"}
+                    </p>
                     <p>{candidate?.programme?.programCode}</p>
                     <p>{candidate?.candidate?.name}</p>
                   </div>
                   <div className="flex h-8 bigphone:h-16 w-1/2 text-tn bigphone:text-sm items-center pr-2 gap-3 justify-end">
                     <p>{candidate?.candidate?.team?.name}</p>
-                    <p>{candidate?.grade?.name}</p>
+                    <p>
+                      {candidate?.grade?.name ? candidate?.grade?.name : `Nil`}
+                    </p>
                     <p>{candidate?.point}pts</p>
                   </div>
                 </div>
@@ -158,13 +185,19 @@ export default function MobileResults(props: Props) {
               tribuneCandidatesResult?.map((candidate) => (
                 <div className="w-full bg-[#E1DEFF] h-8 bigphone:h-16 rounded-lg flex gap-2">
                   <div className="flex h-8 bigphone:h-16 w-1/2 text-tn bigphone:text-sm items-center pl-2 gap-3 justify-start">
-                    <p>{candidate?.position?.name}</p>
+                    <p>
+                      {candidate?.position?.name
+                        ? candidate?.position?.name
+                        : "Nil"}
+                    </p>
                     <p>{candidate?.programme?.programCode}</p>
                     <p>{candidate?.candidate?.name}</p>
                   </div>
                   <div className="flex h-8 bigphone:h-16 w-1/2 text-tn bigphone:text-sm items-center pr-2 gap-3 justify-end">
                     <p>{candidate?.candidate?.team?.name}</p>
-                    <p>{candidate?.grade?.name}</p>
+                    <p>
+                      {candidate?.grade?.name ? candidate?.grade?.name : `Nil`}
+                    </p>
                     <p>{candidate?.point}pts</p>
                   </div>
                 </div>

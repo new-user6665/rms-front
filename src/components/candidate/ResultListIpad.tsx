@@ -97,59 +97,77 @@ export default function ResultListIpad(props: Props) {
           allOrIndividualOrGroup === "all" ? (
             allPublishedResults?.map((programme) => (
               <div className="h-14 w-11/12 bg-accent rounded-2xl flex items-center justify-between">
-              {/* code */}
-              <div className="px-3">
-                <p className="">{programme?.programme?.programCode}</p>
+                {/* code */}
+                <div className="px-3">
+                  <p className="">{programme?.programme?.programCode}</p>
+                </div>
+                {/* name */}
+                <div className="px-3">
+                  <p className="">{programme?.programme?.name}</p>
+                </div>
+                {/* result */}
+                <div className="px-3 text-lt flex items-end gap-5">
+                  <p>
+                    {programme?.position?.name
+                      ? programme?.position?.name
+                      : `Nil`}
+                  </p>
+                  <p>
+                    {programme?.grade?.name ? programme?.grade?.name : `Nil`}
+                  </p>
+                  <p className="">{programme?.point}pts</p>
+                </div>
               </div>
-              {/* name */}
-              <div className="px-3">
-                <p className="">{programme?.programme?.name}</p>
-              </div>
-              {/* result */}
-              <div className="px-3 text-lt flex items-end gap-5">
-                <p className="">{programme?.position?.name}</p>
-                <p className="">{programme?.grade?.name}</p>
-                <p className="">{programme?.point}pts</p>
-              </div>
-            </div>
             ))
           ) : allOrIndividualOrGroup === "individual" ? (
             individualPublishedResults?.map((programme) => (
               <div className="h-14 w-11/12 bg-accent rounded-2xl flex items-center justify-between">
-              {/* code */}
-              <div className="px-3">
-                <p className="">{programme?.programme?.programCode}</p>
+                {/* code */}
+                <div className="px-3">
+                  <p className="">{programme?.programme?.programCode}</p>
+                </div>
+                {/* name */}
+                <div className="px-3">
+                  <p className="">{programme?.programme?.name}</p>
+                </div>
+                {/* result */}
+                <div className="px-3 text-lt flex items-end gap-5">
+                  <p>
+                    {programme?.position?.name
+                      ? programme?.position?.name
+                      : `Nil`}
+                  </p>
+                  <p>
+                    {programme?.grade?.name ? programme?.grade?.name : `Nil`}
+                  </p>
+                  <p className="">{programme?.point}pts</p>
+                </div>
               </div>
-              {/* name */}
-              <div className="px-3">
-                <p className="">{programme?.programme?.name}</p>
-              </div>
-              {/* result */}
-              <div className="px-3 text-lt flex items-end gap-5">
-                <p className="">{programme?.position?.name}</p>
-                <p className="">{programme?.grade?.name}</p>
-                <p className="">{programme?.point}pts</p>
-              </div>
-            </div>
             ))
           ) : allOrIndividualOrGroup === "group" ? (
             groupPublishedResults?.map((programme) => (
               <div className="h-14 w-11/12 bg-accent rounded-2xl flex items-center justify-between">
-              {/* code */}
-              <div className="px-3">
-                <p className="">{programme?.programme?.programCode}</p>
+                {/* code */}
+                <div className="px-3">
+                  <p className="">{programme?.programme?.programCode}</p>
+                </div>
+                {/* name */}
+                <div className="px-3">
+                  <p className="">{programme?.programme?.name}</p>
+                </div>
+                {/* result */}
+                <div className="px-3 text-lt flex items-end gap-5">
+                  <p>
+                    {programme?.position?.name
+                      ? programme?.position?.name
+                      : `Nil`}
+                  </p>
+                  <p>
+                    {programme?.grade?.name ? programme?.grade?.name : `Nil`}
+                  </p>
+                  <p className="">{programme?.point}pts</p>
+                </div>
               </div>
-              {/* name */}
-              <div className="px-3">
-                <p className="">{programme?.programme?.name}</p>
-              </div>
-              {/* result */}
-              <div className="px-3 text-lt flex items-end gap-5">
-                <p className="">{programme?.position?.name}</p>
-                <p className="">{programme?.grade?.name}</p>
-                <p className="">{programme?.point}pts</p>
-              </div>
-            </div>
             ))
           ) : null
         ) : (

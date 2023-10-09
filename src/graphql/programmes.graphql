@@ -26,10 +26,17 @@ query GetProgrammeByCode($api_key: String!, $programCode: String!) {
           name
         }
       }
+      position{
+        name
+      }
+      grade{
+        name
+      }
       candidatesOfGroup {
         name
         chestNO
       }
+      point
     }
     resultEntered
     resultPublished

@@ -107,8 +107,14 @@ export default function ResultListPhone(props: Props) {
                   <p className="text-lt">{programme?.programme?.programCode}</p>
                   <p className="text-lt">{programme?.programme?.name}</p>
                   <div className="flex items-end gap-2">
-                    <p className="text-tn">{programme?.position?.name}</p>
-                    <p className="text-tn">{programme?.grade?.name}</p>
+                    <p className="text-tn">
+                      {programme?.position?.name
+                        ? programme?.position?.name
+                        : `Nil`}
+                    </p>
+                    <p className="text-tn">
+                      {programme?.grade?.name ? programme?.grade?.name : `Nil`}
+                    </p>
                     <p className="text-tn">{programme?.point}pts</p>
                   </div>
                 </div>
@@ -119,8 +125,14 @@ export default function ResultListPhone(props: Props) {
                   <p className="text-lt">{programme?.programme?.programCode}</p>
                   <p className="text-lt">{programme?.programme?.name}</p>
                   <div className="flex items-end gap-2">
-                    <p className="text-tn">{programme?.position?.name}</p>
-                    <p className="text-tn">{programme?.grade?.name}</p>
+                    <p className="text-tn">
+                      {programme?.position?.name
+                        ? programme?.position?.name
+                        : `Nil`}
+                    </p>
+                    <p className="text-tn">
+                      {programme?.grade?.name ? programme?.grade?.name : `Nil`}
+                    </p>
                     <p className="text-tn">{programme?.point}pts</p>
                   </div>
                 </div>
@@ -131,8 +143,14 @@ export default function ResultListPhone(props: Props) {
                   <p className="text-lt">{programme?.programme?.programCode}</p>
                   <p className="text-lt">{programme?.programme?.name}</p>
                   <div className="flex items-end gap-2">
-                    <p className="text-tn">{programme?.position?.name}</p>
-                    <p className="text-tn">{programme?.grade?.name}</p>
+                    <p className="text-tn">
+                      {programme?.position?.name
+                        ? programme?.position?.name
+                        : `Nil`}
+                    </p>
+                    <p className="text-tn">
+                      {programme?.grade?.name ? programme?.grade?.name : `Nil`}
+                    </p>
                     <p className="text-tn">{programme?.point}pts</p>
                   </div>
                 </div>
