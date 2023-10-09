@@ -30,7 +30,6 @@ export default async function page({
       <div className="h-screen md:w-72 md:min-w-72 lg:w-96 lg:min-w-96 w-screen bg-primary overflow-hidden md:flex md:flex-col md:justify-between md:items-center hidden">
         <div className="h-64 w-40 md:bg-white bg-transparent md:flex md:flex-col md:items-center flex flex-col items-center mx-auto pt-44 md:pt-0">
           <div className="text-2xl md:mx-5 md:pt-24 pt-28 text-primary relative z-40">
-            <button className="cursor-text bg-red-900 h-3 w-3 rounded-full hidden md:block float-right mt-3 mr-8" />
             <h1 className="text-transparent md:text-primary">Team</h1>
             <h1 className="font-bold hidden md:block text-primary -mt-2">{candidate?.team?.name }</h1>
           </div>

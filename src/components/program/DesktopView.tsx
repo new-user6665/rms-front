@@ -16,12 +16,15 @@ export default function DesktopView(props: Props) {
   const [dateTime, setDateTime] = useState<Date>();
 
   useEffect(() => {
+    let candidateResults: CandidateProgramme[] = [];
     programme?.candidateProgramme?.map((candidate) => {
-      candidate?.position?.name !== null ||
-        (candidate?.grade?.name !== null &&
-          setResultedCandidates([...resultedCandidates, candidate]));
+      console.log(candidate);
+      (candidate?.position?.name !== null || candidate?.grade?.name !== null) &&
+        candidateResults.push(candidate);
     });
-  });
+    setResultedCandidates(candidateResults);
+    console.log(candidateResults);
+  }, []);
 
   useEffect(() => {
     if (programme?.date) {
@@ -311,7 +314,7 @@ export default function DesktopView(props: Props) {
                         <div className="flex h-8 w-3/4 text-md items-center pl-2 gap-3 justify-start">
                           <img
                             src={`${
-                              candidate?.candidate?.imageId ||
+                              `https://drive.google.com/uc?id=${candidate?.candidate?.imageId}` ||
                               "https://banner2.cleanpng.com/20180410/bbw/kisspng-avatar-user-medicine-surgery-patient-avatar-5acc9f7a7cb983.0104600115233596105109.jpg"
                             }`}
                             className="rounded-full h-10 border"
@@ -331,7 +334,7 @@ export default function DesktopView(props: Props) {
                         <div className="flex h-8 w-3/4 text-md items-center pl-2 gap-3 justify-start">
                           <img
                             src={`${
-                              candidate?.candidate?.imageId ||
+                              `https://drive.google.com/uc?id=${candidate?.candidate?.imageId}` ||
                               "https://banner2.cleanpng.com/20180410/bbw/kisspng-avatar-user-medicine-surgery-patient-avatar-5acc9f7a7cb983.0104600115233596105109.jpg"
                             }`}
                             className="rounded-full h-10 border"
@@ -351,7 +354,7 @@ export default function DesktopView(props: Props) {
                         <div className="flex h-8 w-3/4 text-md items-center pl-2 gap-3 justify-start">
                           <img
                             src={`${
-                              candidate?.candidate?.imageId ||
+                              `https://drive.google.com/uc?id=${candidate?.candidate?.imageId}` ||
                               "https://banner2.cleanpng.com/20180410/bbw/kisspng-avatar-user-medicine-surgery-patient-avatar-5acc9f7a7cb983.0104600115233596105109.jpg"
                             }`}
                             className="rounded-full h-10 border"
@@ -371,7 +374,7 @@ export default function DesktopView(props: Props) {
                         <div className="flex h-8 w-3/4 text-md items-center pl-2 gap-3 justify-start">
                           <img
                             src={`${
-                              candidate?.candidate?.imageId ||
+                              `https://drive.google.com/uc?id=${candidate?.candidate?.imageId}` ||
                               "https://banner2.cleanpng.com/20180410/bbw/kisspng-avatar-user-medicine-surgery-patient-avatar-5acc9f7a7cb983.0104600115233596105109.jpg"
                             }`}
                             className="rounded-full h-10 border"
@@ -391,7 +394,7 @@ export default function DesktopView(props: Props) {
                         <div className="flex h-8 w-3/4 text-md items-center pl-2 gap-3 justify-start">
                           <img
                             src={`${
-                              candidate?.candidate?.imageId ||
+                              `https://drive.google.com/uc?id=${candidate?.candidate?.imageId}` ||
                               "https://banner2.cleanpng.com/20180410/bbw/kisspng-avatar-user-medicine-surgery-patient-avatar-5acc9f7a7cb983.0104600115233596105109.jpg"
                             }`}
                             className="rounded-full h-10 border"
@@ -529,13 +532,13 @@ export default function DesktopView(props: Props) {
                     allCandidatesResult?.map((candidate) => (
                       <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
                         <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
-                          <p>{candidate?.position?.name}</p>
+                          <p>{candidate?.position?.name ? candidate?.position?.name : 'Nil'}</p>
                           <p>{candidate?.programme?.programCode}</p>
                           <p>{candidate?.candidate?.name}</p>
                         </div>
                         <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
                           <p>{candidate?.candidate?.team?.name}</p>
-                          <p>{candidate?.grade?.name}</p>
+                          <p>{candidate?.grade?.name ? candidate?.grade?.name : `Nil`}</p>
                           <p>{candidate?.point}pts</p>
                         </div>
                       </div>
@@ -544,13 +547,13 @@ export default function DesktopView(props: Props) {
                     chronicleCandidatesResult?.map((candidate) => (
                       <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
                         <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
-                          <p>{candidate?.position?.name}</p>
+                          <p>{candidate?.position?.name ? candidate?.position?.name : 'Nil'}</p>
                           <p>{candidate?.programme?.programCode}</p>
                           <p>{candidate?.candidate?.name}</p>
                         </div>
                         <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
                           <p>{candidate?.candidate?.team?.name}</p>
-                          <p>{candidate?.grade?.name}</p>
+                          <p>{candidate?.grade?.name ? candidate?.grade?.name : `Nil`}</p>
                           <p>{candidate?.point}pts</p>
                         </div>
                       </div>
@@ -559,13 +562,13 @@ export default function DesktopView(props: Props) {
                     gazetteCandidatesResult?.map((candidate) => (
                       <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
                         <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
-                          <p>{candidate?.position?.name}</p>
+                          <p>{candidate?.position?.name ? candidate?.position?.name : 'Nil'}</p>
                           <p>{candidate?.programme?.programCode}</p>
                           <p>{candidate?.candidate?.name}</p>
                         </div>
                         <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
                           <p>{candidate?.candidate?.team?.name}</p>
-                          <p>{candidate?.grade?.name}</p>
+                          <p>{candidate?.grade?.name ? candidate?.grade?.name : `Nil`}</p>
                           <p>{candidate?.point}pts</p>
                         </div>
                       </div>
@@ -574,13 +577,13 @@ export default function DesktopView(props: Props) {
                     heraldCandidatesResult?.map((candidate) => (
                       <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
                         <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
-                          <p>{candidate?.position?.name}</p>
+                          <p>{candidate?.position?.name ? candidate?.position?.name : 'Nil'}</p>
                           <p>{candidate?.programme?.programCode}</p>
                           <p>{candidate?.candidate?.name}</p>
                         </div>
                         <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
                           <p>{candidate?.candidate?.team?.name}</p>
-                          <p>{candidate?.grade?.name}</p>
+                          <p>{candidate?.grade?.name ? candidate?.grade?.name : `Nil`}</p>
                           <p>{candidate?.point}pts</p>
                         </div>
                       </div>
@@ -589,13 +592,13 @@ export default function DesktopView(props: Props) {
                     tribuneCandidatesResult?.map((candidate) => (
                       <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
                         <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
-                          <p>{candidate?.position?.name}</p>
+                          <p>{candidate?.position?.name ? candidate?.position?.name : 'Nil'}</p>
                           <p>{candidate?.programme?.programCode}</p>
                           <p>{candidate?.candidate?.name}</p>
                         </div>
                         <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
                           <p>{candidate?.candidate?.team?.name}</p>
-                          <p>{candidate?.grade?.name}</p>
+                          <p>{candidate?.grade?.name ? candidate?.grade?.name : `Nil`}</p>
                           <p>{candidate?.point}pts</p>
                         </div>
                       </div>
