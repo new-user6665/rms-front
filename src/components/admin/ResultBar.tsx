@@ -12,7 +12,7 @@ interface Props {
 
 const ResultBar = (props: Props) => {
   return (
-    <div className="w-full flex flex-wrap md:flex-nowrap gap-10 justify-between">
+    <div className="w-full lg:flex flex-wrap md:flex-nowrap gap-10 justify-between hidden ">
       {props.data.map((item, index) => (
         <div key={index} className="bg-accent text-secondary  rounded-2xl w-1/5 flex flex-col items-center py-2 ">
           <h1 className="font-bold text-lg">{item.name}</h1>

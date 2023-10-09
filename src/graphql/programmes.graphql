@@ -103,12 +103,19 @@ query GetDetailedProgramme($id: Int!, $api_key: String!) {
   }
 }
 
+query totalProgramsCount($api_key: String!) {
+  programmes(api_key: $api_key) {
+    id
+  }
+}
+
 query GetPublishedProgrammes($api_key: String!) {
   resultEnteredProgrammes(api_key: $api_key) {
     id
     name
     model
     mode
+    type
     programCode
     resultEntered
     resultPublished
@@ -123,7 +130,16 @@ query GetPublishedProgrammes($api_key: String!) {
     candidateProgramme {
       id
       point
+      position{
+        name
+        value
+      }
+      grade{
+        name
+      }
       candidate {
+        imageId
+        name
         chestNO
         team {
           name
@@ -212,6 +228,8 @@ query GetAllProgrammesByCandidates($api_key: String!) {
     id
     name
     programCode
+    resultEntered
+    resultPublished
     candidateCount
     groupCount
     category {
@@ -297,6 +315,12 @@ mutation AddManyProgrammes($inputs: [CreateProgrammeInput!]!) {
     resultPublished
     programCode
     model
+  }
+}
+
+query programsCount($api_key: String!) {
+  programmes(api_key: $api_key) {
+    id
   }
 }
 

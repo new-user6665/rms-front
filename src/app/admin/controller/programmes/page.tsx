@@ -49,8 +49,9 @@ const page = async () => {
       value: result.data?.programmes.filter((programme) => programme.resultEntered).length
     },
     {
-      title: "Total Users",
+      title: "Avg Category Program",
       icon: <SectionIcon className="w-6 h-6 text-teal-600" />,
+      value: parseInt(result.data?.programmes.length as number / (categories.data?.categories.length as number)+""),
     },
   ];
   const h = data[0];

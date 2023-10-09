@@ -1,5 +1,4 @@
 "use client";
-import InfoBar from "@/components/admin/InfoBar";
 import OneRules from "@/components/admin/rules/SingleRules";
 import RightSideBar from "@/components/admin/RightSideBar";
 import { SERVER_URL } from "@/lib/urql";
@@ -50,8 +49,7 @@ const Rules = (props: Props) => {
 
   return (
     <>
-   <div className="w-full h-full">
-        <InfoBar data={props.data} />
+      <div className="w-full h-full">
         <div className="w-full h-screen lg:h-4/5 flex mt-[3%] ">
           <div className="flex-1 w-full">
             <div className="h-10 cursor-pointer flex justify-between mb-4">
@@ -92,7 +90,7 @@ const Rules = (props: Props) => {
                     setIsRightSideBarOpen(true);
                   }}
                 >
-                 <AddIcon className="w-6 h-6 cursor-pointer fill-white  transition-all"/>
+                  <AddIcon className="w-6 h-6 cursor-pointer fill-white  transition-all" />
                 </button>
                 <button
                   className="hidden md:block ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
@@ -104,16 +102,15 @@ const Rules = (props: Props) => {
                   className="ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold md:hidden"
                   onClick={downloadExcel}
                 >
-                  <DownLoadIcon className="w-6 h-6 cursor-pointer fill-white  transition-all"/>
-                </button> 
+                  <DownLoadIcon className="w-6 h-6 cursor-pointer fill-white  transition-all" />
+                </button>
               </div>
             </div>
 
             <div className="flex flex-col w-full overflow-y-auto h-full">
               <div
-                className={`grid gap-4 w-full transition-all grid-cols-1 ${
-                  IsRightSideBarOpen ? "lg:grid-cols-3" : "lg:grid-cols-4"
-                }`}
+                className={`grid gap-4 w-full transition-all grid-cols-1 ${IsRightSideBarOpen ? "lg:grid-cols-3" : "lg:grid-cols-4"
+                  }`}
               >
                 {data?.map((item: any, index: number) => {
                   return (
@@ -142,27 +139,27 @@ const Rules = (props: Props) => {
           </div>
 
           {/* </div> */}
-            <RightSideBar
-              isCreate={isCreate}
-              isEdit={isEdit}
+          <RightSideBar
+            isCreate={isCreate}
+            isEdit={isEdit}
+            key={1}
+            isOpen={IsRightSideBarOpen}
+            setIsOpen={setIsRightSideBarOpen}
+          >
+            <OneRules
               key={1}
+              name={SelectedCategory.name}
+              id={SelectedCategory.id}
+              isEdit={isEdit}
+              setIsEdit={setIsEdit}
+              isCreate={isCreate}
+              setIsCreate={setIsCreate}
+              data={data}
+              setData={setData}
               isOpen={IsRightSideBarOpen}
               setIsOpen={setIsRightSideBarOpen}
-            >
-             <OneRules
-          key={1}
-          name={SelectedCategory.name}
-          id={SelectedCategory.id}
-          isEdit={isEdit}
-          setIsEdit={setIsEdit}
-          isCreate={isCreate}
-          setIsCreate={setIsCreate}
-          data={data}
-          setData={setData}
-          isOpen={IsRightSideBarOpen}
-          setIsOpen={setIsRightSideBarOpen}
-        />
-            </RightSideBar>
+            />
+          </RightSideBar>
         </div>
       </div>
     </>
