@@ -9,6 +9,7 @@ import {
   Roles,
 } from "@/gql/graphql";
 import { ArrowRightSquare, IconArrowLeftSquare } from "@/icons/arrows";
+import { Menu2Icon, MenuIcon } from "@/icons/home";
 import {
   Candidates,
   Category,
@@ -167,6 +168,7 @@ const SideBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data, setData } = useGlobalContext();
   const navs = Navs(data.admin?.roles as Roles);
+  const [isSideBarOnMobile, setIsSideBarOnMobile] = useState(false);
 
   const router = useRouter();
 
@@ -181,107 +183,146 @@ const SideBar = () => {
   };
 
   return (
-    <div
-      className={`${
-        isOpen ? "w-56" : "w-20"
-      } overflow-hidden transition-all duration-500 text-base-100  bg-primary hidden  lg:flex flex-col p-4`}
-    >
-      <div className="p-0 w-1">
-        <div
-          className={` px-0 flex ${
-            isOpen ? "w-40" : "w-12 items-center justify-center"
-          }`}
-        >
-          <label className="swap w-12 my-2">
-            {isOpen ? (
-              <IconArrowLeftSquare
-                className="w-8 h-8  fill-current"
-                SetOpen={setIsOpen}
-                open={isOpen}
-              />
-            ) : (
-              <ArrowRightSquare
-                className="w-8 h-8 swap-off fill-current"
-                SetOpen={setIsOpen}
-                open={isOpen}
-              />
-            )}
-          </label>
-          <span
-            className={` text-base text-center font-bold ${
-              isOpen ? "flex" : "hidden "
-            }`}
-          >
-            Realia 2k23
-          </span>
-        </div>
-      </div>
-      <ul
-        className={`menu h-full w-full ${
-          isOpen ? "" : "px-0"
-        } transition-all flex flex-col justify-between`}
+    <>
+      <div
+        className={`${isOpen ? "w-56" : "w-20"
+          } overflow-hidden transition-all duration-500 text-base-100  bg-primary hidden  lg:flex flex-col p-4`}
       >
-        <div>
-          <li className="p-0 w-1" onClick={() => router.push("/admin")}>
-            <p
-              className={` px-0 flex ${
-                isOpen ? "w-40" : "w-12 items-center justify-center"
+        <div className="p-0 w-1">
+          <div
+            className={` px-0 flex ${isOpen ? "w-40" : "w-12 items-center justify-center"
               }`}
-            >
-              <Dashoard className="w-8 h-8" />
-              <span
-                className={` text-base text-center font-bold ${
-                  isOpen ? "flex" : "hidden "
+          >
+            <label className="swap w-12 my-2">
+              {isOpen ? (
+                <IconArrowLeftSquare
+                  className="w-8 h-8  fill-current"
+                  SetOpen={setIsOpen}
+                  open={isOpen}
+                />
+              ) : (
+                <ArrowRightSquare
+                  className="w-8 h-8 swap-off fill-current"
+                  SetOpen={setIsOpen}
+                  open={isOpen}
+                />
+              )}
+            </label>
+            <span
+              className={` text-base text-center font-bold ${isOpen ? "flex" : "hidden "
                 }`}
-              >
-                Dashboard
-              </span>
-            </p>
-          </li>
-
-          {navs.map((nav, index) => (
-            <li
-              key={index}
-              className="p-0"
-              onClick={() => router.push(`/admin/${nav.nav}`)}
             >
+              Realia 2k23
+            </span>
+          </div>
+        </div>
+        <ul
+          className={`menu h-full w-full ${isOpen ? "" : "px-0"
+            } transition-all flex flex-col justify-between`}
+        >
+          <div>
+            <li className="p-0 w-1" onClick={() => router.push("/admin")}>
               <p
-                className={` px-0 flex ${
-                  isOpen ? "w-40" : "w-12 items-center justify-center "
-                }`}
-              >
-                {nav.icon}
-                <span
-                  className={` text-base text-center font-bold ${
-                    isOpen ? "flex" : "hidden "
+                className={` px-0 flex ${isOpen ? "w-40" : "w-12 items-center justify-center"
                   }`}
+              >
+                <Dashoard className="w-8 h-8" />
+                <span
+                  className={` text-base text-center font-bold ${isOpen ? "flex" : "hidden "
+                    }`}
                 >
-                  {nav.name}
+                  Dashboard
                 </span>
               </p>
             </li>
-          ))}
-        </div>
 
-        <li className="p-0 w-1" onClick={LogOut}>
-          <p
-            className={` px-0 flex ${
-              isOpen ? "w-40" : "w-12 items-center justify-center"
-            }`}
-          >
-            <LogOutIcon className="w-8 h-8 text-white" />
-            <span
-              className={` text-base text-center font-bold  ${
-                isOpen ? "flex" : "hidden "
-              }`}
+            {navs.map((nav, index) => (
+              <li
+                key={index}
+                className="p-0"
+                onClick={() => router.push(`/admin/${nav.nav}`)}
+              >
+                <p
+                  className={` px-0 flex ${isOpen ? "w-40" : "w-12 items-center justify-center "
+                    }`}
+                >
+                  {nav.icon}
+                  <span
+                    className={` text-base text-center font-bold ${isOpen ? "flex" : "hidden "
+                      }`}
+                  >
+                    {nav.name}
+                  </span>
+                </p>
+              </li>
+            ))}
+          </div>
+
+          <li className="p-0 w-1" onClick={LogOut}>
+            <p
+              className={` px-0 flex ${isOpen ? "w-40" : "w-12 items-center justify-center"
+                }`}
             >
-              Logout
-            </span>
-          </p>
-        </li>
-      </ul>
-    </div>
+              <LogOutIcon className="w-8 h-8 text-white" />
+              <span
+                className={` text-base text-center font-bold  ${isOpen ? "flex" : "hidden "
+                  }`}
+              >
+                Logout
+              </span>
+            </p>
+          </li>
+        </ul>
+      </div>
+
+      <div onClick={() => {
+        setIsSideBarOnMobile(true)
+      }}>
+
+        <Menu2Icon className="w-6 h-6 fill-secondary absolute top-6 right-10 lg:hidden" />
+      </div>
+      {
+        isSideBarOnMobile && (<div className="fixed h-full w-3/4 bg-primary right-0 p-2 md:hidden flex flex-col gap-2 z-50 top-0">
+          <button className="h-10 w-10  rounded-full text-3xl flex items-center justify-center" onClick={() => {
+            setIsSideBarOnMobile(false)
+          }}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height={24}
+              viewBox="0 -960 960 960"
+              width={24}
+              fill="white"
+            >
+              <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+            </svg>
+          </button>
+          <div className="flex flex-col gap-2 h-full">
+            {/* nav1 */}
+            <button onClick={() => { router.push(`/admin/`); setIsSideBarOnMobile(false) }} className="h-12 min-h-[3rem] w-full rounded-xl border px-2 flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height={36}
+                viewBox="0 -960 960 960"
+                width={36}
+                fill="white"
+              >
+                <path d="M560-320h80v-80h80v-80h-80v-80h-80v80h-80v80h80v80ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640v400q0 33-23.5 56.5T800-160H160Zm0-80h640v-400H447l-80-80H160v480Zm0 0v-480 480Z" />
+              </svg>
+              <h1 className="text-white font-semibold text-xl">Dashboard</h1>
+            </button>
+
+            {navs.map((nav, index) => (
+              <button onClick={() => { router.push(`/admin/${nav.nav}`); setIsSideBarOnMobile(false) }} className="h-12 min-h-[3rem] w-full rounded-xl border px-2 flex items-center gap-2 text-white">
+                {nav.icon}
+                <h1 className="text-white font-semibold text-xl">{nav.name}</h1>
+              </button>
+            ))}
+          </div>
+        </div>)
+      }
+    </>
   );
 };
 
 export default SideBar;
+
