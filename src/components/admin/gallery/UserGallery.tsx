@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import GalleryHeader from "@/components/GalleryHeader";
+import SlideShow from "./SlideShow";
+import { SlideShowIcon } from "@/icons/action";
 
 interface Props {
   result: [];
@@ -19,7 +21,7 @@ function userGallery(props: Props) {
   const [defaultImageOne, setDefaultImageOne] = useState<any>("");
   const [defaultImageTwo, setDefaultImageTwo] = useState<any>("");
   const [defaultImageThree, setDefaultImageThree] = useState<any>("");
-
+  const [slideShowOpen, setSlideShowOpen] = useState<boolean>(false);
   const chunk = (arr: any, size: number) =>
     arr.reduce(
       (acc: any, e: any, i: any) =>
@@ -75,7 +77,6 @@ function userGallery(props: Props) {
     setDefaultImageTwo(PrevImageTwo);
     setDefaultImageThree(prevImagethree);
   };
-
   return (
     <>
       <div className="h-screen w-screen overflow-x-hidden">
@@ -590,6 +591,7 @@ function userGallery(props: Props) {
                   }}
                   onClick={() => handleOpen(item[10])}
                 ></div>
+
                 <div
                   className=" bg-base-200 rrounded-md col-span-2 col-start-3 row-start-9"
                   style={{
@@ -620,9 +622,25 @@ function userGallery(props: Props) {
             </div>
           </>
         )}
+
+
+        {/* slideshow */}
+
+        <button onClick={()=> setSlideShowOpen(!slideShowOpen)} className="hidden lg:block btn btn-active btn-secondary fixed bottom-4 right-4 z-50">
+
+          <SlideShowIcon className="w-6 h-6 fill-white  opacity-80" />
+        </button>
+   
+        {  
+          slideShowOpen &&  <div>
+ 
+            <SlideShow data={imageData as any} setSlideShowOpen={setSlideShowOpen}/>
+          </div>
+          
+        }
       </div>
 
-    </>
+    </>  
   );
 }
 
