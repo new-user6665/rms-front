@@ -168,7 +168,7 @@ function userGallery(props: Props) {
           </div>
         }
 
-        <div className=" w-full overflow-hidden flex text-5xl lg:text-6xl font-black gap-2 text-color1 items-end py-5 lg:py-10 bg-background transition-all duration-500">
+        <div className=" w-full text-secondary overflow-hidden flex text-5xl lg:text-6xl font-black gap-2 text-color1 items-end py-5 lg:py-10 bg-background transition-all duration-500">
           <h1 className="-ml-24 opacity-50">Gallery</h1>
           <h1>Gallery</h1>
           <h1 className="opacity-50">Gallery</h1>

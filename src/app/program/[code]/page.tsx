@@ -26,6 +26,7 @@ export default async function page({ params }: { params: { code: string } }) {
 
   return (
     <main className="bg-accent w-screen h-screen">
+      
       {/* Mobile View */}
       <MobileView programme={programme} />
       {/* Tab View */}

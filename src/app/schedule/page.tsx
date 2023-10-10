@@ -1,4 +1,4 @@
-import Profile from "@/components/candidate/ProgramAndResultDesktop";
+import Profile from "@/components/candidate/Profile";
 
 export default async function page({
   params,

@@ -110,7 +110,7 @@ query totalProgramsCount($api_key: String!) {
 }
 
 query GetPublishedProgrammes($api_key: String!) {
-  resultEnteredProgrammes(api_key: $api_key) {
+  resultPublishedProgrammes(api_key: $api_key) {
     id
     name
     model

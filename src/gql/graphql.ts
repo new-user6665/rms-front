@@ -1859,6 +1859,7 @@ export type GetPublishedProgrammesQueryVariables = Exact<{
 
 
 
+
 export type GetPublishedProgrammesQuery = { __typename?: 'Query', resultEnteredProgrammes: Array<{ __typename?: 'Programme', id?: number | null, name?: string | null, model?: Model | null, mode?: Modes | null, type?: Types | null, programCode?: string | null, resultEntered: boolean, resultPublished: boolean, candidateCount?: number | null, anyIssue: boolean, category?: { __typename?: 'Category', name?: string | null } | null, skill?: { __typename?: 'Skill', name?: string | null } | null, candidateProgramme?: Array<{ __typename?: 'CandidateProgramme', id?: number | null, point?: number | null, position?: { __typename?: 'Position', name?: string | null, value?: number | null, pointGroup?: number | null, pointSingle?: number | null, pointHouse?: number | null } | null, grade?: { __typename?: 'Grade', name?: string | null, pointGroup?: number | null, pointSingle?: number | null, pointHouse?: number | null } | null, candidate?: { __typename?: 'Candidate', imageId?: string | null, name?: string | null, chestNO?: string | null, class?: string | null, team?: { __typename?: 'Team', name?: string | null, id?: number | null } | null } | null }> | null }> };
 
 

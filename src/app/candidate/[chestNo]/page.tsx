@@ -1,4 +1,4 @@
-import ProgramAndResultDesktop from "@/components/candidate/ProgramAndResultDesktop";
+import ProgramAndResultDesktop from "@/components/candidate/Profile";
 import {
   Candidate,
   GetCandidateByChestNoDocument,
@@ -94,6 +94,8 @@ export default async function page({
           </div>
         </div>
       </div>
+
+
       <ProgramAndResultDesktop candidate={candidate} />
     </main>
   );
