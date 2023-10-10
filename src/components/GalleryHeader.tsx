@@ -16,10 +16,10 @@ function GalleryHeader() {
   const router = useRouter()
 
   return (
-    <header className="flex justify-between items-center bg-secondary p-5 lg:p-0 lg:pl-5 rounded-md">
+    <header className="flex justify-between items-center bg-secondary p-5 lg:p-0 lg:pl-5 lg:py-5 rounded-md ">
 
-      <Image src="/img/realia-txt.png" alt="Realia Logo" className="h-10 md:h-16" width={500}
-        height={200} />
+      <Image src="/img/realia-txt.png" alt="Realia Logo" className="h-5 md:h-16 object-contain" width={400} objectFit="cover"
+        height={0} />
 
       <div className="flex items-center text-lg font-light ">
         <div className="lg:hidden cursor-pointer" onClick={togglePopup}>

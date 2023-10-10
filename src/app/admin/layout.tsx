@@ -22,7 +22,7 @@ import { cacheExchange, fetchExchange, useQuery } from "urql";
 });
 
   return (
-    <div className={`${ data?.checkLoggedIn?.roles &&  'flex w-screen mt-10 lg:mt-0  lg:h-screen  overflow-y-scroll  lg:overflow-x-hidden lg:overflow-y-hidden'}`}>
+    <div className={`${ data?.checkLoggedIn?.roles &&  'flex w-screen  lg:h-screen  overflow-y-scroll  lg:overflow-x-hidden lg:overflow-y-hidden'}`}>
       { data?.checkLoggedIn?.roles ? 
       (
         <>
@@ -35,7 +35,7 @@ import { cacheExchange, fetchExchange, useQuery } from "urql";
       )
     }
     </div>
-  );
+  );  
 }
 
 export default withUrqlClient(() => ({
