@@ -1,3 +1,6 @@
+import GalleryHeader from "@/components/GalleryHeader";
+import Header from "@/components/Header";
+import ResultHeader from "@/components/ResultHeader";
 import FirstRowFirstCard from "@/components/result/desktop/FrFc";
 import FirstRowSecondCard from "@/components/result/desktop/FrSc";
 import DesktopSidebar from "@/components/result/desktop/Sidebar";
@@ -72,8 +75,11 @@ export default async function page({
 >(TotalProgramsCountDocument, {api_key: API_KEY  });
 
   return (
-    <main className="h-screen w-screen bg-accent overflow-hidden">
+    <main className="h-screen w-screen bg-white overflow-hidden">
+
+
       {/* Mobile view */}
+
 
 
       <div className="h-screen w-screen font-sans flex flex-col gap-4 lg:hidden pt-5 bg-primary overflow-hidden">
@@ -120,13 +126,18 @@ export default async function page({
       >
         {/* sidebar */}
         <DesktopSidebar teams={teams.data?.teams as Team[]}/>
+
         {/* main content */}
         <div className="overflow-y-auto w-full mb-2" >
-          <div className="h-full w-full bg-cover pl-10 flex flex-col gap-2 2xl:gap-8 mt-[10rem] pr-10">
+          
+<div className={`p-10 md:p-16  `}>
+          <ResultHeader />
+        </div>
+          <div className="h-full w-full bg-cover pl-10 flex flex-col gap-2 2xl:gap-8 pr-10">
             {/* title */}
-            <div className="h-24 w-full flex items-end">
+            {/* <div className="h-24 w-full flex items-end">
               <h1 className="text-5xl font-bold">#Current Status</h1>
-            </div>
+            </div> */}
             {/* fist row */}
             <div className=" w-full flex gap-10 ">
               {/* first card first row */}

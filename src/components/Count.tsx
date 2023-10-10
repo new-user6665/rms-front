@@ -4,7 +4,7 @@ import Aos from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
 
-function Count() {
+function      Count() {
   useEffect(() => {
     Aos.init({
       duration: 1500,
@@ -12,7 +12,7 @@ function Count() {
   }, []);
 
   return (
-    <section className="min-h-screen bg-secondary bg-blue flex  flex-col p-4 md:p-16 justify-center lg:justify-between content-center items-center">
+    <section className="min-h-[screen] bg-secondary bg-blue flex   flex-col p-4 md:p-16 justify-center lg:justify-between content-center items-center">
       <div
         data-aos="fade-up"
         className="text-center text-white md:hidden mb-10"
@@ -46,10 +46,17 @@ function Count() {
         className="lg:max-w-[800px]"
       />
       <div className="w-full flex justify-center  lg:justify-start align-end">
-        <img
+        {/* <img
           src="/img/date.png" // Path to the image in the public folder
           alt="Realia date"
           data-aos="fade-up"
+        /> */}
+         <Image
+          src="/img/date.png" // Path to the image in the public folder
+          alt="Realia date"
+          data-aos="fade-up"
+          width={150} // Set the width of the image
+          height={0} // Set the height of the image
         />
       </div>
     </section>

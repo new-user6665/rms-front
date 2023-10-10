@@ -21,13 +21,15 @@ export default function OverallResults(props: SidebarProps) {
     setSortedTeams(sorted)
 
     // delete the forth element from the array
-    sorted.splice(3, 1)
+    sorted.splice(4, 1)
 
     // change the sorted to chunks of 2 * 2
     const chunked = []
     for (let i = 0; i < sorted.length; i += 2) {
-      chunked.push(sorted.slice(i, i + 2))
+      chunked.push(sorted.slice( i , i + 2))
     }
+    console.log(chunked);
+    
     setChunks(chunked)
 
   }, [])

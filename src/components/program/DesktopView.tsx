@@ -16,13 +16,18 @@ export default function DesktopView(props: Props) {
   const [dateTime, setDateTime] = useState<Date>();
 
   useEffect(() => {
+    console.log(programme);
+    
     let candidateResults: CandidateProgramme[] = [];
-    programme?.candidateProgramme?.map((candidate) => {
-      console.log(candidate);
-      (candidate?.position?.name !== null || candidate?.grade?.name !== null) &&
-        candidateResults.push(candidate);
-    });
-    setResultedCandidates(candidateResults);
+    if(programme?.resultPublished === true){
+      programme?.candidateProgramme?.map((candidate) => {
+        console.log(candidate);
+        (candidate?.position?.name !== null || candidate?.grade?.name !== null) &&
+          candidateResults.push(candidate);
+      });
+      setResultedCandidates(candidateResults);
+    }
+   
     console.log(candidateResults);
   }, []);
 
@@ -70,7 +75,7 @@ export default function DesktopView(props: Props) {
     return candidate?.candidate?.team?.name === "Chronicle";
   });
   const gazetteCandidates = allCandidates?.filter((candidate) => {
-    return candidate?.candidate?.team?.name === "Gazatte";
+    return candidate?.candidate?.team?.name === "Gazette";
   });
   const heraldCandidates = allCandidates?.filter((candidate) => {
     return candidate?.candidate?.team?.name === "Herald";
@@ -86,7 +91,7 @@ export default function DesktopView(props: Props) {
     return candidate?.candidate?.team?.name === "Chronicle";
   });
   const gazetteCandidatesResult = allCandidatesResult?.filter((candidate) => {
-    return candidate?.candidate?.team?.name === "Gazatte";
+    return candidate?.candidate?.team?.name === "Gazette";
   });
   const heraldCandidatesResult = allCandidatesResult?.filter((candidate) => {
     return candidate?.candidate?.team?.name === "Herald";
@@ -528,82 +533,83 @@ export default function DesktopView(props: Props) {
               <div className="flex flex-col h-5/6 items-center pt-5 gap-5 overflow-y-auto">
                 {/* result List */}
                 {resultedCandidates.length > 0 ? (
-                  allOrSingleTeam === "all" ? (
-                    allCandidatesResult?.map((candidate) => (
-                      <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
-                        <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
-                          <p>{candidate?.position?.name ? candidate?.position?.name : 'Nil'}</p>
-                          <p>{candidate?.programme?.programCode}</p>
-                          <p>{candidate?.candidate?.name}</p>
-                        </div>
-                        <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
-                          <p>{candidate?.candidate?.team?.name}</p>
-                          <p>{candidate?.grade?.name ? candidate?.grade?.name : `Nil`}</p>
-                          <p>{candidate?.point}pts</p>
-                        </div>
-                      </div>
-                    ))
-                  ) : allOrSingleTeam === "chronicle" ? (
-                    chronicleCandidatesResult?.map((candidate) => (
-                      <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
-                        <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
-                          <p>{candidate?.position?.name ? candidate?.position?.name : 'Nil'}</p>
-                          <p>{candidate?.programme?.programCode}</p>
-                          <p>{candidate?.candidate?.name}</p>
-                        </div>
-                        <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
-                          <p>{candidate?.candidate?.team?.name}</p>
-                          <p>{candidate?.grade?.name ? candidate?.grade?.name : `Nil`}</p>
-                          <p>{candidate?.point}pts</p>
-                        </div>
-                      </div>
-                    ))
-                  ) : allOrSingleTeam === "gazette" ? (
-                    gazetteCandidatesResult?.map((candidate) => (
-                      <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
-                        <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
-                          <p>{candidate?.position?.name ? candidate?.position?.name : 'Nil'}</p>
-                          <p>{candidate?.programme?.programCode}</p>
-                          <p>{candidate?.candidate?.name}</p>
-                        </div>
-                        <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
-                          <p>{candidate?.candidate?.team?.name}</p>
-                          <p>{candidate?.grade?.name ? candidate?.grade?.name : `Nil`}</p>
-                          <p>{candidate?.point}pts</p>
-                        </div>
-                      </div>
-                    ))
-                  ) : allOrSingleTeam === "herald" ? (
-                    heraldCandidatesResult?.map((candidate) => (
-                      <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
-                        <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
-                          <p>{candidate?.position?.name ? candidate?.position?.name : 'Nil'}</p>
-                          <p>{candidate?.programme?.programCode}</p>
-                          <p>{candidate?.candidate?.name}</p>
-                        </div>
-                        <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
-                          <p>{candidate?.candidate?.team?.name}</p>
-                          <p>{candidate?.grade?.name ? candidate?.grade?.name : `Nil`}</p>
-                          <p>{candidate?.point}pts</p>
-                        </div>
-                      </div>
-                    ))
-                  ) : allOrSingleTeam === "tribune" ? (
-                    tribuneCandidatesResult?.map((candidate) => (
-                      <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
-                        <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
-                          <p>{candidate?.position?.name ? candidate?.position?.name : 'Nil'}</p>
-                          <p>{candidate?.programme?.programCode}</p>
-                          <p>{candidate?.candidate?.name}</p>
-                        </div>
-                        <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
-                          <p>{candidate?.candidate?.team?.name}</p>
-                          <p>{candidate?.grade?.name ? candidate?.grade?.name : `Nil`}</p>
-                          <p>{candidate?.point}pts</p>
-                        </div>
-                      </div>
-                    ))
-                  ) : null
+                  // allOrSingleTeam === "all" ? (
+                  //   allCandidatesResult?.map((candidate) => (
+                  //     <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
+                  //       <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
+                  //         <p>{candidate?.position?.name ? candidate?.position?.name : 'Nil'}</p>
+                  //         <p>{candidate?.programme?.programCode}</p>
+                  //         <p>{candidate?.candidate?.name}</p>
+                  //       </div>
+                  //       <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
+                  //         <p>{candidate?.candidate?.team?.name}</p>
+                  //         <p>{candidate?.grade?.name ? candidate?.grade?.name : `Nil`}</p>
+                  //         <p>{candidate?.point}pts</p>
+                  //       </div>
+                  //     </div>
+                  //   ))
+                  // ) : allOrSingleTeam === "chronicle" ? (
+                  //   chronicleCandidatesResult?.map((candidate) => (
+                  //     <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
+                  //       <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
+                  //         <p>{candidate?.position?.name ? candidate?.position?.name : 'Nil'}</p>
+                  //         <p>{candidate?.programme?.programCode}</p>
+                  //         <p>{candidate?.candidate?.name}</p>
+                  //       </div>
+                  //       <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
+                  //         <p>{candidate?.candidate?.team?.name}</p>
+                  //         <p>{candidate?.grade?.name ? candidate?.grade?.name : `Nil`}</p>
+                  //         <p>{candidate?.point}pts</p>
+                  //       </div>
+                  //     </div>
+                  //   ))
+                  // ) : allOrSingleTeam === "gazette" ? (
+                  //   gazetteCandidatesResult?.map((candidate) => (
+                  //     <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
+                  //       <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
+                  //         <p>{candidate?.position?.name ? candidate?.position?.name : 'Nil'}</p>
+                  //         <p>{candidate?.programme?.programCode}</p>
+                  //         <p>{candidate?.candidate?.name}</p>
+                  //       </div>
+                  //       <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
+                  //         <p>{candidate?.candidate?.team?.name}</p>
+                  //         <p>{candidate?.grade?.name ? candidate?.grade?.name : `Nil`}</p>
+                  //         <p>{candidate?.point}pts</p>
+                  //       </div>
+                  //     </div>
+                  //   ))
+                  // ) : allOrSingleTeam === "herald" ? (
+                  //   heraldCandidatesResult?.map((candidate) => (
+                  //     <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
+                  //       <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
+                  //         <p>{candidate?.position?.name ? candidate?.position?.name : 'Nil'}</p>
+                  //         <p>{candidate?.programme?.programCode}</p>
+                  //         <p>{candidate?.candidate?.name}</p>
+                  //       </div>
+                  //       <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
+                  //         <p>{candidate?.candidate?.team?.name}</p>
+                  //         <p>{candidate?.grade?.name ? candidate?.grade?.name : `Nil`}</p>
+                  //         <p>{candidate?.point}pts</p>
+                  //       </div>
+                  //     </div>
+                  //   ))
+                  // ) : allOrSingleTeam === "tribune" ? (
+                  //   tribuneCandidatesResult?.map((candidate) => (
+                  //     <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
+                  //       <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
+                  //         <p>{candidate?.position?.name ? candidate?.position?.name : 'Nil'}</p>
+                  //         <p>{candidate?.programme?.programCode}</p>
+                  //         <p>{candidate?.candidate?.name}</p>
+                  //       </div>
+                  //       <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
+                  //         <p>{candidate?.candidate?.team?.name}</p>
+                  //         <p>{candidate?.grade?.name ? candidate?.grade?.name : `Nil`}</p>
+                  //         <p>{candidate?.point}pts</p>
+                  //       </div>
+                  //     </div>
+                  //   ))
+                  // ) : null
+                  <p>No Results Found</p>
                 ) : (
                   <p>No Results Found</p>
                 )}

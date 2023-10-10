@@ -148,6 +148,11 @@ export default function Programs(props: Props) {
             filteredSelectedProgram ?
             (
               filteredSelectedProgram.candidateProgramme?.map((candidate, index) => {
+
+                if(!candidate.position && !candidate.grade){
+                  return <div></div>
+                }
+
                 return (
 
                   <div
@@ -163,7 +168,7 @@ export default function Programs(props: Props) {
 
                     }
                   <div className="flex gap-2">
-                    <p className="font-semibold text-[10px] bigphone:text-xs">{candidate.position?.name}</p>
+                    <p className="font-semibold text-[10px] bigphone:text-xs">{candidate.position?.value}{candidate.position?.value == 1 ? 'st' : candidate.position?.value == 2 ? 'nd' : candidate.position?.value == 3 ? 'rd' : ''  }</p>
                     <p className=" text-[10px] bigphone:text-xs">{candidate.candidate?.chestNO}</p>
                     <p className="text-[10px] bigphone:text-xs">{ selectedProgram?.type  == Types.Group ?
                         candidate.candidate?.name + " & team" :

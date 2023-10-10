@@ -156,7 +156,7 @@ const Profile = (props: Props) => {
             </div>
             <hr className="border" />
             {/* list */}
-            <div className="mx-5 flex flex-col items-center overflow-y-auto gap-5 h-41/50 py-5">
+            <div className="mx-5 flex flex-col items-center overflow-y-auto gap-5 h-[80%] py-5">
               {/* programslist Desktop */}
               {allOrIndividualOrGroup === "all"
                 ? allPrograms?.map((programme) => (
@@ -166,8 +166,8 @@ const Profile = (props: Props) => {
                       </h1>
                       <h1 className="mt-4">{programme?.programme?.name}</h1>
                       <div className="text-lt flex flex-col items-end mt-2">
-                        <p>7:30</p>
-                        <p>19-09-2023</p>
+                        <p>-</p>
+                        <p>-</p>
                       </div>
                     </div>
                   ))
@@ -179,8 +179,8 @@ const Profile = (props: Props) => {
                       </h1>
                       <h1 className="mt-4">{programme?.programme?.name}</h1>
                       <div className="text-lt flex flex-col items-end mt-2">
-                        <p>7:30</p>
-                        <p>19-09-2023</p>
+                        <p>-</p>
+                        <p>-</p>
                       </div>
                     </div>
                   ))
@@ -192,8 +192,8 @@ const Profile = (props: Props) => {
                       </h1>
                       <h1 className="mt-4">{programme?.programme?.name}</h1>
                       <div className="text-lt flex flex-col items-end mt-2">
-                        <p>7:30</p>
-                        <p>19-09-2023</p>
+                        <p>-</p>
+                        <p>-</p>
                       </div>
                     </div>
                   ))
