@@ -133,17 +133,22 @@ query GetPublishedProgrammes($api_key: String!) {
       position{
         name
         value
+        pointGroup
         pointSingle
+        pointHouse
       }
       grade{
         name
+        pointGroup
         pointSingle
+        pointHouse
       }
       candidate {
         class
         imageId
         name
         chestNO
+        class
         team {
           name
           id
