@@ -677,12 +677,12 @@ const Judges = (props: Props) => {
               </div>
 
               <div className="w-full flex justify-between">
-                <div className="w-1/2"></div>
+                <div className=""></div>
                 <button
                   className="bg-secondary p-1 rounded-md"
                   onClick={() => downloadJudgeList(SelectedProgramme, false, false)}
                 >
-                 without
+                 <DownLoadIcon className="w-6 h-6 text-white" /> <p className="text-white">Without Name</p>
                 </button>
                 <button
                   className="bg-secondary p-1 rounded-md"
