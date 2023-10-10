@@ -1,10 +1,137 @@
-import Profile from "@/components/candidate/Profile";
+// "use client";
+import DesktopSidebar from "@/components/result/desktop/Sidebar";
+import { GetAllTeamsDocument, GetAllTeamsQuery, GetAllTeamsQueryVariables, Programme, Team } from "@/gql/graphql";
+import { API_KEY,FIREBASE_CONFIG } from "@/lib/env";
+import { getUrqlClient } from "@/lib/urql";
+// import { initializeApp } from "@firebase/app";
+// import { getDatabase, ref, onValue } from "@firebase/database";
+import { useEffect, useState } from "react";
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref as firbaseRef, onChildChanged } from "firebase/database";
+import Live from "@/components/live/Live";
+// import firebase from 'firebase/app';
+// import 'firebase/database';
 
 export default async function page({
   params,
 }: {
   params: { chestNo: string };
 }) {
+
+  // const { client } = getUrqlClient();
+  // const [liveData , setLiveData] = useState<any>(null)
+  
+  // const teams = await client.query<
+  //   GetAllTeamsQuery,
+  //   GetAllTeamsQueryVariables
+  // >(GetAllTeamsDocument, { api_key: API_KEY });
+
+  //Loading Firebase Package
+// var firebase = require("firebase/app");
+// var firebasedb = require("firebase/database");
+
+
+/**
+* Update your Firebase Project
+* Credentials and Firebase Database
+* URL
+*/
+
+const firebaseConfig = FIREBASE_CONFIG  //by adding your credentials, you get authorized to read and write from the database
+
+// var app = initializeApp(firebaseConfig)
+/**
+* Loading Firebase Database and refering 
+* to user_data Object from the Database
+*/
+// var db = getDatabase(app);
+// var reference = ref(db, "current")
+// firebasedb.get(ref).then((snapshot) => {
+//     if (snapshot.exists()) {
+//       console.log(snapshot.val());
+//     } else {
+//       console.log("No data available");
+//     }
+//   }).catch((error) => {
+//     console.error(error);
+//   });
+
+// useEffect(() => {
+//   onValue(reference, (snapshot: any) => {
+//     const data = snapshot.val();
+//     if (data == 'no data') {
+//       console.log('show end');
+//       setLiveData(null)
+//     } else {
+//       var DateFiff = (new Date().getTime()) / 1000 - (data?.startTime) / 1000
+//       console.log(DateFiff);
+//       if (DateFiff < 3) {
+//         console.log("Before", data);
+//         setLiveData(data)
+//         setTimeout(() => {
+//           console.log("After", data);
+//           setLiveData(data)
+          
+//         }, 1000);
+//       }
+//       else {
+//         console.log("After", data);
+//         setLiveData(data)
+//       }
+//     }
+    
+//     console.log("livedata" , liveData);
+//   });
+// }
+// , [])
+
+// // onValue(reference, (snapshot: any) => {
+// //   const data = snapshot.val();
+// //   if (data == 'no data') {
+// //     console.log('show end');
+// //     setLiveData(null)
+// //   } else {
+// //     var DateFiff = (new Date().getTime()) / 1000 - (data?.startTime) / 1000
+// //     console.log(DateFiff);
+// //     if (DateFiff < 3) {
+// //       console.log("Before", data);
+// //       setLiveData(data)
+// //       setTimeout(() => {
+// //         console.log("After", data);
+// //         setLiveData(data)
+        
+// //       }, 1000);
+// //     }
+// //     else {
+// //       console.log("After", data);
+// //       setLiveData(data)
+// //     }
+// //   }
+  
+// //   console.log("livedata" , liveData);
+// // });
+
+let program : Programme | null = null
+
+const firebaseApp = initializeApp(firebaseConfig);
+const database = getDatabase(firebaseApp);
+
+const dbRef = firbaseRef(database, `current`);
+
+onChildChanged(dbRef, (snapshot) => {
+  // Get the current value of the database
+  const value : Programme = snapshot.val();
+
+  console.log(value);
+
+  // setLiveData(value)
+  program = value
+
+  // Do something with the new value
+  // For example, update the UI
+});
+
+
   
   return (
     <main className="bg-primary lg:bg-accent">
@@ -175,114 +302,7 @@ export default async function page({
     {/* Desktop View */}
     <div className="w-screen h-screen lg:flex overflow-hidden hidden">
       {/* sidebar */}
-      <div className="h-full w-80 min-w-[20rem] bg-primary flex flex-col justify-center gap-3 pl-8">
-        {/* title */}
-        <h1 className="text-white text-3xl font-semibold leading-none">
-          Results <br />
-          Page
-        </h1>
-        {/* heading */}
-        <div className="flex justify-start gap-2 ">
-          <h2 className="text-white font-semibold">Live Results</h2>
-          <button className="h-6 bg-white border rounded-xl flex items-center">
-            <p className="px-2 font-medium">All</p>
-          </button>
-          <select
-            className="h-6 border rounded-xl flex items-center"
-            name=""
-            id=""
-          >
-            <option value={1}>Category</option>
-            <option value={1}>Bidaya</option>
-            <option value={1}>Uoola</option>
-            <option value={1}>Thaniya</option>
-            <option value={1}>Thanawiyya</option>
-          </select>
-        </div>
-        {/* result */}
-        <div className="w-full h-[40rem]">
-          {/* #01 */}
-          <div className="flex justfy-between h-1/4 w-full">
-            <div className="h-full w-3/5 px-2 font-bold leading-tight pt-3 text-white">
-              <h1 className="text-2xl">#01</h1>
-              <h1 className="text-5xl">6217</h1>
-              <div className="h-8 bg-green-500 rounded-xl flex items-center justify-center">
-                <h1 className="font-medium text-white">Team Tribune</h1>
-              </div>
-            </div>
-            <div className="h-full w-2/5 flex flex-col items-start justify-center px-3">
-              <div className="flex items-center gap-2">
-                <span className="h-[5px] w-[5px] bg-green-400 rounded-full" />
-                <p className="text-xs text-white">Arts : 320</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="h-[5px] w-[5px] bg-blue-400 rounded-full" />
-                <p className="text-xs text-white">Sports : 320</p>
-              </div>
-            </div>
-          </div>
-          {/* #02 */}
-          <div className="flex justfy-between h-1/4 w-full">
-            <div className="h-full w-3/5 px-2 font-bold leading-tight pt-3 text-white">
-              <h1 className="text-2xl">#01</h1>
-              <h1 className="text-5xl">6217</h1>
-              <div className="h-8 bg-red-500 rounded-xl flex items-center justify-center">
-                <h1 className="font-medium text-white">Team Chronicle</h1>
-              </div>
-            </div>
-            <div className="h-full w-2/5 flex flex-col items-start justify-center px-3">
-              <div className="flex items-center gap-2">
-                <span className="h-[5px] w-[5px] bg-green-400 rounded-full" />
-                <p className="text-xs text-white">Arts : 320</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="h-[5px] w-[5px] bg-blue-400 rounded-full" />
-                <p className="text-xs text-white">Sports : 320</p>
-              </div>
-            </div>
-          </div>
-          {/* #03 */}
-          <div className="flex justfy-between h-1/4 w-full">
-            <div className="h-full w-3/5 px-2 font-bold leading-tight pt-3 text-white">
-              <h1 className="text-2xl">#01</h1>
-              <h1 className="text-5xl">6217</h1>
-              <div className="h-8 bg-blue-500 rounded-xl flex items-center justify-center">
-                <h1 className="font-medium text-white">Team Gazette</h1>
-              </div>
-            </div>
-            <div className="h-full w-2/5 flex flex-col items-start justify-center px-3">
-              <div className="flex items-center gap-2">
-                <span className="h-[5px] w-[5px] bg-green-400 rounded-full" />
-                <p className="text-xs text-white">Arts : 320</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="h-[5px] w-[5px] bg-blue-400 rounded-full" />
-                <p className="text-xs text-white">Sports : 320</p>
-              </div>
-            </div>
-          </div>
-          {/* #04 */}
-          <div className="flex justfy-between h-1/4 w-full">
-            <div className="h-full w-3/5 px-2 font-bold leading-tight pt-3 text-white">
-              <h1 className="text-2xl">#01</h1>
-              <h1 className="text-5xl">6217</h1>
-              <div className="h-8 bg-yellow-500 rounded-xl flex items-center justify-center">
-                <h1 className="font-medium text-white">Team Herald</h1>
-              </div>
-            </div>
-            <div className="h-full w-2/5 flex flex-col items-start justify-center px-3">
-              <div className="flex items-center gap-2">
-                <span className="h-[5px] w-[5px] bg-green-400 rounded-full" />
-                <p className="text-xs text-white">Arts : 320</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="h-[5px] w-[5px] bg-blue-400 rounded-full" />
-                <p className="text-xs text-white">Sports : 320</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* <DesktopSidebar teams={teams.data?.teams as Team[]}/> */}
       {/* main content */}
       <div
         className="bg-cover bg-center w-full h-full "
@@ -297,12 +317,13 @@ export default async function page({
             {/* photos */}
             <div className="bg-white h-[78%] w-full rounded-[2rem] text-center pt-2 lg:pt-5 overflow-hidden">
               <h1 className="text-4xl lg:text-3xl 2xl:text-5xl font-semibold">
-                Ballon D'or Malayalam
+                {'Ballon D\'or Malayalam'}
+                <Live program={program} />
               </h1>
               <h1 className="text-3xl lg:text-2xl 2xl:text-2xl font-semibold">
                 Thanawiyya Urdu
               </h1>
-              <div className="h-[60%] whitespace-nowrap overflow-x-auto overflow-y-hidden">
+              <div className="h-[60%] whitespace-nowrap overflow-hidden">
                 <div className="w-72 h-full inline-block text-center relative">
                   <div className="bg-green-500 h-10 w-10 rounded-full absolute left-1/2 translate-x-12 top-6 flex items-center justify-center">
                     <h1 className="font-semibold text-white 2xl:text-base">#1</h1>
@@ -331,7 +352,7 @@ export default async function page({
                 </div>
                 <div className="w-72 h-full inline-block relative">
                   <div className="bg-green-500 h-10 w-10 rounded-full absolute left-1/2 translate-x-12 top-6 flex items-center justify-center">
-                    <h1 className="font-semibold text-white 2xl:text-base">#1</h1>
+                    <h1 className="font-semibold text-white 2xl:text-base">#2</h1>
                   </div>
                   <div className="bg-green-500 h-6 rounded-full absolute left-1/2 -translate-x-1/2 top-[65%] 2xl:top-[65%] flex items-center justify-center">
                     <h1 className="font-semibold text-white text-sm px-2">
@@ -357,7 +378,7 @@ export default async function page({
                 </div>
                 <div className="w-72 h-full inline-block relative">
                   <div className="bg-green-500 h-10 w-10 rounded-full absolute left-1/2 translate-x-12 top-6 flex items-center justify-center">
-                    <h1 className="font-semibold text-white 2xl:text-base">#1</h1>
+                    <h1 className="font-semibold text-white 2xl:text-base">#3</h1>
                   </div>
                   <div className="bg-green-500 h-6 rounded-full absolute left-1/2 -translate-x-1/2 top-[65%] 2xl:top-[65%] flex items-center justify-center">
                     <h1 className="font-semibold text-white text-sm px-2">

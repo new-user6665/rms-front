@@ -16,7 +16,7 @@ export default function MobileResults(props: Props) {
     let candidateResults: CandidateProgramme[] = [];
     programme?.candidateProgramme?.map((candidate) => {
       console.log(candidate);
-      (candidate?.position?.name !== null || candidate?.grade?.name !== null) &&
+      (candidate?.position !== null || candidate?.grade !== null) &&
         candidateResults.push(candidate);
     });
     setResultedCandidates(candidateResults);
@@ -34,12 +34,14 @@ export default function MobileResults(props: Props) {
 
   const [allOrSingleTeam, setAllOrSingleTeam] = useState("all");
 
-  const allCandidatesResult = resultedCandidates;
+  const allCandidatesResult = resultedCandidates?.sort((a, b) => {
+    return Number(b.point) - Number(a.point);
+  });
   const chronicleCandidatesResult = allCandidatesResult?.filter((candidate) => {
     return candidate?.candidate?.team?.name === "Chronicle";
   });
   const gazetteCandidatesResult = allCandidatesResult?.filter((candidate) => {
-    return candidate?.candidate?.team?.name === "Gazatte";
+    return candidate?.candidate?.team?.name === "Gazette";
   });
   const heraldCandidatesResult = allCandidatesResult?.filter((candidate) => {
     return candidate?.candidate?.team?.name === "Herald";

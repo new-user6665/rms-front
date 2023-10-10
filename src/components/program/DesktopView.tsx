@@ -13,54 +13,23 @@ export default function DesktopView(props: Props) {
   const [resultedCandidates, setResultedCandidates] = useState<
     CandidateProgramme[]
   >([]);
-  const [dateTime, setDateTime] = useState<Date>();
 
   useEffect(() => {
     let candidateResults: CandidateProgramme[] = [];
     programme?.candidateProgramme?.map((candidate) => {
       console.log(candidate);
-      (candidate?.position?.name !== null || candidate?.grade?.name !== null) &&
+      (candidate?.position !== null || candidate?.grade !== null) &&
         candidateResults.push(candidate);
     });
     setResultedCandidates(candidateResults);
     console.log(candidateResults);
   }, []);
 
-  useEffect(() => {
-    if (programme?.date) {
-      setDateTime(new Date(programme?.date));
-    }
-    console.log(dateTime);
-  }, []);
-
-  function timeFormat12Hour() {
-    let h: any = dateTime?.getHours();
-    let m: any = dateTime?.getMinutes();
-    let ampm = h >= 12 ? "pm" : "am";
-
-    h = h % 12;
-    h = h ? h : 12;
-
-    m = m?.toString().padStart(2, "0");
-    const formatedTimeString = h + ":" + m + " " + ampm;
-    return formatedTimeString;
-  }
-
-  function timeFormatDate() {
-    console.log(dateTime?.getUTCMonth());
-    let day: any = dateTime?.getUTCDate();
-    let month: any = dateTime?.getUTCMonth();
-    let year: any = dateTime?.getUTCFullYear();
-
-    const formatedTimeString = day + "-" + month + "-" + year;
-    return formatedTimeString;
-  }
-
-  const specialButton = {
+  const activeButton = {
     div: "rounded-xl text-sm h-6 bg-primary border border-primary flex items-center",
     button: "px-2 text-white text-sm",
   };
-  const commonButton = {
+  const inactiveButton = {
     div: "rounded-xl text-sm h-6 border border-primary flex items-center",
     button: "px-2 text-primary text-sm",
   };
@@ -70,7 +39,7 @@ export default function DesktopView(props: Props) {
     return candidate?.candidate?.team?.name === "Chronicle";
   });
   const gazetteCandidates = allCandidates?.filter((candidate) => {
-    return candidate?.candidate?.team?.name === "Gazatte";
+    return candidate?.candidate?.team?.name === "Gazette";
   });
   const heraldCandidates = allCandidates?.filter((candidate) => {
     return candidate?.candidate?.team?.name === "Herald";
@@ -81,12 +50,14 @@ export default function DesktopView(props: Props) {
 
   const [allOrSingleTeamResult, setAllOrSingleTeamResult] = useState("all");
 
-  const allCandidatesResult = resultedCandidates;
+  const allCandidatesResult = resultedCandidates?.sort((a, b) => {
+    return Number(b.point) - Number(a.point);
+  });
   const chronicleCandidatesResult = allCandidatesResult?.filter((candidate) => {
     return candidate?.candidate?.team?.name === "Chronicle";
   });
   const gazetteCandidatesResult = allCandidatesResult?.filter((candidate) => {
-    return candidate?.candidate?.team?.name === "Gazatte";
+    return candidate?.candidate?.team?.name === "Gazette";
   });
   const heraldCandidatesResult = allCandidatesResult?.filter((candidate) => {
     return candidate?.candidate?.team?.name === "Herald";
@@ -207,8 +178,8 @@ export default function DesktopView(props: Props) {
                 <div
                   className={`${
                     allOrSingleTeam === "all"
-                      ? specialButton.div
-                      : commonButton.div
+                      ? activeButton.div
+                      : inactiveButton.div
                   }`}
                 >
                   <button
@@ -217,8 +188,8 @@ export default function DesktopView(props: Props) {
                     }}
                     className={`${
                       allOrSingleTeam === "all"
-                        ? specialButton.button
-                        : commonButton.button
+                        ? activeButton.button
+                        : inactiveButton.button
                     }`}
                   >
                     All
@@ -227,8 +198,8 @@ export default function DesktopView(props: Props) {
                 <div
                   className={`${
                     allOrSingleTeam === "chronicle"
-                      ? specialButton.div
-                      : commonButton.div
+                      ? activeButton.div
+                      : inactiveButton.div
                   }`}
                 >
                   <button
@@ -237,8 +208,8 @@ export default function DesktopView(props: Props) {
                     }}
                     className={`${
                       allOrSingleTeam === "chronicle"
-                        ? specialButton.button
-                        : commonButton.button
+                        ? activeButton.button
+                        : inactiveButton.button
                     }`}
                   >
                     Chronicle
@@ -247,8 +218,8 @@ export default function DesktopView(props: Props) {
                 <div
                   className={`${
                     allOrSingleTeam === "tribune"
-                      ? specialButton.div
-                      : commonButton.div
+                      ? activeButton.div
+                      : inactiveButton.div
                   }`}
                 >
                   <button
@@ -257,8 +228,8 @@ export default function DesktopView(props: Props) {
                     }}
                     className={`${
                       allOrSingleTeam === "tribune"
-                        ? specialButton.button
-                        : commonButton.button
+                        ? activeButton.button
+                        : inactiveButton.button
                     }`}
                   >
                     Tribune
@@ -267,8 +238,8 @@ export default function DesktopView(props: Props) {
                 <div
                   className={`${
                     allOrSingleTeam === "gazette"
-                      ? specialButton.div
-                      : commonButton.div
+                      ? activeButton.div
+                      : inactiveButton.div
                   }`}
                 >
                   <button
@@ -277,8 +248,8 @@ export default function DesktopView(props: Props) {
                     }}
                     className={`${
                       allOrSingleTeam === "gazette"
-                        ? specialButton.button
-                        : commonButton.button
+                        ? activeButton.button
+                        : inactiveButton.button
                     }`}
                   >
                     Gazette
@@ -287,8 +258,8 @@ export default function DesktopView(props: Props) {
                 <div
                   className={`${
                     allOrSingleTeam === "herald"
-                      ? specialButton.div
-                      : commonButton.div
+                      ? activeButton.div
+                      : inactiveButton.div
                   }`}
                 >
                   <button
@@ -297,8 +268,8 @@ export default function DesktopView(props: Props) {
                     }}
                     className={`${
                       allOrSingleTeam === "herald"
-                        ? specialButton.button
-                        : commonButton.button
+                        ? activeButton.button
+                        : inactiveButton.button
                     }`}
                   >
                     Herald
@@ -425,8 +396,8 @@ export default function DesktopView(props: Props) {
                 <div
                   className={`${
                     allOrSingleTeamResult === "all"
-                      ? specialButton.div
-                      : commonButton.div
+                      ? activeButton.div
+                      : inactiveButton.div
                   }`}
                 >
                   <button
@@ -435,8 +406,8 @@ export default function DesktopView(props: Props) {
                     }}
                     className={`${
                       allOrSingleTeamResult === "all"
-                        ? specialButton.button
-                        : commonButton.button
+                        ? activeButton.button
+                        : inactiveButton.button
                     }`}
                   >
                     All
@@ -445,8 +416,8 @@ export default function DesktopView(props: Props) {
                 <div
                   className={`${
                     allOrSingleTeamResult === "chronicle"
-                      ? specialButton.div
-                      : commonButton.div
+                      ? activeButton.div
+                      : inactiveButton.div
                   }`}
                 >
                   <button
@@ -455,8 +426,8 @@ export default function DesktopView(props: Props) {
                     }}
                     className={`${
                       allOrSingleTeamResult === "chronicle"
-                        ? specialButton.button
-                        : commonButton.button
+                        ? activeButton.button
+                        : inactiveButton.button
                     }`}
                   >
                     Chronicle
@@ -465,8 +436,8 @@ export default function DesktopView(props: Props) {
                 <div
                   className={`${
                     allOrSingleTeamResult === "tribune"
-                      ? specialButton.div
-                      : commonButton.div
+                      ? activeButton.div
+                      : inactiveButton.div
                   }`}
                 >
                   <button
@@ -475,8 +446,8 @@ export default function DesktopView(props: Props) {
                     }}
                     className={`${
                       allOrSingleTeamResult === "tribune"
-                        ? specialButton.button
-                        : commonButton.button
+                        ? activeButton.button
+                        : inactiveButton.button
                     }`}
                   >
                     Tribune
@@ -485,8 +456,8 @@ export default function DesktopView(props: Props) {
                 <div
                   className={`${
                     allOrSingleTeamResult === "gazette"
-                      ? specialButton.div
-                      : commonButton.div
+                      ? activeButton.div
+                      : inactiveButton.div
                   }`}
                 >
                   <button
@@ -495,8 +466,8 @@ export default function DesktopView(props: Props) {
                     }}
                     className={`${
                       allOrSingleTeamResult === "gazette"
-                        ? specialButton.button
-                        : commonButton.button
+                        ? activeButton.button
+                        : inactiveButton.button
                     }`}
                   >
                     Gazette
@@ -505,8 +476,8 @@ export default function DesktopView(props: Props) {
                 <div
                   className={`${
                     allOrSingleTeamResult === "herald"
-                      ? specialButton.div
-                      : commonButton.div
+                      ? activeButton.div
+                      : inactiveButton.div
                   }`}
                 >
                   <button
@@ -515,8 +486,8 @@ export default function DesktopView(props: Props) {
                     }}
                     className={`${
                       allOrSingleTeamResult === "herald"
-                        ? specialButton.button
-                        : commonButton.button
+                        ? activeButton.button
+                        : inactiveButton.button
                     }`}
                   >
                     Herald
@@ -528,77 +499,117 @@ export default function DesktopView(props: Props) {
               <div className="flex flex-col h-5/6 items-center pt-5 gap-5 overflow-y-auto">
                 {/* result List */}
                 {resultedCandidates.length > 0 ? (
-                  allOrSingleTeam === "all" ? (
+                  allOrSingleTeamResult === "all" ? (
                     allCandidatesResult?.map((candidate) => (
                       <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
                         <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
-                          <p>{candidate?.position?.name ? candidate?.position?.name : 'Nil'}</p>
+                          <p>
+                            {candidate?.position?.name
+                              ? candidate?.position?.name
+                              : "Nil"}
+                          </p>
                           <p>{candidate?.programme?.programCode}</p>
                           <p>{candidate?.candidate?.name}</p>
                         </div>
                         <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
                           <p>{candidate?.candidate?.team?.name}</p>
-                          <p>{candidate?.grade?.name ? candidate?.grade?.name : `Nil`}</p>
+                          <p>
+                            {candidate?.grade?.name
+                              ? candidate?.grade?.name
+                              : `Nil`}
+                          </p>
                           <p>{candidate?.point}pts</p>
                         </div>
                       </div>
                     ))
-                  ) : allOrSingleTeam === "chronicle" ? (
+                  ) : allOrSingleTeamResult === "chronicle" ? (
                     chronicleCandidatesResult?.map((candidate) => (
                       <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
                         <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
-                          <p>{candidate?.position?.name ? candidate?.position?.name : 'Nil'}</p>
+                          <p>
+                            {candidate?.position?.name
+                              ? candidate?.position?.name
+                              : "Nil"}
+                          </p>
                           <p>{candidate?.programme?.programCode}</p>
                           <p>{candidate?.candidate?.name}</p>
                         </div>
                         <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
                           <p>{candidate?.candidate?.team?.name}</p>
-                          <p>{candidate?.grade?.name ? candidate?.grade?.name : `Nil`}</p>
+                          <p>
+                            {candidate?.grade?.name
+                              ? candidate?.grade?.name
+                              : `Nil`}
+                          </p>
                           <p>{candidate?.point}pts</p>
                         </div>
                       </div>
                     ))
-                  ) : allOrSingleTeam === "gazette" ? (
+                  ) : allOrSingleTeamResult === "gazette" ? (
                     gazetteCandidatesResult?.map((candidate) => (
                       <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
                         <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
-                          <p>{candidate?.position?.name ? candidate?.position?.name : 'Nil'}</p>
+                          <p>
+                            {candidate?.position?.name
+                              ? candidate?.position?.name
+                              : "Nil"}
+                          </p>
                           <p>{candidate?.programme?.programCode}</p>
                           <p>{candidate?.candidate?.name}</p>
                         </div>
                         <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
                           <p>{candidate?.candidate?.team?.name}</p>
-                          <p>{candidate?.grade?.name ? candidate?.grade?.name : `Nil`}</p>
+                          <p>
+                            {candidate?.grade?.name
+                              ? candidate?.grade?.name
+                              : `Nil`}
+                          </p>
                           <p>{candidate?.point}pts</p>
                         </div>
                       </div>
                     ))
-                  ) : allOrSingleTeam === "herald" ? (
+                  ) : allOrSingleTeamResult === "herald" ? (
                     heraldCandidatesResult?.map((candidate) => (
                       <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
                         <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
-                          <p>{candidate?.position?.name ? candidate?.position?.name : 'Nil'}</p>
+                          <p>
+                            {candidate?.position?.name
+                              ? candidate?.position?.name
+                              : "Nil"}
+                          </p>
                           <p>{candidate?.programme?.programCode}</p>
                           <p>{candidate?.candidate?.name}</p>
                         </div>
                         <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
                           <p>{candidate?.candidate?.team?.name}</p>
-                          <p>{candidate?.grade?.name ? candidate?.grade?.name : `Nil`}</p>
+                          <p>
+                            {candidate?.grade?.name
+                              ? candidate?.grade?.name
+                              : `Nil`}
+                          </p>
                           <p>{candidate?.point}pts</p>
                         </div>
                       </div>
                     ))
-                  ) : allOrSingleTeam === "tribune" ? (
+                  ) : allOrSingleTeamResult === "tribune" ? (
                     tribuneCandidatesResult?.map((candidate) => (
                       <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
                         <div className="flex h-8 w-1/2 text-md items-center pl-2 gap-3 justify-start">
-                          <p>{candidate?.position?.name ? candidate?.position?.name : 'Nil'}</p>
+                          <p>
+                            {candidate?.position?.name
+                              ? candidate?.position?.name
+                              : "Nil"}
+                          </p>
                           <p>{candidate?.programme?.programCode}</p>
                           <p>{candidate?.candidate?.name}</p>
                         </div>
                         <div className="flex h-8 w-1/2 text-md items-center pr-2 gap-3 justify-end">
                           <p>{candidate?.candidate?.team?.name}</p>
-                          <p>{candidate?.grade?.name ? candidate?.grade?.name : `Nil`}</p>
+                          <p>
+                            {candidate?.grade?.name
+                              ? candidate?.grade?.name
+                              : `Nil`}
+                          </p>
                           <p>{candidate?.point}pts</p>
                         </div>
                       </div>

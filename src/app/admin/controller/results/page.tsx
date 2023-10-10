@@ -41,11 +41,17 @@ const page = async () => {
   GetAllTeamsQueryVariables
 >(GetAllTeamsDocument, {api_key : API_KEY});
 
+
   return (
     <main className="w-full h-full flex ">
       <Result
         key={1}
-        result={result.data?.resultEnteredProgrammes}
+        result={
+          result.data?.resultEnteredProgrammes.filter(  (programme) => {
+            return programme.resultPublished === false;
+          }
+          )
+        }
         pageProps={1}
         categories={categories.data?.categories}
         skills={skills.data?.skills}
