@@ -4,7 +4,7 @@ import UserGallery from "@/components/admin/gallery/UserGallery";
 
 const page =async () => {
     
-  const result = await axios.get("https://rms-mu.vercel.app/gallery");
+  const result = await axios.get("https://realia23.azurewebsites.net/gallery");
   
   return (
     <div>

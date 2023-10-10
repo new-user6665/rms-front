@@ -1,6 +1,7 @@
 "use client";
 
 import { CandidateProgramme, Programme } from "@/gql/graphql";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -9,6 +10,8 @@ interface Props {
 
 export default function DesktopView(props: Props) {
   const { programme } = props;
+
+  const router = useRouter()
 
   const [resultedCandidates, setResultedCandidates] = useState<
     CandidateProgramme[]
@@ -73,6 +76,17 @@ export default function DesktopView(props: Props) {
   });
   return (
     <div className="2xl:flex h-full w-full hidden">
+          <button
+        onClick={() => router.push('/')}
+        type="button"
+        data-te-ripple-init=""
+        data-te-ripple-color="light"
+        className="inline-block fixed top-5 right-8 bg-white hover:bg-gray-300 rounded-full md:bg-primary p-2 uppercase leading-normal text-white md:shadow-black shadow-white shadow-[0_4px_9px_-4px_#3b71ca] md:hover:bg-secondary transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
+      >
+        <svg className="h-6 w-6  lg:w-8 lg:h-8 md:fill-white fill-primary" viewBox="0 -960 960 960">
+          <path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z" />
+        </svg>
+      </button>
       {/* sidebar */}
       <div className="flex flex-col h-full w-[30rem] min-w-[18rem] bg-primary justify-center items-start gap-3 pl-5">
         <h1 className="text-white text-4xl px-3 leading-tight font-bold">

@@ -64,7 +64,7 @@ function Description() {
           </div>
         </motion.div>
         <motion.div
-          onClick={()=>router.push('/live')}
+          onClick={()=>router.push('/')}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           whileHover={{ scale: 1.07 }}

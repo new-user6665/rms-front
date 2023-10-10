@@ -4,6 +4,7 @@ import { Programme } from "@/gql/graphql";
 import { useEffect, useState } from "react";
 import MobileCandidates from "./MobileCandidates";
 import MobileResults from "./MobileResults";
+import { useRouter } from "next/navigation";
 
 interface Props {
   programme: Programme;
@@ -24,6 +25,7 @@ export default function MobileView(props: Props) {
       "w-auto bg-[#3D127A] text-white text-lg font-semibold rounded-3xl px-4",
   };
 
+  const router = useRouter()
   useEffect(() => {
     if (programme?.date) {
       setDateTime(new Date(programme?.date));
@@ -56,6 +58,17 @@ export default function MobileView(props: Props) {
 
   return (
     <div className="flex flex-col w-full h-screen bg-[#0E0123] xl:hidden">
+           <button
+        onClick={() => router.push('/')}
+        type="button"
+        data-te-ripple-init=""
+        data-te-ripple-color="light"
+        className="inline-block fixed top-5 right-8 bg-white hover:bg-gray-300 rounded-full md:bg-primary p-2 uppercase leading-normal text-white md:shadow-black shadow-white shadow-[0_4px_9px_-4px_#3b71ca] md:hover:bg-secondary transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
+      >
+        <svg className="h-6 w-6  lg:w-8 lg:h-8 md:fill-white fill-primary" viewBox="0 -960 960 960">
+          <path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z" />
+        </svg>
+      </button>
       <p className="text-white text-lg font-semibold p-5">Program Details</p>
       <div className="p-5 flex flex-col items-center">
         <div className="flex flex-col w-screen px-5 bigphone:items-center">
