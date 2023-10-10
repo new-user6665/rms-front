@@ -4,8 +4,13 @@ import { MenuIcon } from "@/icons/home";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+interface HeaderProps {
+  nav: string;
+}
 
-function Header() {
+function Header(
+  props: HeaderProps
+) {
   const [showPopup, setShowPopup] = useState(false);
 
   const togglePopup = () => {
@@ -69,9 +74,9 @@ function Header() {
                 <li className=" text-secondary font-semibold border-theme border px-4 py-1 rounded-3xl hover:text-white hover:bg-secondary " onClick={()=>router.push('/')}>
                   Home
                 </li>
-                <li className="text-secondary px-4 py-1 rounded-3xl" onClick={()=>router.push('/')}>Result</li>
+                <li className="text-secondary px-4 py-1 rounded-3xl" onClick={()=>router.push('/result')}>Result</li>
                 <li className="text-secondary px-4 py-1 rounded-3xl" onClick={()=>router.push('/gallery')}>Gallery</li>
-                <li className="text-secondary px-4 py-1 rounded-3xl" onClick={()=>router.push('/')}>Profile</li>
+                <li className="text-secondary px-4 py-1 rounded-3xl" onClick={()=>router.push('/candidate')}>Profile</li>
               </ul>
             </nav>
           </div>

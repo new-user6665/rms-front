@@ -81,7 +81,7 @@ function userGallery(props: Props) {
     <>
       <div className="h-screen w-screen overflow-x-hidden">
         <div className={`p-10 md:p-16 ${open ? "hidden" : "block"} `}>
-          <GalleryHeader />
+          <GalleryHeader/>
         </div>
 
         {open && (

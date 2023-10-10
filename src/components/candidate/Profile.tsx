@@ -156,7 +156,9 @@ export default function ProgramAndResultDesktop(props: Props) {
             </div>
             <hr className="border" />
             {/* list */}
-            <div className="mx-5 flex flex-col items-center overflow-y-auto gap-5 h-4/5 py-5">
+
+            <div className="mx-5 flex flex-col items-center overflow-y-auto gap-5 h-[80%] py-5">
+
               {/* programslist Desktop */}
               {allOrIndividualOrGroup === "all"
                 ? allPrograms?.map((programme) => (

@@ -106,10 +106,10 @@ export default function FirstRowFirstCard(props: Props) {
                   })
                   setSelectedProgram(program)
                   setFilteredSelectedProgram(program)
-                }} className="flex items-center h-14 min-h-[3.5rem] w-full text-xs bg-[#F6DEFF] rounded-xl justify-around px-3 cursor-pointer">
-                  <p className="font-bold">{program.programCode}</p>
-                  <p>{program.name}</p>
-                  <p className="font-bold">{program.category?.name}</p>
+                }} className="flex items-center h-14 min-h-[3.5rem] w-full text-xs bg-[#F6DEFF] rounded-xl px-3 cursor-pointer">
+                  <p className="font-bold w-[25%]">{program.programCode}</p>
+                  <p className="w-[60%]">{program.name}</p>
+                  <p className="w-[20%]">{program.category?.name}</p>
                 </div>
               )
             })
@@ -168,6 +168,9 @@ export default function FirstRowFirstCard(props: Props) {
           {filteredSelectedProgram ?
             (
               filteredSelectedProgram.candidateProgramme?.map((candidate, index) => {
+                if(!candidate.position && !candidate.grade){
+                  return <div></div>
+                }
                 return (
                   <div className="flex w-full items-center h-14 relative p-5">
                     {candidate.candidate?.imageId ? <img
@@ -178,17 +181,17 @@ export default function FirstRowFirstCard(props: Props) {
                       <User2Icon className="h-10 w-10 rounded-full absolute border -ml-4 fill-secondary bg-white p-2" />
 
                     }
-                    <div className="flex items-center h-14 min-h-[3.5rem] w-full text-xs bg-[#F6DEFF] rounded-xl justify-around">
-                      <p className="ml-2">{candidate.position?.name}</p>
-                      <p>{candidate.candidate?.chestNO}</p>
-                      <p>{ selectedProgram?.type  == Types.Group ?
+                    <div className="flex items-center h-14 min-h-[3.5rem] w-full text-xs bg-[#F6DEFF] rounded-xl">
+                      <p className="ml-8 w-[15%] font-bold">{candidate.position?.value}{candidate.position?.value == 1 ? 'st' : candidate.position?.value == 2 ? 'nd' : candidate.position?.value == 3 ? 'rd' : ''  }  </p>
+                      <p className=" ml-4 w-[10%]"> {candidate.candidate?.chestNO}</p>
+                      <p className=" ml-4 w-[50%]">{ selectedProgram?.type  == Types.Group ?
                         candidate.candidate?.name + " & team" :
                         selectedProgram?.type  == Types.Single ?
                           candidate.candidate?.name :
                           candidate.candidate?.team?.name
                         }</p>
-                      <p>{candidate.candidate?.team?.name}</p>
-                      <p>{candidate.grade?.name}</p>
+                      <p className=" ml-4 w-[20%]">{candidate.candidate?.team?.name}</p>
+                      <p className=" ml-4 w-[8%]">{candidate.grade?.name}</p>
                     </div>
 
                   </div>

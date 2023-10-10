@@ -15,13 +15,19 @@ export default function DesktopView(props: Props) {
   >([]);
 
   useEffect(() => {
+    console.log(programme);
+    
     let candidateResults: CandidateProgramme[] = [];
-    programme?.candidateProgramme?.map((candidate) => {
-      console.log(candidate);
-      (candidate?.position !== null || candidate?.grade !== null) &&
-        candidateResults.push(candidate);
-    });
-    setResultedCandidates(candidateResults);
+
+    if(programme?.resultPublished === true){
+      programme?.candidateProgramme?.map((candidate) => {
+        console.log(candidate);
+        (candidate?.position?.name !== null || candidate?.grade?.name !== null) &&
+          candidateResults.push(candidate);
+      });
+      setResultedCandidates(candidateResults);
+    }
+ 
     console.log(candidateResults);
   }, []);
 
@@ -499,6 +505,7 @@ export default function DesktopView(props: Props) {
               <div className="flex flex-col h-5/6 items-center pt-5 gap-5 overflow-y-auto">
                 {/* result List */}
                 {resultedCandidates.length > 0 ? (
+
                   allOrSingleTeamResult === "all" ? (
                     allCandidatesResult?.map((candidate) => (
                       <div className="flex items-center h-16 min-h-[4rem] bg-accent w-11/12 rounded-xl">
@@ -615,6 +622,7 @@ export default function DesktopView(props: Props) {
                       </div>
                     ))
                   ) : null
+
                 ) : (
                   <p>No Results Found</p>
                 )}
