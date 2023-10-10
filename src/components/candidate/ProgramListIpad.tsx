@@ -109,8 +109,8 @@ export default function ProgramListIpad(props: Props) {
                 </div>
                 {/* time */}
                 <div className="px-3 text-lt flex flex-col items-end">
-                  <p className="">7:00 pm</p>
-                  <p className="">19-09-2023</p>
+                  <p className="">-</p>
+                  <p className="">-</p>
                 </div>
               </div>
             ))
@@ -127,8 +127,8 @@ export default function ProgramListIpad(props: Props) {
                 </div>
                 {/* time */}
                 <div className="px-3 text-lt flex flex-col items-end">
-                  <p className="">7:00 pm</p>
-                  <p className="">19-09-2023</p>
+                  <p className="">-</p>
+                  <p className="">-</p>
                 </div>
               </div>
             ))
@@ -145,8 +145,8 @@ export default function ProgramListIpad(props: Props) {
                 </div>
                 {/* time */}
                 <div className="px-3 text-lt flex flex-col items-end">
-                  <p className="">7:00 pm</p>
-                  <p className="">19-09-2023</p>
+                  <p className="">-</p>
+                  <p className="">-</p>
                 </div>
               </div>
             ))

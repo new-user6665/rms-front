@@ -10,7 +10,7 @@ interface Props {
   candidate: Candidate;
 }
 
-const Profile = (props: Props) => {
+export default function ProgramAndResultDesktop(props: Props) {
   const [publishedResults, setPublishedResults] = useState<
     CandidateProgramme[]
   >([]);
@@ -156,7 +156,9 @@ const Profile = (props: Props) => {
             </div>
             <hr className="border" />
             {/* list */}
+
             <div className="mx-5 flex flex-col items-center overflow-y-auto gap-5 h-[80%] py-5">
+
               {/* programslist Desktop */}
               {allOrIndividualOrGroup === "all"
                 ? allPrograms?.map((programme) => (
@@ -302,8 +304,16 @@ const Profile = (props: Props) => {
                         <p className="">{programme?.programme?.name}</p>
                       </div>
                       <div className="text-sm flex gap-2 flex-row items-end -pt-2 ml-24">
-                        <p>{programme?.position?.name}</p>
-                        <p>{programme?.grade?.name}</p>
+                        <p>
+                          {programme?.position?.name
+                            ? programme?.position?.name
+                            : `Nil`}
+                        </p>
+                        <p>
+                          {programme?.grade?.name
+                            ? programme?.grade?.name
+                            : `Nil`}
+                        </p>
                         <p>{programme?.point}pts</p>
                       </div>
                     </div>
@@ -524,6 +534,4 @@ const Profile = (props: Props) => {
       </div>
     </>
   );
-};
-
-export default Profile;
+}
