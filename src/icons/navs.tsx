@@ -120,7 +120,7 @@ export function Skill(props: Props) {
   );
 }
 
-export function Grade(props: Props) {
+export function GradeIcons(props: Props) {
   return (
     <svg
       viewBox="0 0 24 24"

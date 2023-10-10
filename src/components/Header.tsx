@@ -25,13 +25,13 @@ function Header() {
             <li onClick={()=>router.push('/')} className=" text-white font-semibold border-white border px-4 py-1 rounded-3xl hover:text-secondary hover:bg-white">
               Home
             </li>
-            <li onClick={()=>router.push('/')} className="transition-all duration-400 text-white px-4 py-1 rounded-3xl hover:font-bold">
+            <li onClick={()=>router.push('/result')} className="transition-all duration-400 text-white px-4 py-1 rounded-3xl hover:font-bold">
               Result
             </li>
             <li  onClick={()=>router.push('/gallery')} className="transition-all duration-400 text-white px-4 py-1 rounded-3xl hover:font-bold">
               Gallery
             </li>
-            <li  onClick={()=>router.push('/')} className="transition-all duration-400 text-white px-4 py-1 rounded-3xl hover:font-bold">
+            <li  onClick={()=>router.push('/candidate')} className="transition-all duration-400 text-white px-4 py-1 rounded-3xl hover:font-bold">
               Profile
             </li>
           </ul>
