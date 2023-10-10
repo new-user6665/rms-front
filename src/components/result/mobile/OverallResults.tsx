@@ -84,9 +84,9 @@ export default function OverallResults(props: SidebarProps) {
                       </div>
                     </div>
                     <div className="w-full h-3/4 px-2 pt-3">
-                      <h1 className="text-7xl font-bold">{chunk[1].totalPoint}</h1>
-                      <div style={{ background: `${chunk[1].color}` }} className=" bg-black h-1/4 rounded-lg flex justify-center items-center">
-                        <h1 className="text-white font-semibold text-2xl">{chunk[1].name}</h1>
+                      <h1 className="text-7xl font-bold">{chunk[1]?.totalPoint}</h1>
+                      <div style={{ background: `${chunk[1]?.color}` }} className=" bg-black h-1/4 rounded-lg flex justify-center items-center">
+                        <h1 className="text-white font-semibold text-2xl">{chunk[1]?.name}</h1>
                       </div>
                     </div>
                   </div>

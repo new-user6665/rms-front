@@ -128,7 +128,7 @@ const MediaNavs = [
   },
   {
     name: "Certificate",
-    nav: "media/cartificate",
+    nav: "/",
     icon: <Dashoard className="w-8 h-8" />,
   },
   {

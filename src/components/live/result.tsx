@@ -35,7 +35,7 @@ onValue(reference, (snapshot: any) => {
   if (data == 'no data') {
     console.log('show end');
   } else {
-    var DateFiff = (new Date().getTime()) / 1000 - (data.startTime) / 1000
+    var DateFiff = (new Date().getTime()) / 1000 - (data?.startTime) / 1000
     console.log(DateFiff);
     if (DateFiff < 3) {
       console.log("Before", data);
@@ -46,8 +46,5 @@ onValue(reference, (snapshot: any) => {
     else {
       console.log("After", data);
     }
-
-
-
   }
 });
