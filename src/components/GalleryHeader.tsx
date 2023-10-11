@@ -76,9 +76,9 @@ function GalleryHeader() {
                 <li onClick={() => router.push('/')} className=" text-secondary font-semibold border-theme border px-4 py-1 rounded-3xl hover:text-white hover:bg-secondary ">
                   Home
                 </li>
-                <li onClick={() => router.push('/')} className="text-secondary px-4 py-1 rounded-3xl ">Result</li>
-                <li onClick={() => router.push('/')} className="text-secondary px-4 py-1 rounded-3xl">Gallery</li>
-                <li onClick={() => router.push('/')} className="text-secondary px-4 py-1 rounded-3xl">Profile</li>
+                <li onClick={() => router.push('/result')} className="text-secondary px-4 py-1 rounded-3xl ">Result</li>
+                <li onClick={() => router.push('/gallery')} className="text-secondary px-4 py-1 rounded-3xl">Gallery</li>
+                <li onClick={() => router.push('/candidate')} className="text-secondary px-4 py-1 rounded-3xl">Profile</li>
               </ul>
             </nav>
           </div>
