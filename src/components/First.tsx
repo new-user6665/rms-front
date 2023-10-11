@@ -4,7 +4,7 @@ function First() {
   return (
     <div className="min-h-screen bg">
       <div className="blackish min-h-screen p-10 md:p-16">
-        <Header />
+        <Header nav="Home"/> 
         <div className="mt-40 mb-4">
           <h1 className="text-white text-[30px] leading-[28px] lg:text-[90px] font-black lg:leading-[80px]" >
             <span  className="text-[#ffb100]">#Deconstructing</span> <br />

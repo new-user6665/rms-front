@@ -64,11 +64,12 @@ const LoginPage = () => {
       <div className="sm:mx-auto sm:w-full sm:max-w-sm -mt-10 ">
         <img src="/img/realia-txt-black.png" className="mx-auto h-12" alt="fsfs" />
       </div>
+      <p className="text-red-700 text-center mt-4">{error}</p>
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form onSubmit={(e) => {
           e.preventDefault()
           handleSubmit(HandleLogin)()
-        }} className="space-y-6" action="#" method="POST">
+        }} className="space-y-6">
           <div>
             <label
               htmlFor="email"

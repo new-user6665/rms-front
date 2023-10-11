@@ -21,20 +21,22 @@ const page = () => {
                 }
                 type="text"
                 className="bg-white border rounded-full h-12 w-1/2 text-center uppercase font-bold placeholder:font-light"
-                placeholder="Chest No."
+                placeholder="Program Code"
             />
+
             <div className="flex w-full justify-center gap-2">
-            <button onClick={() => {
-                router.push(`/`)
-            }} className="bg-secondary hover:bg-primary rounded-full h-8 w-1/4 text-lg text-white font-semibold transition-all duration-500">
-                BACK
-            </button>
-            <button onClick={() => {
-                router.push(`/candidate/${chestNo}`)
-            }} className="bg-secondary hover:bg-primary rounded-full h-8 w-1/4 text-lg text-white font-semibold transition-all duration-500">
-                SUBMIT
-            </button>
+                <button onClick={() => {
+                    router.push(`/`)
+                }} className="bg-secondary hover:bg-primary rounded-full h-8 w-1/4 text-lg text-white font-semibold transition-all duration-500">
+                    BACK
+                </button>
+                <button onClick={() => {
+                    router.push(`/program/${chestNo}`)
+                }} className="bg-secondary hover:bg-primary rounded-full h-8 w-1/4 text-lg text-white font-semibold transition-all duration-500">
+                    SUBMIT
+                </button>
             </div>
+
         </div>
         // <NotFound/>
 

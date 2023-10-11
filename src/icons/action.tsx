@@ -143,24 +143,7 @@ export function CalenderIcon(props: Props) {
   );
 }
 
-export function DownLoadIcon(props: Props) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={1.5}
-      stroke="currentColor"
-      className={props.className}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
-      />
-    </svg>
-  );
-}
+
 
 export function ManualUploadIcon(props: Props) {
   return (
@@ -181,6 +164,24 @@ export function ManualUploadIcon(props: Props) {
   );
 }
 
+export function DownLoadIcon(props: Props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      className={props.className}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+      />
+    </svg>
+  );
+}
 
 export function EyeIcon(props: Props) {
   return (
@@ -192,3 +193,12 @@ export function EyeIcon(props: Props) {
   );
 }
 
+
+export function SlideShowIcon(props: Props) {
+  return (
+    // <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={props.className}>
+    //   <path d="M554.666667 768v85.333333h170.666666v85.333334H298.666667v-85.333334h170.666666v-85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768a42.666667 42.666667 0 0 1 42.666667 42.666667v554.666666a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333zM170.666667 213.333333v469.333334h682.666666V213.333333H170.666667z m256 106.666667l213.333333 128-213.333333 128v-256z"/>
+    //   </svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" version="1.1"  fill="none"  strokeWidth={1.5} stroke="currentColor" className={props.className}><path d="M554.666667 768v85.333333h170.666666v85.333334H298.666667v-85.333334h170.666666v-85.333333H128a42.666667 42.666667 0 0 1-42.666667-42.666667V170.666667a42.666667 42.666667 0 0 1 42.666667-42.666667h768a42.666667 42.666667 0 0 1 42.666667 42.666667v554.666666a42.666667 42.666667 0 0 1-42.666667 42.666667h-341.333333zM170.666667 213.333333v469.333334h682.666666V213.333333H170.666667z m256 106.666667l213.333333 128-213.333333 128v-256z"/></svg>
+  );
+}

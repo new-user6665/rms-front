@@ -2,11 +2,13 @@
 import { useEffect } from "react";
 import "aos/dist/aos.css";
 import Aos from "aos";
+import { useRouter } from "next/navigation";
 
 import Image from "next/image";
 import { LiveIcon, TableIcon, UserIcon } from "@/icons/home";
 import { motion } from "framer-motion";
 function Description() {
+  const router = useRouter()
   useEffect(() => {
     Aos.init({
       duration: 1500,
@@ -23,7 +25,7 @@ function Description() {
           </h1>
           <h2 className="text-xl leading-4 font-nexa">Realia Arts Fest</h2>
         </div>
-        <Image
+        <img
           src="/img/arabic-logo.jpg" // Path to the image in the public folder
           alt="Realia Logo"
           data-aos="fade-up"
@@ -32,16 +34,17 @@ function Description() {
           height={0} // Set the height of the image
         />
       </div>
-      <Image
+      <img
         src="/img/pattern.jpg" // Path to the image in the public folder
         alt="Realia Pattern"
         data-aos="fade-up"
         className="h-24 object-cover w-full"
-        width={500}
-        height={200}
+        // width={500}
+        // height={200}
       />
       <div className="text-white mt flex my-20 text-center flex-wrap justify-center gap-6 text-3xl font-bold font-nexa">
         <motion.div
+          onClick={()=>router.push('/result')}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           whileHover={{ scale: 1.07 }}
@@ -61,6 +64,7 @@ function Description() {
           </div>
         </motion.div>
         <motion.div
+          onClick={()=>router.push('/')}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           whileHover={{ scale: 1.07 }}
@@ -79,6 +83,7 @@ function Description() {
           </div>
         </motion.div>
         <motion.div
+        onClick={()=>router.push('/candidate')}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           whileHover={{ scale: 1.07 }}

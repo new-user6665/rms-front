@@ -1,4 +1,4 @@
-import Profile from "@/components/candidate/Profile";
+import ProgramAndResultDesktop from "@/components/candidate/Profile";
 import {
   Candidate,
   GetCandidateByChestNoDocument,
@@ -31,10 +31,21 @@ export default async function page({
         <div className="h-64 w-40 md:bg-white bg-transparent md:flex md:flex-col md:items-center flex flex-col items-center mx-auto pt-44 md:pt-0">
           <div className="text-2xl md:mx-5 md:pt-24 pt-28 text-primary relative z-40">
             <h1 className="text-transparent md:text-primary">Team</h1>
-            <h1 className="font-bold hidden md:block text-primary -mt-2">{candidate?.team?.name }</h1>
+            <h1 className="font-bold hidden md:block text-primary -mt-2">
+              {candidate?.team?.name}
+            </h1>
           </div>
-          
-          <div className="md:min-h-[12rem] md:h-48 md:min-w-48 md:w-48 lg:min-h-[13rem] lg:h-52 lg:min-w-52 lg:w-52 min-h-28 min-w-28 bg-white md:mt-8 -mt-44 rounded-full relative z-20 hidden md:block bg-cover border-2 border-white" style={{backgroundImage:`url(${candidate?.imageId ? `https://drive.google.com/uc?id=${candidate?.imageId}` : 'https://banner2.cleanpng.com/20180410/bbw/kisspng-avatar-user-medicine-surgery-patient-avatar-5acc9f7a7cb983.0104600115233596105109.jpg'})`}}>
+
+          <div
+            className="md:min-h-[12rem] md:h-48 md:min-w-48 md:w-48 lg:min-h-[13rem] lg:h-52 lg:min-w-52 lg:w-52 min-h-28 min-w-28 bg-white md:mt-8 -mt-44 rounded-full relative z-20 hidden md:block bg-cover border-2 border-white"
+            style={{
+              backgroundImage: `url(${
+                candidate?.imageId
+                  ? `https://drive.google.com/uc?id=${candidate?.imageId}`
+                  : "https://banner2.cleanpng.com/20180410/bbw/kisspng-avatar-user-medicine-surgery-patient-avatar-5acc9f7a7cb983.0104600115233596105109.jpg"
+              })`,
+            }}
+          >
             {/* <img
               src={`${candidate?.imageId ? `https://drive.google.com/uc?id=${candidate?.imageId}` : 'https://banner2.cleanpng.com/20180410/bbw/kisspng-avatar-user-medicine-surgery-patient-avatar-5acc9f7a7cb983.0104600115233596105109.jpg'}`}
               alt="Student's Photo"
@@ -48,7 +59,9 @@ export default async function page({
           </div>
 
           <div className="w-full h-96 md:block text-white mt-8 hidden">
-            <h1 className="text-center text-xl font-bold -mt-2 capitalize">{candidate?.name}</h1>
+            <h1 className="text-center text-xl font-bold -mt-2 capitalize">
+              {candidate?.name}
+            </h1>
             <h2 className="text-center text-lg">{candidate?.category?.name}</h2>
           </div>
         </div>
@@ -81,7 +94,9 @@ export default async function page({
           </div>
         </div>
       </div>
-      <Profile candidate={candidate} />
+
+
+      <ProgramAndResultDesktop candidate={candidate} />
     </main>
   );
 }

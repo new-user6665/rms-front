@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation"
 
 
 
-function GalleryHeader() {
+function ResultHeader() {
   const [showPopup, setShowPopup] = useState(false);
 
   const togglePopup = () => {
@@ -32,10 +32,10 @@ function GalleryHeader() {
             <li className=" transition-all duration-400 text-white px-4 py-1 rounded-3xl hover:font-bold" onClick={() => router.push('/')}>
               Home
             </li>
-            <li onClick={() => router.push('/result')} className="transition-all duration-400 text-white px-4 py-1 rounded-3xl hover:font-bold">
+            <li onClick={() => router.push('/result')} className=" text-white font-semibold border-white border px-4 py-1 rounded-3xl hover:text-secondary hover:bg-white">
               Result
             </li>
-            <li onClick={() => router.push('/gallery')} className="text-white font-semibold border-white border px-4 py-1 rounded-3xl hover:text-secondary hover:bg-white">
+            <li onClick={() => router.push('/gallery')} className="transition-all duration-400 text-white px-4 py-1 rounded-3xl hover:font-bold">
               Gallery
             </li>
             <li onClick={() => router.push('/candidate')} className="transition-all duration-400 text-white px-4 py-1 rounded-3xl hover:font-bold">
@@ -76,9 +76,9 @@ function GalleryHeader() {
                 <li onClick={() => router.push('/')} className=" text-secondary font-semibold border-theme border px-4 py-1 rounded-3xl hover:text-white hover:bg-secondary ">
                   Home
                 </li>
-                <li onClick={() => router.push('/result')} className="text-secondary px-4 py-1 rounded-3xl ">Result</li>
-                <li onClick={() => router.push('/gallery')} className="text-secondary px-4 py-1 rounded-3xl">Gallery</li>
-                <li onClick={() => router.push('/candidate')} className="text-secondary px-4 py-1 rounded-3xl">Profile</li>
+                <li onClick={() => router.push('/')} className="text-secondary px-4 py-1 rounded-3xl ">Result</li>
+                <li onClick={() => router.push('/')} className="text-secondary px-4 py-1 rounded-3xl">Gallery</li>
+                <li onClick={() => router.push('/')} className="text-secondary px-4 py-1 rounded-3xl">Profile</li>
               </ul>
             </nav>
           </div>
@@ -88,4 +88,4 @@ function GalleryHeader() {
   );
 }
 
-export default GalleryHeader;
+export default ResultHeader;

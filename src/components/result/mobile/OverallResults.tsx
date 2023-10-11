@@ -21,13 +21,15 @@ export default function OverallResults(props: SidebarProps) {
     setSortedTeams(sorted)
 
     // delete the forth element from the array
-    sorted.splice(3, 1)
+    sorted.splice(4, 1)
 
     // change the sorted to chunks of 2 * 2
     const chunked = []
     for (let i = 0; i < sorted.length; i += 2) {
-      chunked.push(sorted.slice(i, i + 2))
+      chunked.push(sorted.slice( i , i + 2))
     }
+    console.log(chunked);
+    
     setChunks(chunked)
 
   }, [])
@@ -84,9 +86,9 @@ export default function OverallResults(props: SidebarProps) {
                       </div>
                     </div>
                     <div className="w-full h-3/4 px-2 pt-3">
-                      <h1 className="text-7xl font-bold">{chunk[1].totalPoint}</h1>
-                      <div style={{ background: `${chunk[1].color}` }} className=" bg-black h-1/4 rounded-lg flex justify-center items-center">
-                        <h1 className="text-white font-semibold text-2xl">{chunk[1].name}</h1>
+                      <h1 className="text-7xl font-bold">{chunk[1]?.totalPoint}</h1>
+                      <div style={{ background: `${chunk[1]?.color}` }} className=" bg-black h-1/4 rounded-lg flex justify-center items-center">
+                        <h1 className="text-white font-semibold text-2xl">{chunk[1]?.name}</h1>
                       </div>
                     </div>
                   </div>

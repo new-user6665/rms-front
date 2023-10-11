@@ -110,6 +110,55 @@ query totalProgramsCount($api_key: String!) {
 }
 
 query GetPublishedProgrammes($api_key: String!) {
+  resultPublishedProgrammes(api_key: $api_key) {
+    id
+    name
+    model
+    mode
+    type
+    programCode
+    resultEntered
+    resultPublished
+    candidateCount
+    category {
+      name
+    }
+    skill {
+      name
+    }
+    anyIssue
+    candidateProgramme {
+      id
+      point
+      position{
+        name
+        value
+        pointGroup
+        pointSingle
+        pointHouse
+      }
+      grade{
+        name
+        pointGroup
+        pointSingle
+        pointHouse
+      }
+      candidate {
+        class
+        imageId
+        name
+        chestNO
+        class
+        team {
+          name
+          id
+        }
+      }
+    }
+  }
+}
+
+query GetEnteredProgrammes($api_key: String!) {
   resultEnteredProgrammes(api_key: $api_key) {
     id
     name
@@ -144,6 +193,7 @@ query GetPublishedProgrammes($api_key: String!) {
         pointHouse
       }
       candidate {
+        class
         imageId
         name
         chestNO

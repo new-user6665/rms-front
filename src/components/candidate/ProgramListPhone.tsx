@@ -31,7 +31,7 @@ export default function ProgramListPhone(props: Props) {
   return (
     <>
       {/* list & buttons */}
-      <div className="h-59/100 w-full overflow-y-auto">
+      <div className="h-[61%] w-full overflow-y-auto">
         {/* buttons */}
         <div className="h-[10%]">
           <hr className="mb-1" />
@@ -102,48 +102,38 @@ export default function ProgramListPhone(props: Props) {
           <hr className="mt-1" />
         </div>
         {/* list */}
-        <div className="h-[80%] w-full flex flex-col items-center gap-2 pt-2">
+        <div className="h-[89%] overflow-y-auto w-full flex flex-col items-center gap-2 pt-2">
           {/* Programs */}
-          {/* {props?.candidate?.candidateProgrammes?.map((programme) => (
-            <div className="h-10 w-[90%] bg-accent rounded-2xl flex justify-between items-center px-3">
-              <p className="text-lt">{programme?.programme?.programCode}</p>
-              <p className="text-lt">{programme?.programme?.name}</p>
-              <div className="flex flex-col items-end">
-                <p className="text-tn">7:00 pm</p>
-                <p className="text-tn">19-09-2023</p>
-              </div>
-            </div>
-          ))} */}
           {allOrIndividualOrGroup === "all"
           ? allPrograms?.map((programme) => (
-              <div className="h-10 w-[90%] bg-accent rounded-2xl flex justify-between items-center px-3">
+              <div className="h-10 min-h-[2.5rem] w-[90%] bg-accent rounded-2xl flex justify-between items-center px-3">
               <p className="text-lt">{programme?.programme?.programCode}</p>
               <p className="text-lt">{programme?.programme?.name}</p>
               <div className="flex flex-col items-end">
-                <p className="text-tn">7:00 pm</p>
-                <p className="text-tn">19-09-2023</p>
+                <p className="text-tn">-</p>
+                <p className="text-tn">-</p>
               </div>
             </div>
             ))
           : allOrIndividualOrGroup === "individual"
           ? individualPrograms?.map((programme) => (
-              <div className="h-10 w-[90%] bg-accent rounded-2xl flex justify-between items-center px-3">
+              <div className="h-10 min-h-[2.5rem] w-[90%] bg-accent rounded-2xl flex justify-between items-center px-3">
               <p className="text-lt">{programme?.programme?.programCode}</p>
               <p className="text-lt">{programme?.programme?.name}</p>
               <div className="flex flex-col items-end">
-                <p className="text-tn">7:00 pm</p>
-                <p className="text-tn">19-09-2023</p>
+                <p className="text-tn">-</p>
+                <p className="text-tn">-</p>
               </div>
             </div>
             ))
           : allOrIndividualOrGroup === "group"
           ? groupPrograms?.map((programme) => (
-              <div className="h-10 w-[90%] bg-accent rounded-2xl flex justify-between items-center px-3">
+              <div className="h-10 min-h-[2.5rem] w-[90%] bg-accent rounded-2xl flex justify-between items-center px-3">
               <p className="text-lt">{programme?.programme?.programCode}</p>
               <p className="text-lt">{programme?.programme?.name}</p>
               <div className="flex flex-col items-end">
-                <p className="text-tn">7:00 pm</p>
-                <p className="text-tn">19-09-2023</p>
+                <p className="text-tn">-</p>
+                <p className="text-tn">-</p>
               </div>
             </div>
             ))

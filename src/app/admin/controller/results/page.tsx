@@ -4,9 +4,9 @@ import {
   GetAllCategoriesDocument,
   GetAllCategoriesQuery,
   GetAllCategoriesQueryVariables,
-  GetPublishedProgrammesDocument,
-  GetPublishedProgrammesQuery,
-  GetPublishedProgrammesQueryVariables,
+  GetEnteredProgrammesDocument,
+  GetEnteredProgrammesQuery,
+  GetEnteredProgrammesQueryVariables,
   GetAllSkillsDocument,
   GetAllSkillsQuery,
   GetAllSkillsQueryVariables,
@@ -22,9 +22,9 @@ import React from "react";
 const page = async () => {
   const { client } = getUrqlClient();
   const result = await client.query<
-    GetPublishedProgrammesQuery,
-    GetPublishedProgrammesQueryVariables
-  >(GetPublishedProgrammesDocument, {api_key : API_KEY});
+    GetEnteredProgrammesQuery,
+    GetEnteredProgrammesQueryVariables
+  >(GetEnteredProgrammesDocument, {api_key : API_KEY});
 
   const categories = await client.query<
     GetAllCategoriesQuery,
@@ -41,11 +41,17 @@ const page = async () => {
   GetAllTeamsQueryVariables
 >(GetAllTeamsDocument, {api_key : API_KEY});
 
+
   return (
     <main className="w-full h-full flex ">
       <Result
         key={1}
-        result={result.data?.resultEnteredProgrammes}
+        result={
+          result.data?.resultEnteredProgrammes?.filter(  (programme) => {
+            return programme.resultPublished === false;
+          }
+          )
+        }
         pageProps={1}
         categories={categories.data?.categories}
         skills={skills.data?.skills}
