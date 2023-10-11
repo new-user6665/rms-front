@@ -78,10 +78,10 @@ export default function MobileView(props: Props) {
         </div>
         <div className="flex gap-2 mt-3">
           <p className="text-[#3F127A] text-xs bg-white rounded-xl px-2 py-[0.125rem] font-semibold">
-            {programme?.mode}
+            {programme?.mode?.replace('_', ' ')}
           </p>
           <p className="text-[#3F127A] text-xs bg-white rounded-xl px-2 py-[0.125rem] font-semibold">
-            {programme?.model}
+            {programme?.model?.toUpperCase()}
           </p>
           <p className="text-[#3F127A] text-xs bg-white rounded-xl px-2 py-[0.125rem] font-semibold">
             {programme?.type}

@@ -147,7 +147,7 @@ export default function TabView(props: Props) {
               type="text"
               disabled
               className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-              placeholder={`${programme?.model}`}
+              placeholder={`${programme?.model?.toUpperCase()}`}
             />
           </div>
           <div className="flex flex-col w-1/3">

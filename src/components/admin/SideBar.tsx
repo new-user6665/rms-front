@@ -221,7 +221,7 @@ const SideBar = () => {
               )}
             </label>
             <span
-              className={` text-base text-center font-bold ${isOpen ? "flex" : "hidden "
+              className={` text-base text-center font-bold my-auto ${isOpen ? "flex" : "hidden "
                 }`}
             >
               Realia 2k23
