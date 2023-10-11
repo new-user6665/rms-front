@@ -93,11 +93,11 @@ export default function OverallResults(props: SidebarProps) {
                       <div className="h-full w-2/3 flex flex-col items-end px-2 leading-tight justify-center">
                         <div className="flex items-center gap-2">
                           <span className="bg-green-400 h-1 w-1 rounded-full" />
-                          <h1 className="text-xs">Arts : {chunk[0].totalPoint}</h1>
+                          <h1 className="text-xs">Arts : {chunk[1].totalPoint}</h1>
                         </div>
                         <div className="flex items-center gap-2">
                           <span className="bg-blue-400 h-1 w-1 rounded-full" />
-                          <h1 className="text-xs">Sports : {chunk[0].totalSportsPoint}</h1>
+                          <h1 className="text-xs">Sports : {chunk[1].totalSportsPoint}</h1>
                         </div>
                       </div>
                     </div>
