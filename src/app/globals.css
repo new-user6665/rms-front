@@ -94,6 +94,7 @@ select {
 .bg-blue {
   background: url("/img/bg-blue.jpg");
   background-size: cover;
+  background-position: center;
 }
 .bg {
   background: url("/img/artwork.jpg");

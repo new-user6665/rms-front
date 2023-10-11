@@ -12,7 +12,7 @@ function      Count() {
   }, []);
 
   return (
-    <section className="min-h-screen bg-secondary bg-blue flex   flex-col p-4 md:p-16 justify-center lg:justify-between content-center items-center">
+    <section className="min-h-[100vh] bg-secondary bg-blue flex w-full h-full object-cover flex-col p-4 md:p-16 justify-center lg:justify-between content-center items-center">
       <div
         data-aos="fade-up"
         className="text-center text-white md:hidden mb-10"
@@ -25,21 +25,21 @@ function      Count() {
       </div>
       <div className="w-full hidden md:flex justify-between items-start">
         <div>
-          <Image
+          <img
             src="/img/realia-txt.png" // Path to the image in the public folder
             alt="Realia Logo"
             className="h-10 md:h-16"
           />
         </div>
         <div>
-          <Image
+          <img
             className="h-8"
             src="/img/asasicon.png" // Path to the image in the public folder
             alt="Realia Logo"
           />
         </div>
       </div>
-      <Image
+      <img
         src="/img/tile.png" // Path to the image in the public folder
         alt="Realia Tile"
         data-aos="fade-up"
@@ -51,7 +51,7 @@ function      Count() {
           alt="Realia date"
           data-aos="fade-up"
         /> */}
-         <Image
+         <img
           src="/img/date.png" // Path to the image in the public folder
           alt="Realia date"
           data-aos="fade-up"
