@@ -25,7 +25,7 @@ export default async function page({
   const candidate: Candidate = result.data?.candidateByChestNo as Candidate;
 
   return (
-    <main className="font-sans h-screen overflow-hidden flex">
+    <main className="font-sans h-screen overflow-hidden flex overflow-y-auto">
       {/* Student */}
       <div className="h-screen md:w-72 md:min-w-72 lg:w-96 lg:min-w-96 w-screen bg-primary overflow-hidden md:flex md:flex-col md:justify-between md:items-center hidden">
         <div className="h-64 w-40 md:bg-white bg-transparent md:flex md:flex-col md:items-center flex flex-col items-center mx-auto pt-44 md:pt-0">

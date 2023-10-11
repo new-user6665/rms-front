@@ -31,7 +31,7 @@ export default function ProgramListPhone(props: Props) {
   return (
     <>
       {/* list & buttons */}
-      <div className="h-[61%] w-full overflow-y-auto">
+      <div className=" w-full overflow-y-auto">
         {/* buttons */}
         <div className="h-[10%]">
           <hr className="mb-1" />

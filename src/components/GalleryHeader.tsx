@@ -53,37 +53,34 @@ function GalleryHeader() {
           />
         </div>
       </div>
-      {showPopup && (
-
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
+      <div className={`fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 transition-all duration-500  ${!showPopup ? '-translate-y-[100vh]' : 'translate-y-0'} `}>
 
 
-          <div className="bg-white p-8 rounded shadow-md relative">
+  <div className="bg-white p-8 rounded shadow-md relative">
 
-            <svg xmlns="http://www.w3.org/2000/svg" onClick={togglePopup} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-secondary absolute right-2 top-2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <div className="text-center">
-              <h1 className="text-4xl font-black text-secondary">
-                <span className="font-nexa">Realia</span>&apos;
-                <span className="font-nexa">23</span>
-              </h1>
+    <svg xmlns="http://www.w3.org/2000/svg" onClick={togglePopup} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-secondary absolute right-2 top-2">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <div className="text-center">
+      <h1 className="text-4xl font-black text-secondary">
+        <span className="font-nexa">Realia</span>&apos;
+        <span className="font-nexa">23</span>
+      </h1>
 
-              <h2 className="text-lg leading-4 font-nexa">DHIU Arts Fest</h2>
-            </div>
-            <nav>
-              <ul className="mt-8 transition-all duration-400">
-                <li onClick={() => router.push('/')} className=" text-secondary font-semibold border-theme border px-4 py-1 rounded-3xl hover:text-white hover:bg-secondary ">
-                  Home
-                </li>
-                <li onClick={() => router.push('/result')} className="text-secondary px-4 py-1 rounded-3xl ">Result</li>
-                <li onClick={() => router.push('/gallery')} className="text-secondary px-4 py-1 rounded-3xl">Gallery</li>
-                <li onClick={() => router.push('/candidate')} className="text-secondary px-4 py-1 rounded-3xl">Profile</li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      )}
+      <h2 className="text-lg leading-4 font-nexa">DHIU Arts Fest</h2>
+    </div>
+    <nav>
+      <ul className="mt-8 transition-all duration-400">
+        <li onClick={() => router.push('/')} className=" text-secondary font-semibold border-theme border px-4 py-1 rounded-3xl hover:text-white hover:bg-secondary ">
+          Home
+        </li>
+        <li onClick={() => router.push('/result')} className="text-secondary px-4 py-1 rounded-3xl hover:text-white hover:bg-secondary">Result</li>
+        <li onClick={() => router.push('/gallery')} className="text-secondary px-4 py-1 rounded-3xl hover:text-white hover:bg-secondary">Gallery</li>
+        <li onClick={() => router.push('/candidate')} className="text-secondary px-4 py-1 rounded-3xl hover:text-white hover:bg-secondary">Profile</li>
+      </ul>
+    </nav>
+  </div>
+</div>
     </header>
   );
 }

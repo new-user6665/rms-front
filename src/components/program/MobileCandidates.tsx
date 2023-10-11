@@ -79,7 +79,7 @@ export default function MobileCandidates(props: Props) {
       <hr className="border mt-2" />
       {/* table */}
       <div className="flex flex-col h-5/6 pt-2">
-        <div className="flex flex-col gap-2 px-5 h-[70%] overflow-y-auto">
+        <div className="flex flex-col gap-2 px-5 h-[30vh] overflow-y-auto">
           {allOrSingleTeam === "all"
             ? allCandidates?.map((candidate) => (
                 <div className="w-full bg-[#E1DEFF] h-8 bigphone:h-16 rounded-lg flex gap-2">

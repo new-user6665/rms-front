@@ -25,7 +25,7 @@ export default async function page({ params }: { params: { code: string } }) {
   const programme: Programme = result?.data?.programmeByCode as Programme;
 
   return (
-    <main className="bg-accent w-screen h-screen">
+    <main className="bg-accent w-screen h-screen ">
       
       {/* Mobile View */}
       <MobileView programme={programme} />

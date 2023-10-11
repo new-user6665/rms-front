@@ -25,33 +25,33 @@ function      Count() {
       </div>
       <div className="w-full hidden md:flex justify-between items-start">
         <div>
-          <img
+          <Image
             src="/img/realia-txt.png" // Path to the image in the public folder
             alt="Realia Logo"
             className="h-10 md:h-16"
           />
         </div>
         <div>
-          <img
+          <Image
             className="h-8"
             src="/img/asasicon.png" // Path to the image in the public folder
             alt="Realia Logo"
           />
         </div>
       </div>
-      <img
+      <Image
         src="/img/tile.png" // Path to the image in the public folder
         alt="Realia Tile"
         data-aos="fade-up"
         className="lg:max-w-[800px]"
       />
       <div className="w-full flex justify-center  lg:justify-start align-end">
-        {/* <img
+        {/* <Image
           src="/img/date.png" // Path to the image in the public folder
           alt="Realia date"
           data-aos="fade-up"
         /> */}
-         <img
+         <Image
           src="/img/date.png" // Path to the image in the public folder
           alt="Realia date"
           data-aos="fade-up"

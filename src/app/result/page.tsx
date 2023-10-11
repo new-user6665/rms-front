@@ -34,6 +34,7 @@ import {
   TotalProgramsCountQueryVariables,
   TotalProgramsCountDocument,
 } from "@/gql/graphql";
+import { Menu2Icon } from "@/icons/home";
 import { SectionIcon } from "@/icons/navs";
 import { API_KEY } from "@/lib/env";
 import { getUrqlClient } from "@/lib/urql";
@@ -83,6 +84,7 @@ export default async function page({
 
 
       <div className="h-screen w-screen font-sans flex flex-col gap-4 lg:hidden pt-5 bg-primary overflow-hidden">
+        
         {/* Page Name */}
         <div className="h-[1%] w-full flex items-star">
           <h1 className="text-sm font-semibold px-6 text-white">Result Page</h1>
@@ -98,7 +100,9 @@ export default async function page({
           {/* main */}
           <div className="grid gap-5 overflow-y-auto h-[99%] pt-[3.25rem] overflow-x-hidden">
             {/* Overall Results and toppers */}
-            <OverallResults teams={teams.data?.teams as Team[]} />
+            <OverallResults teams={teams.data?.teams.sort((a , b)=>{
+              return b.totalPoint as number - (a.totalPoint as number)
+            }) as Team[]} />
 
 
             {/* Programs and Results */}
@@ -125,7 +129,9 @@ export default async function page({
         style={{ backgroundImage: 'url("/img/hi.jpg")' }}
       >
         {/* sidebar */}
-        <DesktopSidebar teams={teams.data?.teams as Team[]}/>
+        <DesktopSidebar  teams={teams.data?.teams.sort((a , b)=>{
+              return b.totalPoint as number - (a.totalPoint as number)
+            }) as Team[]}/>
 
         {/* main content */}
         <div className="overflow-y-auto w-full mb-2" >

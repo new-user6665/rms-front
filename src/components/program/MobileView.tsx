@@ -57,7 +57,7 @@ export default function MobileView(props: Props) {
   }
 
   return (
-    <div className="flex flex-col w-full h-screen bg-[#0E0123] xl:hidden">
+    <div className="flex flex-col w-full h-screen bg-[#0E0123] xl:hidden ">
            <button
         onClick={() => router.push('/')}
         type="button"
