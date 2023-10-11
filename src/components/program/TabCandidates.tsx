@@ -23,7 +23,7 @@ export default function TabCandidates(props: Props) {
     return candidate?.candidate?.team?.name === "Chronicle";
   });
   const gazetteCandidates = allCandidates?.filter((candidate) => {
-    return candidate?.candidate?.team?.name === "Gazatte";
+    return candidate?.candidate?.team?.name === "Gazette";
   });
   const heraldCandidates = allCandidates?.filter((candidate) => {
     return candidate?.candidate?.team?.name === "Herald";

@@ -102,7 +102,7 @@ export default async function page({
 
 
             {/* Programs and Results */}
-            <Programs teams={teams.data?.teams as Team[]} programs={result.data?.resultPublishedProgrammes as Programme[]} categories={categories.data?.categories as Category[]}/>
+            <Programs teams={teams.data?.teams as Team[]} programs={result.data?.resultEnteredProgrammes as Programme[]} categories={categories.data?.categories as Category[]}/>
             {/* Quick Overview */}
             {/* <Toppers categories={categories.data?.categories as Category[]} toppers={toppers.data?.getCategoryBasedToppers as Category[]} />
             <QuickOverview count={(totalPrograms.data?.programmes?.length as number) || 0} programs={result.data?.resultEnteredProgrammes as Programme[]}/> */}
@@ -141,7 +141,7 @@ export default async function page({
             {/* fist row */}
             <div className=" w-full flex gap-10 ">
               {/* first card first row */}
-              <FirstRowFirstCard teams={teams.data?.teams as Team[]} programs={result.data?.resultPublishedProgrammes as Programme[]} categories={categories.data?.categories as Category[]} />
+              <FirstRowFirstCard teams={teams.data?.teams as Team[]} programs={result.data?.resultEnteredProgrammes as Programme[]} categories={categories.data?.categories as Category[]} />
               {/* second card first row */}
             </div>
             {/* second row */}

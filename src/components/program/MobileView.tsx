@@ -159,6 +159,7 @@ export default function MobileView(props: Props) {
           >
             Results
           </button>
+          
         </div>
         <hr className="border mt-2" />
         {candidatesOrResults === "candidates" ? (

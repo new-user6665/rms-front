@@ -47,7 +47,7 @@ const page = async () => {
       <Result
         key={1}
         result={
-          result.data?.resultPublishedProgrammes.filter(  (programme) => {
+          result.data?.resultEnteredProgrammes?.filter(  (programme) => {
             return programme.resultPublished === false;
           }
           )
