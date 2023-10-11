@@ -164,16 +164,16 @@ export default function DesktopView(props: Props) {
               type="text"
               disabled
               className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-              placeholder={`${programme?.mode}`}
+              placeholder={`${programme?.mode?.replace('_', ' ')}`}
             />
           </div>
           <div className="flex flex-col w-1/3">
-            <label className="text-accent text-sm pl-2">Model</label>
+            <label className="text-accent text-sm pl-2">Item</label>
             <input
               type="text"
               disabled
               className="h-10 w-11/12 bg-white rounded-lg text-md placeholder:pl-2 placeholder:text-primary"
-              placeholder={`${programme?.model}`}
+              placeholder={`${programme?.model?.toUpperCase()}`}
             />
           </div>
           <div className="flex flex-col w-1/3">
