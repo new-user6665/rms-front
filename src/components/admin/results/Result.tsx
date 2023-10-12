@@ -30,8 +30,6 @@ import { PageChevronLeft, PageChevronRight } from "@/icons/pagination";
 import Modal from "@/components/Modal";
 import { toast } from "react-toastify";
 import { DownLoadIcon, FilterIcon } from "@/icons/action";
-// import * as XLSX from 'xlsx';
-import * as ExcelJS from "exceljs";
 
 interface Props {
   result: Programme[];
@@ -319,7 +317,7 @@ const Result = (props: Props) => {
             programCode: programCode as string,
             programmeName: programName as string,
             category: category as string,
-            position: candidate.position?.value as number,
+            position: candidate.position?.value ? candidate.position?.value : '' as any,
             grade: candidate.grade?.name
               ? candidate.grade?.name
               : ("" as string),
@@ -327,8 +325,8 @@ const Result = (props: Props) => {
             candidateName: candidateName as string,
             class: candidateClass as string,
             candidateTeam: candidate.candidate?.team?.name as string,
-            gradePoint: gradePoint ? gradePoint : (0 as number),
-            positionPoint: positionPoint as number,
+            gradePoint: gradePoint ? gradePoint : ('' as any),
+            positionPoint: positionPoint? positionPoint: '' as any,
             totalPoint: candidate.point as number,
             checkCode: programme.programCode as string,
           });
@@ -341,212 +339,241 @@ const Result = (props: Props) => {
     setToDownLoadData(downloadData as ToDownLoadData[]);
   }, []);
 
-  const generateExcelFile = async (data: any) => {
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("Results");
-    const makeCenter = (cellLetters: any) => {
-      cellLetters.forEach((letter: any) => {
-        for (let i = 1; i < 4; i++) {
-          worksheet.getCell(letter + i).alignment = {
-            vertical: "middle",
-            horizontal: "center",
-          };
-          worksheet.getCell(letter + i).border = {
-            top: { style: "thick" },
-            left: { style: "thick" },
-            bottom: { style: "thick" },
-            right: { style: "thick" },
-          };
-          worksheet.getCell(letter + i).font= {
-            bold: true
-          }
-        }
-      });
-    };
+  // const worksheet = api()
+  // console.log(worksheet);
 
-
-    worksheet.mergeCells("A1:M1");
-    worksheet.mergeCells("A2:M2");
-    worksheet.mergeCells("B3:D3");
-    worksheet.mergeCells("E3:F3");
-    worksheet.mergeCells("G3:J3");
-    worksheet.mergeCells("K3:M3");
-    const mainTitle = worksheet.getCell("A1");
-    mainTitle.value = "Realia'23";
-    const resultTitle = worksheet.getCell("A2");
-    resultTitle.value = "Results";
-    worksheet.getCell("B3").value = "Programs";
-    worksheet.getCell("E3").value = "Programs";
-    worksheet.getCell("G3").value = "Candidate";
-    worksheet.getCell("K3").value = "Score";
-    makeCenter(["A", "B", "E", "G", "K"]);
-
-    mainTitle.font = {
-      size: 48,
-      bold:true,
-    };
-    resultTitle.font = {
-      size: 14,
-      bold:true,
-    };
-
-    // Define the columns in the Excel sheet
-    const headers = [
-      "SL. NO",
-      "Program Code",
-      "Program",
-      "Category",
-      "Position",
-      "Grade",
-      "Chest No",
-      "Name",
-      "Class",
-      "Team",
-      "Grade Point",
-      "Position Point",
-      "Total Point",
-    ];
-    const widths: any = {
-      A: 6,
-      B: 13,
-      C: 30,
-      D: 16,
-      E: 8,
-      F: 6,
-      G: 9,
-      H: 30,
-      I: 6,
-      J: 9,
-      K: 11,
-      L: 13,
-      M: 10,
-    };
-
-    Object.keys(widths).forEach((cell: any) => {
-      const column = worksheet.getColumn(cell);
-      column.width = widths[cell];
-    });
-
-    const headerRow = worksheet.addRow(headers);
-    headerRow.eachCell((cell) => {
-      cell.border = {
-        top: { style: "thick" },
-        left: { style: "thick" },
-        bottom: { style: "thick" },
-        right: { style: "thick" },
-      };
-      cell.font = {
-        bold: true,
-      };
-    });
-
-    //////////////////////   For adding image in excel  ///////////////////////////////////////
-    // const image = workbook.addImage({
-    //   filename: 'image.png',
-    //   extension: 'png',
-    // });
+  // const generateExcelFile = async (data: any) => {
+  //   const workbook = new ExcelJS.Workbook();
+  //   console.log(workbook);
     
-    // // Define the dimensions of the image
-    // const imageWidth = 200; // Width in pixels
-    // const imageHeight = 150; // Height in pixels
+  //   const worksheet = workbook.addWorksheet("Results");
     
-    // // Get the dimensions of the worksheet
-    // const worksheetWidth = (worksheet.pageSetup as any).pageWidth;
-    // const worksheetHeight = (worksheet.pageSetup as any).pageHeight;
+  //   const makeCenter = (cellLetters: any) => {
+  //     cellLetters.forEach((letter: any) => {
+  //       for (let i = 1; i < 4; i++) {
+  //         worksheet.getCell(letter + i).alignment = {
+  //           vertical: "middle",
+  //           horizontal: "center",
+  //         };
+  //         worksheet.getCell(letter + i).border = {
+  //           top: { style: "thick" },
+  //           left: { style: "thick" },
+  //           bottom: { style: "thick" },
+  //           right: { style: "thick" },
+  //         };
+  //         worksheet.getCell(letter + i).font= {
+  //           bold: true
+  //         }
+  //       }
+  //     });
+  //   };
+
+
+  //   worksheet.mergeCells("A1:M1");
+  //   worksheet.mergeCells("A2:M2");
+  //   worksheet.mergeCells("B3:D3");
+  //   worksheet.mergeCells("E3:F3");
+  //   worksheet.mergeCells("G3:J3");
+  //   worksheet.mergeCells("K3:M3");
+  //   const mainTitle = worksheet.getCell("A1");
+  //   mainTitle.value = "REALIA'23";
+  //   const resultTitle = worksheet.getCell("A2");
+  //   resultTitle.value = "RESULTS";
+  //   worksheet.getCell("B3").value = "Programs";
+  //   worksheet.getCell("E3").value = "Results";
+  //   worksheet.getCell("G3").value = "Candidate";
+  //   worksheet.getCell("K3").value = "Score";
+  //   makeCenter(["A", "B", "E", "G", "K"]);
+
+  //   mainTitle.font = {
+  //     size: 48,
+  //     bold:true,
+  //   };
+  //   resultTitle.font = {
+  //     size: 14,
+  //     bold:true,
+  //   };
+
+  //   // Define the columns in the Excel sheet
+  //   const headers = [
+  //     "SL. NO",
+  //     "Code",
+  //     "Program",
+  //     "Category",
+  //     "Position",
+  //     "Grade",
+  //     "Chest No",
+  //     "Name",
+  //     "Class",
+  //     "Team",
+  //     "Grade",
+  //     "Position",
+  //     "Total",
+  //   ];
+  //   const widths: any = {
+  //     A: 6,
+  //     B: 13,
+  //     C: 30,
+  //     D: 16,
+  //     E: 8,
+  //     F: 6,
+  //     G: 9,
+  //     H: 30,
+  //     I: 6,
+  //     J: 9,
+  //     K: 11,
+  //     L: 13,
+  //     M: 10,
+  //   };
+
+  //   Object.keys(widths).forEach((cell: any) => {
+  //     const column = worksheet.getColumn(cell);
+  //     column.width = widths[cell];
+  //   });
+
+  //   const headerRow = worksheet.addRow(headers);
+  //   headerRow.eachCell((cell:any) => {
+  //     cell.border = {
+  //       top: { style: "thick" },
+  //       left: { style: "thick" },
+  //       bottom: { style: "thick" },
+  //       right: { style: "thick" },
+  //     };
+  //     cell.font = {
+  //       bold: true,
+  //     };
+  //   });
+
+  //   //////////////////////   For adding image in excel  ///////////////////////////////////////
+  //   // const image = workbook.addImage({
+  //   //   filename: 'image.png',
+  //   //   extension: 'png',
+  //   // });
     
-    // // Calculate the position to center the image
-    // const x = (worksheetWidth - imageWidth) / 2;
-    // const y = (worksheetHeight - imageHeight) / 2;
+  //   // // Define the dimensions of the image
+  //   // const imageWidth = 200; // Width in pixels
+  //   // const imageHeight = 150; // Height in pixels
     
-    // // Add the image to the worksheet
-    // worksheet.addImage(image, {
-    //   tl: { col: 1, row: 1 }, // Position of the top-left corner of the image
-    //   ext: { width: imageWidth, height: imageHeight }, // Dimensions of the image
-    // });
-    ////////////////////////////////////////////////////////////////////////////////////////
+  //   // // Get the dimensions of the worksheet
+  //   // const worksheetWidth = (worksheet.pageSetup as any).pageWidth;
+  //   // const worksheetHeight = (worksheet.pageSetup as any).pageHeight;
+    
+  //   // // Calculate the position to center the image
+  //   // const x = (worksheetWidth - imageWidth) / 2;
+  //   // const y = (worksheetHeight - imageHeight) / 2;
+    
+  //   // // Add the image to the worksheet
+  //   // worksheet.addImage(image, {
+  //   //   tl: { col: 1, row: 1 }, // Position of the top-left corner of the image
+  //   //   ext: { width: imageWidth, height: imageHeight }, // Dimensions of the image
+  //   // });
+  //   ////////////////////////////////////////////////////////////////////////////////////////
 
-    function setBlackBackground(
-      worksheet: any,
-      startCell: any,
-      endCell: any,
-      cellNumber: any
-    ) {
-      for (let i = startCell.charCodeAt(0); i <= endCell.charCodeAt(0); i++) {
-        const columnLetter = String.fromCharCode(i);
-        const cellAddress = `${columnLetter}${cellNumber}`;
-        const cell = worksheet.getCell(cellAddress);
+  //   function setBlackBackground(
+  //     worksheet: any,
+  //     startCell: any,
+  //     endCell: any,
+  //     cellNumber: any
+  //   ) {
+  //     for (let i = startCell.charCodeAt(0); i <= endCell.charCodeAt(0); i++) {
+  //       const columnLetter = String.fromCharCode(i);
+  //       const cellAddress = `${columnLetter}${cellNumber}`;
+  //       const cell = worksheet.getCell(cellAddress);
 
-        // Set a black background for the cell
-        cell.fill = {
-          type: "pattern",
-          pattern: "solid",
-          fgColor: { argb: "000000" }, // Black background
-        };
-        cell.font = {
-          color: { argb: "FFFFFF" }, // White text
-        };
-      }
-    }
+  //       // Set a black background for the cell
+  //       cell.fill = {
+  //         type: "pattern",
+  //         pattern: "solid",
+  //         fgColor: { argb: "000000" }, // Black background
+  //       };
+  //       cell.font = {
+  //         color: { argb: "FFFFFF" }, // White text
+  //       };
+  //     }
+  //   }
 
-    var slno = 1
-    data.forEach((item: any) => {
-      // console.log(item);
-      if (SelectedProgrammes.includes(item.checkCode)) {
-        const subRow = worksheet.addRow(Object.values(item));
-        subRow.eachCell((cell, num) => {
-          cell.border = {
-            top: { style: "thin" },
-            left: { style: "thin" },
-            bottom: { style: "thin" },
-            right: { style: "thin" },
-          };
-          if (num == 1 && cell.value){
-            cell.value = slno++;
-          }
-          if (num == 2 && cell.value) {
-            console.log(cell.row);
-            setBlackBackground(worksheet, "A", "M", cell.row);
-          }
-          if (num == 14) {
-            cell.value = "";
-            cell.border = {};
-          }
-        });
-      }
-    });
+  //   var slno = 1
+  //   data.forEach((item: any) => {
+  //     // console.log(item);
+  //     if (SelectedProgrammes.includes(item.checkCode)) {
+  //       const subRow = worksheet.addRow(Object.values(item));
+  //       subRow.eachCell((cell:any, num:any) => {
+  //         cell.border = {
+  //           top: { style: "thin" },
+  //           left: { style: "thin" },
+  //           bottom: { style: "thin" },
+  //           right: { style: "thin" },
+  //         };
+  //         if (num == 1 && cell.value){
+  //           cell.value = slno++;
+  //         }
+  //         if (num == 2 && cell.value) {
+  //           console.log(cell.row);
+  //           setBlackBackground(worksheet, "A", "M", cell.row);
+  //         }
+  //         if (num == 14) {
+  //           cell.value = "";
+  //           cell.border = {};
+  //         }
+  //       });
+  //     }
+  //   });
 
   
 
-    // Generate the Excel file
-    const buffer = await workbook.xlsx.writeBuffer();
+  //   // Generate the Excel file
+  //   const buffer = await workbook.xlsx.writeBuffer();
 
-    // Create a Blob containing the Excel file data
-    const blob = new Blob([buffer], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    });
+  //   // Create a Blob containing the Excel file data
+  //   const blob = new Blob([buffer], {
+  //     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  //   });
 
-    // Create a URL for the Blob
-    const blobURL = URL.createObjectURL(blob);
+  //   // Create a URL for the Blob
+  //   const blobURL = URL.createObjectURL(blob);
 
-    // Create a link to trigger the download
-    const a = document.createElement("a");
-    a.href = blobURL;
-    a.download = "Results.xlsx";
-    a.style.display = "none";
+  //   // Create a link to trigger the download
+  //   const a = document.createElement("a");
+  //   a.href = blobURL;
+  //   a.download = "Results.xlsx";
+  //   a.style.display = "none";
 
-    // Trigger the click event to start the download
-    document.body.appendChild(a);
-    a.click();
+  //   // Trigger the click event to start the download
+  //   document.body.appendChild(a);
+  //   a.click();
 
-    // Clean up resources
-    URL.revokeObjectURL(blobURL);
-    document.body.removeChild(a);
+  //   // Clean up resources
+  //   URL.revokeObjectURL(blobURL);
+  //   document.body.removeChild(a);
+  // };
+
+  // const handleDownload = () => {
+  //   generateExcelFile(toDownLoadData);
+  // };
+  const handleDownload = async () => {
+    try {
+      // Make a GET request to the Excel API route
+      const response = await fetch(`/api/excel?data=${JSON.stringify(data)}&SelectedProgrammes=${JSON.stringify(SelectedProgrammes)}`)
+      if (response.ok) {
+        // Convert the response to a Blob and create a URL for downloading
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+  
+        // Create a download link and trigger the download
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.xlsx';
+        a.click();
+  
+        // Clean up by revoking the URL
+        window.URL.revokeObjectURL(url);
+      } else {
+        console.error('Failed to generate Excel file.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
-
-  const handleDownload = () => {
-    generateExcelFile(toDownLoadData);
-  };
-
   return (
     <>
       <div className="w-full h-full">
