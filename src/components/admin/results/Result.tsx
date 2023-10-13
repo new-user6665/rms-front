@@ -30,6 +30,8 @@ import { PageChevronLeft, PageChevronRight } from "@/icons/pagination";
 import Modal from "@/components/Modal";
 import { toast } from "react-toastify";
 import { DownLoadIcon, FilterIcon } from "@/icons/action";
+import { jsPDF } from "jspdf";
+import { saveAs } from "file-saver";
 
 interface Props {
   result: Programme[];
@@ -44,6 +46,15 @@ interface BarData {
   currentPoint: number;
   totalSports: number;
   currentSports: number;
+}
+
+interface CategoryForTotal {
+  name : string
+  teams : {
+    name : string 
+    lastResult : number;
+    grandResult : number;
+  }
 }
 
 interface ToDownLoadData {
@@ -108,12 +119,64 @@ const Result = (props: Props) => {
   const [toDownloadList, setToDownloadList] = useState<any>();
   const [sertedData, setSertedData] = useState<Programme[]>([]);
   const [toDownLoadData, setToDownLoadData] = useState<ToDownLoadData[]>([]);
+  const [categoryForTotal , SetCategoryForTotal] = useState<CategoryForTotal[]>([])
 
   const ProgrammeRef = useRef<HTMLDivElement>(null);
 
   const [state, PublishResultExicute] = useMutation(PublishResultsDocument);
 
   const [_, GoLiveResiltExicute] = useMutation(GoLiveDocument);
+
+
+  const downloadTotalPoints = (
+    programme: any = currentData,
+    bulk: boolean = true
+  ) => {
+
+    console.log(programme);
+
+    allData.map((all)=>{
+      
+    })
+
+    
+    const doc = new jsPDF("portrait", "px", "a4");
+    // Load Montserrat font
+    doc.addFont(
+      "https://fonts.gstatic.com/s/montserrat/v15/JTUSjIg1_i6t8kCHKm459Wlhzg.ttf",
+      "Montserrat",
+      "normal"
+    );
+
+    const pdfWidth = doc.internal.pageSize.getWidth();
+    const pdfHeight = doc.internal.pageSize.getHeight();
+
+    console.log("pdf", pdfWidth, pdfHeight);
+    var program = bulk ? programme : [programme];
+      doc.addPage("a4");
+
+      const backgroundImageUrl =  "/a4result.jpg";
+      // Add the background image
+      doc.addImage(backgroundImageUrl, "JPEG", 0, 0, pdfWidth, pdfHeight);
+
+      // Set the font to Montserrat
+      doc.setFont("Montserrat");
+
+      // Add text and other content on top of the background image
+      doc.setFontSize(10);
+      doc.setTextColor(0, 0, 0); // Set text color to black
+
+
+    
+    doc.deletePage(1);
+
+    const pdfBlob = doc.output("blob");
+    var filename = bulk
+      ? `Judge List`
+      : `${(programme as any).programCode} ${(programme as any).name}`;
+    saveAs(pdfBlob, `${filename}.pdf`);
+    // setDowloading(true)
+  };
 
   const PublishResults = async () => {
     const datas: OperationResult<
@@ -123,10 +186,8 @@ const Result = (props: Props) => {
       programCodes: SelectedProgrammes,
     });
 
-    console.log(datas);
 
     if (datas.data?.publishResults) {
-      console.log(datas.data?.publishResults);
       setIsOrderedToPublish(false);
       toast.success("Results Published");
     } else {
@@ -141,10 +202,10 @@ const Result = (props: Props) => {
         timeInSec: timeInSec,
       });
 
-    console.log(datas);
+
 
     if (datas.data) {
-      console.log(datas.data);
+
       setIsOrderedToPublish(false);
       toast.success("Results Are Live");
     } else {
@@ -175,10 +236,29 @@ const Result = (props: Props) => {
       );
     }
 
+    const teams = props.teams.map((team)=>{
+      return {
+        name : team.name,
+        lastResult : 0,
+        grandResult : 0
+      }
+    })
+
+        // setting data to type CategoryForTotal
+
+       const categories : CategoryForTotal [] = props.categories.map((category)=>{
+         return {
+            name : category.name as string ,
+            teams : teams as any
+          }
+        })
+
+        SetCategoryForTotal([...categories])
+
     // Bar data
 
     let teamData: BarData[] = props.teams.map((data, i) => {
-      console.log(data);
+
 
       return {
         name: data.name as string,
@@ -207,11 +287,13 @@ const Result = (props: Props) => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
+
+
   }, []);
 
   useEffect(() => {
     const windowWidth = window.innerWidth;
-    console.log(windowWidth);
+
 
     if (IsRightSideBarOpen) {
       setItemsPerPage((calculateBreakPoint(window.innerHeight) / 4) * 3);
@@ -224,13 +306,13 @@ const Result = (props: Props) => {
   useEffect(() => {
     // when screen height changes
 
-    console.log(screenHeigh);
+
     setIsRightSideBarOpen(false);
 
     const shh = calculateBreakPoint(window.innerHeight);
 
     setItemsPerPage(shh);
-    console.log(shh);
+
   }, [screenHeigh]);
 
   const calculateBreakPoint = (sh: number) => {
@@ -260,9 +342,8 @@ const Result = (props: Props) => {
         <button
           key={page}
           onClick={() => goToPage(page)}
-          className={`${
-            currentPage === page ? "bg-secondary text-white" : "bg-[#ECE1FC]"
-          }  py-2 px-4 rounded-xl font-bold mx-1 my-5`}
+          className={`${currentPage === page ? "bg-secondary text-white" : "bg-[#ECE1FC]"
+            }  py-2 px-4 rounded-xl font-bold mx-1 my-5`}
         >
           {page}
         </button>
@@ -293,14 +374,15 @@ const Result = (props: Props) => {
           programme.type == Types.Single
             ? candidate.grade?.pointSingle
             : programme.type == Types.Group
-            ? candidate.grade?.pointGroup
-            : programme.type == Types.House
-            ? candidate.grade?.pointHouse
-            : 0;
+              ? candidate.grade?.pointGroup
+              : programme.type == Types.House
+                ? candidate.grade?.pointHouse
+                : 0;
         let positionPoint =
           programme.type == Types.Single
             ? candidate.position?.pointSingle
             : programme.type == Types.Group
+
             ? candidate.position?.pointGroup
             : programme.type == Types.House
             ? candidate.position?.pointHouse
@@ -319,7 +401,9 @@ const Result = (props: Props) => {
             : programme.type == Types.House
             ? candidate.candidate?.team?.name
             : null;
+
         // if there no position or grade then not push
+
 
         if (candidate.position || candidate.grade) {
           downloadData.push({
@@ -336,6 +420,7 @@ const Result = (props: Props) => {
             candidateChestNo: chestNo as string,
             candidateName: candidateName as string,
             class: candidateClass as string,
+
             candidateTeam:
               candidate.candidate?.team?.name?.toUpperCase() as string,
             gradePoint: gradePoint ? gradePoint : ("" as any),
@@ -347,19 +432,28 @@ const Result = (props: Props) => {
       });
     });
 
-    console.log(downloadData);
+
     setToDownLoadData(downloadData as ToDownLoadData[]);
   }, []);
 
 
-  const downloadAsExcel = async () => {
+
+  const handleDownload = async () => {
     try {
-      // Make a GET request to the Excel API route
-      const response = await fetch(
-        `/api/excel?data=${JSON.stringify(
-          data
-        )}&SelectedProgrammes=${JSON.stringify(SelectedProgrammes)}`
-      );
+      const postData = {
+        data: toDownLoadData,
+        SelectedProgrammes
+      }
+      // Make a POST request to the Excel API route
+      const response = await fetch('/api/excel', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Specify the content type if sending JSON data
+        },
+        body: JSON.stringify(postData),
+      })
+
+
       if (response.ok) {
         // Convert the response to a Blob and create a URL for downloading
         const blob = await response.blob();
@@ -371,7 +465,9 @@ const Result = (props: Props) => {
         a.download = "data.xlsx";
         a.click();
 
+
         // Clean up by revoking the URL
+
         window.URL.revokeObjectURL(url);
       } else {
         console.error("Failed to generate Excel file.");
@@ -387,9 +483,8 @@ const Result = (props: Props) => {
         <ResultBar data={barData} />
 
         <DetailedDiv
-          height={`${
-            (itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6 + 4.5
-          }rem`}
+          height={`${(itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6 + 4.5
+            }rem`}
         >
           <div className="flex-1 h-full">
             <div className="h-10 cursor-pointer flex justify-between mb-4">
@@ -499,25 +594,28 @@ const Result = (props: Props) => {
                     tabIndex={0}
                     className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40 font-bold"
                   >
-                    {props.categories?.map((item: Category, index: number) => {
-                      return (
-                        <button
-                          className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
-                          onClick={() => {
-                            setCurrentPage(1);
-                            setData(
-                              allData.filter(
-                                (itm: Programme) =>
-                                  itm?.category?.name?.toLocaleLowerCase() ===
-                                  item?.name?.toLocaleLowerCase()
-                              )
-                            );
-                          }}
-                        >
-                          {item.name}
-                        </button>
-                      );
-                    })}
+
+                    {props.categories?.map(
+                      (item: Category, index: number) => {
+                        return (
+                          <button
+                            className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                            onClick={() => {
+                              setCurrentPage(1);
+                              setData(
+                                allData.filter(
+                                  (itm: Programme) =>
+                                    itm?.category?.name?.toLocaleLowerCase() ===
+                                    item?.name?.toLocaleLowerCase()
+                                )
+                              );
+                            }}
+                          >
+                            {item.name}
+                          </button>
+                        );
+                      }
+                    )}
                   </ul>
                 </div>
 
@@ -537,27 +635,24 @@ const Result = (props: Props) => {
             </div>
             <div className="flex flex-col items-center lg:justify-center w-full h-full">
               <ComponentsDiv
-                height={`${
-                  (itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6
-                }rem`}
+                height={`${(itemsPerPage / (IsRightSideBarOpen ? 3 : 4)) * 6
+                  }rem`}
               >
                 <div
                   ref={ProgrammeRef}
-                  className={`grid gap-4 w-full transition-all grid-cols-1 ${
-                    IsRightSideBarOpen ? "lg:grid-cols-3" : "lg:grid-cols-4"
-                  }`}
+                  className={`grid gap-4 w-full transition-all grid-cols-1 ${IsRightSideBarOpen ? "lg:grid-cols-3" : "lg:grid-cols-4"
+                    }`}
                 >
                   {currentData?.map((item: Programme, index: number) => {
                     return (
                       <div
                         key={index}
-                        className={`transition-all bg-[#EEEEEE] rounded-xl mt-[1%] cursor-pointer flex p-5 gap-3 content-center items-center h-20 relative ${
-                          SelectedProgrammes.includes(
-                            item.programCode as string
-                          )
-                            ? "bg-[#e1c7f9]"
-                            : "inherit"
-                        }`}
+                        className={`transition-all bg-[#EEEEEE] rounded-xl mt-[1%] cursor-pointer flex p-5 gap-3 content-center items-center h-20 relative ${SelectedProgrammes.includes(
+                          item.programCode as string
+                        )
+                          ? "bg-[#e1c7f9]"
+                          : "inherit"
+                          }`}
                         onClick={() => {
                           // setIsRightSideBarOpen(true);
                           setSelectedProgramme(item);
@@ -588,16 +683,11 @@ const Result = (props: Props) => {
                             ]);
                           }
 
-                          // setting point
 
-                          // for (let index = 0; index < (item.candidateProgramme?.length as number); index++) {
-                          //   const itm = (item.candidateProgramme as CandidateProgramme[])[index];
-
-                          // }
                           let point = barData;
 
                           item.candidateProgramme?.forEach((itm) => {
-                            console.log(itm);
+
 
                             let editedData = point.map((bar, i) => {
                               if (bar.name == itm.candidate?.team?.name) {
@@ -652,15 +742,14 @@ const Result = (props: Props) => {
                           {item.name}
                         </p>
                         <div
-                          className={`${
-                            item.anyIssue
-                              ? "bg-error"
-                              : item.resultPublished
+                          className={`${item.anyIssue
+                            ? "bg-error"
+                            : item.resultPublished
                               ? "bg-success"
                               : item.resultEntered
-                              ? "bg-info"
-                              : "bg-warning"
-                          }  absolute w-3 h-3 rounded-full right-3`}
+                                ? "bg-info"
+                                : "bg-warning"
+                            }  absolute w-3 h-3 rounded-full right-3`}
                         ></div>
                       </div>
                     );
