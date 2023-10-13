@@ -23,7 +23,6 @@ export default function page({ params }: { params: { chestNo: string } }) {
   //   GetAllTeamsQueryVariables
   // >(GetAllTeamsDocument, { api_key: API_KEY });
 
-  // const colors = ["#0088FE", "#00C49F", "#FFBB28", ""];
   const delay = 0;
   const [index, setIndex] = useState<any>(0);
   const [programs, setPrograms] = useState<any>([]);
@@ -87,10 +86,6 @@ export default function page({ params }: { params: { chestNo: string } }) {
       }
     });
   }, []);
-
-
-
-  
 
   return (
     <main className="bg-primary lg:bg-accent">
@@ -306,9 +301,6 @@ export default function page({ params }: { params: { chestNo: string } }) {
         {/* <DesktopSidebar teams={teams.data?.teams as Team[]}/> */}
         {/* main content */}
 
-        {/* animation */}
-        {/* https://codepen.io/bnsddk/pen/dyXaNod */}
-
         <div
           className="bg-cover bg-center w-full h-full "
           style={{ backgroundImage: 'url("/img/live-result-bg.jpg")' }}
@@ -320,6 +312,8 @@ export default function page({ params }: { params: { chestNo: string } }) {
                 {/* <h1>#Live Results</h1> */}
               </div>
               {/* photos */}
+
+              {/* animation url - https://codepen.io/bnsddk/pen/dyXaNod */}
 
               <div
                 className="whitespace-nowrap ease-slow-to-speed transition duration-[1200ms] h-full"
@@ -482,6 +476,8 @@ export default function page({ params }: { params: { chestNo: string } }) {
                           </div>
                         </>
                       )}
+
+                      
                     </div>
                   );
                 })}
