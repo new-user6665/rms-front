@@ -35,6 +35,7 @@ import { saveAs } from "file-saver";
 
 interface Props {
   result: Programme[];
+  published: Programme[];
   categories: Category[];
   skills: Skill[];
   teams: Team[];
@@ -49,12 +50,14 @@ interface BarData {
 }
 
 interface CategoryForTotal {
-  name : string
-  teams : {
-    name : string 
-    lastResult : number;
-    grandResult : number;
-  }
+  name: string;
+  teams: {
+    name: string;
+    lastArtsResult: number;
+    grandArtsResult: number;
+    lastSportsResult: number;
+    grandSportsResult: number;
+  }[];
 }
 
 interface ToDownLoadData {
@@ -119,7 +122,7 @@ const Result = (props: Props) => {
   const [toDownloadList, setToDownloadList] = useState<any>();
   const [sertedData, setSertedData] = useState<Programme[]>([]);
   const [toDownLoadData, setToDownLoadData] = useState<ToDownLoadData[]>([]);
-  const [categoryForTotal , SetCategoryForTotal] = useState<CategoryForTotal[]>([])
+  const [categoryForTotal, SetCategoryForTotal] = useState<CategoryForTotal[]>( [] );
 
   const ProgrammeRef = useRef<HTMLDivElement>(null);
 
@@ -127,19 +130,14 @@ const Result = (props: Props) => {
 
   const [_, GoLiveResiltExicute] = useMutation(GoLiveDocument);
 
-
   const downloadTotalPoints = (
     programme: any = currentData,
     bulk: boolean = true
   ) => {
-
     console.log(programme);
 
-    allData.map((all)=>{
-      
-    })
+    allData.map((all) => { });
 
-    
     const doc = new jsPDF("portrait", "px", "a4");
     // Load Montserrat font
     doc.addFont(
@@ -153,21 +151,19 @@ const Result = (props: Props) => {
 
     console.log("pdf", pdfWidth, pdfHeight);
     var program = bulk ? programme : [programme];
-      doc.addPage("a4");
+    doc.addPage("a4");
 
-      const backgroundImageUrl =  "/a4result.jpg";
-      // Add the background image
-      doc.addImage(backgroundImageUrl, "JPEG", 0, 0, pdfWidth, pdfHeight);
+    const backgroundImageUrl = "/a4result.jpg";
+    // Add the background image
+    doc.addImage(backgroundImageUrl, "JPEG", 0, 0, pdfWidth, pdfHeight);
 
-      // Set the font to Montserrat
-      doc.setFont("Montserrat");
+    // Set the font to Montserrat
+    doc.setFont("Montserrat");
 
-      // Add text and other content on top of the background image
-      doc.setFontSize(10);
-      doc.setTextColor(0, 0, 0); // Set text color to black
+    // Add text and other content on top of the background image
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0); // Set text color to black
 
-
-    
     doc.deletePage(1);
 
     const pdfBlob = doc.output("blob");
@@ -186,7 +182,6 @@ const Result = (props: Props) => {
       programCodes: SelectedProgrammes,
     });
 
-
     if (datas.data?.publishResults) {
       setIsOrderedToPublish(false);
       toast.success("Results Published");
@@ -202,10 +197,7 @@ const Result = (props: Props) => {
         timeInSec: timeInSec,
       });
 
-
-
     if (datas.data) {
-
       setIsOrderedToPublish(false);
       toast.success("Results Are Live");
     } else {
@@ -236,30 +228,76 @@ const Result = (props: Props) => {
       );
     }
 
-    const teams = props.teams.map((team)=>{
+    const teams = props.teams.map((team) => {
       return {
-        name : team.name,
-        lastResult : 0,
-        grandResult : 0
+        name: team.name,
+        lastResult: 0,
+        grandResult: 0,
+      };
+    });
+
+
+    const groupedByCategory: { [key: string]: Programme[] } = {};
+    props.published.forEach((program) => {
+      const category = program?.category?.name;
+      if (!groupedByCategory[category as string]) {
+        groupedByCategory[category as string] = [];
       }
-    })
+      groupedByCategory[category as string].push(program as Programme);
+    });
 
-        // setting data to type CategoryForTotal
-
-       const categories : CategoryForTotal [] = props.categories.map((category)=>{
-         return {
-            name : category.name as string ,
-            teams : teams as any
+    // Step 2: Transform the grouped data into CategoryForTotal format
+    const categoryForTl: CategoryForTotal[] = props.categories.map((category) => {
+      const categoryName = category.name;
+      const programsInCategory = groupedByCategory[categoryName as string] || [];
+      // Step 3: Calculate total points for each team in the category
+      const teams: { name: string; lastArtsResult: number; grandArtsResult: number ;  lastSportsResult: number; grandSportsResult: number }[] = props.teams.map(
+        (team) => {
+          return {
+            name: team.name as string,
+            lastArtsResult: 0 as number,
+            grandArtsResult: 0 as number,
+            lastSportsResult: 0 as number,
+            grandSportsResult: 0 as number,
           }
-        })
+        }
+      );
 
-        SetCategoryForTotal([...categories])
 
-    // Bar data
+      programsInCategory.forEach((program) => {
+        program.candidateProgramme?.forEach((cp) => {
+          const teamName = cp.candidate?.team?.name;
+          const teamIndex = teams.findIndex((t) => t.name === teamName);
+
+          if (teamIndex !== -1) {
+            if(program.model === Model.Arts){
+              teams[teamIndex].grandArtsResult += (cp?.point ? cp?.point : 0) as number;
+            }else {
+              teams[teamIndex].grandSportsResult += (cp?.point ? cp?.point : 0) as number;
+            }
+          }
+        });
+      });
+
+      return {
+        name: categoryName as string,
+        teams: teams as {
+          name: string;
+          lastArtsResult: number;
+          grandArtsResult: number;
+          lastSportsResult: number;
+          grandSportsResult: number;
+        }[]
+      };
+    });
+
+    console.log(categoryForTl);
+
+    SetCategoryForTotal(categoryForTl);
+ 
+
 
     let teamData: BarData[] = props.teams.map((data, i) => {
-
-
       return {
         name: data.name as string,
         totalPoint: (data.totalPoint as number) || (0 as number),
@@ -287,13 +325,10 @@ const Result = (props: Props) => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-
-
   }, []);
 
   useEffect(() => {
     const windowWidth = window.innerWidth;
-
 
     if (IsRightSideBarOpen) {
       setItemsPerPage((calculateBreakPoint(window.innerHeight) / 4) * 3);
@@ -306,13 +341,11 @@ const Result = (props: Props) => {
   useEffect(() => {
     // when screen height changes
 
-
     setIsRightSideBarOpen(false);
 
     const shh = calculateBreakPoint(window.innerHeight);
 
     setItemsPerPage(shh);
-
   }, [screenHeigh]);
 
   const calculateBreakPoint = (sh: number) => {
@@ -352,6 +385,7 @@ const Result = (props: Props) => {
     return controls;
   };
 
+  
 
   useEffect(() => {
     // change the program data to download data format
@@ -387,11 +421,21 @@ const Result = (props: Props) => {
               : programme.type == Types.House
                 ? candidate.position?.pointHouse
                 : 0;
-        let chestNo = programme.type == Types.House ? candidate.candidate?.chestNO?.slice(0, -2) + '00' : candidate.candidate?.chestNO
-        let candidateClass = programme.type == Types.Single ? candidate.candidate?.class : '-'
-        let candidateName = programme.type == Types.Single ? candidate.candidate?.name : programme.type == Types.Group ? candidate.candidate?.name + " & Team" : programme.type == Types.House ? candidate.candidate?.team?.name : null
+        let chestNo =
+          programme.type == Types.House
+            ? candidate.candidate?.chestNO?.slice(0, -2) + "00"
+            : candidate.candidate?.chestNO;
+        let candidateClass =
+          programme.type == Types.Single ? candidate.candidate?.class : "-";
+        let candidateName =
+          programme.type == Types.Single
+            ? candidate.candidate?.name
+            : programme.type == Types.Group
+              ? candidate.candidate?.name + " & Team"
+              : programme.type == Types.House
+                ? candidate.candidate?.team?.name
+                : null;
         // if there no position or grade then not push
-
 
         if (candidate.position || candidate.grade) {
           downloadData.push({
@@ -399,7 +443,9 @@ const Result = (props: Props) => {
             programCode: programCode as string,
             programmeName: programName as string,
             category: category as string,
-            position: candidate.position?.value ? candidate.position?.value : '' as any,
+            position: candidate.position?.value
+              ? candidate.position?.value
+              : ("" as any),
             grade: candidate.grade?.name
               ? candidate.grade?.name
               : ("" as string),
@@ -407,8 +453,8 @@ const Result = (props: Props) => {
             candidateName: candidateName as string,
             class: candidateClass as string,
             candidateTeam: candidate.candidate?.team?.name as string,
-            gradePoint: gradePoint ? gradePoint : ('' as any),
-            positionPoint: positionPoint ? positionPoint : '' as any,
+            gradePoint: gradePoint ? gradePoint : ("" as any),
+            positionPoint: positionPoint ? positionPoint : ("" as any),
             totalPoint: candidate.point as number,
             checkCode: programme.programCode as string,
           });
@@ -417,25 +463,40 @@ const Result = (props: Props) => {
     });
     // do the above code by sorted data
 
-
     setToDownLoadData(downloadData as ToDownLoadData[]);
   }, []);
 
 
+ const addPointToCategory = (program : Programme) => {
+  if (
+    SelectedProgrammes.includes(
+      program.programCode as string
+    )
+  ){
+
+  }else{
+    let CategoryEditedPts = categoryForTotal.map((cat , i)=>{
+      
+    })
+  }
+  }
+
   const handleDownload = async () => {
+    console.log(categoryForTotal);
+
     try {
       const postData = {
         data: toDownLoadData,
-        SelectedProgrammes
-      }
+        SelectedProgrammes,
+      };
       // Make a POST request to the Excel API route
-      const response = await fetch('/api/excel', {
+      const response = await fetch("/api/excel", {
         method: "POST",
         headers: {
           "Content-Type": "application/json", // Specify the content type if sending JSON data
         },
         body: JSON.stringify(postData),
-      })
+      });
 
       if (response.ok) {
         // Convert the response to a Blob and create a URL for downloading
@@ -443,18 +504,18 @@ const Result = (props: Props) => {
         const url = window.URL.createObjectURL(blob);
 
         // Create a download link and trigger the download
-        const a = document.createElement('a');
+        const a = document.createElement("a");
         a.href = url;
-        a.download = 'data.xlsx';
+        a.download = "data.xlsx";
         a.click();
 
         // // Clean up by revoking the URL
         window.URL.revokeObjectURL(url);
       } else {
-        console.error('Failed to generate Excel file.');
+        console.error("Failed to generate Excel file.");
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
   return (
@@ -514,14 +575,14 @@ const Result = (props: Props) => {
                     tabIndex={0}
                     className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40 font-bold"
                   >
-                    <button
+                    {/* <button
                       className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
                       onClick={() => {
                         setIsOrderedToPublish(true);
                       }}
                     >
                       Publish
-                    </button>
+                    </button> */}
                     <button
                       className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
                       onClick={() => {
@@ -574,27 +635,25 @@ const Result = (props: Props) => {
                     tabIndex={0}
                     className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40 font-bold"
                   >
-                    {props.categories?.map(
-                      (item: Category, index: number) => {
-                        return (
-                          <button
-                            className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
-                            onClick={() => {
-                              setCurrentPage(1);
-                              setData(
-                                allData.filter(
-                                  (itm: Programme) =>
-                                    itm?.category?.name?.toLocaleLowerCase() ===
-                                    item?.name?.toLocaleLowerCase()
-                                )
-                              );
-                            }}
-                          >
-                            {item.name}
-                          </button>
-                        );
-                      }
-                    )}
+                    {props.categories?.map((item: Category, index: number) => {
+                      return (
+                        <button
+                          className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                          onClick={() => {
+                            setCurrentPage(1);
+                            setData(
+                              allData.filter(
+                                (itm: Programme) =>
+                                  itm?.category?.name?.toLocaleLowerCase() ===
+                                  item?.name?.toLocaleLowerCase()
+                              )
+                            );
+                          }}
+                        >
+                          {item.name}
+                        </button>
+                      );
+                    })}
                   </ul>
                 </div>
 
@@ -629,11 +688,12 @@ const Result = (props: Props) => {
                         className={`transition-all bg-[#EEEEEE] rounded-xl mt-[1%] cursor-pointer flex p-5 gap-3 content-center items-center h-20 relative ${SelectedProgrammes.includes(
                           item.programCode as string
                         )
-                          ? "bg-[#e1c7f9]"
-                          : "inherit"
+                            ? "bg-[#e1c7f9]"
+                            : "inherit"
                           }`}
                         onClick={() => {
                           // setIsRightSideBarOpen(true);
+                          addPointToCategory(item)
                           setSelectedProgramme(item);
                           setIsEdit(false);
                           setIsCreate(false);
@@ -645,7 +705,7 @@ const Result = (props: Props) => {
                               item.programCode as string
                             )
                           ) {
-                            const deletedPrpgrammesData: string[] =
+                            const deletedPopgrammesData: string[] =
                               SelectedProgrammes.filter(
                                 (programCode: string) => {
                                   return programCode != item.programCode;
@@ -653,7 +713,7 @@ const Result = (props: Props) => {
                               );
 
                             setSelectedProgrammes(
-                              deletedPrpgrammesData as string[]
+                              deletedPopgrammesData as string[]
                             );
                           } else {
                             setSelectedProgrammes([
@@ -662,12 +722,9 @@ const Result = (props: Props) => {
                             ]);
                           }
 
-
                           let point = barData;
 
                           item.candidateProgramme?.forEach((itm) => {
-
-
                             let editedData = point.map((bar, i) => {
                               if (bar.name == itm.candidate?.team?.name) {
                                 let Arts = 0;
@@ -722,12 +779,12 @@ const Result = (props: Props) => {
                         </p>
                         <div
                           className={`${item.anyIssue
-                            ? "bg-error"
-                            : item.resultPublished
-                              ? "bg-success"
-                              : item.resultEntered
-                                ? "bg-info"
-                                : "bg-warning"
+                              ? "bg-error"
+                              : item.resultPublished
+                                ? "bg-success"
+                                : item.resultEntered
+                                  ? "bg-info"
+                                  : "bg-warning"
                             }  absolute w-3 h-3 rounded-full right-3`}
                         ></div>
                       </div>
