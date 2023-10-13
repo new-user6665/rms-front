@@ -176,8 +176,8 @@ export default function ProgramAndResultDesktop(props: Props) {
                     </h1>
                     <h1 className="mt-4">{programme?.programme?.name}</h1>
                     <div className="text-lt flex flex-col items-end mt-2">
-                      <p>-</p>
-                      <p>-</p>
+                      {/* <p>-</p> */}
+                      {/* <p>-</p> */}
                     </div>
                   </div>
                 ))
@@ -189,8 +189,8 @@ export default function ProgramAndResultDesktop(props: Props) {
                       </h1>
                       <h1 className="mt-4">{programme?.programme?.name}</h1>
                       <div className="text-lt flex flex-col items-end mt-2">
-                        <p>-</p>
-                        <p>-</p>
+                        {/* <p>-</p> */}
+                        {/* <p>-</p> */}
                       </div>
                     </div>
                   ))
@@ -202,8 +202,8 @@ export default function ProgramAndResultDesktop(props: Props) {
                         </h1>
                         <h1 className="mt-4">{programme?.programme?.name}</h1>
                         <div className="text-lt flex flex-col items-end mt-2">
-                          <p>-</p>
-                          <p>-</p>
+                          {/* <p>-</p> */}
+                          {/* <p>-</p> */}
                         </div>
                       </div>
                     ))

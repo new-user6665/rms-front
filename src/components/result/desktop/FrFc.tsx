@@ -108,7 +108,7 @@ export default function FirstRowFirstCard(props: Props) {
                   setFilteredSelectedProgram(program)
                 }} className="flex items-center h-14 min-h-[3.5rem] w-full text-xs bg-[#F6DEFF] rounded-xl px-3 cursor-pointer">
                   <p className="font-bold w-[25%]">{program.programCode}</p>
-                  <p className="w-[60%]">{program.name}</p>
+                  <p className="w-[60%]">{program.name?.toUpperCase()}</p>
                   <p className="w-[20%]">{program.category?.name}</p>
                 </div>
               )
