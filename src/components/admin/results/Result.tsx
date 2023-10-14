@@ -122,7 +122,7 @@ const Result = (props: Props) => {
   const [toDownloadList, setToDownloadList] = useState<any>();
   const [sertedData, setSertedData] = useState<Programme[]>([]);
   const [toDownLoadData, setToDownLoadData] = useState<ToDownLoadData[]>([]);
-  const [categoryForTotal, SetCategoryForTotal] = useState<CategoryForTotal[]>( [] );
+  const [categoryForTotal, SetCategoryForTotal] = useState<CategoryForTotal[]>([]);
 
   const ProgrammeRef = useRef<HTMLDivElement>(null);
 
@@ -130,49 +130,6 @@ const Result = (props: Props) => {
 
   const [_, GoLiveResiltExicute] = useMutation(GoLiveDocument);
 
-  const downloadTotalPoints = (
-    programme: any = currentData,
-    bulk: boolean = true
-  ) => {
-    console.log(programme);
-
-    allData.map((all) => { });
-
-    const doc = new jsPDF("portrait", "px", "a4");
-    // Load Montserrat font
-    doc.addFont(
-      "https://fonts.gstatic.com/s/montserrat/v15/JTUSjIg1_i6t8kCHKm459Wlhzg.ttf",
-      "Montserrat",
-      "normal"
-    );
-
-    const pdfWidth = doc.internal.pageSize.getWidth();
-    const pdfHeight = doc.internal.pageSize.getHeight();
-
-    console.log("pdf", pdfWidth, pdfHeight);
-    var program = bulk ? programme : [programme];
-    doc.addPage("a4");
-
-    const backgroundImageUrl = "/a4result.jpg";
-    // Add the background image
-    doc.addImage(backgroundImageUrl, "JPEG", 0, 0, pdfWidth, pdfHeight);
-
-    // Set the font to Montserrat
-    doc.setFont("Montserrat");
-
-    // Add text and other content on top of the background image
-    doc.setFontSize(10);
-    doc.setTextColor(0, 0, 0); // Set text color to black
-
-    doc.deletePage(1);
-
-    const pdfBlob = doc.output("blob");
-    var filename = bulk
-      ? `Judge List`
-      : `${(programme as any).programCode} ${(programme as any).name}`;
-    saveAs(pdfBlob, `${filename}.pdf`);
-    // setDowloading(true)
-  };
 
   const PublishResults = async () => {
     const datas: OperationResult<
@@ -251,7 +208,7 @@ const Result = (props: Props) => {
       const categoryName = category.name;
       const programsInCategory = groupedByCategory[categoryName as string] || [];
       // Step 3: Calculate total points for each team in the category
-      const teams: { name: string; lastArtsResult: number; grandArtsResult: number ;  lastSportsResult: number; grandSportsResult: number }[] = props.teams.map(
+      const teams: { name: string; lastArtsResult: number; grandArtsResult: number; lastSportsResult: number; grandSportsResult: number }[] = props.teams.map(
         (team) => {
           return {
             name: team.name as string,
@@ -270,9 +227,9 @@ const Result = (props: Props) => {
           const teamIndex = teams.findIndex((t) => t.name === teamName);
 
           if (teamIndex !== -1) {
-            if(program.model === Model.Arts){
+            if (program.model === Model.Arts) {
               teams[teamIndex].grandArtsResult += (cp?.point ? cp?.point : 0) as number;
-            }else {
+            } else {
               teams[teamIndex].grandSportsResult += (cp?.point ? cp?.point : 0) as number;
             }
           }
@@ -294,7 +251,7 @@ const Result = (props: Props) => {
     console.log(categoryForTl);
 
     SetCategoryForTotal(categoryForTl);
- 
+
 
 
     let teamData: BarData[] = props.teams.map((data, i) => {
@@ -385,7 +342,7 @@ const Result = (props: Props) => {
     return controls;
   };
 
-  
+
 
   useEffect(() => {
     // change the program data to download data format
@@ -467,23 +424,121 @@ const Result = (props: Props) => {
   }, []);
 
 
- const addPointToCategory = (program : Programme) => {
-  if (
-    SelectedProgrammes.includes(
-      program.programCode as string
-    )
-  ){
 
-  }else{
-    let CategoryEditedPts = categoryForTotal.map((cat , i)=>{
-      
+
+  const addPointToCategory = (program: Programme) => {
+
+    const onCategoryForTotal: CategoryForTotal = categoryForTotal.find((cft, i) => {
+      return cft.name == program.category?.name
+    }) as CategoryForTotal
+
+
+    const { category, candidateProgramme } = program;
+
+    // Find the corresponding team in the teams array
+    // const teamIndex = onCategoryForTotal?.teams.findIndex((team) => team.name === (((candidateProgramme as any)[0] as any).candidate?.team?.name as string));
+    (candidateProgramme as any).forEach((candidateP: CandidateProgramme) => {
+      const { candidate, point } = candidateP;
+
+      const teamIndex = onCategoryForTotal?.teams?.findIndex((t) => t.name === candidate?.team?.name);
+
+      if (teamIndex !== -1) {
+        // Update points based on the entity type
+        if (
+          SelectedProgrammes.includes(
+            program.programCode as string
+          )
+        ) {
+
+          if (program.model == Model.Arts) {
+            onCategoryForTotal.teams[teamIndex].lastArtsResult -= (point as number);
+            onCategoryForTotal.teams[teamIndex].grandArtsResult -= (point as number);
+          } else if (program.model == Model.Sports) {
+            onCategoryForTotal.teams[teamIndex].lastSportsResult -= (point as number);
+            onCategoryForTotal.teams[teamIndex].grandSportsResult -= (point as number);
+          }
+
+        } else {
+
+          if (program.model == Model.Arts) {
+            onCategoryForTotal.teams[teamIndex].lastArtsResult += (point as number);
+            onCategoryForTotal.teams[teamIndex].grandArtsResult += (point as number);
+          } else if (program.model == Model.Sports) {
+            onCategoryForTotal.teams[teamIndex].lastSportsResult += (point as number);
+            onCategoryForTotal.teams[teamIndex].grandSportsResult += (point as number);
+          }
+
+        }
+
+      }
     })
+
+
+
+    console.log(categoryForTotal);
+
+    SetCategoryForTotal(categoryForTotal);
+    return categoryForTotal;
   }
-  }
+
+  const updateCategoryForTotal = (program: Programme, categoryForTotal: CategoryForTotal): CategoryForTotal => {
+    const { category, candidateProgramme } = program;
+
+    // Find the corresponding team in the teams array
+    const teamIndex = categoryForTotal.teams.findIndex((team) => team.name === (((candidateProgramme as any)[0] as any).candidate?.team?.name as string));
+
+    if (teamIndex !== -1) {
+      // Update points based on the entity type
+      // if (canidateProgrammes[0].entity === 'ARTS') {
+      categoryForTotal.teams[teamIndex].lastArtsResult = ((candidateProgramme as any)[0] as any).point;
+      categoryForTotal.teams[teamIndex].grandArtsResult += ((candidateProgramme as any)[0] as any).point;
+      // } else if (canidateProgrammes[0].entity === 'SPORTS') {
+      //   categoryForTotal.teams[teamIndex].lastSportsResult = canidateProgrammes[0].point;
+      //   categoryForTotal.teams[teamIndex].grandSportsResult += canidateProgrammes[0].point;
+      // }
+    }
+
+    return categoryForTotal;
+  };
+
+
+  const downloadTotalPoints = () => {
+
+    const doc = new jsPDF("portrait", "px", "a4");
+    // Load Montserrat font
+    doc.addFont(
+      "https://fonts.gstatic.com/s/montserrat/v15/JTUSjIg1_i6t8kCHKm459Wlhzg.ttf",
+      "Montserrat",
+      "normal"
+    );
+
+    const pdfWidth = doc.internal.pageSize.getWidth();
+    const pdfHeight = doc.internal.pageSize.getHeight();
+
+    console.log("pdf", pdfWidth, pdfHeight);
+    doc.addPage("a4");
+
+    const backgroundImageUrl = "/a4result.jpg";
+    // Add the background image
+    doc.addImage(backgroundImageUrl, "JPEG", 0, 0, pdfWidth, pdfHeight);
+
+    // Set the font to Montserrat
+    doc.setFont("Montserrat");
+
+    // Add text and other content on top of the background image
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0); // Set text color to black
+
+    doc.deletePage(1);
+
+    const pdfBlob = doc.output("blob");
+    var filename = 'Total'
+    saveAs(pdfBlob, `${filename}.pdf`);
+    // setDowloading(true)
+  };
 
   const handleDownload = async () => {
     console.log(categoryForTotal);
-
     try {
       const postData = {
         data: toDownLoadData,
@@ -518,6 +573,7 @@ const Result = (props: Props) => {
       console.error("Error:", error);
     }
   };
+
   return (
     <>
       <div className="w-full h-full">
@@ -575,14 +631,14 @@ const Result = (props: Props) => {
                     tabIndex={0}
                     className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40 font-bold"
                   >
-                    {/* <button
+                    <button
                       className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
                       onClick={() => {
                         setIsOrderedToPublish(true);
                       }}
                     >
                       Publish
-                    </button> */}
+                    </button>
                     <button
                       className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
                       onClick={() => {
@@ -657,12 +713,45 @@ const Result = (props: Props) => {
                   </ul>
                 </div>
 
-                <button
-                  className="hidden md:inline-flex ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
-                  onClick={handleDownload}
-                >
-                  Export
-                </button>
+                <div className="dropdown dropdown-end mr-1">
+                  <label
+                    tabIndex={0}
+                    className="inline-flex bg-secondary ml-1  text-white rounded-full px-5 py-2 font-bold cursor-pointer"
+                  >
+                    Export
+                    <svg
+                      className="-mr-1 h-5 w-5 text-gray-400"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </label>
+                  <ul
+                    tabIndex={0}
+                    className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40 font-bold"
+                  >
+                    <button
+                      className="block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                      onClick={handleDownload}
+                    >
+                      Result
+                    </button>
+                    <button
+                      className="block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                      onClick={downloadTotalPoints}
+                    >
+                      Total
+                    </button>
+                  </ul>
+                </div>
+
+
                 <button
                   className="ml-1 bg-secondary text-white rounded-full px-6 py-[8px] font-bold md:hidden"
                   onClick={handleDownload}
@@ -688,8 +777,8 @@ const Result = (props: Props) => {
                         className={`transition-all bg-[#EEEEEE] rounded-xl mt-[1%] cursor-pointer flex p-5 gap-3 content-center items-center h-20 relative ${SelectedProgrammes.includes(
                           item.programCode as string
                         )
-                            ? "bg-[#e1c7f9]"
-                            : "inherit"
+                          ? "bg-[#e1c7f9]"
+                          : "inherit"
                           }`}
                         onClick={() => {
                           // setIsRightSideBarOpen(true);
@@ -779,12 +868,12 @@ const Result = (props: Props) => {
                         </p>
                         <div
                           className={`${item.anyIssue
-                              ? "bg-error"
-                              : item.resultPublished
-                                ? "bg-success"
-                                : item.resultEntered
-                                  ? "bg-info"
-                                  : "bg-warning"
+                            ? "bg-error"
+                            : item.resultPublished
+                              ? "bg-success"
+                              : item.resultEntered
+                                ? "bg-info"
+                                : "bg-warning"
                             }  absolute w-3 h-3 rounded-full right-3`}
                         ></div>
                       </div>
