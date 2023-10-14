@@ -113,7 +113,7 @@ export default function Programs(props: Props) {
                     {program.programCode}
                     </p>
                     <p className="text-xs bigphone:text-sm">
-                    {program.name}
+                    {program.name?.toUpperCase()}
                     </p>
                   </div>
                   <p className="text-xs bigphone:text-sm">{program.category?.name}</p>

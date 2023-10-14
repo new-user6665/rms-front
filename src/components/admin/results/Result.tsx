@@ -343,7 +343,6 @@ const Result = (props: Props) => {
   };
 
 
-
   useEffect(() => {
     // change the program data to download data format
 
@@ -378,6 +377,7 @@ const Result = (props: Props) => {
               : programme.type == Types.House
                 ? candidate.position?.pointHouse
                 : 0;
+
         let chestNo =
           programme.type == Types.House
             ? candidate.candidate?.chestNO?.slice(0, -2) + "00"
@@ -388,10 +388,12 @@ const Result = (props: Props) => {
           programme.type == Types.Single
             ? candidate.candidate?.name
             : programme.type == Types.Group
+        
               ? candidate.candidate?.name + " & Team"
               : programme.type == Types.House
                 ? candidate.candidate?.team?.name
                 : null;
+
         // if there no position or grade then not push
 
         if (candidate.position || candidate.grade) {
@@ -410,6 +412,7 @@ const Result = (props: Props) => {
             candidateName: candidateName as string,
             class: candidateClass as string,
             candidateTeam: candidate.candidate?.team?.name as string,
+
             gradePoint: gradePoint ? gradePoint : ("" as any),
             positionPoint: positionPoint ? positionPoint : ("" as any),
             totalPoint: candidate.point as number,
@@ -418,7 +421,6 @@ const Result = (props: Props) => {
         }
       });
     });
-    // do the above code by sorted data
 
     setToDownLoadData(downloadData as ToDownLoadData[]);
   }, []);
@@ -553,6 +555,7 @@ const Result = (props: Props) => {
         body: JSON.stringify(postData),
       });
 
+
       if (response.ok) {
         // Convert the response to a Blob and create a URL for downloading
         const blob = await response.blob();
@@ -564,7 +567,9 @@ const Result = (props: Props) => {
         a.download = "data.xlsx";
         a.click();
 
-        // // Clean up by revoking the URL
+
+        // Clean up by revoking the URL
+
         window.URL.revokeObjectURL(url);
       } else {
         console.error("Failed to generate Excel file.");
@@ -691,6 +696,7 @@ const Result = (props: Props) => {
                     tabIndex={0}
                     className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40 font-bold"
                   >
+
                     {props.categories?.map((item: Category, index: number) => {
                       return (
                         <button
@@ -752,9 +758,10 @@ const Result = (props: Props) => {
                 </div>
 
 
+
                 <button
                   className="ml-1 bg-secondary text-white rounded-full px-6 py-[8px] font-bold md:hidden"
-                  onClick={handleDownload}
+                  onClick={downloadAsExcel}
                 >
                   <DownLoadIcon className="w-6 h-6 cursor-pointer fill-white  transition-all" />
                 </button>
