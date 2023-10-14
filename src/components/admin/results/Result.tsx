@@ -757,14 +757,6 @@ const Result = (props: Props) => {
                   </ul>
                 </div>
 
-
-
-                <button
-                  className="ml-1 bg-secondary text-white rounded-full px-6 py-[8px] font-bold md:hidden"
-                  onClick={downloadAsExcel}
-                >
-                  <DownLoadIcon className="w-6 h-6 cursor-pointer fill-white  transition-all" />
-                </button>
               </div>
             </div>
             <div className="flex flex-col items-center lg:justify-center w-full h-full">
