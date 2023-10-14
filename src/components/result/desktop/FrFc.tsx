@@ -121,7 +121,11 @@ export default function FirstRowFirstCard(props: Props) {
       <div className="h-[43rem] w-[50%] 2xl:w-[50%] rounded-3xl bg-[#F7F7F7]">
         {/* heading */}
         <div className="h-12">
-          <h1 className="text-3xl font-semibold px-5 my-4">Results</h1>
+          <h1 className="text-3xl font-semibold px-5 ">Results</h1>
+          <div className="flex">
+          {/* <h1 className="text-sm font-semibold px-5 ">{selectedProgram?.name}</h1>
+          <h1 className="text-sm font-semibold px-5">{selectedProgram?.category?.name}</h1> */}
+          </div>
           <hr className="border" />
         </div>
         {/* sort buttons */}
