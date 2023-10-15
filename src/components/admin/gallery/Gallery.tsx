@@ -33,7 +33,7 @@ function Gallery(props: Props) {
 
   useEffect(() => {
     async function axs() {
-      await axios.get(`https://realia23.azurewebsites.net/gallery?${Date.now()}`)
+      await axios.get(`https://rms-mu.vercel.app/gallery?${Date.now()}`)
         .then(res => {
           setResultData(res.data)
           // console.log(data);
@@ -76,7 +76,7 @@ function Gallery(props: Props) {
 
     try {
       const res = await axios.delete(
-        `https://realia23.azurewebsites.net/gallery/${find.id}`
+        `https://rms-mu.vercel.app/gallery/${find.id}`
       );
       // // console.log(props.result);
       toast.success("Image deleted successfully");

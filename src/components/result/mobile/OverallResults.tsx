@@ -160,7 +160,7 @@ export default function OverallResults(props: SidebarProps) {
     }
     
     setChunks(chunked)
-  const router = useRouter()
+  // const router = useRouter()
 
   }, [])
 
@@ -257,6 +257,7 @@ export default function OverallResults(props: SidebarProps) {
                 return tm.name == chunk[1].name
                })
               return (
+                <div>
                 <div className="flex h-1/2 w-full">
                   <div className="h-full w-1/2">
                     <div className="w-full h-1/4 flex">
@@ -294,7 +295,7 @@ export default function OverallResults(props: SidebarProps) {
                       <div className="flex items-center gap-2">
                         <span className="bg-green-400 h-1 w-1 rounded-full" />
                         <h1 className="text-xs">
-                          Arts : {chunk[1].totalPoint}
+                          Arts : {chunk[1].grandArtsResult}
                         </h1>
                       </div>
 
@@ -321,7 +322,8 @@ export default function OverallResults(props: SidebarProps) {
               </div>
             );
           })
-        ) : (
+        
+         : (
           <>
             {" "}
             <div className="flex h-1/2 w-full">
