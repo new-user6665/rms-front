@@ -36,10 +36,10 @@ function Gallery(props: Props) {
       await axios.get(`https://realia23.azurewebsites.net/gallery?${Date.now()}`)
         .then(res => {
           setResultData(res.data)
-          console.log(data);
+          // console.log(data);
         })
         .catch(err => {
-          console.log(err)
+          // console.log(err)
         })
     }
     axs()
@@ -63,34 +63,34 @@ function Gallery(props: Props) {
 
     const chunksData = chunk(finalData, 12);
     setChunks(chunksData);
-    // console.log(chunks);
+    // // console.log(chunks);
   }, [resultData]);
 
   const [toDeleteImage, setToDeleteImage] = useState<string>("");
   const hadndleDelete = async (item: any) => {
-    console.log(item.split("=")[1]);
+    // console.log(item.split("=")[1]);
     setToDeleteImage(item);
     const id = item.split("=")[1];
     const find = resultData.find((item: any) => item.imageId === id);
-    console.log(data);
+    // console.log(data);
 
     try {
       const res = await axios.delete(
         `https://realia23.azurewebsites.net/gallery/${find.id}`
       );
-      // console.log(props.result);
+      // // console.log(props.result);
       toast.success("Image deleted successfully");
       const filterd = imageData.filter((itm: any) => {
         return itm != `https://drive.google.com/uc?id=${find.imageId}`;
       });
-      console.log(filterd);
+      // console.log(filterd);
       setImageData(filterd);
 
       const chunksData = chunk(filterd, 12);
 
 
       setChunks(chunksData);
-      console.log(chunks);
+      // console.log(chunks);
 
     } catch (err) {
       toast.error("Something went wrong");
