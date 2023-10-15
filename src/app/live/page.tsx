@@ -9,12 +9,15 @@ import {
   Programme,
   Team,
 } from "@/gql/graphql";
-import { API_KEY, FIREBASE_CONFIG } from "@/lib/env";
+import { API_KEY } from "@/lib/env";
 import { getUrqlClient } from "@/lib/urql";
 import { useEffect, useRef, useState } from "react";
 import Live from "@/components/live/Live";
-import { useRouter } from "next/navigation";
 var firebasedb = require("firebase/database");
+import { useRouter } from "next/navigation";
+import { useGlobalContext } from "@/context/context";
+import NProgress from "nprogress";
+// import "./styles/nprogress.css";
 
 export default function page({ params }: { params: { chestNo: string } }) {
   // const { client } = getUrqlClient();
@@ -30,8 +33,12 @@ export default function page({ params }: { params: { chestNo: string } }) {
   const [programs, setPrograms] = useState<any>([]);
   const [value, setValue] = useState<any>();
   const timeoutRef = useRef<any>(null);
+  const [routerButtonClicked, setRouterButtonClicked] = useState(false);
+  NProgress.configure({ showSpinner: false });
 
-  const router = useRouter()
+  const router = useRouter();
+
+  const { data, setData } = useGlobalContext();
 
   function resetTimeout() {
     if (timeoutRef.current) {
@@ -95,6 +102,12 @@ export default function page({ params }: { params: { chestNo: string } }) {
     });
   }, []);
 
+  useEffect(() => {
+    console.log(routerButtonClicked);
+
+    routerButtonClicked ? NProgress.start() : null;
+  }, [routerButtonClicked]);
+
   return (
     <main className="bg-primary lg:bg-accent">
       <button
@@ -130,19 +143,27 @@ export default function page({ params }: { params: { chestNo: string } }) {
           {programs.map((item: any) => {
             return (
               <>
-
                 {item == "show end" ? (
-                  <div className="bg-white h-[120%] w-full rounded-t-large inline-block">
+                  <div className="bg-white h-full w-full rounded-t-large inline-block">
                     <div className="h-[84%] w-full pt-8 leading-tight text-center">
-                      <div className="h-[14%] relative">
-                        <h1 className="text-2xl font-extrabold px-6 text-primary absolute top-[350%] left-1/2 -translate-x-1/2">
+                      <div className="h-[14%] relative top-1/2 -translate-y-1/2  flex flex-col justify-center items-center">
+                        <h1 className="text-2xl font-medium px-6 text-primary mb-2">
                           {"No results are live"}
                         </h1>
+                        <p
+                          onClick={() => {
+                            setRouterButtonClicked(true);
+                            router.push(`${data.admin ? "/admin" : "/"}`);
+                          }}
+                          className="rounded-md bg-secondary px-3.5 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secodarybg-secondary cursor-pointer"
+                        >
+                          Go back home
+                        </p>
                       </div>
                     </div>
                   </div>
                 ) : item == "display congratulations" ? (
-                  <div className="bg-white h-[120%] w-full rounded-t-large inline-block">
+                  <div className="bg-white h-full w-full rounded-t-large inline-block">
                     <div className="h-[84%] w-full pt-8 leading-tight text-center">
                       <div className="h-[14%] relative">
                         <h1 className="text-2xl font-extrabold px-6 text-primary absolute top-[350%] left-1/2 -translate-x-1/2">
@@ -302,7 +323,6 @@ export default function page({ params }: { params: { chestNo: string } }) {
                           }
 
                         </div>
-
                         {/* grades */}
                         {/* <div className="md:h-72  h-64 mx-auto -mt-24 md:mt-0  md:p-10 p-5">
                           <div className="flex items-center h-20 justify-center">
@@ -410,9 +430,20 @@ export default function page({ params }: { params: { chestNo: string } }) {
                   return (
                     <div className="bg-white h-[78%] w-full rounded-[2rem] text-center pt-2 lg:pt-5 overflow-hidden inline-block">
                       {item == "show end" ? (
-                        <h1 className="text-4xl lg:text-3xl 2xl:text-5xl font-semibold relative top-1/2 -translate-y-1/2">
-                          {"No results are live"}
-                        </h1>
+                        <div className="relative top-1/2 -translate-y-1/2 flex flex-col justify-center items-center">
+                          <h1 className="text-4xl lg:text-3xl 2xl:text-5xl font-semibold lg:mb-2 2xl:mb-4">
+                            {"No results are live"}
+                          </h1>
+                          <p
+                            onClick={() => {
+                              setRouterButtonClicked(true);
+                              router.push(`${data.admin ? "/admin" : "/"}`);
+                            }}
+                            className="rounded-md bg-secondary px-3.5 py-2.5 lg:text-sm 2xl:text-base font-semibold text-white shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secodarybg-secondary cursor-pointer"
+                          >
+                            Go back home
+                          </p>
+                        </div>
                       ) : item == "display congratulations" ? (
                         <h1 className="text-4xl lg:text-3xl 2xl:text-5xl font-semibold relative top-1/2 -translate-y-1/2">
                           {"Congratulations for all team"}
