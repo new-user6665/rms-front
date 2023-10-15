@@ -102,14 +102,18 @@ export default async function page({
             {/* Overall Results and toppers */}
             <OverallResults teams={teams.data?.teams.sort((a , b)=>{
               return b.totalPoint as number - (a.totalPoint as number)
-            }) as Team[]} />
+            }) as Team[]
+            }
+            categories={categories.data?.categories as Category[]}
+            programs = {result.data?.resultPublishedProgrammes as Programme[]}
+            />
 
 
             {/* Programs and Results */}
             <Programs teams={teams.data?.teams as Team[]} programs={result.data?.resultPublishedProgrammes as Programme[]} categories={categories.data?.categories as Category[]}/>
             {/* Quick Overview */}
-            {/* <Toppers categories={categories.data?.categories as Category[]} toppers={toppers.data?.getCategoryBasedToppers as Category[]} />
-            <QuickOverview count={(totalPrograms.data?.programmes?.length as number) || 0} programs={result.data?.resultEnteredProgrammes as Programme[]}/> */}
+            <Toppers categories={categories.data?.categories as Category[]} toppers={toppers.data?.getCategoryBasedToppers as Category[]} />
+            <QuickOverview count={(totalPrograms.data?.programmes?.length as number) || 0} programs={result.data?.resultPublishedProgrammes as Programme[]}/>
           </div>
         </div>
       </div>
