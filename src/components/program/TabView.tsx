@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import TabCandidates from "./TabCandidates";
 import TabResults from "./TabResults";
 import { useRouter } from "next/navigation";
+import NProgress from "nprogress";
 
 interface Props {
   programme: Programme;
@@ -16,6 +17,8 @@ export default function TabView(props: Props) {
 
   const [candidatesOrResults, setCandidatesOrResults] = useState("candidates");
   const [dateTime, setDateTime] = useState<Date>();
+  const [routerButtonClicked, setRouterButtonClicked] = useState(false);
+  NProgress.configure({ showSpinner: false });
 
   const active = {
     div: "rounded-xl text-sm h-8 bg-primary border border-primary flex items-center",
@@ -25,6 +28,10 @@ export default function TabView(props: Props) {
     div: "rounded-xl text-sm h-8 border border-primary flex items-center",
     button: "px-3 text-primary text-lg",
   };
+
+  useEffect(() => {
+    routerButtonClicked ? NProgress.start() : null;
+  }, [routerButtonClicked]);
 
   useEffect(() => {
     if (programme?.date) {
@@ -59,7 +66,10 @@ export default function TabView(props: Props) {
   return (
     <div className="xl:flex h-full w-full hidden 2xl:hidden">
       <button
-        onClick={() => router.push("/")}
+        onClick={() => {
+          setRouterButtonClicked(true);
+          router.push("/");
+        }}
         type="button"
         data-te-ripple-init=""
         data-te-ripple-color="light"
