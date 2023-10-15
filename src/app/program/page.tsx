@@ -6,7 +6,7 @@ import NProgress from "nprogress";
 // import "./styles/nprogress.css";
 
 const page = () => {
-    const [chestNo, setChestNo] = useState("")
+    const [programCode, setProgramCode] = useState("")
     const [routerButtonClicked, setRouterButtonClicked] = useState(false);
   NProgress.configure({ showSpinner: false })
     const router = useRouter()
@@ -27,9 +27,15 @@ const page = () => {
             <input
                 onChange={
                     (e) => {
-                        setChestNo(e.target.value)
+                        setProgramCode(e.target.value)
                     }
                 }
+                onKeyDown={(e)=>{
+                    if (programCode.length == 4 && e.key === 'Enter'){
+                        setRouterButtonClicked(true);
+                        router.push(`/candidate/${programCode}`)
+                    }
+                }}
                 type="text"
                 className="bg-white border rounded-full h-12 w-1/2 text-center uppercase font-bold placeholder:font-light"
                 placeholder="Program Code"
@@ -44,7 +50,7 @@ const page = () => {
                 </button>
                 <button onClick={() => {
                     setRouterButtonClicked(true);
-                    router.push(`/program/${chestNo}`)
+                    router.push(`/program/${programCode}`)
                 }} className="bg-secondary hover:bg-primary rounded-full h-8 w-1/4 text-lg text-white font-semibold transition-all duration-500">
                     SUBMIT
                 </button>

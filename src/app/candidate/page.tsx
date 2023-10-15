@@ -30,6 +30,12 @@ const page = () => {
                         setChestNo(e.target.value)
                     }
                 }
+                onKeyDown={(e)=>{
+                    if (chestNo.length == 4 && e.key === 'Enter'){
+                        setRouterButtonClicked(true);
+                        router.push(`/candidate/${chestNo}`)
+                    }
+                }}
                 type="text"
                 className="bg-white border rounded-full h-12 w-1/2 text-center uppercase font-bold placeholder:font-light"
                 placeholder="Chest No."

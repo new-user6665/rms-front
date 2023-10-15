@@ -11,10 +11,7 @@ export function LoadingBar() {
   NProgress.configure({ showSpinner: false })
  
   useEffect(() => {
-    const url = `${pathname}?${searchParams}`
-    console.log(url)
-    // You can now use the current URL
-    // ...
+    // const url = `${pathname}?${searchParams}`
     NProgress.start()
     NProgress.done()
   }, [pathname, searchParams])

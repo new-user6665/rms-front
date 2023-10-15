@@ -35,10 +35,10 @@ function userGallery(props: Props) {
           await axios.get(`https://rms-mu.vercel.app/gallery?${Date.now()}`)
               .then(res => {
                 setResultData(res.data)
-                  console.log(data);
+                  // // console.log(data);
               })
               .catch(err => {
-                  console.log(err)
+                  // // console.log(err)
               })
       }
       getGallery()
@@ -50,9 +50,9 @@ function userGallery(props: Props) {
     });
 
     setResultData(resultData);
-    console.log(data);
+    // console.log(data);
 
-    console.log(sortedDatanew);
+    // console.log(sortedDatanew);
 
     let image = sortedDatanew.map((item: any) => item.imageId);
     let finalData: any = [];
@@ -61,7 +61,7 @@ function userGallery(props: Props) {
     }
     setImageData(finalData);
 
-    console.log(finalData);
+    // console.log(finalData);
 
     const chunksData = chunk(finalData, 12);
     setChunks(chunksData);
@@ -70,10 +70,10 @@ function userGallery(props: Props) {
   const handleOpen = (image: any) => {
     setOpen(!open);
     setSelectedImage(image);
-    console.log(image);
+    // console.log(image);
     // i have to get onther 3 images
     const index = imageData.indexOf(image);
-    console.log(index);
+    // console.log(index);
     const nextOne = imageData[index + 1];
     const nextTwo = imageData[index + 2];
     const nextThree = imageData[index + 3];
