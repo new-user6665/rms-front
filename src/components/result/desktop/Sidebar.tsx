@@ -1,13 +1,29 @@
 "use client";
-import { Team } from "@/gql/graphql"
+import { Category, Programme, Team } from "@/gql/graphql"
 import { useEffect, useState } from "react";
 
 interface SidebarProps {
   teams : Team[]
+  categories : Category[]
+  programs : Programme[]
+}
+
+
+interface CategoryForTotal {
+  name: string;
+  teams: {
+    name: string;
+    lastArtsResult: number;
+    grandArtsResult: number;
+    lastSportsResult: number;
+    grandSportsResult: number;
+  }[];
 }
 
 export default function DesktopSidebar(props:SidebarProps){
   const [sortedTeams,setSortedTeams] = useState<Team[]>(props.teams)
+  const [categoryForTotal, SetCategoryForTotal] = useState<CategoryForTotal[]>([]);
+  const [selectedCategoryForTotal , setSelectedCategoryForTotal] = useState<CategoryForTotal>()
   useEffect(()=>{
     console.log(props.teams);
     // sort 
@@ -24,9 +40,35 @@ export default function DesktopSidebar(props:SidebarProps){
         Page
       </h1>
       {/* heading */}
-      <div className="flex justify-start gap-2">
+      <div className="flex justify-start gap-2  items-center">
         <h2 className="text-white font-semibold">Overall Results</h2>
+                     {/* sort buttons */}
+                     <div className="flex items-center gap-4 px-5 h-16">
+          {/* All */}
+          <select onChange={(e) => {
+            // filter the programs by category
+            if (e.target.value === 'all') {
+              // setSortedPrograms(props.programs)
+            }
+            else {
+              // const filtered = props.teams?.filter((program) => {
+              //   return program.category?.name === e.target.value
+              // })
+              // setSortedPrograms(filtered)
+            }
+          }} name="" id="" className="py-2 px-2  block  border-gray-200 rounded-full text-sm cursor-pointer">
+            <option value={'all'} key={1000} >All Category</option>
+            {
+              props.categories?.map((category, index) => {
+                return (
+                  <option key={"index"} value={category.name as string} >{category.name}</option>
+                )
+              })
+            }
+          </select>
+        </div>
       </div>
+      
       {/* result */}
       <div className="w-full h-[25rem] 2xl:h-[40rem] flex flex-col gap-8">
         {/* #01 */}
