@@ -42,7 +42,7 @@ const createGallery = (props: Props) => {
       console.log(formData);
 
       const res = await axios.post(
-        "https://rms-mu.vercel.app/gallery/many",
+        "https://realia23.azurewebsites.net/gallery/many",
         formData
       );
 
