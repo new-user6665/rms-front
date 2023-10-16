@@ -154,20 +154,21 @@ export default async function page({
             {/* <div className="h-24 w-full flex items-end">
               <h1 className="text-5xl font-bold">#Current Status</h1>
             </div> */}
+                        {/* second row */}
+
+                        <div className="h-[50%] 2xl:h-[25%] w-full flex gap-10 ">
+              {/* first card second row */}
+              <SecondRowFirstCard categories={categories.data?.categories as Category[]} toppers={toppers.data?.getCategoryBasedToppers as Category[]} />
+              {/* second card second row */}
+              <SecondRowSecondCard count={(totalPrograms.data?.programmes?.length as number) || 0} programs={result.data?.resultPublishedProgrammes as Programme[]} />
+            </div>
             {/* fist row */}
             <div className=" w-full flex gap-10 ">
               {/* first card first row */}
               <FirstRowFirstCard teams={teams.data?.teams as Team[]} programs={result.data?.resultPublishedProgrammes as Programme[]} categories={categories.data?.categories as Category[]} />
               {/* second card first row */}
             </div>
-            {/* second row */}
 
-            <div className="h-[50%] 2xl:h-[25%] w-full flex gap-10 ">
-              {/* first card second row */}
-              <SecondRowFirstCard categories={categories.data?.categories as Category[]} toppers={toppers.data?.getCategoryBasedToppers as Category[]} />
-              {/* second card second row */}
-              <SecondRowSecondCard count={(totalPrograms.data?.programmes?.length as number) || 0} programs={result.data?.resultPublishedProgrammes as Programme[]} />
-            </div>
             
           </div>
         </div>
