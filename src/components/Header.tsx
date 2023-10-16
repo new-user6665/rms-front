@@ -28,7 +28,6 @@ function Header(props: HeaderProps) {
 
   return (
     <header className="flex justify-between items-center">
-      {/* <div className="w-1/2 h-10 bg-green-900 fixed top-0 left-0"></div> */}
       <img
         src="/img/realia-txt.png"
         alt="Realia Logo"

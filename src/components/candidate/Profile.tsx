@@ -18,8 +18,15 @@ export default function ProgramAndResultDesktop(props: Props) {
   const [publishedResults, setPublishedResults] = useState<
     CandidateProgramme[]
   >([]);
+  const [routerButtonClicked, setRouterButtonClicked] = useState(false);
+  NProgress.configure({ showSpinner: false });
+  
 
   const router = useRouter();
+
+  useEffect(() => {
+    routerButtonClicked ? NProgress.start() : null;
+  }, [routerButtonClicked]);
 
   useEffect(() => {
     let candidateProgrammes: CandidateProgramme[] = [];
@@ -36,8 +43,7 @@ export default function ProgramAndResultDesktop(props: Props) {
   const [allOrIndividualOrGroupResult, setAllOrIndividualOrGroupResult] =
     useState("all");
 
-  const [routerButtonClicked, setRouterButtonClicked] = useState(false);
-  NProgress.configure({ showSpinner: false });
+
 
   const allPrograms = props?.candidate?.candidateProgrammes;
   const individualPrograms = props?.candidate?.candidateProgrammes?.filter(
