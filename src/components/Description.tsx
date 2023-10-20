@@ -8,16 +8,18 @@ import Image from "next/image";
 import { LiveIcon, TableIcon, UserIcon } from "@/icons/home";
 import { motion } from "framer-motion";
 import NProgress from "nprogress";
+import Countdown from "react-countdown";
 // import "./styles/nprogress.css";
 
 function Description() {
   const router = useRouter();
   const [routerButtonClicked, setRouterButtonClicked] = useState(false);
   NProgress.configure({ showSpinner: false });
+  const day = new Date(2023,10,25) as any
 
   useEffect(() => {
     Aos.init({
-      duration: 1500,
+      duration: 1500, 
     });
   }, []);
 
@@ -27,100 +29,167 @@ function Description() {
     routerButtonClicked ? NProgress.start() : null;
   }, [routerButtonClicked]);
   return (
-    <section className="min-h-screen">
-      <div className="w-full p-16 flex justify-center lg:justify-between align-center">
-        <div className="text-center lg:text-left" data-aos="fade-up">
-          <h1 className="text-5xl font-black text-secondary">
-            <span className="font-nexa">Results</span>&apos;
-            <span className="font-nexa">23</span>
-          </h1>
-          <h2 className="text-xl leading-4 font-nexa">Realia Arts Fest</h2>
+    <section className="pt-20 pb-48">
+    <div className="container mx-auto px-4">
+      <div className="flex flex-wrap justify-center text-center mb-24">
+        <div className="w-full lg:w-6/12 px-4">
+          <h2 className="text-4xl font-semibold">Here are our heroes</h2>
+          <p className="text-lg leading-relaxed m-4 text-gray-600">
+            According to the National Oceanic and Atmospheric Administration,
+            Ted, Scambos, NSIDClead scentist, puts the potentially record
+            maximum.
+          </p>
         </div>
-        <img
-          src="/img/arabic-logo.jpg" // Path to the image in the public folder
-          alt="Realia Logo"
-          data-aos="fade-up"
-          className="hidden lg:block"
-          width={400} // Set the width of the image
-          height={0} // Set the height of the image
-        />
+      {/* <Countdown date={day} /> */}
       </div>
-      <img
-        src="/img/pattern.jpg" // Path to the image in the public folder
-        alt="Realia Pattern"
-        data-aos="fade-up"
-        className="h-24 object-cover w-full"
-        // width={500}
-        // height={200}
-      />
-      <div className="text-white mt flex my-20 text-center flex-wrap justify-center gap-6 text-3xl font-bold font-nexa">
-        <motion.div
-          onClick={() => {
-            setRouterButtonClicked(true);
-            router.push("/result");
-          }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          whileHover={{ scale: 1.07 }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ duration: 0.2 }}
-        >
-          <div
-            className="bg-secondary border border-theme gap-3 cursor-pointer h-72 w-72 p-10 rounded-3xl justify-center flex flex-col items-center"
-            data-aos="fade-up"
-          >
-            <TableIcon className="h-24" />
-
-            <p className="">
-              Leader <br />
-              Board
-            </p>
+      <div className="flex flex-wrap">
+        <div className="w-full md:w-6/12 lg:w-3/12 lg:mb-0 mb-12 px-4">
+          <div className="px-6">
+            <img
+              alt="..."
+              src="./assets/img/team-1-800x800.jpg"
+              className="shadow-lg rounded-full max-w-full mx-auto"
+              style={{ maxWidth: 120 }}
+            />
+            <div className="pt-6 text-center">
+              <h5 className="text-xl font-bold">Ryan Tompson</h5>
+              <p className="mt-1 text-sm text-gray-500 uppercase font-semibold">
+                Web Developer
+              </p>
+              <div className="mt-6">
+                <button
+                  className="bg-blue-400 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
+                  type="button"
+                >
+                  <i className="fab fa-twitter" />
+                </button>
+                <button
+                  className="bg-blue-600 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
+                  type="button"
+                >
+                  <i className="fab fa-facebook-f" />
+                </button>
+                <button
+                  className="bg-pink-500 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
+                  type="button"
+                >
+                  <i className="fab fa-dribbble" />
+                </button>
+              </div>
+            </div>
           </div>
-        </motion.div>
-        <motion.div
-          onClick={() => {
-            setRouterButtonClicked(true);
-            router.push("/live");
-          }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          whileHover={{ scale: 1.07 }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ duration: 0.2 }}
-        >
-          <div
-            className="text-secondary border border-theme gap-3 cursor-pointer h-72 w-72 p-10 rounded-3xl justify-center flex flex-col items-center"
-            data-aos="fade-up"
-          >
-            <LiveIcon className="w-24" />
-            <p className="">
-              Live <br />
-              Results
-            </p>
+        </div>
+        <div className="w-full md:w-6/12 lg:w-3/12 lg:mb-0 mb-12 px-4">
+          <div className="px-6">
+            <img
+              alt="..."
+              src="./assets/img/team-2-800x800.jpg"
+              className="shadow-lg rounded-full max-w-full mx-auto"
+              style={{ maxWidth: 120 }}
+            />
+            <div className="pt-6 text-center">
+              <h5 className="text-xl font-bold">Romina Hadid</h5>
+              <p className="mt-1 text-sm text-gray-500 uppercase font-semibold">
+                Marketing Specialist
+              </p>
+              <div className="mt-6">
+                <button
+                  className="bg-red-600 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
+                  type="button"
+                >
+                  <i className="fab fa-google" />
+                </button>
+                <button
+                  className="bg-blue-600 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
+                  type="button"
+                >
+                  <i className="fab fa-facebook-f" />
+                </button>
+              </div>
+            </div>
           </div>
-        </motion.div>
-        <motion.div
-          onClick={() => {
-            setRouterButtonClicked(true);
-            router.push("/candidate");
-          }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          whileHover={{ scale: 1.07 }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ duration: 0.2 }}
-        >
-          <div
-            className="bg-secondary border border-theme gap-3 cursor-pointer h-72 w-72 p-10 rounded-3xl justify-center flex flex-col items-center"
-            data-aos="fade-up"
-          >
-            <UserIcon className="w-24" />
-
-            <p>Candidate Points</p>
+        </div>
+        <div className="w-full md:w-6/12 lg:w-3/12 lg:mb-0 mb-12 px-4">
+          <div className="px-6">
+            <img
+              alt="..."
+              src="./assets/img/team-3-800x800.jpg"
+              className="shadow-lg rounded-full max-w-full mx-auto"
+              style={{ maxWidth: 120 }}
+            />
+            <div className="pt-6 text-center">
+              <h5 className="text-xl font-bold">Alexa Smith</h5>
+              <p className="mt-1 text-sm text-gray-500 uppercase font-semibold">
+                UI/UX Designer
+              </p>
+              <div className="mt-6">
+                <button
+                  className="bg-red-600 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
+                  type="button"
+                >
+                  <i className="fab fa-google" />
+                </button>
+                <button
+                  className="bg-blue-400 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
+                  type="button"
+                >
+                  <i className="fab fa-twitter" />
+                </button>
+                <button
+                  className="bg-gray-800 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
+                  type="button"
+                >
+                  <i className="fab fa-instagram" />
+                </button>
+              </div>
+            </div>
           </div>
-        </motion.div>
+        </div>
+        <div className="w-full md:w-6/12 lg:w-3/12 lg:mb-0 mb-12 px-4">
+          <div className="px-6">
+            <img
+              alt="..."
+              src="./assets/img/team-4-470x470.png"
+              className="shadow-lg rounded-full max-w-full mx-auto"
+              style={{ maxWidth: 120 }}
+            />
+            <div className="pt-6 text-center">
+              <h5 className="text-xl font-bold">Jenna Kardi</h5>
+              <p className="mt-1 text-sm text-gray-500 uppercase font-semibold">
+                Founder and CEO
+              </p>
+              <div className="mt-6">
+                <button
+                  className="bg-pink-500 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
+                  type="button"
+                >
+                  <i className="fab fa-dribbble" />
+                </button>
+                <button
+                  className="bg-red-600 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
+                  type="button"
+                >
+                  <i className="fab fa-google" />
+                </button>
+                <button
+                  className="bg-blue-400 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
+                  type="button"
+                >
+                  <i className="fab fa-twitter" />
+                </button>
+                <button
+                  className="bg-gray-800 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
+                  type="button"
+                >
+                  <i className="fab fa-instagram" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
   );
 }
 

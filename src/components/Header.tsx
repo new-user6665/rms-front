@@ -27,7 +27,7 @@ function Header(props: HeaderProps) {
   }, [routerButtonClicked]);
 
   return (
-    <header className="flex justify-between items-center">
+    <header className="flex justify-between items-center w-full">
       <img
         src="/img/realia-txt.png"
         alt="Realia Logo"
@@ -75,7 +75,7 @@ function Header(props: HeaderProps) {
           </ul>
         </nav>
         <div>
-          <Image
+          <img
             src="/img/logo.png"
             alt="Realia Logo"
             width={150}

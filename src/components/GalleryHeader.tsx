@@ -89,7 +89,7 @@ function GalleryHeader() {
           </ul>
         </nav>
         <div>
-          <Image
+          <img
             src="/img/logo.png"
             alt="Realia Logo"
             width={150}

@@ -111,7 +111,7 @@ const Category = (props: Props) => {
                       }}
                     >
                       <div className="text-white font-bold bg-secondary px-3 py-1 text-xl rounded-xl flex justify-center content-center items-center">
-                        <p>{item.id}</p>
+                        <p>{index+1}</p>
                       </div>
 
                       <p className="text-black leading-5 pr-[10%]">

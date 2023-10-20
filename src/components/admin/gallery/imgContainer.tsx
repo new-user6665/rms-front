@@ -18,7 +18,7 @@ export default function ImgContainer({ photo }: Props) {
         >
             <Link href={photo.url} target="_blank" className="grid place-content-center">
                 <div className="rounded-xl overflow-hidden group">
-                    <Image
+                    <img
                         src={photo.src.large}
                         alt={photo.alt}
                         width={photo.width}
