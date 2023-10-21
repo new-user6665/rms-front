@@ -1,31 +1,44 @@
+"use client"
 import Header from "@/components/Header";
 import { ListsIcon, LiveIcon, LocationIcon, TableIcon, UserIcon, UsersIcon } from "@/icons/home";
 import Counts from "./Counts";
 import { CandidatesIcon } from "@/icons/sidebar";
 import Script from "next/script";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import nProgress from "nprogress";
 
 function First() {
+  const router = useRouter();
+  const [routerButtonClicked, setRouterButtonClicked] = useState(false);
+  nProgress.configure({ showSpinner: false });
+
+  useEffect(() => {
+    console.log(routerButtonClicked);
+
+    routerButtonClicked ? nProgress.start() : null;
+  }, [routerButtonClicked]);
   const data = [
     {
       id: "001",
       label: "Programs",
       number: "385",
       duration: "2",
-      svg :<ListsIcon className="w-6 h-6"/>
+      svg: <ListsIcon className="w-6 h-6" />
     },
     {
       id: "002",
       label: "Candidates",
       number: "255",
       duration: "2",
-      svg :<UsersIcon className="w-6 h-6"/>
+      svg: <UsersIcon className="w-6 h-6" />
     },
     {
       id: "003",
       label: "Venues",
       number: "7",
       duration: "2",
-      svg :<LocationIcon className="w-6 h-6"/>
+      svg: <LocationIcon className="w-6 h-6" />
     }
   ]
   return (
@@ -49,7 +62,7 @@ function First() {
         </div>
         <div className="container relative mx-auto">
           <div className="items-center flex flex-wrap">
-            <div className="w-full lg:w-6/12 px-4 ml-auto mr-auto text-center">
+            <div className="w-full lg:w-6/12 px-4 ml-auto mr-auto md:text-center">
               <div className="pr-12">
                 <h1 className="text-white font-semibold text-5xl">
                   Reviving the legacy of millennium.
@@ -81,8 +94,11 @@ function First() {
       <section className="pb-20 bg-gray-300 -mt-28 transition-all duration-500">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap">
-            <div className="lg:pt-12 pt-6 w-full md:w-4/12 px-4 text-center cursor-pointer hover:-translate-y-3  transition-all duration-500">
-              <div className="relative overflow-hidden flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
+            <div className="lg:pt-12 pt-6 w-full md:w-4/12 px-4 text-center ">
+              <div  onClick={() => {
+                setRouterButtonClicked(true);
+                router.push("/live");
+              }} className="relative overflow-hidden flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg cursor-pointer hover:-translate-y-3  transition-all duration-500">
                 <div
                   className="border border-theme  cursor-pointer h-full w-full p-10 justify-center flex flex-col items-center"
                   data-aos="fade-up"
@@ -95,8 +111,11 @@ function First() {
                 </div>
               </div>
             </div>
-            <div className="w-full md:w-4/12 px-4 text-center cursor-pointer hover:-translate-y-3  transition-all duration-500">
-              <div className="relative overflow-hidden flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
+            <div className="w-full md:w-4/12 px-4 text-center cursor-pointer ">
+              <div  onClick={() => {
+                setRouterButtonClicked(true);
+                router.push("/result");
+              }} className="relative overflow-hidden flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg hover:-translate-y-3  transition-all duration-500">
 
                 <div
                   className="border border-theme  cursor-pointer h-full w-full p-10 justify-center flex flex-col items-center"
@@ -112,7 +131,10 @@ function First() {
               </div>
             </div>
             <div className="lg:pt-12 pt-6 w-full md:w-4/12 px-4 text-center ">
-              <div className="relative overflow-hidden flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg cursor-pointer hover:-translate-y-3  transition-all duration-500">
+              <div  onClick={() => {
+                setRouterButtonClicked(true);
+                router.push("/candidate");
+              }} className="relative overflow-hidden flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg cursor-pointer hover:-translate-y-3  transition-all duration-500">
 
                 <div
                   className="border border-theme  cursor-pointer h-full w-full p-10 justify-center flex flex-col items-center"
@@ -127,20 +149,20 @@ function First() {
           </div>
           <div className="flex flex-wrap items-center mt-32">
             <div className="w-full md:w-5/12 px-4 mr-auto ml-auto">
-              <div className="text-gray-600 p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-gray-100">
-                <i className="fas fa-user-friends text-xl" />
+              <div className="text-gray-600 p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-gray-100 cursor-pointer">
+                {/* <i className="fas fa-user-friends text-xl" />  */}
+                <img src="/img/colored-logo.png" alt="" />
               </div>
               <h3 className="text-3xl mb-2 font-semibold leading-normal">
-                Working with us is a pleasure
+                Reviving the legacy of millennium
               </h3>
               <p className="text-lg font-light leading-relaxed mt-4 mb-4 text-gray-700">
-                Don't let your uses guess by attaching tooltips and popoves to any
-                element. Just make sure you enable them first via JavaScript.
+                Tekton is the name of this year's Rabee'a festival organized by Fathima Zahra Islamic Women's College Students Association GAZVA.
               </p>
               <p className="text-lg font-light leading-relaxed mt-0 mb-4 text-gray-700">
-                The kit comes with three pre-built pages to help you get started
-                faster. You can change the text and images and you're good to go.
-                Just make sure you enable them first via JavaScript.
+
+                The word TEKTON means builder. Accordingly, it's interpreted as the builder of a new era.
+                The motto of the arts fest is "reviving the legacy of the millennium" which aims to regain the jewels of Muslims' lost prosperity which was vibrant before a millennium. Arts Fest will be a milestone in enhancing and nourishing the skills of students  in academic and related fields
               </p>
             </div>
             <div className="w-full md:w-4/12 px-4 mr-auto ml-auto cursor-pointer">
@@ -233,3 +255,5 @@ function First() {
 }
 
 export default First;
+
+

@@ -47,10 +47,7 @@ const page = async () => {
       <Result
         key={1}
         result={
-          result.data?.resultEnteredProgrammes?.filter(  (programme) => {
-            return programme.resultPublished === false;
-          }
-          )
+          result.data?.resultEnteredProgrammes
         }
         pageProps={1}
         categories={categories.data?.categories}

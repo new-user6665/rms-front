@@ -80,7 +80,7 @@ const ExcelUploadGroupTeamList = (props: Props) => {
             console.log("====================================");
             console.log(`valid candidate`);
             console.log("====================================");
-            allCandidates.push(candidateValue);
+            allCandidates.push(`Z${candidateValue}`);
           }
         }
 

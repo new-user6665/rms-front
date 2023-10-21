@@ -359,12 +359,12 @@ const Candidate = (props: Props) => {
                   </ul>
                 </div>
 {/* export option */}
-                <button
+                {/* <button
                   className="hidden md:block ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
                   onClick={downloadExcel}
                 >
                   Export
-                </button>
+                </button> */}
                 <button
                   className="ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold md:hidden"
                   onClick={downloadExcel}
@@ -442,7 +442,7 @@ const Candidate = (props: Props) => {
                   className="hidden md:block ml-1 bg-secondary text-white rounded-full px-5 py-2 font-bold"
                   onClick={() => downloadProgrameList(data)}
                 >
-                  aha!
+                  Export
                 </button>
 
               </div>

@@ -78,7 +78,7 @@ const ExcelUploadTeamList = (props: Props) => {
         if (candidateValue) {
           transformedData.push({
             programme_code: p,
-            chestNo: candidateValue,
+            chestNo: `Z${candidateValue}`,
           });
         }
       }

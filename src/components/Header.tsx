@@ -78,7 +78,7 @@ function Header(props: HeaderProps) {
           <img
             src="/img/logo.png"
             alt="Realia Logo"
-            width={150}
+            width={120}
             height={0}
             className="hidden xl:block"
           />
@@ -107,11 +107,11 @@ function Header(props: HeaderProps) {
           </svg>
           <div className="text-center">
             <h1 className="text-4xl font-black text-secondary">
-              <span className="font-nexa">Realia</span>&apos;
+              <span className="font-nexa">Tekton</span>&apos;
               <span className="font-nexa">23</span>
             </h1>
 
-            <h2 className="text-lg leading-4 font-nexa">DHIU Arts Fest</h2>
+            <h2 className="text-lg leading-4 font-nexa">ZAHRA Arts Fest</h2>
           </div>
           <nav>
             <ul className="mt-8 transition-all duration-400">

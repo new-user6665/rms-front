@@ -52,10 +52,6 @@ export default function Toppers(props: Props) {
                   name="" id="" className="h-6 bigphone:h-8 border rounded-xl flex items-center text-[10px]">
                   {
                     props.categories.map((category, index) => {
-                      // last category no need to show
-                      if (index == props.categories.length - 1 || category.name == 'THANAWIYYA') {
-                        return
-                      }
                       return (
                         <option className="text-[10px]" key={index} value={category.name as string}>{category.name}</option>
                       )

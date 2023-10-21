@@ -232,7 +232,7 @@ const SideBar = () => {
                 isOpen ? "flex" : "hidden "
               }`}
             >
-              Realia 2k23
+              Tekton 2k23
             </span>
           </div>
         </div>
