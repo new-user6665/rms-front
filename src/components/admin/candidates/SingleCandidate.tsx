@@ -111,7 +111,7 @@ const OneCandidate = (props: Props) => {
           key={1}
         />
       ) : props.isImageUpload ? (
-        <imgUpload />
+        <ImageUpload />
       ) : (
         <>
           {fetching ? (
