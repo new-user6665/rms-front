@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import CountUp from 'react-countup';
-import ScrollTrigger from 'react-scroll-trigger'
+import ScrollTrigger   from 'react-scroll-trigger'
 
 
 
@@ -21,10 +21,10 @@ const Counts = (props: any) => {
 
     return (
 
-        <ScrollTrigger
-            onEnter={() => setCounterOn(true)}
-            onExit={() => setCounterOn(false)}
-        >
+        // <ScrollTrigger
+        //     onEnter={() => setCounterOn(true)}
+        //     onExit={() => setCounterOn(false)}
+        // >
             <div className="w-full p-2 ">
   <div className="flex flex-col px-6 py-4 overflow-hidden bg-white  rounded-xl shadow-lg duration-300  hover:scale-105">
     <div className="flex flex-row justify-between items-center">
@@ -52,7 +52,8 @@ const Counts = (props: any) => {
 
       <h1 className="text-3xl sm:text-4xl xl:text-5xl font-bold text-gray-700 mt-12 ">
       {
-                    counterOn && <CountUp delay={0} end={props.data.number} />
+                    // counterOn && 
+                    <CountUp delay={0} end={props.data.number} />
 
                 }
                 +
@@ -65,7 +66,7 @@ const Counts = (props: any) => {
 </div>
 
 
-        </ScrollTrigger>
+        // </ScrollTrigger>
 
     );
 }
