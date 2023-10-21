@@ -198,14 +198,14 @@ const Result = (props: Props) => {
             !item.anyIssue
         ) as Programme[]
       );
-      setAllData(
-        props.result?.filter(
-          (item: Programme) =>
-            cv.categories?.includes(item?.category?.name) &&
-            !item.resultPublished &&
-            !item.anyIssue
-        ) as Programme[]
-      );
+      // setAllData(
+      //   props.result?.filter(
+      //     (item: Programme) =>
+      //       cv.categories?.includes(item?.category?.name) &&
+      //       !item.resultPublished &&
+      //       !item.anyIssue
+      //   ) as Programme[]
+      // );
     }
 
 
@@ -382,9 +382,9 @@ const Result = (props: Props) => {
     let downloadData: ToDownLoadData[] = [];
 
     props.result?.forEach((programme, index) => {
-      if (programme.resultPublished) {
-        return;
-      }
+      // if (programme.resultPublished) {
+      //   return;
+      // }
       programme.candidateProgramme?.sort(
         (a, b) => (b.point as number) - (a.point as number)
       );
@@ -456,6 +456,7 @@ const Result = (props: Props) => {
     });
 
     setToDownLoadData(downloadData as ToDownLoadData[]);
+      
   }, []);
 
 
@@ -743,12 +744,99 @@ const Result = (props: Props) => {
                     </button>
                   </ul>
                 </div>
+
                 <div className="dropdown dropdown-end mr-1">
                   <label
                     tabIndex={0}
                     className="hidden md:inline-flex bg-secondary ml-1  text-white rounded-full px-5 py-2 font-bold"
                   >
                     Filter
+                    <svg
+                      className="-mr-1 h-5 w-5 text-gray-400"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </label>
+
+                  <label
+                    tabIndex={0}
+                    className="md:hidden inline-flex bg-secondary ml-1  text-white rounded-full px-5 py-2 font-bold"
+                  >
+                    <FilterIcon className="w-7 h-7 fill-white cursor-pointer" />
+                    <svg
+                      className="-mr-1 h-5 w-5 text-gray-400"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </label>
+                  <ul
+                    tabIndex={0}
+                    className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40 font-bold"
+                  >
+                        <button
+                          className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                          onClick={() => {
+                            setCurrentPage(1);
+                            setData(
+                              allData.filter(
+                                (itm: Programme) =>
+                                itm.resultEntered == true && itm.resultPublished == false
+                              )
+                            );
+                          }}
+                        > 
+                          {/* {item.name} */} Result Entered
+                        </button>
+                
+                        <button
+                          className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                          onClick={() => {
+                            setCurrentPage(1);
+                            setData(
+                              allData.filter(
+                                (itm: Programme) =>
+                                itm.resultEntered == true && itm.resultPublished == true
+                              )
+                            );
+                          }}
+                        > 
+                          {/* {item.name} */} Result Published
+                        </button>
+                 
+                        <button
+                          className=" block px-2 py-1 text-md rounded-md hover:bg-secondary hover:text-white"
+                          onClick={() => {
+                            setCurrentPage(1);
+                            setData(
+                              allData
+                            );
+                          }}
+                        > 
+                          {/* {item.name} */} All Programs
+                        </button>
+                  </ul>
+                </div>
+
+                <div className="dropdown dropdown-end mr-1">
+                  <label
+                    tabIndex={0}
+                    className="hidden md:inline-flex bg-secondary ml-1  text-white rounded-full px-5 py-2 font-bold"
+                  >
+                    Category
                     <svg
                       className="-mr-1 h-5 w-5 text-gray-400"
                       viewBox="0 0 20 20"

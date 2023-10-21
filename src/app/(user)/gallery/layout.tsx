@@ -4,12 +4,12 @@ import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Realia | Gallery',
+  title: 'Tekton | Gallery',
   description: 'Deconstructing Disinformation',
-  keywords: ['realia', 'realia.live', 'asas', 'dhiu', 
-  'darul huda', 'dhiu arts fest',
-   'dhiu rabee fest', 'rabee fest dhiu', 'realia23'
-    , 'sibaq' , 'result portal realia' , 'gallery realia']
+  keywords: ['Tekton', 'Tekton.live', 'asas', 'dhiu', 
+  'darul huda', 'ZAHRA Arts Fest',
+   'dhiu rabee fest', 'rabee fest dhiu', 'Tekton23'
+    , 'sibaq' , 'result portal Tekton' , 'gallery Tekton']
 }
 
 export default function RootLayout({

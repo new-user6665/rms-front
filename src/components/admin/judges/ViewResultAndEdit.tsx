@@ -363,7 +363,7 @@ function ViewResultAndEdit(props: Props) {
                     <p className="font-semibold text-[10px]">Points</p>
                     <p className="text-[10px]">MAX(10pts)</p>
                   </div>
-                  <div className="flex gap-2">
+                  {/* <div className="flex gap-2">
                     {[...Array(pointsCount)].map((_, i) => {
                       return (
                         <input
@@ -384,14 +384,16 @@ function ViewResultAndEdit(props: Props) {
                         
                       );
                     })}
-                  </div>
+                  </div> */}
+                  <div className="flex gap-5">
                   <div className="bg-white h-10 w-10 rounded-lg justify-center flex items-center text-lg font-semibold text-primary text-center">
                     {item.grade?.name || 'NIL'}
                   </div>
                   <div className="bg-white h-10 w-20 rounded-lg justify-center flex items-center text-lg font-semibold text-primary text-center">
                   {item.position?.name || 'NIL'}
                   </div>
-                  <div className="flex gap-5 items-center">
+                  </div>
+                  {/* <div className="flex gap-5 items-center">
                     <p>total</p>
                     <div
                       id={`total-${item.candidate?.chestNO}`}
@@ -399,7 +401,7 @@ function ViewResultAndEdit(props: Props) {
                     >
                       0
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             );

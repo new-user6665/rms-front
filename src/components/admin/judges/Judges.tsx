@@ -543,6 +543,7 @@ const Judges = (props: Props) => {
                   </div> */}
                 </div>
               </div>
+
             </div>
             <div className="flex flex-col items-center lg:justify-center w-full h-full">
               <ComponentsDiv
@@ -621,6 +622,7 @@ const Judges = (props: Props) => {
               </div>
             </div>
           </div>
+          
           <RightSideBar
             key={1}
             isOpen={IsRightSideBarOpen}
@@ -630,8 +632,9 @@ const Judges = (props: Props) => {
           >
             <div className="flex flex-col justify-between w-full h-full">
               <div>
-                <h1>{SelectedProgramme?.name}</h1>
-
+                <h1 className="font-bold">{SelectedProgramme?.name}</h1>
+                <h1>{SelectedProgramme?.programCode}</h1>
+                <h1>{SelectedProgramme?.category?.name}</h1>
                 {/* {[...Array(count)].map((_, i) => {
 
                   console.log(i + 1, count);
@@ -698,14 +701,14 @@ const Judges = (props: Props) => {
                   <ManualUploadIcon className="w-6 h-6 text-white" />
                 </button>
 
-                {!SelectedProgramme?.resultEntered && (
+                {/* {!SelectedProgramme?.resultEntered && (
                   <button
                     className="bg-secondary p-1 rounded-md"
                     onClick={() => setIsPointUploadOpen(true)}
                   >
                     <AddIcon className="w-6 h-6 text-white" />
                   </button>
-                )}
+                )} */}
 
                 {SelectedProgramme?.resultEntered && (
                   <button
