@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 const CountdownTimer = () => {
     const targetDate = new Date(new Date('2023-10-22T17:00:00').toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })).getTime();
+console.log(new Date(new Date('2023-10-22T17:00:00').toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })));
 
     const getTimeRemaining = (targetDate: any) => {
         const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })).getTime();

@@ -45,7 +45,7 @@ function Description() {
       {/* <Countdown date={day} />
       <CountdownTimer /> */}
       </div>
-      <div className="flex flex-wrap">
+      {/* <div className="flex flex-wrap">
         <div className="w-full md:w-6/12 lg:w-3/12 lg:mb-0 mb-12 px-4">
           <div className="px-6">
             <img
@@ -190,7 +190,7 @@ function Description() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   </section>
   );
